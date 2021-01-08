@@ -12,6 +12,9 @@ import customerRoutes from './routes/customer.routes'
 import financingRoutes from './routes/financing.routes'
 import saleRoutes from './routes/sale.routes'
 import recordRoutes from './routes/record.routes'
+import path from 'path';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import { createRoles } from './libs/initialSetup'
 
 const app = express();
@@ -26,6 +29,9 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+
+//Static Files
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 //Routes
 app.get('/', (req, res) => {
@@ -43,5 +49,7 @@ app.use('/api/customer', customerRoutes);
 app.use('/api/financing', financingRoutes);
 app.use('/api/sale', saleRoutes);
 app.use('/api/records', recordRoutes);
+
+
 
 export default app;

@@ -5,12 +5,16 @@
     "main": "index.js",
     "scripts": {
         "dev": "nodemon src/index.js --exec babel-node",
-        "start": "node src/index.js --exec babel-node"
+        "build": "babel src -d dist --source-maps",
+        "start": "node dist/index.js"
     },
     "keywords": [],
     "author": "Fernando Rojas",
     "license": "ISC",
     "dependencies": {
+        "@babel/plugin-proposal-optional-chaining": "^7.12.7",
+        "@babel/plugin-proposal-pipeline-operator": "^7.12.1",
+        "@babel/polyfill": "^7.12.1",
         "bcryptjs": "^2.4.3",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
