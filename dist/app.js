@@ -35,8 +35,6 @@ var _record = _interopRequireDefault(require("./routes/record.routes"));
 
 var _path = _interopRequireDefault(require("path"));
 
-require("core-js/stable");
-
 require("regenerator-runtime/runtime");
 
 var _initialSetup = require("./libs/initialSetup");
@@ -55,7 +53,7 @@ app.use(_express.default.urlencoded({
   extended: true
 })); //Static Files
 
-app.use('/public', _express.default.static(_path.default.join(__dirname, 'public'))); //Routes
+app.use('/public', _express.default.static(__dirname + '/public')); //Routes
 
 app.get('/', function (req, res) {
   res.json({
@@ -72,7 +70,11 @@ app.use('/api/props', _props.default);
 app.use('/api/customer', _customer.default);
 app.use('/api/financing', _financing.default);
 app.use('/api/sale', _sale.default);
-app.use('/api/records', _record.default);
+app.use('/api/records', _record.default); //Middleware para Vuejs
+
+var history = require('connect-history-api-fallback');
+
+app.use(history());
 var _default = app;
 exports.default = _default;
 //# sourceMappingURL=app.js.map
