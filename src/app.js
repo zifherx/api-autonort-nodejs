@@ -13,7 +13,6 @@ import financingRoutes from './routes/financing.routes'
 import saleRoutes from './routes/sale.routes'
 import recordRoutes from './routes/record.routes'
 import path from 'path';
-import "core-js/stable";
 import "regenerator-runtime/runtime";
 import { createRoles } from './libs/initialSetup'
 
