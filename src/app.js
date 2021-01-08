@@ -30,7 +30,8 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 //Static Files
-app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(__dirname + '/public'));
+
 
 //Routes
 app.get('/', (req, res) => {
@@ -49,6 +50,9 @@ app.use('/api/financing', financingRoutes);
 app.use('/api/sale', saleRoutes);
 app.use('/api/records', recordRoutes);
 
+//Middleware para Vuejs
+const history = require('connect-history-api-fallback');
+app.use(history());
 
 
 export default app;
