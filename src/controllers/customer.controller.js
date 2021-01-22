@@ -50,11 +50,11 @@ export const getCustomerByDni = async(req, res) => {
             console.log(customer);
             res.status(200).json(customer);
         } else {
-            res.status(201).json({ messsage: 'No existe cliente a mostrar' });
+            res.status(201).json({ message: 'No existe cliente a mostrar' });
         }
     } catch (e) {
         console.log(e);
-        res.status(401).json({ messsage: 'No se puede ejecutar la consulta' });
+        res.status(401).json({ message: 'No se puede ejecutar la consulta' });
     }
 }
 

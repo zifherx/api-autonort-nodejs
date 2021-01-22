@@ -1,9 +1,14 @@
 import Campaign from '../models/Campaign'
+import Vehicle from '../models/Vehicle'
 
 export const createCampaign = async(req, res) => {
     try {
-        const { name, descripcion, bono, startDate, endDate } = req.body;
+        const { name, descripcion, bono, startDate, endDate, auto } = req.body;
         const newCampaign = new Campaign({ name, descripcion, bono, startDate, endDate });
+
+        const foundAuto = await Vehicle.find({ cod_tdp: { $in: auto } });
+        newCampaign.auto = foundAuto.map(auto => auto._id);
+
         const campaignSaved = await newCampaign.save();
 
         res.status(201).json(campaignSaved);
@@ -15,7 +20,7 @@ export const createCampaign = async(req, res) => {
 
 export const getCampaigns = async(req, res) => {
     try {
-        const campaign = await Campaign.find();
+        const campaign = await Campaign.find().populate('auto');
         res.status(201).json(campaign);
     } catch (e) {
         console.log(e);
@@ -26,7 +31,7 @@ export const getCampaigns = async(req, res) => {
 export const getCampaignById = async(req, res) => {
     try {
         const { campaignId } = req.params;
-        const campaigns = await Campaign.findById(campaignId);
+        const campaigns = await Campaign.findById(campaignId).populate('auto');
         res.status(200).json(campaigns);
     } catch (e) {
         console.log(e);
@@ -34,10 +39,35 @@ export const getCampaignById = async(req, res) => {
     }
 }
 
+export const getCampaignByVehicle = async(req, res) => {
+    try {
+        const { modelo } = req.body;
+
+        const vehiculo = await Vehicle.findOne({ cod_tdp: modelo })
+
+        const campana = await Campaign.find({ auto: vehiculo });
+
+        if (campana) {
+            //console.log(campana);
+            res.status(200).json(campana);
+        } else {
+            res.status(201).json({ message: 'No existen campañas para ese vehículo' });
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(401).json({ message: 'Error filtrando Campañas' });
+    }
+}
+
 export const updateCampaignById = async(req, res) => {
     try {
         const { campaignId } = req.params;
-        const updateCampaign = await Campaign.findByIdAndUpdate(campaignId, req.body, { new: true });
+
+        const { name, descripcion, bono, startDate, endDate, auto } = req.body;
+
+        const foundAuto = await Vehicle.find({ cod_tdp: { $in: auto } });
+
+        const updateCampaign = await Campaign.findByIdAndUpdate(campaignId, { name, descripcion, bono, startDate, endDate, auto: foundAuto.map(auto => auto._id) }, { new: true });
         if (updateCampaign) {
             res.status(200).json(updateCampaign);
         } else {

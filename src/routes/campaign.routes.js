@@ -3,19 +3,22 @@ import * as campaignCtrl from '../controllers/campaign.controller'
 
 const router = Router();
 
-//Crear Vendedor
+//Crear Campaña
 router.post('/', campaignCtrl.createCampaign);
 
-//Obtener Vendedores
+//Obtener Campañas
 router.get('/', campaignCtrl.getCampaigns);
 
-//Obtener Vendedor por Id
+//Obtener Campaña por Id
 router.get('/:campaignId', campaignCtrl.getCampaignById);
 
-//Actualizar Vendedor
+//Obtener Camapaña por código Vehicular
+router.post('/find', campaignCtrl.getCampaignByVehicle);
+
+//Actualizar Campaña
 router.put('/:campaignId', campaignCtrl.updateCampaignById);
 
-//Remover Vendedor
+//Remover Campaña
 router.delete('/:campaignId', campaignCtrl.deleteCampaignById);
 
 export default router;

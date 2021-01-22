@@ -2,19 +2,19 @@ import { Router } from 'express'
 import * as financingCtrl from '../controllers/financing.controller'
 const router = Router();
 
-//Crear Financiamiento
-router.post('/', financingCtrl.createFinancing);
+//Crear Adelanto
+router.post('/', financingCtrl.createAdelanto);
 
-//Obtener Financiamientos
-router.get('/', financingCtrl.getFinancing);
+//Obtener Adelantos
+router.get('/', financingCtrl.getAdelantos);
 
-//Obtener Financiamiento por Id
-router.get('/:financingId', financingCtrl.getFinancingById);
+//Obtener Adelanto por Id
+router.get('/:financingId', financingCtrl.getAdelantoById);
 
-//Actualizar Financiamiento
-router.put('/:financingId', financingCtrl.updateFinancingById);
+//Actualizar Adelanto
+router.put('/:financingId', financingCtrl.updateAdelandoById);
 
-//Remover Financiamiento
-router.delete('/:financingId', financingCtrl.deleteFinancingById);
+//Remover Adelanto
+router.delete('/:financingId', financingCtrl.deleteAdelantoById);
 
 export default router;

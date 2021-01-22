@@ -1,30 +1,35 @@
 import Sale from '../models/Sale'
 import Vehicle from '../models/Vehicle'
 import Seller from '../models/Seller'
-import Financing from '../models/Financing'
 import Customer from '../models/Customer'
+import Campaign from '../models/Campaign'
+import Props from '../models/Props'
 
 export const createSale = async(req, res) => {
     try {
-        const { fecha, nroComprobante, seller, vehicle, financing, entity, support, office, account_executive, customer, situacion } = req.body;
+        const { fecha, codVenta, nroComprobante, fechaComprobante, seller, vehicle, serie_tdp, colour, manufacturing_year, model_year, location_vehicle, status_vehicle, typeFinancing, entity, support, fechaCartaAprobacion, montoAprobado, office, account_executive, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, customer, situacion, sucursal, campaign, props } = req.body;
 
-        const newSale = new Sale({ fecha, nroComprobante, entity, support, office, account_executive, situacion });
+        const newSale = new Sale({ fecha, codVenta, nroComprobante, fechaComprobante, serie_tdp, colour, manufacturing_year, model_year, location_vehicle, status_vehicle, typeFinancing, entity, support, fechaCartaAprobacion, montoAprobado, office, account_executive, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, situacion, sucursal });
 
         //Seller
         const foundSeller = await Seller.find({ name: { $in: seller } });
         newSale.seller = foundSeller.map(seller => seller._id);
 
         //Vehicle
-        const foundVehicle = await Vehicle.find({ serie_tdp: { $in: vehicle } });
+        const foundVehicle = await Vehicle.find({ cod_tdp: { $in: vehicle } });
         newSale.vehicle = foundVehicle.map(vehicle => vehicle._id);
-
-        //Financing
-        const foundFinancing = await Financing.find({ type: { $in: financing } });
-        newSale.financing = foundFinancing.map(financing => financing._id);
 
         //Customer
         const foundCustomer = await Customer.find({ document: { $in: customer } });
         newSale.customer = foundCustomer.map(customer => customer._id);
+
+        //Campaign
+        const foundCampaign = await Campaign.find({ name: { $in: campaign } });
+        newSale.campaign = foundCampaign.map(campaign => campaign._id);
+
+        //Props
+        const foundProps = await Props.find({ name: { $in: props } });
+        newSale.props = foundProps.map(props => props._id);
 
         //console.log(newSale);
         const saleSaved = await newSale.save();
@@ -40,8 +45,9 @@ export const getSales = async(req, res) => {
         const ventasfull = await Sale.find()
             .populate('seller')
             .populate('vehicle')
-            .populate('financing')
-            .populate('customer');
+            .populate('customer')
+            .populate('campaign')
+            .populate('props');
 
         res.status(200).json(ventasfull);
 
@@ -58,8 +64,9 @@ export const getSaleById = async(req, res) => {
         const venta = await Sale.findById(salesId)
             .populate('seller')
             .populate('vehicle')
-            .populate('financing')
-            .populate('customer');
+            .populate('customer')
+            .populate('campaign')
+            .populate('props');
 
         if (venta) {
             res.status(200).json(venta);
@@ -77,21 +84,27 @@ export const getSaleById = async(req, res) => {
 export const updateSaleById = async(req, res) => {
     try {
         const { salesId } = req.params;
-        const { fecha, nroComprobante, seller, vehicle, financing, entity, support, office, account_executive, customer, situacion } = req.body;
+
+        //console.log(req.body);
+
+        const { fecha, codVenta, nroComprobante, fechaComprobante, seller, vehicle, serie_tdp, colour, manufacturing_year, model_year, location_vehicle, status_vehicle, typeFinancing, entity, support, fechaCartaAprobacion, montoAprobado, office, account_executive, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, customer, situacion, sucursal, campaign, props } = req.body;
 
         //Seller
         const foundSeller = await Seller.find({ name: { $in: seller } });
 
         //Vehicle
-        const foundVehicle = await Vehicle.find({ serie_tdp: { $in: vehicle } });
-
-        //Financing
-        const foundFinancing = await Financing.find({ type: { $in: financing } });
+        const foundVehicle = await Vehicle.find({ cod_tdp: { $in: vehicle } });
 
         //Customer
         const foundCustomer = await Customer.find({ document: { $in: customer } });
 
-        const ventaActualizada = await Sale.findByIdAndUpdate(salesId, { fecha, nroComprobante, seller: foundSeller.map(seller => seller._id), vehicle: foundVehicle.map(vehicle => vehicle._id), financing: foundFinancing.map(financing => financing._id), entity, support, office, account_executive, customer: foundCustomer.map(customer => customer._id), situacion }, { new: true });
+        //Campaign
+        const foundCampaign = await Campaign.find({ name: { $in: campaign } });
+
+        //Props
+        const foundProps = await Props.find({ name: { $in: props } });
+
+        const ventaActualizada = await Sale.findByIdAndUpdate(salesId, { fecha, codVenta, nroComprobante, fechaComprobante, serie_tdp, colour, manufacturing_year, model_year, location_vehicle, status_vehicle, typeFinancing, entity, support, fechaCartaAprobacion, montoAprobado, office, account_executive, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, situacion, sucursal, seller: foundSeller.map(seller => seller._id), customer: foundCustomer.map(customer => customer._id), vehicle: foundVehicle.map(vehicle => vehicle._id), campaign: foundCampaign.map(campaign => campaign._id), props: foundProps.map(props => props._id) }, { new: true });
 
         if (ventaActualizada) {
             //Mandamos la respuesta

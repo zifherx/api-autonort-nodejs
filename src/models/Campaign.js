@@ -5,7 +5,8 @@ const campaignSchema = new Schema({
     descripcion: { type: String },
     bono: { type: Number, required: true },
     startDate: { type: Date },
-    endDate: { type: Date }
+    endDate: { type: Date },
+    auto: { type: Schema.Types.ObjectId, ref: "Vehicle" }
 }, {
     timestamps: true,
     versionKey: false

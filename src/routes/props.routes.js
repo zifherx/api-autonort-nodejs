@@ -11,6 +11,9 @@ router.get('/', propsCtrl.getProps);
 //Obtener Vendedor por Id
 router.get('/:propsId', propsCtrl.getPropById);
 
+//Obtener Accesosrio por código Vehicular
+router.post('/find', propsCtrl.getPropsByVehicle);
+
 //Actualizar Vendedor
 router.put('/:propsId', propsCtrl.updatePropById);
 

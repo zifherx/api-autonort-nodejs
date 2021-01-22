@@ -3,18 +3,25 @@ import Role from '../models/Role'
 
 export const createUser = async(req, res) => {
     try {
-        const { username, email, password, roles } = req.body;
+        const { username, email, name, password, sucursal, direccion, pais, codigo_postal, about, roles, activo } = req.body;
         const newUser = new User({
             username,
             email,
+            name,
             password: await User.encryptPassword(password),
+            sucursal,
+            direccion,
+            pais,
+            codigo_postal,
+            about,
+            activo
         });
 
         if (roles) {
             const foundRoles = await Role.find({ name: { $in: roles } });
             newUser.roles = foundRoles.map(role => role._id);
         } else {
-            const role = await Role.findOne({ name: "user" });
+            const role = await Role.findOne({ name: "Usuario" });
             newUser.roles = [role._id];
         }
 
@@ -44,12 +51,18 @@ export const getUserById = async(req, res) => {
 }
 
 export const updateUserById = async(req, res) => {
-    const { username, email, password, roles } = req.body;
+    const { username, email, name, password, sucursal, direccion, pais, codigo_postal, about, roles, activo } = req.body;
 
-    const foundRoles = await Role.find({ name: { $in: roles } })
-    const userFound = await User.findByIdAndUpdate(req.params.userId, { username, email, password: await User.encryptPassword(password), roles: foundRoles.map(role => role._id) }, { new: true });
+    try {
+        const foundRoles = await Role.find({ name: { $in: roles } })
+        const userFound = await User.findByIdAndUpdate(req.params.userId, { username, email, name, password: await User.encryptPassword(password), sucursal, direccion, pais, codigo_postal, about, roles: foundRoles.map(role => role._id), activo }, { new: true });
 
-    res.status(200).json(userFound);
+        res.status(200).json(userFound);
+    } catch (e) {
+        console.log(e);
+        res.status(401).json({ message: 'Error en la consulta' });
+    }
+
 }
 
 export const deleteUserById = async(req, res) => {

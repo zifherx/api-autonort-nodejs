@@ -2,9 +2,9 @@ import Seller from '../models/Seller'
 
 export const createSeller = async(req, res) => {
     try {
-        const { name, type, document } = req.body;
+        const { name, sucursal, document } = req.body;
 
-        const newSeller = new Seller({ name, type, document });
+        const newSeller = new Seller({ name, sucursal, document });
         const sellerSaved = await newSeller.save();
 
         res.status(201).json(sellerSaved);
