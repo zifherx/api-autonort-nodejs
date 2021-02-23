@@ -111,7 +111,7 @@ var createUserAdmin = /*#__PURE__*/function () {
               name: 'Fernando Rojas Quezada',
               username: 'frojasq',
               password: _context2.t2,
-              roles: 'Administrador',
+              roles: '6034adb25a040200155fd77a',
               activo: 'Activo',
               sucursal: 'Trujillo'
             };

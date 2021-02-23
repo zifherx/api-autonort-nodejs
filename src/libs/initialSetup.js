@@ -33,7 +33,7 @@ export const createUserAdmin = async() => {
                 name: 'Fernando Rojas Quezada',
                 username: 'frojasq',
                 password: await User.encryptPassword('admin'),
-                roles: 'Administrador',
+                roles: '6034adb25a040200155fd77a',
                 activo: 'Activo',
                 sucursal: 'Trujillo'
             }).save()
