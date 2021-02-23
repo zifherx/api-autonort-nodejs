@@ -39,7 +39,7 @@ var createRoles = /*#__PURE__*/function () {
           case 6:
             _context.next = 8;
             return Promise.all([new _Role.default({
-              name: 'Aministrador'
+              name: 'Administrador'
             }).save(), new _Role.default({
               name: 'Jefe-ADV'
             }).save(), new _Role.default({
