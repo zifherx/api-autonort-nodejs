@@ -20,7 +20,8 @@ var _routes = _interopRequireDefault(require("./routes"));
 var _initialSetup = require("./libs/initialSetup");
 
 var app = (0, _express.default)();
-(0, _initialSetup.createRoles)(); //Settings
+(0, _initialSetup.createRoles)();
+(0, _initialSetup.createUserAdmin)(); //Settings
 
 app.set('port', process.env.PORT || 4000); //Middlewares
 

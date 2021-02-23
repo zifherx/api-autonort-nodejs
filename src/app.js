@@ -3,11 +3,12 @@ import morgan from 'morgan'
 import cors from 'cors'
 import path from 'path';
 import routes from "./routes";
-import { createRoles } from './libs/initialSetup'
+import { createRoles, createUserAdmin } from './libs/initialSetup'
 
 const app = express();
 
 createRoles();
+createUserAdmin();
 
 //Settings
 app.set('port', process.env.PORT || 4000);

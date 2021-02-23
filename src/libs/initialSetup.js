@@ -22,3 +22,23 @@ export const createRoles = async() => {
         console.error(err);
     }
 }
+
+export const createUserAdmin = async() => {
+    try {
+        const master = await User.estimatedDocumentCount();
+        if (master > 0) return;
+
+        const usuarios = await Promise.all([
+            new User({
+                name: 'Fernando Rojas Quezada',
+                username: 'frojasq',
+                password: await User.encryptPassword('admin'),
+                roles: 'Administrador',
+                activo: 'Activo',
+                sucursal: 'Trujillo'
+            }).save()
+        ]);
+    } catch (err) {
+        console.error(err);
+    }
+}

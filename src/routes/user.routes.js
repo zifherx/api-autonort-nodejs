@@ -8,13 +8,13 @@ router.get('/', userCtrl.getUsers);
 
 router.get('/:userId', userCtrl.getUserById);
 
-//router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], userCtrl.createUser);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], userCtrl.createUser);
 
 router.patch('/:userId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], userCtrl.updateUserById);
 
 router.delete('/:userId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], userCtrl.deleteUserById);
 
-router.post('/', userCtrl.createUser);
+//router.post('/', userCtrl.createUser);
 
 //router.put('/:userId', userCtrl.updateUserById);
 
