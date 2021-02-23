@@ -1,64 +1,75 @@
 import Props from '../models/Props'
-import Vehicle from '../models/Vehicle';
 
 export const createProp = async(req, res) => {
     try {
-        const { name, type, cantidad, precio, auto } = req.body;
-        const newProp = new Props({ name, type, cantidad, precio });
+        const { name, forCar, stock, precio, status } = req.body;
+        const newProp = new Props({ name, forCar, stock, precio, status });
 
-        const foundAuto = await Vehicle.find({ cod_tdp: { $in: auto } });
-        newProp.auto = foundAuto.map(auto => auto._id);
         const propSaved = await newProp.save();
-        res.status(201).json(propSaved);
+        if (propSaved) {
+            res.json({ message: 'Accesorio creado con éxito' });
+        }
+
     } catch (e) {
         console.log(e);
-        res.status(401).json({ messsage: 'No se puede ejecutar la consulta' });
+        res.status(404).json({ messsage: 'No se puede ejecutar la consulta' });
     }
 }
 
-export const getProps = async(req, res) => {
+export const getAll = async(req, res) => {
     try {
-        const props = await Props.find().populate('auto');
+        const props = await Props.find();
         if (props) {
-            res.status(200).json(props);
+            res.json(props);
         } else {
             res.status(201).json({ messsage: 'No existen campañas a mostrar' });
         }
     } catch (e) {
         console.log(e);
-        res.status(401).json({ messsage: 'No se puede ejecutar la consulta' });
+        res.status(403).json({ messsage: 'No se puede ejecutar la consulta' });
     }
 }
 
-export const getPropById = async(req, res) => {
+export const getAccesoriosActivos = async(req, res) => {
+    try {
+        const activos = await Props.find({ status: 'Activo' });
+        if (activos) {
+            res.json(activos);
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({ message: 'No Autorizado' })
+    }
+}
+
+export const getAccesorioById = async(req, res) => {
     try {
         const { propsId } = req.params;
-        const props = await Props.findById(propsId).populate('auto');
+        const props = await Props.findById(propsId);
         if (props) {
-            res.status(200).json(props);
+            res.json(props);
         } else {
             res.status(201).json({ messsage: 'No existe campaña a mostrar' });
         }
     } catch (e) {
         console.log(e);
-        res.status(401).json({ messsage: 'No se puede ejecutar la consulta' });
+        res.status(403).json({ messsage: 'No se puede ejecutar la consulta' });
     }
 }
 
-export const getPropsByVehicle = async(req, res) => {
+export const getAccesorioByAuto = async(req, res) => {
     try {
         const { modelo } = req.body;
-        const vehiculo = await Vehicle.findOne({ cod_tdp: modelo });
-        const foundProp = await Props.find({ auto: vehiculo });
+        const foundProp = await Props.find({ forCar: modelo });
 
         if (foundProp) {
-            res.status(200).json(foundProp);
+            res.json(foundProp);
         } else {
             res.status(201).json({ message: 'No existe el accesorio' });
         }
     } catch (e) {
         console.log(e);
-        res.status(401).json({ message: 'Error filtrando Campañas' });
+        res.status(403).json({ message: 'Error filtrando Campañas' });
     }
 }
 
@@ -66,19 +77,19 @@ export const updatePropById = async(req, res) => {
     try {
         const { propsId } = req.params;
 
-        const { name, type, cantidad, precio, auto } = req.body;
+        const { name, forCar, stock, precio, status } = req.body;
 
-        const foundAuto = await Vehicle.find({ cod_tdp: { $in: auto } });
+        //const foundAuto = await Vehicle.find({ cod_tdp: { $in: auto } });
 
-        const updateProp = await Props.findByIdAndUpdate(propsId, { name, type, cantidad, precio, auto: foundAuto.map(auto => auto._id) }, { new: true });
+        const updateProp = await Props.findByIdAndUpdate(propsId, { name, forCar, stock, precio, status }, { new: true });
         if (updateProp) {
-            res.status(200).json(updateProp);
+            res.json({ message: 'Accesorio actualizado con éxito' });
         } else {
-            res.status(401).json({ messsage: 'No existe campaña a actualizar' });
+            return res.status(201).json({ messsage: 'No existe campaña a actualizar' });
         }
     } catch (e) {
         console.log(e);
-        res.status(401).json({ messsage: 'No se puede ejecutar la consulta' });
+        res.status(403).json({ messsage: 'No se puede ejecutar la consulta' });
     }
 }
 
@@ -87,12 +98,12 @@ export const deletePropById = async(req, res) => {
         const { propsId } = req.params;
         const deletedProp = await Props.findByIdAndDelete(propsId);
         if (deletedProp) {
-            res.status(200).json({ messsage: 'Accesorio Eliminado' });
+            res.json({ message: 'Accesorio eliminado con éxito' });
         } else {
-            res.status(401).json({ messsage: 'Accesorio no Existe' });
+            res.status(201).json({ messsage: 'Accesorio no Existe' });
         }
     } catch (e) {
         console.log(e);
-        res.status(401).json({ messsage: 'No se puede ejecutar la consulta' });
+        res.status(403).json({ messsage: 'No se puede ejecutar la consulta' });
     }
 }

@@ -6,20 +6,16 @@ const router = Router();
 
 //router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv], vehicleCtrl.createVehicle);
 
-router.post('/', vehicleCtrl.createVehicle);
-
 router.get('/', vehicleCtrl.getVehicles);
 
 router.get('/:vehicleId', vehicleCtrl.getVehicleById);
 
-router.post('/find', vehicleCtrl.getVehicleBySerie);
+router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], vehicleCtrl.createVehicle);
 
-//router.put('/:vehicleId', [authJwt.verifyToken, authJwt.isChiefAdv], vehicleCtrl.updateVehicleById);
+router.post('/find', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], vehicleCtrl.getVehicleByCodigo);
 
-//router.delete('/:vehicleId', [authJwt.verifyToken, authJwt.isChiefAdv], vehicleCtrl.deleteVehicleById);
+router.put('/:vehicleId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], vehicleCtrl.updateVehicleById);
 
-router.put('/:vehicleId', vehicleCtrl.updateVehicleById);
-
-router.delete('/:vehicleId', vehicleCtrl.deleteVehicleById);
+router.delete('/:vehicleId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], vehicleCtrl.deleteVehicleById);
 
 export default router;

@@ -3,10 +3,10 @@ import { Schema, model } from 'mongoose'
 const campaignSchema = new Schema({
     name: { type: String, required: true },
     descripcion: { type: String },
-    bono: { type: Number, required: true },
+    bono: { type: Number },
     startDate: { type: Date },
     endDate: { type: Date },
-    auto: { type: Schema.Types.ObjectId, ref: "Vehicle" }
+    status: { type: String }
 }, {
     timestamps: true,
     versionKey: false

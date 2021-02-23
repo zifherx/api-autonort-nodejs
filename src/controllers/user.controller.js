@@ -26,19 +26,19 @@ export const createUser = async(req, res) => {
         }
 
         const userSaved = await newUser.save();
-        res.status(201).json(userSaved);
+        res.json({ message: 'Usuario creado con éxito' });
     } catch (e) {
         console.log(e);
+        return res.status(404).json({ message: 'Error' })
     }
 }
 
 export const getUsers = async(req, res) => {
     await User.find({}, function(err, users) {
         Role.populate(users, { path: "roles" }, function(err, users) {
-            res.status(200).send(users);
+            res.send(users);
         })
     });
-    //res.json(accounts);
 }
 
 export const getUserById = async(req, res) => {
@@ -51,22 +51,22 @@ export const getUserById = async(req, res) => {
 }
 
 export const updateUserById = async(req, res) => {
-    const { username, email, name, password, sucursal, direccion, pais, codigo_postal, about, roles, activo } = req.body;
+    const { username, email, name, sucursal, direccion, pais, codigo_postal, about, roles, activo } = req.body;
 
     try {
         const foundRoles = await Role.find({ name: { $in: roles } })
-        const userFound = await User.findByIdAndUpdate(req.params.userId, { username, email, name, password: await User.encryptPassword(password), sucursal, direccion, pais, codigo_postal, about, roles: foundRoles.map(role => role._id), activo }, { new: true });
+        const userFound = await User.findByIdAndUpdate(req.params.userId, { username, email, name, sucursal, direccion, pais, codigo_postal, about, roles: foundRoles.map(role => role._id), activo }, { new: true });
 
-        res.status(200).json(userFound);
+        //res.status(200).json(userFound);
+        res.json({ message: 'Usuario actualizado con éxito' });
     } catch (e) {
         console.log(e);
         res.status(401).json({ message: 'Error en la consulta' });
     }
-
 }
 
 export const deleteUserById = async(req, res) => {
     const { userId } = req.params;
     const deletedUser = await User.findByIdAndRemove(userId);
-    res.status(200).json({ message: 'User Removed' });
+    res.json({ message: 'Usuario eliminado con éxito' });
 }

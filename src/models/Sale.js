@@ -1,25 +1,27 @@
 import { Schema, model } from 'mongoose'
 
 const saleSchema = new Schema({
-    fecha: { type: Date },
-    codVenta: { type: String, unique: true },
-    nroComprobante: { type: String },
-    fechaComprobante: { type: Date },
-    seller: { ref: "Seller", type: Schema.Types.ObjectId },
-    vehicle: { ref: "Vehicle", type: Schema.Types.ObjectId },
+    //Vendedor
+    vendedor: { ref: 'Seller', type: Schema.Types.ObjectId },
+    //Cliente
+    cliente: { ref: 'Customer', type: Schema.Types.ObjectId },
+    //Vehiculo
+    auto: { ref: 'Vehicle', type: Schema.Types.ObjectId },
     serie_tdp: { type: String, unique: true },
-    colour: { type: String },
-    manufacturing_year: { type: String },
-    model_year: { type: String },
-    location_vehicle: { type: String },
-    status_vehicle: { type: String },
-    typeFinancing: { type: String },
-    entity: { type: String },
-    support: { type: String },
-    fechaCartaAprobacion: { type: Date },
-    montoAprobado: { type: Number },
-    office: { type: String },
-    account_executive: { type: String },
+    color: { type: String },
+    precio: { type: Number },
+    anio_fabricacion: { type: String },
+    anio_modelo: { type: String },
+    ubicacion_vehiculo: { type: String },
+    estatus_vehiculo: { type: String },
+    //Financiamiento
+    tipo_financiamiento: { type: String },
+    entidad_bancaria: { type: String },
+    sustento: { type: String },
+    fecha_sustento: { type: Date },
+    monto_aprobado: { type: Number },
+    oficina: { type: String },
+    ejecutivo: { type: String },
     montoAdelanto1: { type: Number },
     fechaAdelanto1: { type: Date },
     montoAdelanto2: { type: Number },
@@ -36,11 +38,25 @@ const saleSchema = new Schema({
     fechaAdelanto7: { type: Date },
     montoAdelanto8: { type: Number },
     fechaAdelanto8: { type: Date },
-    situacion: { type: String },
-    customer: { ref: "Customer", type: Schema.Types.ObjectId },
-    sucursal: { type: String },
-    campaign: [{ ref: "Campaign", type: Schema.Types.ObjectId }],
-    props: [{ ref: "Props", type: Schema.Types.ObjectId }]
+    //Campaña
+    campanias: [{ ref: 'Campaign', type: Schema.Types.ObjectId }],
+    observacion_adv: { type: String },
+    //Accesorio
+    accesorios: [{ ref: 'Props', type: Schema.Types.ObjectId }],
+    condicion_accesorios: { type: String },
+    //Facturacion TDP
+    fecha_facturacion_tdp: { type: Date },
+    estatus_facturacion: { type: String },
+    //Venta
+    tipo_operacion: { type: String },
+    fecha_inicio_reserva: { type: Date },
+    fecha_fin_reserva: { type: Date },
+    tipo_comprobante: { type: String },
+    nro_comprobante: { type: String },
+    fecha_comprobante: { type: String },
+    estatus_venta: { type: String },
+    sucursal_venta: { type: String },
+    fecha_cancelacion: { type: Date }
 }, {
     timestamps: true,
     versionKey: false

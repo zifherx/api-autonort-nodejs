@@ -1,13 +1,12 @@
 import { Schema, model } from 'mongoose'
 
 const vehicleSchema = new Schema({
-    brand: { type: String },
+    marca: { type: String },
     cod_tdp: { type: String, unique: true },
-    category: { type: String },
-    model: { type: String },
-    branch_office: { type: String },
-    price: { type: Number },
-    campaign: [{ type: Schema.Types.ObjectId, ref: "Campaign" }],
+    categoria: { type: String },
+    modelo: { type: String },
+    version: { type: String },
+    sucursal: { type: String },
 }, {
     timestamps: true,
     versionKey: false

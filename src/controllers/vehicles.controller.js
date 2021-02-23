@@ -1,24 +1,23 @@
 import Vehicle from '../models/Vehicle'
-import Campaign from '../models/Campaign'
 
 export const createVehicle = async(req, res) => {
-    const { brand, cod_tdp, category, model, branch_office, price, campaign } = req.body;
+    const { marca, cod_tdp, categoria, modelo, version, sucursal } = req.body;
 
     const newVehicle = new Vehicle({
-        brand,
+        marca,
         cod_tdp,
-        category,
-        model,
-        branch_office,
-        price
+        categoria,
+        modelo,
+        version,
+        sucursal
     });
 
-    const foundCampaign = await Campaign.find({ name: { $in: campaign } });
-    newVehicle.campaign = foundCampaign.map(campaign => campaign._id);
+    //const foundCampaign = await Campaign.find({ name: { $in: campaign } });
+    //newVehicle.campaign = foundCampaign.map(campaign => campaign._id);
 
     const vehicleSaved = await newVehicle.save();
 
-    res.status(201).json(vehicleSaved);
+    res.json({ message: 'Vehículo creado con éxito' });
 }
 
 export const getVehicles = async(req, res) => {
@@ -28,41 +27,51 @@ export const getVehicles = async(req, res) => {
 
 export const getVehicleById = async(req, res) => {
     const { vehicleId } = req.params;
-    const vehicle = await Vehicle.findById(vehicleId).populate('campaign');
-    res.status(200).json(vehicle);
+    const vehicle = await Vehicle.findById(vehicleId);
+    res.json(vehicle);
 
 }
 
-export const getVehicleBySerie = async(req, res) => {
+export const getVehicleByCodigo = async(req, res) => {
     try {
-        const { codigo } = req.body;
-        const carro = await Vehicle.findOne({ cod_tdp: codigo }).populate('campaign');
-        //console.log(carro);
+        const { codigoAuto } = req.body;
+        const carro = await Vehicle.findOne({ cod_tdp: codigoAuto });
         if (carro) {
-            //console.log(carro);
-            res.status(200).json(carro);
+            res.json(carro);
         } else {
-            res.status(201).json({ messsage: 'No existe vehículo a mostrar' });
+            return res.status(201).json({ message: 'No existe vehículo a mostrar' });
         }
     } catch (e) {
-        console.log(e);
-        res.status(401).json({ messsage: 'No se puede ejecutar la consulta' });
+        return res.status(403).json({ message: 'No Autorizado' });
     }
 }
 
 export const updateVehicleById = async(req, res) => {
     const { vehicleId } = req.params;
-    const { brand, cod_tdp, category, model, branch_office, price, campaign } = req.body;
+    const { marca, cod_tdp, categoria, modelo, version, sucursal } = req.body;
 
     //Campaign
-    const foundCampaign = await Campaign.find({ name: { $in: campaign } });
+    //const foundCampaign = await Campaign.find({ name: { $in: campaign } });
 
-    const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, { brand, cod_tdp, category, model, branch_office, price, campaign: foundCampaign.map(campaign => campaign._id) }, { new: true });
-    res.status(200).json(updatedVehicle);
+    try {
+
+        const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, { marca, cod_tdp, categoria, modelo, version, sucursal }, { new: true });
+
+        if (updatedVehicle) {
+            res.json({ message: 'Vehículo actualizado con éxito' });
+        } else {
+            return res.status(404).json({ message: 'Vehículo ya modificado' })
+        }
+
+    } catch (err) {
+        res.status(403).json({ message: 'Vehículo no existe' })
+    }
 }
 
 export const deleteVehicleById = async(req, res) => {
     const { vehicleId } = req.params;
     const deletedVehicle = await Vehicle.findByIdAndRemove(vehicleId);
-    res.status(201).json({ message: 'Vehicle Removed' });
+    if (deletedVehicle) {
+        res.json({ message: 'Vehículo eliminado con éxito' });
+    }
 }

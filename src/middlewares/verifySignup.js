@@ -13,7 +13,7 @@ export const checkDuplicateUsernameOrEmail = async(req, res, next) => {
 
 export const checkRolesExist = (req, res, next) => {
     if (req.body.roles) {
-        for (let h = 0; h < req.body.roles.length; h++) {
+        for (let h = 0; h < req.body.roles.size; h++) {
             if (!ROLES.includes(req.body.roles[h])) {
                 return res.status(400).json({ message: `Rol ${req.body.roles[h]} no existe` });
             }

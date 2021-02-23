@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
 
 const sellerSchema = new Schema({
-    name: { type: String, unique: true },
+    name: { type: String },
     sucursal: { type: String },
     document: { type: String }
 }, {

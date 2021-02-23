@@ -2,10 +2,10 @@ import { Schema, model } from 'mongoose'
 
 const propsSchema = new Schema({
     name: { type: String, required: true },
-    type: { type: String },
-    cantidad: { type: Number },
+    forCar: { type: String },
+    stock: { type: Number },
     precio: { type: Number },
-    auto: { type: Schema.Types.ObjectId, ref: "Vehicle" }
+    status: { type: String }
 }, {
     timestamps: true,
     versionKey: false

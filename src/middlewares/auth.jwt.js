@@ -6,9 +6,8 @@ import Role from '../models/Role'
 export const verifyToken = async(req, res, next) => {
     try {
         const token = req.headers["x-access-token"];
-        //console.log(token);
 
-        if (!token) return res.status(403).json({ message: 'No existe token' });
+        if (!token) return res.status(403).json({ message: 'Falta Token' });
 
         const decoded = jwt.verify(token, config.SECRET);
 
@@ -30,13 +29,12 @@ export const isAdmin = async(req, res, next) => {
     const roles = await Role.find({ _id: { $in: user.roles } });
 
     for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === 'admin') {
+        if (roles[i].name === 'Administrador') {
             next()
             return;
         }
-
     }
-    return res.status(403).json({ message: 'Requiere permiso de administrador' });
+    return res.status(403).json({ message: 'Requiere permiso de Administrador' });
 }
 
 export const isChiefSales = async(req, res, next) => {
@@ -44,13 +42,13 @@ export const isChiefSales = async(req, res, next) => {
     const roles = await Role.find({ _id: { $in: user.roles } });
 
     for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === 'chief-sales') {
+        if (roles[i].name === 'Jefe-Ventas') {
             next()
             return;
         }
 
     }
-    return res.status(403).json({ message: 'Requiere permiso de Jefe Ventas' });
+    return res.status(403).json({ message: 'Requiere permiso de Jefe-Ventas' });
 }
 
 export const isChiefAdv = async(req, res, next) => {
@@ -58,10 +56,23 @@ export const isChiefAdv = async(req, res, next) => {
     const roles = await Role.find({ _id: { $in: user.roles } });
 
     for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === 'chief-adv') {
+        if (roles[i].name === 'Jefe-ADV') {
             next()
             return;
         }
     }
-    return res.status(403).json({ message: 'Requiere permiso de Jefe ADV' });
+    return res.status(403).json({ message: 'Requiere permiso de Jefe-ADV' });
+}
+
+export const isChiefTunning = async(req, res, next) => {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'Jefe-Tunning') {
+            next()
+            return;
+        }
+    }
+    return res.status(403).json({ message: 'Requiere permiso de Jefe-Tunning' });
 }

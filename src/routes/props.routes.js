@@ -1,23 +1,27 @@
 import { Router } from 'express'
 import * as propsCtrl from '../controllers/props.controller'
+import { authJwt, verifySignup } from '../middlewares'
 const router = Router();
 
-//Crear Vendedor
-router.post('/', propsCtrl.createProp);
-
 //Obtener Vendedores
-router.get('/', propsCtrl.getProps);
+router.get('/', propsCtrl.getAll);
+
+//Obtener Accesorios activos de
+router.get('/activos', propsCtrl.getAccesoriosActivos)
 
 //Obtener Vendedor por Id
-router.get('/:propsId', propsCtrl.getPropById);
+router.get('/:propsId', propsCtrl.getAccesorioById);
 
 //Obtener Accesosrio por código Vehicular
-router.post('/find', propsCtrl.getPropsByVehicle);
+router.post('/find', propsCtrl.getAccesorioByAuto);
+
+//Crear Vendedor
+router.post('/', [authJwt.verifyToken, authJwt.isChiefTunning, verifySignup.checkRolesExist], propsCtrl.createProp);
 
 //Actualizar Vendedor
-router.put('/:propsId', propsCtrl.updatePropById);
+router.patch('/:propsId', [authJwt.verifyToken, authJwt.isChiefTunning, verifySignup.checkRolesExist], propsCtrl.updatePropById);
 
 //Remover Vendedor
-router.delete('/:propsId', propsCtrl.deletePropById);
+router.delete('/:propsId', [authJwt.verifyToken, authJwt.isChiefTunning, verifySignup.checkRolesExist], propsCtrl.deletePropById);
 
 export default router;

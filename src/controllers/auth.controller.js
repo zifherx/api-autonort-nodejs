@@ -30,13 +30,13 @@ export const signUp = async(req, res) => {
 export const signIn = async(req, res) => {
     const userFound = await User.findOne({ username: req.body.username }).populate("roles");
 
-    if (!userFound) return res.status(400).json({ message: 'User not found' });
+    if (!userFound) return res.status(400).json({ message: 'Usuario no existe' });
 
     const matchPassword = await User.comparePassword(req.body.password, userFound.password);
 
-    if (!matchPassword) return res.status(401).json({ token: null, message: 'Invalid Password' });
+    if (!matchPassword) return res.status(401).json({ token: null, message: 'Contraseña Errónea' });
 
     const token = jwt.sign({ id: userFound._id }, config.SECRET, { expiresIn: 86400 });
 
-    res.status(201).json({ token, userFound });
+    res.status(201).json({ token, codigo: userFound._id, status: userFound.activo });
 }
