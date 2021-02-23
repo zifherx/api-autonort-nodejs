@@ -111,6 +111,7 @@ var createUserAdmin = /*#__PURE__*/function () {
               name: 'Fernando Rojas Quezada',
               username: 'frojasq',
               password: _context2.t2,
+              roles: 'Administrador',
               activo: 'Activo'
             };
             _context2.t4 = new _context2.t1(_context2.t3).save();
