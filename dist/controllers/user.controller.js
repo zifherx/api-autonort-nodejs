@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteUserById = exports.updateUserById = exports.getUserById = exports.getUsers = exports.createUser = void 0;
+exports.deleteUserById = exports.updateProfile = exports.updateUserById = exports.getUserById = exports.getUsers = exports.createUser = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -125,7 +125,8 @@ var getUsers = /*#__PURE__*/function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
+            _context2.prev = 0;
+            _context2.next = 3;
             return _User.default.find({}, function (err, users) {
               _Role.default.populate(users, {
                 path: "roles"
@@ -134,12 +135,23 @@ var getUsers = /*#__PURE__*/function () {
               });
             });
 
-          case 2:
+          case 3:
+            _context2.next = 8;
+            break;
+
+          case 5:
+            _context2.prev = 5;
+            _context2.t0 = _context2["catch"](0);
+            return _context2.abrupt("return", res.status(404).json({
+              message: 'Error de API'
+            }));
+
+          case 8:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2);
+    }, _callee2, null, [[0, 5]]);
   }));
 
   return function getUsers(_x3, _x4) {
@@ -248,33 +260,100 @@ var updateUserById = /*#__PURE__*/function () {
 
 exports.updateUserById = updateUserById;
 
-var deleteUserById = /*#__PURE__*/function () {
+var updateProfile = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var userId, deletedUser;
+    var _req$body3, email, direccion, pais, codigo_postal, about, userId, objeto;
+
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
+            _req$body3 = req.body, email = _req$body3.email, direccion = _req$body3.direccion, pais = _req$body3.pais, codigo_postal = _req$body3.codigo_postal, about = _req$body3.about;
             userId = req.params.userId;
-            _context5.next = 3;
+            _context5.prev = 2;
+            _context5.next = 5;
+            return _User.default.findByIdAndUpdate(userId, {
+              email: email,
+              direccion: direccion,
+              pais: pais,
+              codigo_postal: codigo_postal,
+              about: about
+            }, {
+              new: true
+            });
+
+          case 5:
+            objeto = _context5.sent;
+
+            if (!objeto) {
+              _context5.next = 10;
+              break;
+            }
+
+            res.json({
+              message: 'Actualización de Perfil con éxito'
+            });
+            _context5.next = 11;
+            break;
+
+          case 10:
+            return _context5.abrupt("return", res.json.status(201).json({
+              message: 'Perfil ya modificado'
+            }));
+
+          case 11:
+            _context5.next = 16;
+            break;
+
+          case 13:
+            _context5.prev = 13;
+            _context5.t0 = _context5["catch"](2);
+            res.status(404).json({
+              message: 'Error en la actualización'
+            });
+
+          case 16:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[2, 13]]);
+  }));
+
+  return function updateProfile(_x9, _x10) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+exports.updateProfile = updateProfile;
+
+var deleteUserById = /*#__PURE__*/function () {
+  var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
+    var userId, deletedUser;
+    return _regenerator.default.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            userId = req.params.userId;
+            _context6.next = 3;
             return _User.default.findByIdAndRemove(userId);
 
           case 3:
-            deletedUser = _context5.sent;
+            deletedUser = _context6.sent;
             res.json({
               message: 'Usuario eliminado con éxito'
             });
 
           case 5:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5);
+    }, _callee6);
   }));
 
-  return function deleteUserById(_x9, _x10) {
-    return _ref5.apply(this, arguments);
+  return function deleteUserById(_x11, _x12) {
+    return _ref6.apply(this, arguments);
   };
 }();
 

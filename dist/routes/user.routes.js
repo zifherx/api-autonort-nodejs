@@ -18,6 +18,7 @@ router.get('/', userCtrl.getUsers);
 router.get('/:userId', userCtrl.getUserById);
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], userCtrl.createUser);
 router.patch('/:userId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], userCtrl.updateUserById);
+router.patch('/update/:userId', [_middlewares.authJwt.verifyToken, _middlewares.verifySignup.checkRolesExist], userCtrl.updateProfile);
 router.delete('/:userId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], userCtrl.deleteUserById); //router.post('/', userCtrl.createUser);
 //router.put('/:userId', userCtrl.updateUserById);
 //router.delete('/:userId', userCtrl.deleteUserById);

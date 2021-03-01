@@ -34,7 +34,7 @@ var verifyToken = /*#__PURE__*/function () {
               break;
             }
 
-            return _context.abrupt("return", res.status(403).json({
+            return _context.abrupt("return", res.status(409).json({
               message: 'Falta Token'
             }));
 
@@ -66,7 +66,7 @@ var verifyToken = /*#__PURE__*/function () {
           case 14:
             _context.prev = 14;
             _context.t0 = _context["catch"](0);
-            return _context.abrupt("return", res.status(401).json({
+            return _context.abrupt("return", res.status(403).json({
               message: 'No Autorizado'
             }));
 

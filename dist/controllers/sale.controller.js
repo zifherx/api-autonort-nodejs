@@ -195,25 +195,39 @@ var getSales = /*#__PURE__*/function () {
 
           case 3:
             ventasfull = _context2.sent;
-            res.json(ventasfull); //console.log(ventasfull)
 
-            _context2.next = 11;
+            if (!(ventasfull.length > 0)) {
+              _context2.next = 8;
+              break;
+            }
+
+            res.json(ventasfull);
+            _context2.next = 9;
             break;
 
-          case 7:
-            _context2.prev = 7;
+          case 8:
+            return _context2.abrupt("return", res.status(201).json({
+              message: 'No Existen Expedientes'
+            }));
+
+          case 9:
+            _context2.next = 15;
+            break;
+
+          case 11:
+            _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
             res.json({
               message: 'Error interno'
             });
 
-          case 11:
+          case 15:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 7]]);
+    }, _callee2, null, [[0, 11]]);
   }));
 
   return function getSales(_x3, _x4) {
@@ -456,7 +470,7 @@ var deleteSaleById = /*#__PURE__*/function () {
             _context5.prev = 8;
             _context5.t0 = _context5["catch"](0);
             console.log(_context5.t0);
-            res.status(401).json({
+            res.status(404).json({
               message: 'Error interno'
             });
 
@@ -482,7 +496,7 @@ var UnidadesByStatus = /*#__PURE__*/function () {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            estado = req.params.estado;
+            estado = req.body.estado;
             _context6.prev = 1;
             _context6.next = 4;
             return _Sale.default.where({

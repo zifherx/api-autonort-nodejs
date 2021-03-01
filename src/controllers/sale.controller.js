@@ -52,9 +52,12 @@ export const getSales = async(req, res) => {
             .populate('campanias')
             .populate('accesorios');
 
-        res.json(ventasfull);
+        if (ventasfull.length > 0) {
+            res.json(ventasfull);
+        } else {
+            return res.status(201).json({ message: 'No Existen Expedientes' })
+        }
 
-        //console.log(ventasfull)
     } catch (e) {
         console.log(e);
         res.json({ message: 'Error interno' })
@@ -127,12 +130,12 @@ export const deleteSaleById = async(req, res) => {
         }
     } catch (e) {
         console.log(e);
-        res.status(401).json({ message: 'Error interno' })
+        res.status(404).json({ message: 'Error interno' })
     }
 }
 
 export const UnidadesByStatus = async(req, res) => {
-    const { estado } = req.params;
+    const { estado } = req.body;
     try {
         const query = await Sale.where({ estatus_venta: estado }).find().populate('vendedor')
             .populate('auto')

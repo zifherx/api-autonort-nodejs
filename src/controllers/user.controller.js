@@ -34,11 +34,15 @@ export const createUser = async(req, res) => {
 }
 
 export const getUsers = async(req, res) => {
-    await User.find({}, function(err, users) {
-        Role.populate(users, { path: "roles" }, function(err, users) {
-            res.send(users);
-        })
-    });
+    try {
+        await User.find({}, function(err, users) {
+            Role.populate(users, { path: "roles" }, function(err, users) {
+                res.send(users);
+            })
+        });
+    } catch (err) {
+        return res.status(404).json({ message: 'Error de API' })
+    }
 }
 
 export const getUserById = async(req, res) => {
@@ -62,6 +66,22 @@ export const updateUserById = async(req, res) => {
     } catch (e) {
         console.log(e);
         res.status(401).json({ message: 'Error en la consulta' });
+    }
+}
+
+export const updateProfile = async(req, res) => {
+    const { email, direccion, pais, codigo_postal, about } = req.body;
+    const { userId } = req.params;
+
+    try {
+        const objeto = await User.findByIdAndUpdate(userId, { email, direccion, pais, codigo_postal, about }, { new: true });
+        if (objeto) {
+            res.json({ message: 'Actualización de Perfil con éxito' })
+        } else {
+            return res.json.status(201).json({ message: 'Perfil ya modificado' })
+        }
+    } catch (err) {
+        res.status(404).json({ message: 'Error en la actualización' })
     }
 }
 

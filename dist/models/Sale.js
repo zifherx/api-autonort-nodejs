@@ -11,12 +11,14 @@ var saleSchema = new _mongoose.Schema({
   //Vendedor
   vendedor: {
     ref: 'Seller',
-    type: _mongoose.Schema.Types.ObjectId
+    type: _mongoose.Schema.Types.ObjectId,
+    allowEmpty: true
   },
   //Cliente
   cliente: {
     ref: 'Customer',
-    type: _mongoose.Schema.Types.ObjectId
+    type: _mongoose.Schema.Types.ObjectId,
+    allowEmpty: true
   },
   //Vehiculo
   auto: {
@@ -25,7 +27,7 @@ var saleSchema = new _mongoose.Schema({
   },
   serie_tdp: {
     type: String,
-    unique: true
+    allowEmpty: true
   },
   color: {
     type: String
@@ -141,12 +143,6 @@ var saleSchema = new _mongoose.Schema({
   //Venta
   tipo_operacion: {
     type: String
-  },
-  fecha_inicio_reserva: {
-    type: Date
-  },
-  fecha_fin_reserva: {
-    type: Date
   },
   tipo_comprobante: {
     type: String

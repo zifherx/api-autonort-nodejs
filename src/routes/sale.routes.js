@@ -7,7 +7,7 @@ const router = Router();
 router.get('/', saleCtrl.getSales);
 
 //Reporte de Canceladas
-router.get('/:estado', saleCtrl.UnidadesByStatus);
+router.post('/estado', saleCtrl.UnidadesByStatus);
 
 //Conteo de Canceladas
 router.get('/conteo/canceladas', saleCtrl.conteoUnidadesCanceladas);
@@ -37,9 +37,9 @@ router.get('/:salesId', saleCtrl.getSaleById);
 router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], saleCtrl.createSale);
 
 //Actualizar Venta
-router.put('/:salesId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], saleCtrl.updateSaleById);
+router.patch('/:salesId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], saleCtrl.updateSaleById);
 
 //Remover Venta
-router.delete('/:salesId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], saleCtrl.deleteSaleById);
+router.delete('/:salesId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], saleCtrl.deleteSaleById);
 
 export default router;

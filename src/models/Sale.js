@@ -2,12 +2,12 @@ import { Schema, model } from 'mongoose'
 
 const saleSchema = new Schema({
     //Vendedor
-    vendedor: { ref: 'Seller', type: Schema.Types.ObjectId },
+    vendedor: { ref: 'Seller', type: Schema.Types.ObjectId, allowEmpty: true },
     //Cliente
-    cliente: { ref: 'Customer', type: Schema.Types.ObjectId },
+    cliente: { ref: 'Customer', type: Schema.Types.ObjectId, allowEmpty: true },
     //Vehiculo
     auto: { ref: 'Vehicle', type: Schema.Types.ObjectId },
-    serie_tdp: { type: String, unique: true },
+    serie_tdp: { type: String, allowEmpty: true },
     color: { type: String },
     precio: { type: Number },
     anio_fabricacion: { type: String },
@@ -49,8 +49,6 @@ const saleSchema = new Schema({
     estatus_facturacion: { type: String },
     //Venta
     tipo_operacion: { type: String },
-    fecha_inicio_reserva: { type: Date },
-    fecha_fin_reserva: { type: Date },
     tipo_comprobante: { type: String },
     nro_comprobante: { type: String },
     fecha_comprobante: { type: String },
