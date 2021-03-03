@@ -237,6 +237,48 @@ export const conteoJaenLibres = async(req, res) => {
     }
 }
 
+export const conteoUnidadesAnticipos = async(req, res) => {
+    try {
+        const consulta = await Sale.where({ estatus_venta: 'Anticipo' }).countDocuments();
+        if (consulta) {
+            res.json(consulta);
+        } else {
+            return res.status(201).json({ message: 'No existen Unidades en Anticipo' })
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(403).json({ message: 'No Autorizado' })
+    }
+}
+
+export const conteoTarapotoAnticipos = async(req, res) => {
+    try {
+        const consulta = await Sale.where({ estatus_venta: 'Anticipo', sucursal_venta: 'Tarapoto' }).countDocuments();
+        if (consulta) {
+            res.json(consulta);
+        } else {
+            return res.status(201).json({ message: 'No existen Unidades en Anticipo en Tarapoto' })
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(403).json({ message: 'No Autorizado' })
+    }
+}
+
+export const conteoJaenAnticipos = async(req, res) => {
+    try {
+        const consulta = await Sale.where({ estatus_venta: 'Anticipo', sucursal_venta: 'Jaén' }).countDocuments();
+        if (consulta) {
+            res.json(consulta);
+        } else {
+            return res.status(201).json({ message: 'No existen Unidades en Anticipo en Jaén' })
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(403).json({ message: 'No Autorizado' })
+    }
+}
+
 export const conteoVentasByVendedor = async(req, res) => {
     try {
         const consulta = await Sale.aggregate([{

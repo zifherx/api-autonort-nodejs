@@ -27,6 +27,15 @@ router.get('/conteo/libres/tarapoto', saleCtrl.conteoTarapotoLibres);
 //Conteo de Libres - Jaen
 router.get('/conteo/libres/jaen', saleCtrl.conteoJaenLibres);
 
+//Conteo de Anticipos
+router.get('/conteo/anticipos', saleCtrl.conteoUnidadesAnticipos);
+
+//Conteo de Anticipos - Tarapoto
+router.get('/conteo/anticipos/tarapoto', saleCtrl.conteoTarapotoAnticipos);
+
+//Conteo de Anticipos - Jaen
+router.get('/conteo/anticipos/jaen', saleCtrl.conteoJaenAnticipos);
+
 //Conteo de Ventas By Vendedor
 router.get('/conteo/ventas', saleCtrl.conteoVentasByVendedor);
 
