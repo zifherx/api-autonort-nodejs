@@ -11,17 +11,19 @@ var _express = require("express");
 
 var recordCtrl = _interopRequireWildcard(require("../controllers/record.controller"));
 
-var router = (0, _express.Router)(); //Crear Venta
+var _middlewares = require("../middlewares");
 
-router.post('/', recordCtrl.createRecord); //Obtener Venta
+var router = (0, _express.Router)(); //Obtener Inmatriculados
 
-router.get('/', recordCtrl.getRecords); //Obtener Venta por Id
+router.get('/', recordCtrl.getRecords); //Obtener Inmatriculado por Id
 
-router.get('/:recordId', recordCtrl.getRecordById); //Actualizar Venta
+router.get('/:recordId', recordCtrl.getRecordById); //Crear Inmatriculado
 
-router.put('/:recordId', recordCtrl.updateRecordById); //Remover Venta
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistant, _middlewares.verifySignup.checkRolesExist], recordCtrl.createRecord); //Actualizar Inmatriculado
 
-router.delete('/:recordId', recordCtrl.deleteRecordById);
+router.patch('/:recordId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistant, _middlewares.verifySignup.checkRolesExist], recordCtrl.updateRecordById); //Remover Inmatriculado
+
+router.delete('/:recordId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], recordCtrl.deleteRecordById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=record.routes.js.map

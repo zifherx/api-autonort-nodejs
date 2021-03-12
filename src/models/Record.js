@@ -1,9 +1,24 @@
 import { Schema, model } from 'mongoose'
 
 const recordSchema = new Schema({
-    fecha: { type: Date, default: Date.now },
-    estatusContable: { type: String },
-    sales: { ref: "Sale", type: Schema.Types.ObjectId }
+    //Inmatriculados
+    fecha_recepcion: { type: Date },
+    hora_recepcion: { type: String },
+    //Expediente
+    sales: { ref: "Sale", type: Schema.Types.ObjectId },
+    //Regisros Publicos
+    fecha_ingreso_file: { type: Date },
+    hora_ingreso_file: { type: String },
+    num_titulo: { type: String },
+    status_tarjeta: { type: String },
+    num_placa: { type: String },
+    fecha_entrega_file: { type: Date },
+    //AAP
+    fecha_tramite_placa: { type: Date },
+    status_placa: { type: String },
+    fecha_entrega_placa: { type: Date },
+    //Cliente
+    fecha_entrega_cliente: { type: Date }
 }, {
     timestamps: true,
     versionKey: false

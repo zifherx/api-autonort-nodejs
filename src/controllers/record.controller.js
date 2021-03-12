@@ -3,31 +3,39 @@ import Sale from '../models/Sale'
 
 export const createRecord = async(req, res) => {
     try {
-        const { fecha, estatusContable, sales } = req.body;
-        const newRecord = new Record({ fecha, estatusContable });
+        const { fecha_recepcion, hora_recepcion, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente } = req.body;
+
+        const nuevoInmatriculado = new Record({ fecha_recepcion, hora_recepcion, fecha_ingreso_file, hora_ingreso_file, num_titulo, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente });
 
         //Sales
-        const foundSale = await Sale.find({ nroComprobante: { $in: sales } });
-        newRecord.sales = foundSale.map(sales => sales._id);
+        const expediente = await Sale.find({ nro_comprobante: { $in: sales } });
 
-        console.log(newRecord);
-        const recordSaved = await newRecord.save();
-        res.status(201).json(recordSaved);
+        nuevoInmatriculado.sales = expediente.map(sales => sales._id);
 
+        const recordSaved = await nuevoInmatriculado.save();
+        if (recordSaved) {
+            res.json({ message: 'Inmatriculado creado con éxito' });
+        } else {
+            res.status(201).json({ message: 'Ya existe el inmatriculado' })
+        }
     } catch (e) {
         console.log(e);
-        res.status(401).json({ message: 'Error Interno' });
+        res.status(403).json({ message: 'No Autorizado' });
     }
 }
 
 export const getRecords = async(req, res) => {
-    const filtro1 = { path: 'sales', populate: { path: 'vehicle seller financing customer' } };
+    const filtro1 = { path: 'sales', populate: { path: 'auto vendedor  cliente' } };
 
     try {
         const expedientes = await Record.find()
             .populate(filtro1)
 
-        res.status(200).json(expedientes);
+        if (expedientes.length > 0) {
+            res.json(expedientes);
+        } else {
+            return res.status(201).json({ message: 'No existen Inmatriculados' })
+        }
     } catch (e) {
         console.log(e);
         res.status(401).json({ message: 'Error Interno' });
@@ -35,7 +43,7 @@ export const getRecords = async(req, res) => {
 }
 
 export const getRecordById = async(req, res) => {
-    const filtro1 = { path: 'sales', populate: { path: 'vehicle seller financing customer' } };
+    const filtro1 = { path: 'sales', populate: { path: 'auto vendedor  cliente' } };
 
     try {
         const { recordId } = req.params;
@@ -43,9 +51,9 @@ export const getRecordById = async(req, res) => {
             .populate(filtro1);
 
         if (expediente) {
-            res.status(200).json(expediente);
+            res.json(expediente);
         } else {
-            res.status(201).json({ message: 'No existe el expediente' });
+            res.status(201).json({ message: 'No existe el inmatriculado' });
         }
 
 
@@ -56,11 +64,26 @@ export const getRecordById = async(req, res) => {
 }
 
 export const updateRecordById = async(req, res) => {
+
     try {
-        res.status(201).json({ message: 'Not implement Yet' })
+
+        const { recordId } = req.params;
+
+        const { fecha_recepcion, hora_recepcion, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente } = req.body;
+
+        //Expediente
+        const foundExpediente = await Sale.find({ nro_comprobante: { $in: sales } });
+
+        const objetoActualizado = await Record.findByIdAndUpdate(recordId, { fecha_recepcion, hora_recepcion, sales: foundExpediente.map(expediente => expediente._id), fecha_ingreso_file, hora_ingreso_file, num_titulo, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente }, { new: true });
+
+        if (objetoActualizado) {
+            res.json({ message: 'Inmatriculado actualizado con éxito' });
+        } else {
+            return res.status(201).json({ message: 'Ya existe' });
+        }
     } catch (e) {
         console.log(e);
-        res.status(401).json({ message: 'Error Interno' });
+        res.status(403).json({ message: 'Error Interno' });
     }
 }
 
@@ -70,12 +93,12 @@ export const deleteRecordById = async(req, res) => {
         const deleteRecord = await Record.findByIdAndDelete(recordId);
 
         if (deleteRecord) {
-            res.status(200).json({ message: 'Expediente Eliminado' });
+            res.json({ message: 'Expediente Eliminado con éxito' });
         } else {
-            res.status(401).json({ message: 'Expediente no existe' });
+            return res.status(201).json({ message: 'Expediente no existe' });
         }
     } catch (e) {
         console.log(e);
-        res.status(401).json({ message: 'Error Interno' });
+        res.status(403).json({ message: 'Error Interno' });
     }
 }

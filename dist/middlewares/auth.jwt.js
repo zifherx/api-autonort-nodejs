@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isChiefTunning = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
+exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -332,4 +332,66 @@ var isChiefTunning = /*#__PURE__*/function () {
 }();
 
 exports.isChiefTunning = isChiefTunning;
+
+var isInmatriculadosAsistant = /*#__PURE__*/function () {
+  var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res, next) {
+    var user, roles, i;
+    return _regenerator.default.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.next = 2;
+            return _User.default.findById(req.userId);
+
+          case 2:
+            user = _context6.sent;
+            _context6.next = 5;
+            return _Role.default.find({
+              _id: {
+                $in: user.roles
+              }
+            });
+
+          case 5:
+            roles = _context6.sent;
+            i = 0;
+
+          case 7:
+            if (!(i < roles.length)) {
+              _context6.next = 14;
+              break;
+            }
+
+            if (!(roles[i].name === 'Asistente-Inmatriculaciones')) {
+              _context6.next = 11;
+              break;
+            }
+
+            next();
+            return _context6.abrupt("return");
+
+          case 11:
+            i++;
+            _context6.next = 7;
+            break;
+
+          case 14:
+            return _context6.abrupt("return", res.status(403).json({
+              message: 'Requiere permiso del Asistente de Inmatriculaciones'
+            }));
+
+          case 15:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6);
+  }));
+
+  return function isInmatriculadosAsistant(_x16, _x17, _x18) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
+exports.isInmatriculadosAsistant = isInmatriculadosAsistant;
 //# sourceMappingURL=auth.jwt.js.map

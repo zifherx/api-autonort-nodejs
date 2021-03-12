@@ -40,6 +40,7 @@ const saleSchema = new Schema({
     fechaAdelanto8: { type: Date },
     //Campaña
     campanias: [{ ref: 'Campaign', type: Schema.Types.ObjectId }],
+    descuento_autonort: { type: Number },
     observacion_adv: { type: String },
     //Accesorio
     accesorios: [{ ref: 'Props', type: Schema.Types.ObjectId }],

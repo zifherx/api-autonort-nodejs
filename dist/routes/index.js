@@ -59,7 +59,7 @@ router.use('/campania', _campaign.default);
 router.use('/props', _props.default);
 router.use('/customer', _customer.default);
 router.use('/sale', _sale.default);
-router.use('/records', _record.default);
+router.use('/record', _record.default);
 router.use('/modelo', _modelo.default);
 router.use('/banco', _banco.default);
 router.use('/color', _colores.default);

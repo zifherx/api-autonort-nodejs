@@ -122,6 +122,9 @@ var saleSchema = new _mongoose.Schema({
     ref: 'Campaign',
     type: _mongoose.Schema.Types.ObjectId
   }],
+  descuento_autonort: {
+    type: Number
+  },
   observacion_adv: {
     type: String
   },
