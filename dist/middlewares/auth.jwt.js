@@ -377,7 +377,7 @@ var isInmatriculadosAsistant = /*#__PURE__*/function () {
 
           case 14:
             return _context6.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Asistente de Inmatriculaciones'
+              message: 'Requiere permiso del Asistente de Inmatriculacion'
             }));
 
           case 15:

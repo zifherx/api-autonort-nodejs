@@ -87,5 +87,5 @@ export const isInmatriculadosAsistant = async(req, res, next) => {
             return;
         }
     }
-    return res.status(403).json({ message: 'Requiere permiso del Asistente de Inmatriculaciones' });
+    return res.status(403).json({ message: 'Requiere permiso del Asistente de Inmatriculacion' });
 }
