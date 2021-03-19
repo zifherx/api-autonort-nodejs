@@ -152,6 +152,25 @@ export const UnidadesByStatus = async(req, res) => {
     }
 }
 
+export const UnidadesBySucursal = async(req, res) => {
+    const { sucursal } = req.body;
+    try {
+        const query = await Sale.where({ sucursal_venta: sucursal }).find().populate('vendedor')
+            .populate('auto')
+            .populate('cliente')
+            .populate('campanias')
+            .populate('accesorios');
+        if (query.length > 0) {
+            res.json(query);
+        } else {
+            res.status(201).json({ message: 'No Existen Unidades' })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({ message: 'No Autorizado' })
+    }
+}
+
 export const conteoUnidadesCanceladas = async(req, res) => {
     try {
         const consulta = await Sale.where({ estatus_venta: 'Cancelado' }).countDocuments();

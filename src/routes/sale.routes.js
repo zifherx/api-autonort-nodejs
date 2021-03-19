@@ -9,6 +9,9 @@ router.get('/', saleCtrl.getSales);
 //Reporte de Canceladas
 router.post('/estado', saleCtrl.UnidadesByStatus);
 
+//Reporte de Sucursal
+router.post('/sucursal', saleCtrl.UnidadesBySucursal);
+
 //Conteo de Canceladas
 router.get('/conteo/canceladas', saleCtrl.conteoUnidadesCanceladas);
 

@@ -17,7 +17,9 @@ var router = (0, _express.Router)(); //Obtener Venta
 
 router.get('/', saleCtrl.getSales); //Reporte de Canceladas
 
-router.post('/estado', saleCtrl.UnidadesByStatus); //Conteo de Canceladas
+router.post('/estado', saleCtrl.UnidadesByStatus); //Reporte de Sucursal
+
+router.post('/sucursal', saleCtrl.UnidadesBySucursal); //Conteo de Canceladas
 
 router.get('/conteo/canceladas', saleCtrl.conteoUnidadesCanceladas); //Conteo de Canceladas - Tarapoto
 

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.conteoVentasByVendedor = exports.conteoJaenAnticipos = exports.conteoTarapotoAnticipos = exports.conteoUnidadesAnticipos = exports.conteoJaenLibres = exports.conteoTarapotoLibres = exports.conteoJaenCanceladas = exports.conteoTarapotoCanceladas = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesByStatus = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
+exports.conteoVentasByVendedor = exports.conteoJaenAnticipos = exports.conteoTarapotoAnticipos = exports.conteoUnidadesAnticipos = exports.conteoJaenLibres = exports.conteoTarapotoLibres = exports.conteoJaenCanceladas = exports.conteoTarapotoCanceladas = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -549,64 +549,58 @@ var UnidadesByStatus = /*#__PURE__*/function () {
 
 exports.UnidadesByStatus = UnidadesByStatus;
 
-var conteoUnidadesCanceladas = /*#__PURE__*/function () {
+var UnidadesBySucursal = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var consulta;
+    var sucursal, query;
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            _context7.prev = 0;
-            _context7.next = 3;
+            sucursal = req.body.sucursal;
+            _context7.prev = 1;
+            _context7.next = 4;
             return _Sale.default.where({
-              estatus_venta: 'Cancelado'
-            }).countDocuments();
+              sucursal_venta: sucursal
+            }).find().populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('accesorios');
 
-          case 3:
-            consulta = _context7.sent;
+          case 4:
+            query = _context7.sent;
 
-            if (!(consulta > 0)) {
-              _context7.next = 8;
-              break;
+            if (query.length > 0) {
+              res.json(query);
+            } else {
+              res.status(201).json({
+                message: 'No Existen Unidades'
+              });
             }
 
-            res.json(consulta);
-            _context7.next = 9;
+            _context7.next = 12;
             break;
 
           case 8:
-            return _context7.abrupt("return", res.status(201).json({
-              message: 'No existen Unidades Canceladas'
-            }));
-
-          case 9:
-            _context7.next = 15;
-            break;
-
-          case 11:
-            _context7.prev = 11;
-            _context7.t0 = _context7["catch"](0);
-            console.error(_context7.t0);
+            _context7.prev = 8;
+            _context7.t0 = _context7["catch"](1);
+            console.log(_context7.t0);
             res.status(403).json({
               message: 'No Autorizado'
             });
 
-          case 15:
+          case 12:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[0, 11]]);
+    }, _callee7, null, [[1, 8]]);
   }));
 
-  return function conteoUnidadesCanceladas(_x13, _x14) {
+  return function UnidadesBySucursal(_x13, _x14) {
     return _ref7.apply(this, arguments);
   };
 }();
 
-exports.conteoUnidadesCanceladas = conteoUnidadesCanceladas;
+exports.UnidadesBySucursal = UnidadesBySucursal;
 
-var conteoUnidadesLibres = /*#__PURE__*/function () {
+var conteoUnidadesCanceladas = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
     var consulta;
     return _regenerator.default.wrap(function _callee8$(_context8) {
@@ -616,13 +610,13 @@ var conteoUnidadesLibres = /*#__PURE__*/function () {
             _context8.prev = 0;
             _context8.next = 3;
             return _Sale.default.where({
-              estatus_venta: 'Libre'
+              estatus_venta: 'Cancelado'
             }).countDocuments();
 
           case 3:
             consulta = _context8.sent;
 
-            if (!consulta) {
+            if (!(consulta > 0)) {
               _context8.next = 8;
               break;
             }
@@ -633,7 +627,7 @@ var conteoUnidadesLibres = /*#__PURE__*/function () {
 
           case 8:
             return _context8.abrupt("return", res.status(201).json({
-              message: 'No existen Unidades Libres'
+              message: 'No existen Unidades Canceladas'
             }));
 
           case 9:
@@ -656,14 +650,14 @@ var conteoUnidadesLibres = /*#__PURE__*/function () {
     }, _callee8, null, [[0, 11]]);
   }));
 
-  return function conteoUnidadesLibres(_x15, _x16) {
+  return function conteoUnidadesCanceladas(_x15, _x16) {
     return _ref8.apply(this, arguments);
   };
 }();
 
-exports.conteoUnidadesLibres = conteoUnidadesLibres;
+exports.conteoUnidadesCanceladas = conteoUnidadesCanceladas;
 
-var conteoTarapotoCanceladas = /*#__PURE__*/function () {
+var conteoUnidadesLibres = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res) {
     var consulta;
     return _regenerator.default.wrap(function _callee9$(_context9) {
@@ -673,8 +667,7 @@ var conteoTarapotoCanceladas = /*#__PURE__*/function () {
             _context9.prev = 0;
             _context9.next = 3;
             return _Sale.default.where({
-              estatus_venta: 'Cancelado',
-              sucursal_venta: 'Tarapoto'
+              estatus_venta: 'Libre'
             }).countDocuments();
 
           case 3:
@@ -691,7 +684,7 @@ var conteoTarapotoCanceladas = /*#__PURE__*/function () {
 
           case 8:
             return _context9.abrupt("return", res.status(201).json({
-              message: 'No existen Unidades Canceladas en Tarapoto'
+              message: 'No existen Unidades Libres'
             }));
 
           case 9:
@@ -714,14 +707,14 @@ var conteoTarapotoCanceladas = /*#__PURE__*/function () {
     }, _callee9, null, [[0, 11]]);
   }));
 
-  return function conteoTarapotoCanceladas(_x17, _x18) {
+  return function conteoUnidadesLibres(_x17, _x18) {
     return _ref9.apply(this, arguments);
   };
 }();
 
-exports.conteoTarapotoCanceladas = conteoTarapotoCanceladas;
+exports.conteoUnidadesLibres = conteoUnidadesLibres;
 
-var conteoJaenCanceladas = /*#__PURE__*/function () {
+var conteoTarapotoCanceladas = /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee10(req, res) {
     var consulta;
     return _regenerator.default.wrap(function _callee10$(_context10) {
@@ -732,7 +725,7 @@ var conteoJaenCanceladas = /*#__PURE__*/function () {
             _context10.next = 3;
             return _Sale.default.where({
               estatus_venta: 'Cancelado',
-              sucursal_venta: 'Jaén'
+              sucursal_venta: 'Tarapoto'
             }).countDocuments();
 
           case 3:
@@ -749,7 +742,7 @@ var conteoJaenCanceladas = /*#__PURE__*/function () {
 
           case 8:
             return _context10.abrupt("return", res.status(201).json({
-              message: 'No existen Unidades Canceladas en Jaén'
+              message: 'No existen Unidades Canceladas en Tarapoto'
             }));
 
           case 9:
@@ -772,14 +765,14 @@ var conteoJaenCanceladas = /*#__PURE__*/function () {
     }, _callee10, null, [[0, 11]]);
   }));
 
-  return function conteoJaenCanceladas(_x19, _x20) {
+  return function conteoTarapotoCanceladas(_x19, _x20) {
     return _ref10.apply(this, arguments);
   };
 }();
 
-exports.conteoJaenCanceladas = conteoJaenCanceladas;
+exports.conteoTarapotoCanceladas = conteoTarapotoCanceladas;
 
-var conteoTarapotoLibres = /*#__PURE__*/function () {
+var conteoJaenCanceladas = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res) {
     var consulta;
     return _regenerator.default.wrap(function _callee11$(_context11) {
@@ -789,8 +782,8 @@ var conteoTarapotoLibres = /*#__PURE__*/function () {
             _context11.prev = 0;
             _context11.next = 3;
             return _Sale.default.where({
-              estatus_venta: 'Libre',
-              sucursal_venta: 'Tarapoto'
+              estatus_venta: 'Cancelado',
+              sucursal_venta: 'Jaén'
             }).countDocuments();
 
           case 3:
@@ -807,7 +800,7 @@ var conteoTarapotoLibres = /*#__PURE__*/function () {
 
           case 8:
             return _context11.abrupt("return", res.status(201).json({
-              message: 'No existen Unidades Libres en Tarapoto'
+              message: 'No existen Unidades Canceladas en Jaén'
             }));
 
           case 9:
@@ -830,14 +823,14 @@ var conteoTarapotoLibres = /*#__PURE__*/function () {
     }, _callee11, null, [[0, 11]]);
   }));
 
-  return function conteoTarapotoLibres(_x21, _x22) {
+  return function conteoJaenCanceladas(_x21, _x22) {
     return _ref11.apply(this, arguments);
   };
 }();
 
-exports.conteoTarapotoLibres = conteoTarapotoLibres;
+exports.conteoJaenCanceladas = conteoJaenCanceladas;
 
-var conteoJaenLibres = /*#__PURE__*/function () {
+var conteoTarapotoLibres = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res) {
     var consulta;
     return _regenerator.default.wrap(function _callee12$(_context12) {
@@ -848,7 +841,7 @@ var conteoJaenLibres = /*#__PURE__*/function () {
             _context12.next = 3;
             return _Sale.default.where({
               estatus_venta: 'Libre',
-              sucursal_venta: 'Jaén'
+              sucursal_venta: 'Tarapoto'
             }).countDocuments();
 
           case 3:
@@ -865,7 +858,7 @@ var conteoJaenLibres = /*#__PURE__*/function () {
 
           case 8:
             return _context12.abrupt("return", res.status(201).json({
-              message: 'No existen Unidades Libres en Jaén'
+              message: 'No existen Unidades Libres en Tarapoto'
             }));
 
           case 9:
@@ -888,14 +881,14 @@ var conteoJaenLibres = /*#__PURE__*/function () {
     }, _callee12, null, [[0, 11]]);
   }));
 
-  return function conteoJaenLibres(_x23, _x24) {
+  return function conteoTarapotoLibres(_x23, _x24) {
     return _ref12.apply(this, arguments);
   };
 }();
 
-exports.conteoJaenLibres = conteoJaenLibres;
+exports.conteoTarapotoLibres = conteoTarapotoLibres;
 
-var conteoUnidadesAnticipos = /*#__PURE__*/function () {
+var conteoJaenLibres = /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res) {
     var consulta;
     return _regenerator.default.wrap(function _callee13$(_context13) {
@@ -905,7 +898,8 @@ var conteoUnidadesAnticipos = /*#__PURE__*/function () {
             _context13.prev = 0;
             _context13.next = 3;
             return _Sale.default.where({
-              estatus_venta: 'Anticipo'
+              estatus_venta: 'Libre',
+              sucursal_venta: 'Jaén'
             }).countDocuments();
 
           case 3:
@@ -922,7 +916,7 @@ var conteoUnidadesAnticipos = /*#__PURE__*/function () {
 
           case 8:
             return _context13.abrupt("return", res.status(201).json({
-              message: 'No existen Unidades en Anticipo'
+              message: 'No existen Unidades Libres en Jaén'
             }));
 
           case 9:
@@ -945,14 +939,14 @@ var conteoUnidadesAnticipos = /*#__PURE__*/function () {
     }, _callee13, null, [[0, 11]]);
   }));
 
-  return function conteoUnidadesAnticipos(_x25, _x26) {
+  return function conteoJaenLibres(_x25, _x26) {
     return _ref13.apply(this, arguments);
   };
 }();
 
-exports.conteoUnidadesAnticipos = conteoUnidadesAnticipos;
+exports.conteoJaenLibres = conteoJaenLibres;
 
-var conteoTarapotoAnticipos = /*#__PURE__*/function () {
+var conteoUnidadesAnticipos = /*#__PURE__*/function () {
   var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
     var consulta;
     return _regenerator.default.wrap(function _callee14$(_context14) {
@@ -962,8 +956,7 @@ var conteoTarapotoAnticipos = /*#__PURE__*/function () {
             _context14.prev = 0;
             _context14.next = 3;
             return _Sale.default.where({
-              estatus_venta: 'Anticipo',
-              sucursal_venta: 'Tarapoto'
+              estatus_venta: 'Anticipo'
             }).countDocuments();
 
           case 3:
@@ -980,7 +973,7 @@ var conteoTarapotoAnticipos = /*#__PURE__*/function () {
 
           case 8:
             return _context14.abrupt("return", res.status(201).json({
-              message: 'No existen Unidades en Anticipo en Tarapoto'
+              message: 'No existen Unidades en Anticipo'
             }));
 
           case 9:
@@ -1003,14 +996,14 @@ var conteoTarapotoAnticipos = /*#__PURE__*/function () {
     }, _callee14, null, [[0, 11]]);
   }));
 
-  return function conteoTarapotoAnticipos(_x27, _x28) {
+  return function conteoUnidadesAnticipos(_x27, _x28) {
     return _ref14.apply(this, arguments);
   };
 }();
 
-exports.conteoTarapotoAnticipos = conteoTarapotoAnticipos;
+exports.conteoUnidadesAnticipos = conteoUnidadesAnticipos;
 
-var conteoJaenAnticipos = /*#__PURE__*/function () {
+var conteoTarapotoAnticipos = /*#__PURE__*/function () {
   var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res) {
     var consulta;
     return _regenerator.default.wrap(function _callee15$(_context15) {
@@ -1021,7 +1014,7 @@ var conteoJaenAnticipos = /*#__PURE__*/function () {
             _context15.next = 3;
             return _Sale.default.where({
               estatus_venta: 'Anticipo',
-              sucursal_venta: 'Jaén'
+              sucursal_venta: 'Tarapoto'
             }).countDocuments();
 
           case 3:
@@ -1038,7 +1031,7 @@ var conteoJaenAnticipos = /*#__PURE__*/function () {
 
           case 8:
             return _context15.abrupt("return", res.status(201).json({
-              message: 'No existen Unidades en Anticipo en Jaén'
+              message: 'No existen Unidades en Anticipo en Tarapoto'
             }));
 
           case 9:
@@ -1061,14 +1054,14 @@ var conteoJaenAnticipos = /*#__PURE__*/function () {
     }, _callee15, null, [[0, 11]]);
   }));
 
-  return function conteoJaenAnticipos(_x29, _x30) {
+  return function conteoTarapotoAnticipos(_x29, _x30) {
     return _ref15.apply(this, arguments);
   };
 }();
 
-exports.conteoJaenAnticipos = conteoJaenAnticipos;
+exports.conteoTarapotoAnticipos = conteoTarapotoAnticipos;
 
-var conteoVentasByVendedor = /*#__PURE__*/function () {
+var conteoJaenAnticipos = /*#__PURE__*/function () {
   var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee16(req, res) {
     var consulta;
     return _regenerator.default.wrap(function _callee16$(_context16) {
@@ -1077,6 +1070,64 @@ var conteoVentasByVendedor = /*#__PURE__*/function () {
           case 0:
             _context16.prev = 0;
             _context16.next = 3;
+            return _Sale.default.where({
+              estatus_venta: 'Anticipo',
+              sucursal_venta: 'Jaén'
+            }).countDocuments();
+
+          case 3:
+            consulta = _context16.sent;
+
+            if (!consulta) {
+              _context16.next = 8;
+              break;
+            }
+
+            res.json(consulta);
+            _context16.next = 9;
+            break;
+
+          case 8:
+            return _context16.abrupt("return", res.status(201).json({
+              message: 'No existen Unidades en Anticipo en Jaén'
+            }));
+
+          case 9:
+            _context16.next = 15;
+            break;
+
+          case 11:
+            _context16.prev = 11;
+            _context16.t0 = _context16["catch"](0);
+            console.error(_context16.t0);
+            res.status(403).json({
+              message: 'No Autorizado'
+            });
+
+          case 15:
+          case "end":
+            return _context16.stop();
+        }
+      }
+    }, _callee16, null, [[0, 11]]);
+  }));
+
+  return function conteoJaenAnticipos(_x31, _x32) {
+    return _ref16.apply(this, arguments);
+  };
+}();
+
+exports.conteoJaenAnticipos = conteoJaenAnticipos;
+
+var conteoVentasByVendedor = /*#__PURE__*/function () {
+  var _ref17 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee17(req, res) {
+    var consulta;
+    return _regenerator.default.wrap(function _callee17$(_context17) {
+      while (1) {
+        switch (_context17.prev = _context17.next) {
+          case 0:
+            _context17.prev = 0;
+            _context17.next = 3;
             return _Sale.default.aggregate([{
               $unwind: '$vendedor'
             }, {
@@ -1089,33 +1140,33 @@ var conteoVentasByVendedor = /*#__PURE__*/function () {
             }]);
 
           case 3:
-            consulta = _context16.sent;
+            consulta = _context17.sent;
 
             if (consulta) {
               res.json(consulta);
             }
 
-            _context16.next = 11;
+            _context17.next = 11;
             break;
 
           case 7:
-            _context16.prev = 7;
-            _context16.t0 = _context16["catch"](0);
-            console.error(_context16.t0);
+            _context17.prev = 7;
+            _context17.t0 = _context17["catch"](0);
+            console.error(_context17.t0);
             res.status(403).json({
               message: 'No Autorizado'
             });
 
           case 11:
           case "end":
-            return _context16.stop();
+            return _context17.stop();
         }
       }
-    }, _callee16, null, [[0, 7]]);
+    }, _callee17, null, [[0, 7]]);
   }));
 
-  return function conteoVentasByVendedor(_x31, _x32) {
-    return _ref16.apply(this, arguments);
+  return function conteoVentasByVendedor(_x33, _x34) {
+    return _ref17.apply(this, arguments);
   };
 }();
 
