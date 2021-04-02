@@ -22,6 +22,10 @@ var customerSchema = new _mongoose.Schema({
   },
   address: {
     type: String
+  },
+  empleado: {
+    ref: 'User',
+    type: _mongoose.Schema.Types.ObjectId
   }
 }, {
   timestamps: true,

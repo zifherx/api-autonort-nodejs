@@ -5,7 +5,8 @@ const propsSchema = new Schema({
     forCar: { type: String },
     stock: { type: Number },
     precio: { type: Number },
-    status: { type: String }
+    status: { type: String },
+    empleado: { ref: 'User', type: Schema.Types.ObjectId }
 }, {
     timestamps: true,
     versionKey: false

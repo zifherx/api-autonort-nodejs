@@ -13,13 +13,18 @@ var vehicleCtrl = _interopRequireWildcard(require("../controllers/vehicles.contr
 
 var _middlewares = require("../middlewares");
 
-var router = (0, _express.Router)(); //router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv], vehicleCtrl.createVehicle);
+var router = (0, _express.Router)(); //Obtener Vehiculos
 
-router.get('/', vehicleCtrl.getVehicles);
-router.get('/:vehicleId', vehicleCtrl.getVehicleById);
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], vehicleCtrl.createVehicle);
-router.post('/find', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], vehicleCtrl.getVehicleByCodigo);
-router.put('/:vehicleId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], vehicleCtrl.updateVehicleById);
+router.get('/', vehicleCtrl.getVehicles); //Obtener Vehiculo por ID
+
+router.get('/:vehicleId', vehicleCtrl.getVehicleById); //Crear Vehiculo
+
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateVehiculo], vehicleCtrl.createVehicle); //Obtener Vehiculo por COD-TDP
+
+router.post('/find', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], vehicleCtrl.getVehicleByCodigo); //Actualizar Vehiculo
+
+router.patch('/:vehicleId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], vehicleCtrl.updateVehicleById); //Eliminar Vehiculo
+
 router.delete('/:vehicleId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], vehicleCtrl.deleteVehicleById);
 var _default = router;
 exports.default = _default;

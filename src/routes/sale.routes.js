@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as saleCtrl from '../controllers/sale.controller'
-import { authJwt, verifySignup } from '../middlewares'
+import { authJwt, verifySignup, verifyDuplicate } from '../middlewares'
 const router = Router();
 
 //Obtener Venta
@@ -46,12 +46,12 @@ router.get('/conteo/ventas', saleCtrl.conteoVentasByVendedor);
 router.get('/:salesId', saleCtrl.getSaleById);
 
 //Crear Venta
-router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], saleCtrl.createSale);
+router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateExpediente], saleCtrl.createSale);
 
 //Actualizar Venta
 router.patch('/:salesId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], saleCtrl.updateSaleById);
 
 //Remover Venta
-router.delete('/:salesId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], saleCtrl.deleteSaleById);
+router.delete('/:salesId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], saleCtrl.deleteSaleById);
 
 export default router;

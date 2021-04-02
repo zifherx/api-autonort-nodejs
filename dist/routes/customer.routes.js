@@ -19,11 +19,11 @@ router.get('/', customerCtrl.getCustomers); //Obtener Cliente por Id
 
 router.get('/:customerId', customerCtrl.getCustomerById); //Crear Cliente
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], customerCtrl.createCustomer); //Obtener Cliente por DNI
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateCliente], customerCtrl.createCustomer); //Obtener Cliente por DNI
 
 router.post('/find', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], customerCtrl.getCustomerByDni); //Actualizar Cliente
 
-router.put('/:customerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], customerCtrl.updateCustomerById); //Remover Cliente
+router.patch('/:customerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], customerCtrl.updateCustomerById); //Remover Cliente
 
 router.delete('/:customerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], customerCtrl.deleteCustomerById);
 var _default = router;

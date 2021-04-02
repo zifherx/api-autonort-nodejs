@@ -21,7 +21,7 @@ router.get('/activos', modeloCtrl.getModeloByActivo); //Obtener Modelos por ID
 
 router.get('/:modeloId', modeloCtrl.getModeloById); //Crear Modelo
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], modeloCtrl.createModelo); //Actualizar Modelo
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateModelo], modeloCtrl.createModelo); //Actualizar Modelo
 
 router.patch('/:modeloId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], modeloCtrl.updateModelo); //Eliminar Modelo
 

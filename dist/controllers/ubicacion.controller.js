@@ -22,35 +22,45 @@ var getUbicaciones = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _Ubicacion.default.find();
+            return _Ubicacion.default.find().sort({
+              name: 'asc'
+            });
 
           case 3:
             query = _context.sent;
 
-            if (query.length > 0) {
-              res.send(query);
-            } else {
-              res.status(404).json({
-                message: 'Vacío'
-              });
+            if (!(query.length > 0)) {
+              _context.next = 8;
+              break;
             }
 
-            _context.next = 10;
+            res.json(query);
+            _context.next = 9;
             break;
 
-          case 7:
-            _context.prev = 7;
+          case 8:
+            return _context.abrupt("return", res.status(404).json({
+              message: 'No existen Ubicaciones'
+            }));
+
+          case 9:
+            _context.next = 15;
+            break;
+
+          case 11:
+            _context.prev = 11;
             _context.t0 = _context["catch"](0);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context.t0);
+            res.status(409).json({
+              message: _context.t0.message
             });
 
-          case 10:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[0, 11]]);
   }));
 
   return function getUbicaciones(_x, _x2) {
@@ -75,30 +85,38 @@ var getUbicacionById = /*#__PURE__*/function () {
           case 4:
             query = _context2.sent;
 
-            if (query) {
-              res.send(query);
-            } else {
-              res.status(404).json({
-                message: 'No existe'
-              });
+            if (!query) {
+              _context2.next = 9;
+              break;
             }
 
-            _context2.next = 11;
+            res.json(query);
+            _context2.next = 10;
             break;
 
-          case 8:
-            _context2.prev = 8;
+          case 9:
+            return _context2.abrupt("return", res.status(404).json({
+              message: 'No existe Ubicación'
+            }));
+
+          case 10:
+            _context2.next = 16;
+            break;
+
+          case 12:
+            _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context2.t0);
+            res.status(409).json({
+              message: _context2.t0.message
             });
 
-          case 11:
+          case 16:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[1, 8]]);
+    }, _callee2, null, [[1, 12]]);
   }));
 
   return function getUbicacionById(_x3, _x4) {
@@ -124,31 +142,38 @@ var getUbicacionByActivo = /*#__PURE__*/function () {
           case 3:
             query = _context3.sent;
 
-            if (query) {
-              res.send(query);
-            } else {
-              res.status(404).json({
-                message: 'Vacío'
-              });
+            if (!(query.length > 0)) {
+              _context3.next = 8;
+              break;
             }
 
-            _context3.next = 10;
+            res.json(query);
+            _context3.next = 9;
             break;
 
-          case 7:
-            _context3.prev = 7;
+          case 8:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No hay Ubicaciones Activas'
+            }));
+
+          case 9:
+            _context3.next = 15;
+            break;
+
+          case 11:
+            _context3.prev = 11;
             _context3.t0 = _context3["catch"](0);
-            //console.log(err);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context3.t0);
+            res.status(409).json({
+              message: _context3.t0.message
             });
 
-          case 10:
+          case 15:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 7]]);
+    }, _callee3, null, [[0, 11]]);
   }));
 
   return function getUbicacionByActivo(_x5, _x6) {
@@ -180,21 +205,22 @@ var createUbicacion = /*#__PURE__*/function () {
 
             if (query) {
               res.json({
-                message: 'Ubicación creado con éxito'
+                message: 'Ubicación creada con éxito'
               });
             }
 
-            _context4.next = 12;
+            _context4.next = 13;
             break;
 
           case 9:
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context4.t0);
+            res.status(409).json({
+              message: _context4.t0.message
             });
 
-          case 12:
+          case 13:
           case "end":
             return _context4.stop();
         }
@@ -224,8 +250,6 @@ var updateUbicacion = /*#__PURE__*/function () {
             return _Ubicacion.default.findByIdAndUpdate(ubicacionId, {
               name: name,
               status: status
-            }, {
-              new: true
             });
 
           case 5:
@@ -233,26 +257,26 @@ var updateUbicacion = /*#__PURE__*/function () {
 
             if (query) {
               res.json({
-                message: 'Ubicación actualizado con éxito'
+                message: 'Ubicación actualizada con éxito'
               });
             } else {
               res.status(404).json({
-                message: 'No existe Ubicación'
+                message: 'No existe Ubicación a actualizar'
               });
             }
 
-            _context5.next = 12;
+            _context5.next = 13;
             break;
 
           case 9:
             _context5.prev = 9;
             _context5.t0 = _context5["catch"](2);
-            //console.log(e);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context5.t0);
+            res.status(409).json({
+              message: _context5.t0.message
             });
 
-          case 12:
+          case 13:
           case "end":
             return _context5.stop();
         }
@@ -282,33 +306,40 @@ var deleteUbicacion = /*#__PURE__*/function () {
           case 4:
             query = _context6.sent;
 
-            if (query) {
-              res.json({
-                message: 'Ubicación eliminado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Ubicación'
-              });
+            if (!query) {
+              _context6.next = 9;
+              break;
             }
 
-            _context6.next = 11;
+            res.json({
+              message: 'Ubicación eliminada con éxito'
+            });
+            _context6.next = 10;
             break;
 
-          case 8:
-            _context6.prev = 8;
+          case 9:
+            return _context6.abrupt("return", res.status(404).json({
+              message: 'No existe Ubicación a eliminar'
+            }));
+
+          case 10:
+            _context6.next = 16;
+            break;
+
+          case 12:
+            _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
-            //console.log(e);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context6.t0);
+            res.status(409).json({
+              message: _context6.t0.message
             });
 
-          case 11:
+          case 16:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[1, 8]]);
+    }, _callee6, null, [[1, 12]]);
   }));
 
   return function deleteUbicacion(_x11, _x12) {

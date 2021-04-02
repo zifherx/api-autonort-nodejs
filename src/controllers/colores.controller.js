@@ -2,28 +2,29 @@ import Colores from "../models/Colores";
 
 export const getColors = async(req, res) => {
     try {
-        const colores = await Colores.find();
+        const colores = await Colores.find().sort({ name: 'asc' });
         if (colores.length > 0) {
             res.send(colores);
         } else {
-            res.status(404).json({ message: 'Vacío' })
+            return res.status(404).json({ message: 'No existen Colores' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getColorByActivo = async(req, res) => {
     try {
-        const colores = await Colores.find({ status: "Activo" });
+        const colores = await Colores.find({ status: "Activo" }).sort({ name: 'asc' });
         if (colores.length > 0) {
-            res.send(colores);
+            res.json(colores);
         } else {
-            res.status(404).json({ message: 'Vacío' })
+            return res.status(404).json({ message: 'No existen colores Activos' })
         }
     } catch (err) {
-        //console.log(err);
-        res.status(403).json({ message: 'No Autorizado' });
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -37,7 +38,8 @@ export const getColorById = async(req, res) => {
             res.status(404).json({ message: 'No existe Color' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -45,14 +47,13 @@ export const createColor = async(req, res) => {
     const { name, status } = req.body;
     try {
         const newColor = new Colores({ name, status });
-
         const colorCreado = await newColor.save();
-
         if (colorCreado) {
             res.json({ message: 'Color creado con éxito' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -60,33 +61,29 @@ export const updateColor = async(req, res) => {
     const { name, status } = req.body;
     const { colorId } = req.params;
     try {
-
-        const updateColor = await Colores.findByIdAndUpdate(colorId, { name, status }, { new: true });
-
+        const updateColor = await Colores.findByIdAndUpdate(colorId, { name, status });
         if (updateColor) {
             res.json({ message: 'Color actualizado con éxito' });
         } else {
             res.status(404).json({ message: 'No existe Color' });
         }
     } catch (err) {
-        //console.log(e);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const deleteColor = async(req, res) => {
     const { colorId } = req.params;
     try {
-
         const deleteColor = await Colores.findByIdAndDelete(colorId);
-
         if (deleteColor) {
             res.json({ message: 'Color eliminado con éxito' });
         } else {
             res.status(404).json({ message: 'No existe Color' });
         }
     } catch (err) {
-        //console.log(e);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }

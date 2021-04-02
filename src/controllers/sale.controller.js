@@ -3,11 +3,14 @@ import Vehicle from '../models/Vehicle'
 import Seller from '../models/Seller'
 import Customer from '../models/Customer'
 import Campaign from '../models/Campaign'
+import Adicional from '../models/Adicional'
 import Props from '../models/Props'
+import User from '../models/User'
 
 export const createSale = async(req, res) => {
+    const { vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion, empleado } = req.body;
+
     try {
-        const { vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion } = req.body;
 
         const newSale = new Sale({ serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, descuento_autonort, observacion_adv, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion });
 
@@ -27,18 +30,26 @@ export const createSale = async(req, res) => {
         const foundCampaign = await Campaign.find({ name: { $in: campanias } });
         newSale.campanias = foundCampaign.map(campaign => campaign._id);
 
+        //Adicional
+        const foundAdicional = await Adicional.find({ name: { $in: adicional } });
+        newSale.adicional = foundAdicional.map(adicional => adicional._id);
+
         //Props
         const foundProps = await Props.find({ name: { $in: accesorios } });
         newSale.accesorios = foundProps.map(props => props._id);
+
+        //Empleado
+        const foundEmployee = await User.find({ username: { $in: empleado } });
+        newSale.empleado = foundEmployee.map(em => em._id);
 
         //console.log(newSale);
         const saleSaved = await newSale.save();
         if (saleSaved) {
             res.json({ message: 'Expediente creado con éxito' });
         }
-    } catch (e) {
-        console.log(e);
-        res.status(403).json({ message: 'No autorizado' })
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -49,44 +60,51 @@ export const getSales = async(req, res) => {
             .populate('auto')
             .populate('cliente')
             .populate('campanias')
+            .populate('adicional')
             .populate('accesorios');
 
         if (ventasfull.length > 0) {
             res.json(ventasfull);
         } else {
-            return res.status(201).json({ message: 'No Existen Expedientes' })
+            return res.status(404).json({ message: 'No Existen Expedientes' })
         }
 
-    } catch (e) {
-        console.log(e);
-        res.json({ message: 'Error interno' })
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getSaleById = async(req, res) => {
+    const { salesId } = req.params;
+
     try {
-        const { salesId } = req.params;
+
         const venta = await Sale.findById(salesId)
             .populate('vendedor')
             .populate('auto')
             .populate('cliente')
             .populate('campanias')
+            .populate('adicional')
             .populate('accesorios');
 
         if (venta) {
-            res.send(venta);
+            res.json(venta);
+        } else {
+            return res.status(404).json({ message: 'No existe el Expediente' })
         }
-    } catch (e) {
-        console.log(e);
-        res.status(403).json({ message: 'No Autorizado' })
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const updateSaleById = async(req, res) => {
-    try {
-        const { salesId } = req.params;
+    const { salesId } = req.params;
 
-        const { vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion } = req.body;
+    const { vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion } = req.body;
+
+    try {
 
         //Seller
         const foundSeller = await Seller.find({ name: { $in: vendedor } });
@@ -100,55 +118,61 @@ export const updateSaleById = async(req, res) => {
         //Campaign
         const foundCampaign = await Campaign.find({ name: { $in: campanias } });
 
+        //Adicional
+        const foundAdicional = await Adicional.find({ name: { $in: adicional } });
+
         //Props
         const foundProps = await Props.find({ name: { $in: accesorios } });
 
-        const ventaActualizada = await Sale.findByIdAndUpdate(salesId, { vendedor: foundSeller.map(seller => seller._id), cliente: foundCustomer.map(customer => customer._id), auto: foundVehicle.map(vehicle => vehicle._id), serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias: foundCampaign.map(campaign => campaign._id), descuento_autonort, observacion_adv, accesorios: foundProps.map(props => props._id), condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion });
+        const ventaActualizada = await Sale.findByIdAndUpdate(salesId, { vendedor: foundSeller.map(seller => seller._id), cliente: foundCustomer.map(customer => customer._id), auto: foundVehicle.map(vehicle => vehicle._id), serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias: foundCampaign.map(campaign => campaign._id), adicional: foundAdicional.map(adicional => adicional._id), descuento_autonort, observacion_adv, accesorios: foundProps.map(props => props._id), condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion });
 
         if (ventaActualizada) {
-            //Mandamos la respuesta
             res.json({ message: 'Expediente actualizado con éxito' });
         } else {
-            //Mandamos la respuesta
-            res.status(403).json({ message: 'No Autorizado' });
+            return res.status(404).json({ message: 'No existe Expediente a actualizar' });
         }
 
-    } catch (e) {
-        console.log(e);
-        res.status(401).json({ message: 'Error interno' })
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const deleteSaleById = async(req, res) => {
+    const { salesId } = req.params;
+
     try {
-        const { salesId } = req.params;
         const deleteSale = await Sale.findByIdAndDelete(salesId);
 
         if (deleteSale) {
-            res.status(200).json({ message: 'Expediente eliminado con éxito' });
+            res.json({ message: 'Expediente eliminado con éxito' });
+        } else {
+            return res.status(404).json({ message: 'No existe Expediente a eliminar' })
         }
-    } catch (e) {
-        console.log(e);
-        res.status(404).json({ message: 'Error interno' })
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const UnidadesByStatus = async(req, res) => {
     const { estado } = req.body;
     try {
-        const query = await Sale.where({ estatus_venta: estado }).find().populate('vendedor')
+        const query = await Sale.where({ estatus_venta: estado }).find()
+            .populate('vendedor')
             .populate('auto')
             .populate('cliente')
             .populate('campanias')
+            .populate('adicional')
             .populate('accesorios');
         if (query.length > 0) {
-            res.send(query);
+            res.json(query);
         } else {
-            return res.status(201).json({ message: 'No existen Unidades' })
+            return res.status(404).json({ message: 'No existen Unidades Canceladas' })
         }
     } catch (err) {
         console.log(err);
-        res.status(403).json({ message: 'No Autorizado' });
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -159,159 +183,159 @@ export const UnidadesBySucursal = async(req, res) => {
             .populate('auto')
             .populate('cliente')
             .populate('campanias')
+            .populate('adicional')
             .populate('accesorios');
         if (query.length > 0) {
             res.json(query);
         } else {
-            res.status(201).json({ message: 'No Existen Unidades' })
+            return res.status(404).json({ message: 'No Existen Unidades' })
         }
     } catch (err) {
         console.log(err);
-        res.status(403).json({ message: 'No Autorizado' })
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const conteoUnidadesCanceladas = async(req, res) => {
     try {
         const consulta = await Sale.where({ estatus_venta: 'Cancelado' }).countDocuments();
-        if (consulta > 0) {
+        //console.log(consulta)
+        if (consulta >= 0) {
             res.json(consulta);
-        } else {
-            return res.status(201).json({ message: 'No existen Unidades Canceladas' });
         }
     } catch (err) {
-        console.error(err);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const conteoUnidadesLibres = async(req, res) => {
     try {
         const consulta = await Sale.where({ estatus_venta: 'Libre' }).countDocuments();
-        if (consulta) {
+        if (consulta >= 0) {
             res.json(consulta);
         } else {
-            return res.status(201).json({ message: 'No existen Unidades Libres' })
+            return res.status(404).json({ message: 'No existen Unidades Libres' })
         }
     } catch (err) {
-        console.error(err);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const conteoTarapotoCanceladas = async(req, res) => {
     try {
         const consulta = await Sale.where({ estatus_venta: 'Cancelado', sucursal_venta: 'Tarapoto' }).countDocuments();
-        if (consulta) {
+        if (consulta >= 0) {
             res.json(consulta);
         } else {
-            return res.status(201).json({ message: 'No existen Unidades Canceladas en Tarapoto' })
+            return res.status(404).json({ message: 'No existen Unidades Canceladas en Tarapoto' })
         }
     } catch (err) {
-        console.error(err);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const conteoJaenCanceladas = async(req, res) => {
     try {
         const consulta = await Sale.where({ estatus_venta: 'Cancelado', sucursal_venta: 'Jaén' }).countDocuments();
-        if (consulta) {
+        if (consulta >= 0) {
             res.json(consulta);
         } else {
-            return res.status(201).json({ message: 'No existen Unidades Canceladas en Jaén' })
+            return res.status(404).json({ message: 'No existen Unidades Canceladas en Jaén' })
         }
     } catch (err) {
-        console.error(err);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const conteoTarapotoLibres = async(req, res) => {
     try {
         const consulta = await Sale.where({ estatus_venta: 'Libre', sucursal_venta: 'Tarapoto' }).countDocuments();
-        if (consulta) {
+        if (consulta >= 0) {
             res.json(consulta);
         } else {
-            return res.status(201).json({ message: 'No existen Unidades Libres en Tarapoto' })
+            return res.status(404).json({ message: 'No existen Unidades Libres en Tarapoto' })
         }
     } catch (err) {
-        console.error(err);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const conteoJaenLibres = async(req, res) => {
     try {
         const consulta = await Sale.where({ estatus_venta: 'Libre', sucursal_venta: 'Jaén' }).countDocuments();
-        if (consulta) {
+        if (consulta >= 0) {
             res.json(consulta);
         } else {
-            return res.status(201).json({ message: 'No existen Unidades Libres en Jaén' })
+            return res.status(404).json({ message: 'No existen Unidades Libres en Jaén' })
         }
     } catch (err) {
-        console.error(err);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const conteoUnidadesAnticipos = async(req, res) => {
     try {
         const consulta = await Sale.where({ estatus_venta: 'Anticipo' }).countDocuments();
-        if (consulta) {
+        if (consulta >= 0) {
             res.json(consulta);
         } else {
-            return res.status(201).json({ message: 'No existen Unidades en Anticipo' })
+            return res.status(404).json({ message: 'No existen Unidades en Anticipo' })
         }
     } catch (err) {
-        console.error(err);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const conteoTarapotoAnticipos = async(req, res) => {
     try {
         const consulta = await Sale.where({ estatus_venta: 'Anticipo', sucursal_venta: 'Tarapoto' }).countDocuments();
-        if (consulta) {
+        if (consulta >= 0) {
             res.json(consulta);
         } else {
-            return res.status(201).json({ message: 'No existen Unidades en Anticipo en Tarapoto' })
+            return res.status(404).json({ message: 'No existen Unidades en Anticipo en Tarapoto' })
         }
     } catch (err) {
-        console.error(err);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const conteoJaenAnticipos = async(req, res) => {
     try {
         const consulta = await Sale.where({ estatus_venta: 'Anticipo', sucursal_venta: 'Jaén' }).countDocuments();
-        if (consulta) {
+        if (consulta >= 0) {
             res.json(consulta);
         } else {
-            return res.status(201).json({ message: 'No existen Unidades en Anticipo en Jaén' })
+            return res.status(404).json({ message: 'No existen Unidades en Anticipo en Jaén' })
         }
     } catch (err) {
-        console.error(err);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const conteoVentasByVendedor = async(req, res) => {
     try {
         const consulta = await Sale.aggregate([{
-            $unwind: '$vendedor'
-        }, {
             $group: {
                 _id: "$vendedor",
                 num_ventas: { $sum: 1 }
             }
         }]);
-        if (consulta) {
+        if (consulta.length > 0) {
             res.json(consulta);
+        } else {
+            res.status(404).json({ message: 'No existen Ventas aún' })
         }
     } catch (err) {
-        console.error(err);
-        res.status(403).json({ message: 'No Autorizado' });
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }

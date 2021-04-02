@@ -15,16 +15,18 @@ var _Campaign = _interopRequireDefault(require("../models/Campaign"));
 
 var _Vehicle = _interopRequireDefault(require("../models/Vehicle"));
 
+var _User = _interopRequireDefault(require("../models/User"));
+
 var createCampaign = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, name, descripcion, bono, startDate, endDate, status, newCampaign, campaignSaved;
+    var _req$body, name, descripcion, bono, startDate, endDate, status, empleado, newCampaign, foundEmployee, campaignSaved;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            _req$body = req.body, name = _req$body.name, descripcion = _req$body.descripcion, bono = _req$body.bono, startDate = _req$body.startDate, endDate = _req$body.endDate, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, descripcion = _req$body.descripcion, bono = _req$body.bono, startDate = _req$body.startDate, endDate = _req$body.endDate, status = _req$body.status, empleado = _req$body.empleado;
+            _context.prev = 1;
             newCampaign = new _Campaign.default({
               name: name,
               descripcion: descripcion,
@@ -32,13 +34,25 @@ var createCampaign = /*#__PURE__*/function () {
               startDate: startDate,
               endDate: endDate,
               status: status
+            });
+            _context.next = 5;
+            return _User.default.find({
+              username: {
+                $in: empleado
+              }
+            });
+
+          case 5:
+            foundEmployee = _context.sent;
+            newCampaign.empleado = foundEmployee.map(function (em) {
+              return em._id;
             }); //const foundAuto = await Vehicle.find({ cod_tdp: { $in: auto } });
             //newCampaign.auto = foundAuto.map(auto => auto._id);
 
-            _context.next = 5;
+            _context.next = 9;
             return newCampaign.save();
 
-          case 5:
+          case 9:
             campaignSaved = _context.sent;
 
             if (campaignSaved) {
@@ -47,23 +61,23 @@ var createCampaign = /*#__PURE__*/function () {
               });
             }
 
-            _context.next = 13;
+            _context.next = 17;
             break;
 
-          case 9:
-            _context.prev = 9;
-            _context.t0 = _context["catch"](0);
+          case 13:
+            _context.prev = 13;
+            _context.t0 = _context["catch"](1);
             console.log(_context.t0);
-            res.status(404).json({
-              message: 'Campaña ya existe'
+            res.status(409).json({
+              message: _context.t0.message
             });
 
-          case 13:
+          case 17:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 9]]);
+    }, _callee, null, [[1, 13]]);
   }));
 
   return function createCampaign(_x, _x2) {
@@ -82,22 +96,24 @@ var getAll = /*#__PURE__*/function () {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _Campaign.default.find();
+            return _Campaign.default.find().sort({
+              name: 'asc'
+            });
 
           case 3:
             campaign = _context2.sent;
 
-            if (!campaign) {
+            if (!(campaign.length > 0)) {
               _context2.next = 8;
               break;
             }
 
-            res.send(campaign);
+            res.json(campaign);
             _context2.next = 9;
             break;
 
           case 8:
-            return _context2.abrupt("return", res.status(201).json({
+            return _context2.abrupt("return", res.status(404).json({
               message: 'No existen Campañas'
             }));
 
@@ -109,8 +125,8 @@ var getAll = /*#__PURE__*/function () {
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(404).json({
-              message: "".concat(_context2.t0)
+            res.status(409).json({
+              message: _context2.t0.message
             });
 
           case 15:
@@ -135,39 +151,46 @@ var getOne = /*#__PURE__*/function () {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _context3.prev = 0;
             campaignId = req.params.campaignId;
+            _context3.prev = 1;
             _context3.next = 4;
             return _Campaign.default.findById(campaignId);
 
           case 4:
             campaigns = _context3.sent;
 
-            if (campaigns) {
-              res.json(campaigns);
-            } else {
-              res.status(201).json({
-                message: 'No existe la campaña'
-              });
+            if (!campaigns) {
+              _context3.next = 9;
+              break;
             }
 
-            _context3.next = 12;
+            res.json(campaigns);
+            _context3.next = 10;
             break;
 
-          case 8:
-            _context3.prev = 8;
-            _context3.t0 = _context3["catch"](0);
-            console.log(_context3.t0);
-            res.status(404).json({
-              message: 'Error de Servidor'
-            });
+          case 9:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existe la campaña'
+            }));
+
+          case 10:
+            _context3.next = 16;
+            break;
 
           case 12:
+            _context3.prev = 12;
+            _context3.t0 = _context3["catch"](1);
+            console.log(_context3.t0);
+            res.status(409).json({
+              message: _context3.t0.message
+            });
+
+          case 16:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 8]]);
+    }, _callee3, null, [[1, 12]]);
   }));
 
   return function getOne(_x5, _x6) {
@@ -188,13 +211,19 @@ var getCampaniasActivas = /*#__PURE__*/function () {
             _context4.next = 3;
             return _Campaign.default.find({
               status: 'Activo'
+            }).sort({
+              name: 'asc'
             });
 
           case 3:
             activos = _context4.sent;
 
-            if (activos) {
+            if (activos.length > 0) {
               res.json(activos);
+            } else {
+              res.status(404).json({
+                message: 'No existen Campañas Activas'
+              });
             }
 
             _context4.next = 11;
@@ -203,10 +232,10 @@ var getCampaniasActivas = /*#__PURE__*/function () {
           case 7:
             _context4.prev = 7;
             _context4.t0 = _context4["catch"](0);
-            res.status(404).json({
-              message: 'Erro de Servidor'
-            });
             console.log(_context4.t0);
+            res.status(409).json({
+              message: _context4.t0.message
+            });
 
           case 11:
           case "end":
@@ -230,8 +259,8 @@ var getCampaignByVehicle = /*#__PURE__*/function () {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _context5.prev = 0;
             modelo = req.body.modelo;
+            _context5.prev = 1;
             _context5.next = 4;
             return _Vehicle.default.findOne({
               cod_tdp: modelo
@@ -248,10 +277,9 @@ var getCampaignByVehicle = /*#__PURE__*/function () {
             campana = _context5.sent;
 
             if (campana) {
-              //console.log(campana);
               res.json(campana);
             } else {
-              res.status(201).json({
+              res.status(404).json({
                 message: 'No existen campañas para ese vehículo'
               });
             }
@@ -261,10 +289,10 @@ var getCampaignByVehicle = /*#__PURE__*/function () {
 
           case 11:
             _context5.prev = 11;
-            _context5.t0 = _context5["catch"](0);
+            _context5.t0 = _context5["catch"](1);
             console.log(_context5.t0);
-            res.status(404).json({
-              message: 'Error filtrando Campañas'
+            res.status(409).json({
+              message: _context5.t0.message
             });
 
           case 15:
@@ -272,7 +300,7 @@ var getCampaignByVehicle = /*#__PURE__*/function () {
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[0, 11]]);
+    }, _callee5, null, [[1, 11]]);
   }));
 
   return function getCampaignByVehicle(_x9, _x10) {
@@ -290,10 +318,9 @@ var updateCampaignById = /*#__PURE__*/function () {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            _context6.prev = 0;
             campaignId = req.params.campaignId;
-            _req$body2 = req.body, name = _req$body2.name, descripcion = _req$body2.descripcion, bono = _req$body2.bono, startDate = _req$body2.startDate, endDate = _req$body2.endDate, status = _req$body2.status; //const foundAuto = await Vehicle.find({ cod_tdp: { $in: auto } });
-
+            _req$body2 = req.body, name = _req$body2.name, descripcion = _req$body2.descripcion, bono = _req$body2.bono, startDate = _req$body2.startDate, endDate = _req$body2.endDate, status = _req$body2.status;
+            _context6.prev = 2;
             _context6.next = 5;
             return _Campaign.default.findByIdAndUpdate(campaignId, {
               name: name,
@@ -302,8 +329,6 @@ var updateCampaignById = /*#__PURE__*/function () {
               startDate: startDate,
               endDate: endDate,
               status: status
-            }, {
-              new: true
             });
 
           case 5:
@@ -314,8 +339,8 @@ var updateCampaignById = /*#__PURE__*/function () {
                 message: 'Campaña actualizada con éxito'
               });
             } else {
-              res.status(201).json({
-                message: 'Campaña no existe'
+              res.status(404).json({
+                message: 'No existe Campaña'
               });
             }
 
@@ -324,10 +349,10 @@ var updateCampaignById = /*#__PURE__*/function () {
 
           case 9:
             _context6.prev = 9;
-            _context6.t0 = _context6["catch"](0);
+            _context6.t0 = _context6["catch"](2);
             console.log(_context6.t0);
-            res.status(404).json({
-              message: 'Error al actualizar la campaña'
+            res.status(409).json({
+              message: _context6.t0.message
             });
 
           case 13:
@@ -335,7 +360,7 @@ var updateCampaignById = /*#__PURE__*/function () {
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[0, 9]]);
+    }, _callee6, null, [[2, 9]]);
   }));
 
   return function updateCampaignById(_x11, _x12) {
@@ -352,41 +377,48 @@ var deleteCampaignById = /*#__PURE__*/function () {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            _context7.prev = 0;
             campaignId = req.params.campaignId;
+            _context7.prev = 1;
             _context7.next = 4;
-            return _Campaign.default.findByIdAndRemove(campaignId);
+            return _Campaign.default.findByIdAndDelete(campaignId);
 
           case 4:
             deletedCampaign = _context7.sent;
 
-            if (deletedCampaign) {
-              res.json({
-                message: 'Campaña eliminada con éxito'
-              });
-            } else {
-              res.status(201).json({
-                message: 'Campaña no existe'
-              });
+            if (!deletedCampaign) {
+              _context7.next = 9;
+              break;
             }
 
-            _context7.next = 12;
+            res.json({
+              message: 'Campaña eliminada con éxito'
+            });
+            _context7.next = 10;
             break;
 
-          case 8:
-            _context7.prev = 8;
-            _context7.t0 = _context7["catch"](0);
-            console.log(_context7.t0);
-            res.status(404).json({
-              message: 'Error al eliminar la campaña'
-            });
+          case 9:
+            return _context7.abrupt("return", res.status(404).json({
+              message: 'Campaña no existe'
+            }));
+
+          case 10:
+            _context7.next = 16;
+            break;
 
           case 12:
+            _context7.prev = 12;
+            _context7.t0 = _context7["catch"](1);
+            console.log(_context7.t0);
+            res.status(409).json({
+              message: _context7.t0.message
+            });
+
+          case 16:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[0, 8]]);
+    }, _callee7, null, [[1, 12]]);
   }));
 
   return function deleteCampaignById(_x13, _x14) {

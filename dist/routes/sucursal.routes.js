@@ -21,7 +21,7 @@ router.get('/activos', sucursalCtrl.getSucursalByActivo); //Obtener Sucursal por
 
 router.get('/:sucursalId', sucursalCtrl.getSucursalById); //Crear Sucursal
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], sucursalCtrl.createSucursal); //Actualizar Sucursal
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateSucursal], sucursalCtrl.createSucursal); //Actualizar Sucursal
 
 router.patch('/:sucursalId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], sucursalCtrl.updateSucursal); //Eliminar Sucursal
 

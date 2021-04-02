@@ -16,6 +16,10 @@ var sellerSchema = new _mongoose.Schema({
   },
   document: {
     type: String
+  },
+  empleado: {
+    ref: 'User',
+    type: _mongoose.Schema.Types.ObjectId
   }
 }, {
   timestamps: true,

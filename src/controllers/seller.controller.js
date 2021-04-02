@@ -1,63 +1,81 @@
 import Seller from '../models/Seller'
+import User from '../models/User'
 
 export const createSeller = async(req, res) => {
+    const { name, sucursal, document, empleado } = req.body;
     try {
-        const { name, sucursal, document } = req.body;
-
         const newSeller = new Seller({ name, sucursal, document });
+        const foundEmployee = await User.find({ username: { $in: empleado } });
+        newSeller.empleado = foundEmployee.map(em => em._id);
         const sellerSaved = await newSeller.save();
-
-        res.json({ message: 'Vendedor creado con éxito' });
-    } catch (e) {
-        console.log(e);
-        res.status(401).json({ message: 'No puede ejecutar la consulta' })
+        if (sellerSaved) {
+            res.json({ message: 'Vendedor creado con éxito' });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 
 }
 
 export const getSellerById = async(req, res) => {
+    const { sellerId } = req.params;
     try {
-        const { sellerId } = req.params;
         const seller = await Seller.findById(sellerId);
-        res.send(seller);
-    } catch (e) {
-        console.log(e);
-        res.status(401).json({ message: 'Error' })
+        if (seller) {
+            res.json(seller);
+        } else {
+            return res.status(404).json({ message: 'No existe Vendedor' })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 
 }
 
 export const getSellers = async(req, res) => {
     try {
-        const seller = await Seller.find();
-
+        const seller = await Seller.find().sort({ name: 'asc' });
         if (seller.length > 0) {
-            res.send(seller);
+            res.json(seller);
+        } else {
+            return res.status(404).json({ message: 'No existen Vendedores' })
         }
-    } catch (e) {
-        console.log(e);
-        res.status(404).json({ message: 'Error' })
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const updateSellerById = async(req, res) => {
+    const { sellerId } = req.params;
+    const { name, sucursal, document } = req.body;
     try {
-        const { sellerId } = req.params;
-        const updateSeller = await Seller.findByIdAndUpdate(sellerId, req.body, { new: true });
-        res.json({ message: 'Vendedor actualizado con éxito' });
-    } catch (e) {
-        console.log(e);
-        res.status(401).json({ message: 'Error' })
+
+        const updateSeller = await Seller.findByIdAndUpdate(sellerId, { name, sucursal, document });
+        if (updateSeller) {
+            res.json({ message: 'Vendedor actualizado con éxito' });
+        } else {
+            return res.status(404).json({ message: 'No existe Vendedor a actualizar' })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const deleteSellerById = async(req, res) => {
+    const { sellerId } = req.params;
     try {
-        const { sellerId } = req.params;
-        const deletedSeller = await Seller.findByIdAndRemove(sellerId);
-        res.json({ message: 'Vendedor eliminado con éxito' });
-    } catch (e) {
-        console.log(e);
-        res.status(401).json({ message: 'Error' })
+        const deletedSeller = await Seller.findByIdAndDelete(sellerId);
+        if (deletedSeller) {
+            res.json({ message: 'Vendedor eliminado con éxito' });
+        } else {
+            return res.status(404).json({ message: 'No existe Vendedor a eliminar' })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }

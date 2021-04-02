@@ -4,13 +4,14 @@ import User from '../models/User'
 import Role from '../models/Role'
 
 export const verifyToken = async(req, res, next) => {
+
     try {
         const token = req.headers["x-access-token"];
 
         if (!token) return res.status(409).json({ message: 'Falta Token' });
 
         const decoded = jwt.verify(token, config.SECRET);
-
+        res.locals.jwtPayload = decoded;
         req.userId = decoded.id;
 
         const user = await User.findById(req.userId, { password: 0 });
@@ -20,7 +21,12 @@ export const verifyToken = async(req, res, next) => {
         next();
 
     } catch (error) {
-        return res.status(403).json({ message: 'No Autorizado' });
+        if (error.message == "jwt expired") {
+            return res.status(401).json({ message: 'Token ha expirado' });
+        } else {
+            console.log(error.message)
+            return res.status(403).json({ message: 'No Autorizado' });
+        }
     }
 }
 
@@ -87,5 +93,5 @@ export const isInmatriculadosAsistant = async(req, res, next) => {
             return;
         }
     }
-    return res.status(403).json({ message: 'Requiere permiso del Asistente de Inmatriculacion' });
+    return res.status(403).json({ message: 'Requiere permiso del Asistente-Inmatriculacion' });
 }

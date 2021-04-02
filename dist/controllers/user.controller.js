@@ -23,8 +23,8 @@ var createUser = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
             _req$body = req.body, username = _req$body.username, email = _req$body.email, name = _req$body.name, password = _req$body.password, sucursal = _req$body.sucursal, direccion = _req$body.direccion, pais = _req$body.pais, codigo_postal = _req$body.codigo_postal, about = _req$body.about, roles = _req$body.roles, activo = _req$body.activo;
+            _context.prev = 1;
             _context.t0 = _User.default;
             _context.t1 = username;
             _context.t2 = email;
@@ -90,26 +90,30 @@ var createUser = /*#__PURE__*/function () {
 
           case 30:
             userSaved = _context.sent;
-            res.json({
-              message: 'Usuario creado con éxito'
-            });
+
+            if (userSaved) {
+              res.json({
+                message: 'Usuario creado con éxito'
+              });
+            }
+
             _context.next = 38;
             break;
 
           case 34:
             _context.prev = 34;
-            _context.t12 = _context["catch"](0);
+            _context.t12 = _context["catch"](1);
             console.log(_context.t12);
-            return _context.abrupt("return", res.status(404).json({
-              message: 'Error'
-            }));
+            res.status(409).json({
+              message: _context.t12.message
+            });
 
           case 38:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 34]]);
+    }, _callee, null, [[1, 34]]);
   }));
 
   return function createUser(_x, _x2) {
@@ -121,37 +125,52 @@ exports.createUser = createUser;
 
 var getUsers = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
+    var lista;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _User.default.find({}, function (err, users) {
-              _Role.default.populate(users, {
-                path: "roles"
-              }, function (err, users) {
-                res.send(users);
-              });
-            });
+            return _User.default.find().sort({
+              name: 'asc'
+            }).populate('roles');
 
           case 3:
-            _context2.next = 8;
+            lista = _context2.sent;
+
+            if (!(lista.length > 0)) {
+              _context2.next = 8;
+              break;
+            }
+
+            res.json(lista);
+            _context2.next = 9;
             break;
 
-          case 5:
-            _context2.prev = 5;
-            _context2.t0 = _context2["catch"](0);
+          case 8:
             return _context2.abrupt("return", res.status(404).json({
-              message: 'Error de API'
+              message: 'No existen Usuarios'
             }));
 
-          case 8:
+          case 9:
+            _context2.next = 15;
+            break;
+
+          case 11:
+            _context2.prev = 11;
+            _context2.t0 = _context2["catch"](0);
+            console.log(_context2.t0);
+            res.status(409).json({
+              message: _context2.t0.message
+            });
+
+          case 15:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 5]]);
+    }, _callee2, null, [[0, 11]]);
   }));
 
   return function getUsers(_x3, _x4) {
@@ -163,25 +182,51 @@ exports.getUsers = getUsers;
 
 var getUserById = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
+    var userId, objeto;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _context3.next = 2;
-            return _User.default.findById(req.params.userId, function (err, user) {
-              _Role.default.populate(user, {
-                path: "roles"
-              }, function (err, user) {
-                res.status(200).json(user);
-              });
+            userId = req.params.userId;
+            _context3.prev = 1;
+            _context3.next = 4;
+            return _User.default.findById(userId).populate('roles');
+
+          case 4:
+            objeto = _context3.sent;
+
+            if (!objeto) {
+              _context3.next = 9;
+              break;
+            }
+
+            res.json(objeto);
+            _context3.next = 10;
+            break;
+
+          case 9:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existe Usuario'
+            }));
+
+          case 10:
+            _context3.next = 16;
+            break;
+
+          case 12:
+            _context3.prev = 12;
+            _context3.t0 = _context3["catch"](1);
+            console.log(_context3.t0);
+            res.status(409).json({
+              message: _context3.t0.message
             });
 
-          case 2:
+          case 16:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3);
+    }, _callee3, null, [[1, 12]]);
   }));
 
   return function getUserById(_x5, _x6) {
@@ -193,25 +238,26 @@ exports.getUserById = getUserById;
 
 var updateUserById = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body2, username, email, name, sucursal, direccion, pais, codigo_postal, about, roles, activo, foundRoles, userFound;
+    var userId, _req$body2, username, email, name, sucursal, direccion, pais, codigo_postal, about, roles, activo, foundRoles, userFound;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
+            userId = req.params.userId;
             _req$body2 = req.body, username = _req$body2.username, email = _req$body2.email, name = _req$body2.name, sucursal = _req$body2.sucursal, direccion = _req$body2.direccion, pais = _req$body2.pais, codigo_postal = _req$body2.codigo_postal, about = _req$body2.about, roles = _req$body2.roles, activo = _req$body2.activo;
-            _context4.prev = 1;
-            _context4.next = 4;
+            _context4.prev = 2;
+            _context4.next = 5;
             return _Role.default.find({
               name: {
                 $in: roles
               }
             });
 
-          case 4:
+          case 5:
             foundRoles = _context4.sent;
-            _context4.next = 7;
-            return _User.default.findByIdAndUpdate(req.params.userId, {
+            _context4.next = 8;
+            return _User.default.findByIdAndUpdate(userId, {
               username: username,
               email: email,
               name: name,
@@ -224,33 +270,45 @@ var updateUserById = /*#__PURE__*/function () {
                 return role._id;
               }),
               activo: activo
-            }, {
-              new: true
             });
 
-          case 7:
+          case 8:
             userFound = _context4.sent;
-            //res.status(200).json(userFound);
+
+            if (!userFound) {
+              _context4.next = 13;
+              break;
+            }
+
             res.json({
               message: 'Usuario actualizado con éxito'
             });
-            _context4.next = 15;
+            _context4.next = 14;
             break;
 
-          case 11:
-            _context4.prev = 11;
-            _context4.t0 = _context4["catch"](1);
+          case 13:
+            return _context4.abrupt("return", res.status(404).json({
+              messsage: 'No existe usuario a actualizar'
+            }));
+
+          case 14:
+            _context4.next = 20;
+            break;
+
+          case 16:
+            _context4.prev = 16;
+            _context4.t0 = _context4["catch"](2);
             console.log(_context4.t0);
-            res.status(401).json({
-              message: 'Error en la consulta'
+            res.status(409).json({
+              message: _context4.t0.message
             });
 
-          case 15:
+          case 20:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[1, 11]]);
+    }, _callee4, null, [[2, 16]]);
   }));
 
   return function updateUserById(_x7, _x8) {
@@ -278,8 +336,6 @@ var updateProfile = /*#__PURE__*/function () {
               pais: pais,
               codigo_postal: codigo_postal,
               about: about
-            }, {
-              new: true
             });
 
           case 5:
@@ -297,22 +353,23 @@ var updateProfile = /*#__PURE__*/function () {
             break;
 
           case 10:
-            return _context5.abrupt("return", res.json.status(201).json({
-              message: 'Perfil ya modificado'
+            return _context5.abrupt("return", res.json.status(404).json({
+              message: 'No existe Perfil a modificar'
             }));
 
           case 11:
-            _context5.next = 16;
+            _context5.next = 17;
             break;
 
           case 13:
             _context5.prev = 13;
             _context5.t0 = _context5["catch"](2);
-            res.status(404).json({
-              message: 'Error en la actualización'
+            console.log(_context5.t0);
+            res.status(409).json({
+              message: _context5.t0.message
             });
 
-          case 16:
+          case 17:
           case "end":
             return _context5.stop();
         }
@@ -334,22 +391,48 @@ var deleteUserById = /*#__PURE__*/function () {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
+            _context6.prev = 0;
             userId = req.params.userId;
-            _context6.next = 3;
+            _context6.next = 4;
             return _User.default.findByIdAndRemove(userId);
 
-          case 3:
+          case 4:
             deletedUser = _context6.sent;
+
+            if (!deletedUser) {
+              _context6.next = 9;
+              break;
+            }
+
             res.json({
               message: 'Usuario eliminado con éxito'
             });
+            _context6.next = 10;
+            break;
 
-          case 5:
+          case 9:
+            return _context6.abrupt("return", res.status(404).json({
+              message: 'No existe usuario a eliminar'
+            }));
+
+          case 10:
+            _context6.next = 16;
+            break;
+
+          case 12:
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](0);
+            console.log(_context6.t0);
+            res.status(409).json({
+              message: _context6.t0.message
+            });
+
+          case 16:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6);
+    }, _callee6, null, [[0, 12]]);
   }));
 
   return function deleteUserById(_x11, _x12) {

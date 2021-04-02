@@ -2,14 +2,15 @@ import Banco from "../models/Banco";
 
 export const getBancos = async(req, res) => {
     try {
-        const bancos = await Banco.find();
+        const bancos = await Banco.find().sort({ name: 'asc' });
         if (bancos.length > 0) {
-            res.send(bancos);
+            res.json(bancos);
         } else {
-            res.status(404).json({ message: 'Vacío' })
+            return res.status(404).json({ message: 'No existen Bancos' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -18,26 +19,27 @@ export const getBancoById = async(req, res) => {
     try {
         const bancos = await Banco.findById(bancoId);
         if (bancos) {
-            res.send(bancos);
+            res.json(bancos);
         } else {
-            res.status(404).json({ message: 'No existe' })
+            return res.status(404).json({ message: 'No existe Banco' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err)
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getBancoByActivo = async(req, res) => {
     try {
-        const bancos = await Banco.find({ status: "Activo" });
-        if (bancos) {
-            res.status(200).json(bancos);
+        const bancos = await Banco.find({ status: "Activo" }).sort({ name: 'asc' });
+        if (bancos.length > 0) {
+            res.json(bancos);
         } else {
-            res.status(404).json({ message: 'Vacío' })
+            res.status(404).json({ message: 'No existen Bancos Activos' })
         }
     } catch (err) {
-        //console.log(err);
-        res.status(403).json({ message: 'No Autorizado' });
+        console.log(err);
+        res.status(409).json({ message: err.message });
     }
 }
 
@@ -52,7 +54,8 @@ export const createBanco = async(req, res) => {
             res.json({ message: 'Banco creado con éxito' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err)
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -60,33 +63,30 @@ export const updateBanco = async(req, res) => {
     const { name, status } = req.body;
     const { bancoId } = req.params;
     try {
-
-        const updateBanco = await Banco.findByIdAndUpdate(bancoId, { name, status }, { new: true });
+        const updateBanco = await Banco.findByIdAndUpdate(bancoId, { name, status });
 
         if (updateBanco) {
             res.json({ message: 'Banco actualizado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Banco' });
+            res.status(404).json({ message: 'No existe Banco a eliminar' });
         }
     } catch (err) {
-        //console.log(e);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const deleteBanco = async(req, res) => {
     const { bancoId } = req.params;
     try {
-
         const deleteBanco = await Banco.findByIdAndDelete(bancoId);
-
         if (deleteBanco) {
             res.json({ message: 'Banco eliminado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Banco' });
+            return res.status(404).json({ message: 'No existe Banco a eliminar' });
         }
     } catch (err) {
-        //console.log(e);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }

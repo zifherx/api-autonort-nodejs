@@ -19,11 +19,11 @@ router.get('/', campaignCtrl.getAll); //Obtener Campañas Activas de
 
 router.get('/activos', campaignCtrl.getCampaniasActivas); //Obtener Campaña por Id
 
-router.get('/:campaignId', campaignCtrl.getOne); //Obtener Camapaña por código Vehicular
+router.get('/:campaignId', campaignCtrl.getOne); //Obtener Campaña por código Vehicular
 //router.post('/find', campaignCtrl.getCampaignByVehicle);
 //Crear Campaña
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], campaignCtrl.createCampaign); //Actualizar Campaña
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateCampania], campaignCtrl.createCampaign); //Actualizar Campaña
 
 router.patch('/:campaignId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], campaignCtrl.updateCampaignById); //Remover Campaña
 

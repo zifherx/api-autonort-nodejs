@@ -23,8 +23,8 @@ var createRecord = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
             _req$body = req.body, fecha_recepcion = _req$body.fecha_recepcion, hora_recepcion = _req$body.hora_recepcion, sales = _req$body.sales, fecha_ingreso_file = _req$body.fecha_ingreso_file, hora_ingreso_file = _req$body.hora_ingreso_file, num_titulo = _req$body.num_titulo, status_tarjeta = _req$body.status_tarjeta, num_placa = _req$body.num_placa, fecha_entrega_file = _req$body.fecha_entrega_file, fecha_tramite_placa = _req$body.fecha_tramite_placa, status_placa = _req$body.status_placa, fecha_entrega_placa = _req$body.fecha_entrega_placa, fecha_entrega_cliente = _req$body.fecha_entrega_cliente;
+            _context.prev = 1;
             nuevoInmatriculado = new _Record.default({
               fecha_recepcion: fecha_recepcion,
               hora_recepcion: hora_recepcion,
@@ -62,10 +62,6 @@ var createRecord = /*#__PURE__*/function () {
               res.json({
                 message: 'Inmatriculado creado con éxito'
               });
-            } else {
-              res.status(201).json({
-                message: 'Ya existe el inmatriculado'
-              });
             }
 
             _context.next = 17;
@@ -73,10 +69,10 @@ var createRecord = /*#__PURE__*/function () {
 
           case 13:
             _context.prev = 13;
-            _context.t0 = _context["catch"](0);
+            _context.t0 = _context["catch"](1);
             console.log(_context.t0);
-            res.status(403).json({
-              message: 'No Autorizado'
+            res.status(409).json({
+              message: _context.t0.message
             });
 
           case 17:
@@ -84,7 +80,7 @@ var createRecord = /*#__PURE__*/function () {
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 13]]);
+    }, _callee, null, [[1, 13]]);
   }));
 
   return function createRecord(_x, _x2) {
@@ -104,7 +100,7 @@ var getRecords = /*#__PURE__*/function () {
             filtro1 = {
               path: 'sales',
               populate: {
-                path: 'auto vendedor  cliente'
+                path: 'auto vendedor cliente'
               }
             };
             _context2.prev = 1;
@@ -124,7 +120,7 @@ var getRecords = /*#__PURE__*/function () {
             break;
 
           case 9:
-            return _context2.abrupt("return", res.status(201).json({
+            return _context2.abrupt("return", res.status(404).json({
               message: 'No existen Inmatriculados'
             }));
 
@@ -136,8 +132,8 @@ var getRecords = /*#__PURE__*/function () {
             _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
             console.log(_context2.t0);
-            res.status(401).json({
-              message: 'Error Interno'
+            res.status(409).json({
+              message: _context2.t0.message
             });
 
           case 16:
@@ -157,50 +153,57 @@ exports.getRecords = getRecords;
 
 var getRecordById = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var filtro1, recordId, expediente;
+    var recordId, filtro1, expediente;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
+            recordId = req.params.recordId;
             filtro1 = {
               path: 'sales',
               populate: {
                 path: 'auto vendedor  cliente'
               }
             };
-            _context3.prev = 1;
-            recordId = req.params.recordId;
+            _context3.prev = 2;
             _context3.next = 5;
             return _Record.default.findById(recordId).populate(filtro1);
 
           case 5:
             expediente = _context3.sent;
 
-            if (expediente) {
-              res.json(expediente);
-            } else {
-              res.status(201).json({
-                message: 'No existe el inmatriculado'
-              });
+            if (!expediente) {
+              _context3.next = 10;
+              break;
             }
 
-            _context3.next = 13;
+            res.json(expediente);
+            _context3.next = 11;
             break;
 
-          case 9:
-            _context3.prev = 9;
-            _context3.t0 = _context3["catch"](1);
-            console.log(_context3.t0);
-            res.status(401).json({
-              message: 'Error Interno'
-            });
+          case 10:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existe el Inmatriculado'
+            }));
+
+          case 11:
+            _context3.next = 17;
+            break;
 
           case 13:
+            _context3.prev = 13;
+            _context3.t0 = _context3["catch"](2);
+            console.log(_context3.t0);
+            res.status(409).json({
+              message: _context3.t0.message
+            });
+
+          case 17:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 9]]);
+    }, _callee3, null, [[2, 13]]);
   }));
 
   return function getRecordById(_x5, _x6) {
@@ -218,10 +221,9 @@ var updateRecordById = /*#__PURE__*/function () {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _context4.prev = 0;
             recordId = req.params.recordId;
-            _req$body2 = req.body, fecha_recepcion = _req$body2.fecha_recepcion, hora_recepcion = _req$body2.hora_recepcion, sales = _req$body2.sales, fecha_ingreso_file = _req$body2.fecha_ingreso_file, hora_ingreso_file = _req$body2.hora_ingreso_file, num_titulo = _req$body2.num_titulo, status_tarjeta = _req$body2.status_tarjeta, num_placa = _req$body2.num_placa, fecha_entrega_file = _req$body2.fecha_entrega_file, fecha_tramite_placa = _req$body2.fecha_tramite_placa, status_placa = _req$body2.status_placa, fecha_entrega_placa = _req$body2.fecha_entrega_placa, fecha_entrega_cliente = _req$body2.fecha_entrega_cliente; //Expediente
-
+            _req$body2 = req.body, fecha_recepcion = _req$body2.fecha_recepcion, hora_recepcion = _req$body2.hora_recepcion, sales = _req$body2.sales, fecha_ingreso_file = _req$body2.fecha_ingreso_file, hora_ingreso_file = _req$body2.hora_ingreso_file, num_titulo = _req$body2.num_titulo, status_tarjeta = _req$body2.status_tarjeta, num_placa = _req$body2.num_placa, fecha_entrega_file = _req$body2.fecha_entrega_file, fecha_tramite_placa = _req$body2.fecha_tramite_placa, status_placa = _req$body2.status_placa, fecha_entrega_placa = _req$body2.fecha_entrega_placa, fecha_entrega_cliente = _req$body2.fecha_entrega_cliente;
+            _context4.prev = 2;
             _context4.next = 5;
             return _Sale.default.find({
               nro_comprobante: {
@@ -248,8 +250,6 @@ var updateRecordById = /*#__PURE__*/function () {
               status_placa: status_placa,
               fecha_entrega_placa: fecha_entrega_placa,
               fecha_entrega_cliente: fecha_entrega_cliente
-            }, {
-              new: true
             });
 
           case 8:
@@ -267,8 +267,8 @@ var updateRecordById = /*#__PURE__*/function () {
             break;
 
           case 13:
-            return _context4.abrupt("return", res.status(201).json({
-              message: 'Ya existe'
+            return _context4.abrupt("return", res.status(404).json({
+              message: 'No existe Inmatriculado a actualizar'
             }));
 
           case 14:
@@ -277,10 +277,10 @@ var updateRecordById = /*#__PURE__*/function () {
 
           case 16:
             _context4.prev = 16;
-            _context4.t0 = _context4["catch"](0);
+            _context4.t0 = _context4["catch"](2);
             console.log(_context4.t0);
-            res.status(403).json({
-              message: 'Error Interno'
+            res.status(409).json({
+              message: _context4.t0.message
             });
 
           case 20:
@@ -288,7 +288,7 @@ var updateRecordById = /*#__PURE__*/function () {
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 16]]);
+    }, _callee4, null, [[2, 16]]);
   }));
 
   return function updateRecordById(_x7, _x8) {
@@ -305,8 +305,8 @@ var deleteRecordById = /*#__PURE__*/function () {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _context5.prev = 0;
             recordId = req.params.recordId;
+            _context5.prev = 1;
             _context5.next = 4;
             return _Record.default.findByIdAndDelete(recordId);
 
@@ -319,14 +319,14 @@ var deleteRecordById = /*#__PURE__*/function () {
             }
 
             res.json({
-              message: 'Expediente Eliminado con éxito'
+              message: 'Inmatriculado eliminado con éxito'
             });
             _context5.next = 10;
             break;
 
           case 9:
-            return _context5.abrupt("return", res.status(201).json({
-              message: 'Expediente no existe'
+            return _context5.abrupt("return", res.status(404).json({
+              message: 'No existe Inmatriculado a eliminar'
             }));
 
           case 10:
@@ -335,10 +335,10 @@ var deleteRecordById = /*#__PURE__*/function () {
 
           case 12:
             _context5.prev = 12;
-            _context5.t0 = _context5["catch"](0);
+            _context5.t0 = _context5["catch"](1);
             console.log(_context5.t0);
-            res.status(403).json({
-              message: 'Error Interno'
+            res.status(409).json({
+              message: _context5.t0.message
             });
 
           case 16:
@@ -346,7 +346,7 @@ var deleteRecordById = /*#__PURE__*/function () {
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[0, 12]]);
+    }, _callee5, null, [[1, 12]]);
   }));
 
   return function deleteRecordById(_x9, _x10) {

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as sectoristaCtrl from '../controllers/sectorista.controller'
-import { authJwt, verifySignup } from "../middlewares";
+import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
@@ -13,13 +13,13 @@ router.get('/activos', sectoristaCtrl.getSectoristaByActivo);
 //Obtener Sectorista por ID
 router.get('/:sectoristaId', sectoristaCtrl.getSectoristaById);
 
-//Crear Modelo
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], sectoristaCtrl.createSectorista);
+//Crear Sectorista
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateSectorista], sectoristaCtrl.createSectorista);
 
-//Actualizar Modelo
+//Actualizar Sectorista
 router.patch('/:sectoristaId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], sectoristaCtrl.updateSectorista);
 
-//Eliminar Modelo
+//Eliminar Sectorista
 router.delete('/:sectoristaId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], sectoristaCtrl.deleteSectorista);
 
 export default router;

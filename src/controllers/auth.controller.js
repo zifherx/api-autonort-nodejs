@@ -28,15 +28,51 @@ export const signUp = async(req, res) => {
 }
 
 export const signIn = async(req, res) => {
-    const userFound = await User.findOne({ username: req.body.username }).populate("roles");
+    const { username, password } = req.body;
 
-    if (!userFound) return res.status(400).json({ message: 'Usuario no existe' });
+    const userFound = await User.findOne({ username }).populate("roles");
 
-    const matchPassword = await User.comparePassword(req.body.password, userFound.password);
+    if (!userFound) return res.status(404).json({ message: 'Usuario no existe' });
+
+    const matchPassword = await User.comparePassword(password, userFound.password);
 
     if (!matchPassword) return res.status(401).json({ token: null, message: 'Contraseña Errónea' });
 
-    const token = jwt.sign({ id: userFound._id }, config.SECRET, { expiresIn: 86400 });
+    const token = jwt.sign({ id: userFound._id }, config.SECRET, { expiresIn: 60 * 60 * 24 });
 
-    res.status(201).json({ token, codigo: userFound._id, status: userFound.activo });
+    res.json({ token, codigo: userFound._id, status: userFound.activo });
+}
+
+export const changePassword = async(req, res) => {
+    const { id } = res.locals.jwtPayload;
+    const { oldPassword, newPassword } = req.body;
+    let user;
+
+    if (!(oldPassword && newPassword)) {
+        res.status(400).json({ message: 'Contraseña Anterior y Nueva Contraseña son necesarios' });
+    }
+
+    try {
+        user = await User.findById(id);
+    } catch (err) {
+        res.status(404).json({ message: 'Usuario no existe' })
+    }
+
+    const matchPassword = await User.comparePassword(oldPassword, user.password);
+
+    if (!matchPassword) return res.status(401).json({ message: 'Contraseña Anterior Errónea' });
+
+    try {
+        user.password = await User.encryptPassword(newPassword);
+
+        const guardado = await user.save();
+
+        if (guardado) {
+            res.json({ message: 'Contraseña actualizada con éxito' });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message });
+    }
+
 }

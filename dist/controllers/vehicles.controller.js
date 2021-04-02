@@ -13,15 +13,18 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _Vehicle = _interopRequireDefault(require("../models/Vehicle"));
 
+var _User = _interopRequireDefault(require("../models/User"));
+
 var createVehicle = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, marca, cod_tdp, categoria, modelo, version, sucursal, newVehicle, vehicleSaved;
+    var _req$body, marca, cod_tdp, categoria, modelo, version, sucursal, empleado, newVehicle, foundEmployee, vehicleSaved;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$body = req.body, marca = _req$body.marca, cod_tdp = _req$body.cod_tdp, categoria = _req$body.categoria, modelo = _req$body.modelo, version = _req$body.version, sucursal = _req$body.sucursal;
+            _req$body = req.body, marca = _req$body.marca, cod_tdp = _req$body.cod_tdp, categoria = _req$body.categoria, modelo = _req$body.modelo, version = _req$body.version, sucursal = _req$body.sucursal, empleado = _req$body.empleado;
+            _context.prev = 1;
             newVehicle = new _Vehicle.default({
               marca: marca,
               cod_tdp: cod_tdp,
@@ -29,24 +32,50 @@ var createVehicle = /*#__PURE__*/function () {
               modelo: modelo,
               version: version,
               sucursal: sucursal
+            });
+            _context.next = 5;
+            return _User.default.find({
+              username: {
+                $in: empleado
+              }
+            });
+
+          case 5:
+            foundEmployee = _context.sent;
+            newVehicle.empleado = foundEmployee.map(function (em) {
+              return em._id;
             }); //const foundCampaign = await Campaign.find({ name: { $in: campaign } });
             //newVehicle.campaign = foundCampaign.map(campaign => campaign._id);
 
-            _context.next = 4;
+            _context.next = 9;
             return newVehicle.save();
 
-          case 4:
+          case 9:
             vehicleSaved = _context.sent;
-            res.json({
-              message: 'Vehículo creado con éxito'
+
+            if (vehicleSaved) {
+              res.json({
+                message: 'Vehículo creado con éxito'
+              });
+            }
+
+            _context.next = 17;
+            break;
+
+          case 13:
+            _context.prev = 13;
+            _context.t0 = _context["catch"](1);
+            console.log(_context.t0);
+            res.status(409).json({
+              message: _context.t0.message
             });
 
-          case 6:
+          case 17:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee);
+    }, _callee, null, [[1, 13]]);
   }));
 
   return function createVehicle(_x, _x2) {
@@ -63,19 +92,47 @@ var getVehicles = /*#__PURE__*/function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
-            return _Vehicle.default.find();
+            _context2.prev = 0;
+            _context2.next = 3;
+            return _Vehicle.default.find().sort({
+              cod_tdp: 'asc'
+            });
 
-          case 2:
+          case 3:
             vehicles = _context2.sent;
-            res.json(vehicles);
 
-          case 4:
+            if (!(vehicles.length > 0)) {
+              _context2.next = 8;
+              break;
+            }
+
+            res.json(vehicles);
+            _context2.next = 9;
+            break;
+
+          case 8:
+            return _context2.abrupt("return", res.status(404).json({
+              message: 'No existen vehículos'
+            }));
+
+          case 9:
+            _context2.next = 15;
+            break;
+
+          case 11:
+            _context2.prev = 11;
+            _context2.t0 = _context2["catch"](0);
+            console.log(_context2.t0);
+            res.status(409).json({
+              message: _context2.t0.message
+            });
+
+          case 15:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2);
+    }, _callee2, null, [[0, 11]]);
   }));
 
   return function getVehicles(_x3, _x4) {
@@ -93,19 +150,45 @@ var getVehicleById = /*#__PURE__*/function () {
         switch (_context3.prev = _context3.next) {
           case 0:
             vehicleId = req.params.vehicleId;
-            _context3.next = 3;
+            _context3.prev = 1;
+            _context3.next = 4;
             return _Vehicle.default.findById(vehicleId);
 
-          case 3:
+          case 4:
             vehicle = _context3.sent;
-            res.json(vehicle);
 
-          case 5:
+            if (!vehicle) {
+              _context3.next = 9;
+              break;
+            }
+
+            res.json(vehicle);
+            _context3.next = 10;
+            break;
+
+          case 9:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existe el Vehículo'
+            }));
+
+          case 10:
+            _context3.next = 16;
+            break;
+
+          case 12:
+            _context3.prev = 12;
+            _context3.t0 = _context3["catch"](1);
+            console.log(_context3.t0);
+            res.status(409).json({
+              message: _context3.t0.message
+            });
+
+          case 16:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3);
+    }, _callee3, null, [[1, 12]]);
   }));
 
   return function getVehicleById(_x5, _x6) {
@@ -122,8 +205,8 @@ var getVehicleByCodigo = /*#__PURE__*/function () {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _context4.prev = 0;
             codigoAuto = req.body.codigoAuto;
+            _context4.prev = 1;
             _context4.next = 4;
             return _Vehicle.default.findOne({
               cod_tdp: codigoAuto
@@ -142,27 +225,28 @@ var getVehicleByCodigo = /*#__PURE__*/function () {
             break;
 
           case 9:
-            return _context4.abrupt("return", res.status(201).json({
+            return _context4.abrupt("return", res.status(404).json({
               message: 'No existe vehículo a mostrar'
             }));
 
           case 10:
-            _context4.next = 15;
+            _context4.next = 16;
             break;
 
           case 12:
             _context4.prev = 12;
-            _context4.t0 = _context4["catch"](0);
-            return _context4.abrupt("return", res.status(403).json({
-              message: 'No Autorizado'
-            }));
+            _context4.t0 = _context4["catch"](1);
+            console.log(_context4.t0);
+            res.status(409).json({
+              message: _context4.t0.message
+            });
 
-          case 15:
+          case 16:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 12]]);
+    }, _callee4, null, [[1, 12]]);
   }));
 
   return function getVehicleByCodigo(_x7, _x8) {
@@ -181,9 +265,7 @@ var updateVehicleById = /*#__PURE__*/function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             vehicleId = req.params.vehicleId;
-            _req$body2 = req.body, marca = _req$body2.marca, cod_tdp = _req$body2.cod_tdp, categoria = _req$body2.categoria, modelo = _req$body2.modelo, version = _req$body2.version, sucursal = _req$body2.sucursal; //Campaign
-            //const foundCampaign = await Campaign.find({ name: { $in: campaign } });
-
+            _req$body2 = req.body, marca = _req$body2.marca, cod_tdp = _req$body2.cod_tdp, categoria = _req$body2.categoria, modelo = _req$body2.modelo, version = _req$body2.version, sucursal = _req$body2.sucursal;
             _context5.prev = 2;
             _context5.next = 5;
             return _Vehicle.default.findByIdAndUpdate(vehicleId, {
@@ -193,8 +275,6 @@ var updateVehicleById = /*#__PURE__*/function () {
               modelo: modelo,
               version: version,
               sucursal: sucursal
-            }, {
-              new: true
             });
 
           case 5:
@@ -213,21 +293,22 @@ var updateVehicleById = /*#__PURE__*/function () {
 
           case 10:
             return _context5.abrupt("return", res.status(404).json({
-              message: 'Vehículo ya modificado'
+              message: 'No existe Vehículo a actualizar'
             }));
 
           case 11:
-            _context5.next = 16;
+            _context5.next = 17;
             break;
 
           case 13:
             _context5.prev = 13;
             _context5.t0 = _context5["catch"](2);
-            res.status(403).json({
-              message: 'Vehículo no existe'
+            console.log(_context5.t0);
+            res.status(409).json({
+              message: _context5.t0.message
             });
 
-          case 16:
+          case 17:
           case "end":
             return _context5.stop();
         }
@@ -250,24 +331,47 @@ var deleteVehicleById = /*#__PURE__*/function () {
         switch (_context6.prev = _context6.next) {
           case 0:
             vehicleId = req.params.vehicleId;
-            _context6.next = 3;
-            return _Vehicle.default.findByIdAndRemove(vehicleId);
+            _context6.prev = 1;
+            _context6.next = 4;
+            return _Vehicle.default.findByIdAndDelete(vehicleId);
 
-          case 3:
+          case 4:
             deletedVehicle = _context6.sent;
 
-            if (deletedVehicle) {
-              res.json({
-                message: 'Vehículo eliminado con éxito'
-              });
+            if (!deletedVehicle) {
+              _context6.next = 9;
+              break;
             }
 
-          case 5:
+            res.json({
+              message: 'Vehículo eliminado con éxito'
+            });
+            _context6.next = 10;
+            break;
+
+          case 9:
+            return _context6.abrupt("return", res.status(404).json({
+              message: 'No existe Vehículo a eliminar'
+            }));
+
+          case 10:
+            _context6.next = 16;
+            break;
+
+          case 12:
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](1);
+            console.log(_context6.t0);
+            res.status(409).json({
+              message: _context6.t0.message
+            });
+
+          case 16:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6);
+    }, _callee6, null, [[1, 12]]);
   }));
 
   return function deleteVehicleById(_x11, _x12) {

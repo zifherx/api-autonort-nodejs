@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as modeloCtrl from '../controllers/modelo.controller'
-import { authJwt, verifySignup } from "../middlewares";
+import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get('/activos', modeloCtrl.getModeloByActivo);
 router.get('/:modeloId', modeloCtrl.getModeloById);
 
 //Crear Modelo
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], modeloCtrl.createModelo);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateModelo], modeloCtrl.createModelo);
 
 //Actualizar Modelo
 router.patch('/:modeloId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], modeloCtrl.updateModelo);

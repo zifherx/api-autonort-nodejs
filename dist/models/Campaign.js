@@ -26,6 +26,10 @@ var campaignSchema = new _mongoose.Schema({
   },
   status: {
     type: String
+  },
+  empleado: {
+    ref: 'User',
+    type: _mongoose.Schema.Types.ObjectId
   }
 }, {
   timestamps: true,

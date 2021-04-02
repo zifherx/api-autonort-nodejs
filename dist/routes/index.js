@@ -21,6 +21,8 @@ var _seller = _interopRequireDefault(require("./seller.routes"));
 
 var _campaign = _interopRequireDefault(require("./campaign.routes"));
 
+var _adicional = _interopRequireDefault(require("./adicional.routes"));
+
 var _props = _interopRequireDefault(require("./props.routes"));
 
 var _customer = _interopRequireDefault(require("./customer.routes"));
@@ -49,6 +51,8 @@ var _sustento = _interopRequireDefault(require("./sustento.routes"));
 
 var _ubicacion = _interopRequireDefault(require("./ubicacion.routes"));
 
+var _chasis = _interopRequireDefault(require("./chasis.routes"));
+
 var router = (0, _express.Router)();
 router.use('/auth', _auth.default);
 router.use('/users', _user.default);
@@ -56,6 +60,7 @@ router.use('/roles', _roles.default);
 router.use('/vehicles', _vehicle.default);
 router.use('/seller', _seller.default);
 router.use('/campania', _campaign.default);
+router.use('/adicional', _adicional.default);
 router.use('/props', _props.default);
 router.use('/customer', _customer.default);
 router.use('/sale', _sale.default);
@@ -70,6 +75,7 @@ router.use('/sucursal', _sucursal.default);
 router.use('/sustento', _sustento.default);
 router.use('/financiamiento', _financiamiento.default);
 router.use('/ubicacion', _ubicacion.default);
+router.use('/chasis', _chasis.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

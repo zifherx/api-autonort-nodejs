@@ -6,7 +6,8 @@ const campaignSchema = new Schema({
     bono: { type: Number },
     startDate: { type: Date },
     endDate: { type: Date },
-    status: { type: String }
+    status: { type: String },
+    empleado: { ref: 'User', type: Schema.Types.ObjectId }
 }, {
     timestamps: true,
     versionKey: false

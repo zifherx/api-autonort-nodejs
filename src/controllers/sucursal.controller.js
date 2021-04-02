@@ -2,14 +2,15 @@ import Sucursal from "../models/Sucursal";
 
 export const getSucursales = async(req, res) => {
     try {
-        const query = await Sucursal.find();
+        const query = await Sucursal.find().sort({ name: 'asc' });
         if (query.length > 0) {
-            res.send(query);
+            res.json(query);
         } else {
-            res.status(404).json({ message: 'Vacío' })
+            res.status(404).json({ message: 'No existen Sucursales' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -18,26 +19,27 @@ export const getSucursalById = async(req, res) => {
     try {
         const query = await Sucursal.findById(sucursalId);
         if (query) {
-            res.send(query);
+            res.json(query);
         } else {
-            res.status(404).json({ message: 'No existe' })
+            res.status(404).json({ message: 'No existe Sucursales' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getSucursalByActivo = async(req, res) => {
     try {
         const query = await Sucursal.find({ status: "Activo" });
-        if (query) {
-            res.send(query);
+        if (query.length > 0) {
+            res.json(query);
         } else {
-            res.status(404).json({ message: 'Vacío' })
+            res.status(404).json({ message: 'No hay Sucursales activas' })
         }
     } catch (err) {
-        //console.log(err);
-        res.status(403).json({ message: 'No Autorizado' });
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -52,7 +54,8 @@ export const createSucursal = async(req, res) => {
             res.json({ message: 'Sucursal creada con éxito' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -66,11 +69,11 @@ export const updateSucursal = async(req, res) => {
         if (query) {
             res.json({ message: 'Sucursal actualizada con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Sucursal' });
+            res.status(404).json({ message: 'No existe Sucursal a actualizar' });
         }
     } catch (err) {
-        //console.log(e);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -82,10 +85,10 @@ export const deleteSucursal = async(req, res) => {
         if (query) {
             res.json({ message: 'Sucursal eliminada con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Sucursal' });
+            res.status(404).json({ message: 'No existe Sucursal a eliminar' });
         }
     } catch (err) {
-        //console.log(e);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }

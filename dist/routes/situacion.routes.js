@@ -21,7 +21,7 @@ router.get('/activos', situacionCtrl.getSituacionByActivo); //Obtener Situacion 
 
 router.get('/:situacionId', situacionCtrl.getSituacionById); //Crear Situacion
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], situacionCtrl.createSituacion); //Actualizar Situacion
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateSituacion], situacionCtrl.createSituacion); //Actualizar Situacion
 
 router.patch('/:situacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], situacionCtrl.updateSituacion); //Eliminar Situacion
 

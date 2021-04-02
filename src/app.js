@@ -1,8 +1,9 @@
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
-import path from 'path';
-import routes from "./routes";
+import path from 'path'
+import helmet from 'helmet'
+import routes from "./routes"
 import { createRoles, createUserAdmin } from './libs/initialSetup'
 
 const app = express();
@@ -15,13 +16,14 @@ app.set('port', process.env.PORT || 4000);
 
 //Middlewares
 app.use(morgan('dev'));
-app.use(express.json());
+app.use(helmet());
 app.use(cors());
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Routes
 app.get('/', (req, res) => {
-    res.json('Bienvenido')
+    res.json('Bienvenido Puto')
 });
 app.use('/api', routes);
 

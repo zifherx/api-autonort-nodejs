@@ -21,7 +21,7 @@ router.get('/activos', financiamientoCtrl.getFinanciamientoByActivo); //Obtener 
 
 router.get('/:financiamientoId', financiamientoCtrl.getFinanciamientoById); //Crear Financiamiento
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], financiamientoCtrl.createFinanciamiento); //Actualizar Financiamiento
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateFinanciamiento], financiamientoCtrl.createFinanciamiento); //Actualizar Financiamiento
 
 router.patch('/:financiamientoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], financiamientoCtrl.updateFinanciamiento); //Eliminar Financiamiento
 

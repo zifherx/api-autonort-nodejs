@@ -22,35 +22,45 @@ var getSectoristas = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _Sectorista.default.find();
+            return _Sectorista.default.find().sort({
+              name: 'asc'
+            });
 
           case 3:
             sectorista = _context.sent;
 
-            if (sectorista.length > 0) {
-              res.send(sectorista);
-            } else {
-              res.status(404).json({
-                message: 'Vacío'
-              });
+            if (!(sectorista.length > 0)) {
+              _context.next = 8;
+              break;
             }
 
-            _context.next = 10;
+            res.json(sectorista);
+            _context.next = 9;
             break;
 
-          case 7:
-            _context.prev = 7;
+          case 8:
+            return _context.abrupt("return", res.status(404).json({
+              message: 'No existen Sectoritas'
+            }));
+
+          case 9:
+            _context.next = 15;
+            break;
+
+          case 11:
+            _context.prev = 11;
             _context.t0 = _context["catch"](0);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context.t0);
+            res.status(409).json({
+              message: _context.t0.message
             });
 
-          case 10:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[0, 11]]);
   }));
 
   return function getSectoristas(_x, _x2) {
@@ -75,30 +85,38 @@ var getSectoristaById = /*#__PURE__*/function () {
           case 4:
             sectorista = _context2.sent;
 
-            if (sectorista) {
-              res.send(sectorista);
-            } else {
-              res.status(404).json({
-                message: 'No existe'
-              });
+            if (!sectorista) {
+              _context2.next = 9;
+              break;
             }
 
-            _context2.next = 11;
+            res.json(sectorista);
+            _context2.next = 10;
             break;
 
-          case 8:
-            _context2.prev = 8;
+          case 9:
+            return _context2.abrupt("return", res.status(404).json({
+              message: 'No existe Sectorista'
+            }));
+
+          case 10:
+            _context2.next = 16;
+            break;
+
+          case 12:
+            _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context2.t0);
+            res.status(409).json({
+              message: _context2.t0.message
             });
 
-          case 11:
+          case 16:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[1, 8]]);
+    }, _callee2, null, [[1, 12]]);
   }));
 
   return function getSectoristaById(_x3, _x4) {
@@ -119,36 +137,45 @@ var getSectoristaByActivo = /*#__PURE__*/function () {
             _context3.next = 3;
             return _Sectorista.default.find({
               status: "Activo"
+            }).sort({
+              name: 'asc'
             });
 
           case 3:
             sectorista = _context3.sent;
 
-            if (sectorista) {
-              res.status(200).json(sectorista);
-            } else {
-              res.status(404).json({
-                message: 'Vacío'
-              });
+            if (!(sectorista.length > 0)) {
+              _context3.next = 8;
+              break;
             }
 
-            _context3.next = 10;
+            res.json(sectorista);
+            _context3.next = 9;
             break;
 
-          case 7:
-            _context3.prev = 7;
+          case 8:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existen Sectoristas Activos'
+            }));
+
+          case 9:
+            _context3.next = 15;
+            break;
+
+          case 11:
+            _context3.prev = 11;
             _context3.t0 = _context3["catch"](0);
-            //console.log(err);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context3.t0);
+            res.status(409).json({
+              message: _context3.t0.message
             });
 
-          case 10:
+          case 15:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 7]]);
+    }, _callee3, null, [[0, 11]]);
   }));
 
   return function getSectoristaByActivo(_x5, _x6) {
@@ -184,17 +211,18 @@ var createSectorista = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 12;
+            _context4.next = 13;
             break;
 
           case 9:
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context4.t0);
+            res.status(409).json({
+              message: _context4.t0.message
             });
 
-          case 12:
+          case 13:
           case "end":
             return _context4.stop();
         }
@@ -224,8 +252,6 @@ var updateSectorista = /*#__PURE__*/function () {
             return _Sectorista.default.findByIdAndUpdate(sectoristaId, {
               name: name,
               status: status
-            }, {
-              new: true
             });
 
           case 5:
@@ -237,22 +263,22 @@ var updateSectorista = /*#__PURE__*/function () {
               });
             } else {
               res.status(404).json({
-                message: 'No existe Sectorista'
+                message: 'No existe Sectorista a actualizar'
               });
             }
 
-            _context5.next = 12;
+            _context5.next = 13;
             break;
 
           case 9:
             _context5.prev = 9;
             _context5.t0 = _context5["catch"](2);
-            //console.log(e);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context5.t0);
+            res.status(409).json({
+              message: _context5.t0.message
             });
 
-          case 12:
+          case 13:
           case "end":
             return _context5.stop();
         }
@@ -289,22 +315,22 @@ var deleteSectorista = /*#__PURE__*/function () {
               });
             } else {
               res.status(404).json({
-                message: 'No existe Sectorista'
+                message: 'No existe Sectorista a eliminar'
               });
             }
 
-            _context6.next = 11;
+            _context6.next = 12;
             break;
 
           case 8:
             _context6.prev = 8;
             _context6.t0 = _context6["catch"](1);
-            //console.log(e);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context6.t0);
+            res.status(409).json({
+              message: _context6.t0.message
             });
 
-          case 11:
+          case 12:
           case "end":
             return _context6.stop();
         }

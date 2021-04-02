@@ -21,7 +21,7 @@ router.get('/activos', sustentoCtrl.getSustentoByActivo); //Obtener Sustento por
 
 router.get('/:sustentoId', sustentoCtrl.getSustentoById); //Crear Sustento
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], sustentoCtrl.createSustento); //Actualizar Sustento
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateSustento], sustentoCtrl.createSustento); //Actualizar Sustento
 
 router.patch('/:sustentoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], sustentoCtrl.updateSustento); //Eliminar Sustento
 

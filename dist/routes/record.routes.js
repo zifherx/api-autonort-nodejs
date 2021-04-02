@@ -19,11 +19,11 @@ router.get('/', recordCtrl.getRecords); //Obtener Inmatriculado por Id
 
 router.get('/:recordId', recordCtrl.getRecordById); //Crear Inmatriculado
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistant, _middlewares.verifySignup.checkRolesExist], recordCtrl.createRecord); //Actualizar Inmatriculado
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistant, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateTramite], recordCtrl.createRecord); //Actualizar Inmatriculado
 
 router.patch('/:recordId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistant, _middlewares.verifySignup.checkRolesExist], recordCtrl.updateRecordById); //Remover Inmatriculado
 
-router.delete('/:recordId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], recordCtrl.deleteRecordById);
+router.delete('/:recordId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistant, _middlewares.verifySignup.checkRolesExist], recordCtrl.deleteRecordById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=record.routes.js.map

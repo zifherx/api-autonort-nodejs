@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as sellerCtrl from '../controllers/seller.controller'
-import { authJwt, verifySignup } from '../middlewares'
+import { authJwt, verifySignup, verifyDuplicate } from '../middlewares'
 const router = Router();
 
 //Obtener Vendedores
@@ -10,10 +10,10 @@ router.get('/', sellerCtrl.getSellers);
 router.get('/:sellerId', sellerCtrl.getSellerById);
 
 //Crear Vendedor
-router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], sellerCtrl.createSeller);
+router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller);
 
 //Actualizar Vendedor
-router.put('/:sellerId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], sellerCtrl.updateSellerById);
+router.patch('/:sellerId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], sellerCtrl.updateSellerById);
 
 //Remover Vendedor
 router.delete('/:sellerId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], sellerCtrl.deleteSellerById);

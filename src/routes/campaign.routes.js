@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as campaignCtrl from '../controllers/campaign.controller'
-import { authJwt, verifySignup } from '../middlewares'
+import { authJwt, verifySignup, verifyDuplicate } from '../middlewares'
 const router = Router();
 
 //Obtener Campañas
@@ -12,11 +12,11 @@ router.get('/activos', campaignCtrl.getCampaniasActivas)
 //Obtener Campaña por Id
 router.get('/:campaignId', campaignCtrl.getOne);
 
-//Obtener Camapaña por código Vehicular
+//Obtener Campaña por código Vehicular
 //router.post('/find', campaignCtrl.getCampaignByVehicle);
 
 //Crear Campaña
-router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], campaignCtrl.createCampaign);
+router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateCampania], campaignCtrl.createCampaign);
 
 //Actualizar Campaña
 router.patch('/:campaignId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], campaignCtrl.updateCampaignById);

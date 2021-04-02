@@ -19,11 +19,11 @@ router.get('/', colorCtrl.getColors); //Obtener Color Activos
 
 router.get('/activos', colorCtrl.getColorByActivo); //Obtener Color por ID
 
-router.get('/:colorId', colorCtrl.getColorById); //Crear Modelo
+router.get('/:colorId', colorCtrl.getColorById); //Crear Color
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], colorCtrl.createColor); //Actualizar Modelo
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateColor], colorCtrl.createColor); //Actualizar Color
 
-router.patch('/:colorId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], colorCtrl.updateColor); //Eliminar Modelo
+router.patch('/:colorId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], colorCtrl.updateColor); //Eliminar Color
 
 router.delete('/:colorId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], colorCtrl.deleteColor);
 var _default = router;

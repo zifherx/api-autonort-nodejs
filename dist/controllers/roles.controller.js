@@ -21,26 +21,41 @@ var createRole = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            _context.prev = 0;
             _req$body = req.body, name = _req$body.name, description = _req$body.description;
             newRole = new _Role.default({
               name: name,
               description: description
             });
-            _context.next = 4;
+            _context.next = 5;
             return newRole.save();
 
-          case 4:
+          case 5:
             roleSaved = _context.sent;
-            res.json({
-              message: 'Rol creado con éxito'
+
+            if (roleSaved) {
+              res.json({
+                message: 'Rol creado con éxito'
+              });
+            }
+
+            _context.next = 13;
+            break;
+
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context["catch"](0);
+            console.log(_context.t0);
+            res.status(409).json({
+              message: _context.t0.message
             });
 
-          case 6:
+          case 13:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee);
+    }, _callee, null, [[0, 9]]);
   }));
 
   return function createRole(_x, _x2) {
@@ -57,19 +72,47 @@ var getRoles = /*#__PURE__*/function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
-            return _Role.default.find();
+            _context2.prev = 0;
+            _context2.next = 3;
+            return _Role.default.find().sort({
+              name: 'asc'
+            });
 
-          case 2:
+          case 3:
             roles = _context2.sent;
-            res.status(200).json(roles);
 
-          case 4:
+            if (!(roles.length > 0)) {
+              _context2.next = 8;
+              break;
+            }
+
+            res.json(roles);
+            _context2.next = 9;
+            break;
+
+          case 8:
+            return _context2.abrupt("return", res.status(404).json({
+              message: 'No existen Roles'
+            }));
+
+          case 9:
+            _context2.next = 15;
+            break;
+
+          case 11:
+            _context2.prev = 11;
+            _context2.t0 = _context2["catch"](0);
+            console.log(_context2.t0);
+            res.status(409).json({
+              message: _context2.t0.message
+            });
+
+          case 15:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2);
+    }, _callee2, null, [[0, 11]]);
   }));
 
   return function getRoles(_x3, _x4) {
@@ -81,24 +124,51 @@ exports.getRoles = getRoles;
 
 var getRolesById = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var roles;
+    var roleId, roles;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _context3.next = 2;
-            return _Role.default.findById(req.params.roleId);
-
-          case 2:
-            roles = _context3.sent;
-            res.status(200).json(roles);
+            roleId = req.params.roleId;
+            _context3.prev = 1;
+            _context3.next = 4;
+            return _Role.default.findById(roleId);
 
           case 4:
+            roles = _context3.sent;
+
+            if (!roles) {
+              _context3.next = 9;
+              break;
+            }
+
+            res.json(roles);
+            _context3.next = 10;
+            break;
+
+          case 9:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existe el Rol'
+            }));
+
+          case 10:
+            _context3.next = 16;
+            break;
+
+          case 12:
+            _context3.prev = 12;
+            _context3.t0 = _context3["catch"](1);
+            console.log(_context3.t0);
+            res.status(409).json({
+              message: _context3.t0.message
+            });
+
+          case 16:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3);
+    }, _callee3, null, [[1, 12]]);
   }));
 
   return function getRolesById(_x5, _x6) {
@@ -123,8 +193,6 @@ var updateRoleById = /*#__PURE__*/function () {
             return _Role.default.findByIdAndUpdate(roleId, {
               name: name,
               description: description
-            }, {
-              new: true
             });
 
           case 5:
@@ -135,20 +203,23 @@ var updateRoleById = /*#__PURE__*/function () {
                 message: 'Rol actualizado con éxito'
               });
             } else {
-              res.status(403).json({
-                message: 'No Autorizado'
+              res.status(404).json({
+                message: 'No existe el Rol a actualizar'
               });
             }
 
-            _context4.next = 12;
+            _context4.next = 13;
             break;
 
           case 9:
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](2);
-            console.error(_context4.t0); //res.status(404).json(err)
+            console.log(_context4.t0);
+            res.status(409).json({
+              message: _context4.t0.message
+            });
 
-          case 12:
+          case 13:
           case "end":
             return _context4.stop();
         }
@@ -171,21 +242,47 @@ var deleteRoleById = /*#__PURE__*/function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             roleId = req.params.roleId;
-            _context5.next = 3;
-            return _Role.default.findByIdAndRemove(roleId);
+            _context5.prev = 1;
+            _context5.next = 4;
+            return _Role.default.findByIdAndDelete(roleId);
 
-          case 3:
+          case 4:
             deletedRole = _context5.sent;
+
+            if (!deletedRole) {
+              _context5.next = 9;
+              break;
+            }
+
             res.json({
               message: 'Rol eliminado con éxito'
             });
+            _context5.next = 10;
+            break;
 
-          case 5:
+          case 9:
+            return _context5.abrupt("return", res.status(404).json({
+              message: 'No existe el Rol a eliminar'
+            }));
+
+          case 10:
+            _context5.next = 16;
+            break;
+
+          case 12:
+            _context5.prev = 12;
+            _context5.t0 = _context5["catch"](1);
+            console.log(_context5.t0);
+            res.status(409).json({
+              message: _context5.t0.message
+            });
+
+          case 16:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5);
+    }, _callee5, null, [[1, 12]]);
   }));
 
   return function deleteRoleById(_x9, _x10) {

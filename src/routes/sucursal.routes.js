@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as sucursalCtrl from '../controllers/sucursal.controller'
-import { authJwt, verifySignup } from "../middlewares";
+import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get('/activos', sucursalCtrl.getSucursalByActivo);
 router.get('/:sucursalId', sucursalCtrl.getSucursalById);
 
 //Crear Sucursal
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], sucursalCtrl.createSucursal);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateSucursal], sucursalCtrl.createSucursal);
 
 //Actualizar Sucursal
 router.patch('/:sucursalId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], sucursalCtrl.updateSucursal);

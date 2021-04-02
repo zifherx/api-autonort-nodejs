@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as condicionCtrl from '../controllers/condicion.controller'
-import { authJwt, verifySignup } from "../middlewares";
+import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get('/activos', condicionCtrl.getCondicionByActivo);
 router.get('/:condicionId', condicionCtrl.getCondicionById);
 
 //Crear Condicion
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], condicionCtrl.createCondicion);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateCondicion], condicionCtrl.createCondicion);
 
 //Actualizar Condicion
 router.patch('/:condicionId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], condicionCtrl.updateCondicion);

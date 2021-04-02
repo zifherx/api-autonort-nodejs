@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as sustentoCtrl from '../controllers/sustento.controller'
-import { authJwt, verifySignup } from "../middlewares";
+import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get('/activos', sustentoCtrl.getSustentoByActivo);
 router.get('/:sustentoId', sustentoCtrl.getSustentoById);
 
 //Crear Sustento
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], sustentoCtrl.createSustento);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateSustento], sustentoCtrl.createSustento);
 
 //Actualizar Sustento
 router.patch('/:sustentoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], sustentoCtrl.updateSustento);

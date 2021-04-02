@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as colorCtrl from '../controllers/colores.controller'
-import { authJwt, verifySignup } from "../middlewares";
+import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
@@ -13,13 +13,13 @@ router.get('/activos', colorCtrl.getColorByActivo);
 //Obtener Color por ID
 router.get('/:colorId', colorCtrl.getColorById);
 
-//Crear Modelo
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], colorCtrl.createColor);
+//Crear Color
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateColor], colorCtrl.createColor);
 
-//Actualizar Modelo
+//Actualizar Color
 router.patch('/:colorId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], colorCtrl.updateColor);
 
-//Eliminar Modelo
+//Eliminar Color
 router.delete('/:colorId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], colorCtrl.deleteColor);
 
 export default router;

@@ -22,35 +22,45 @@ var getColors = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _Colores.default.find();
+            return _Colores.default.find().sort({
+              name: 'asc'
+            });
 
           case 3:
             colores = _context.sent;
 
-            if (colores.length > 0) {
-              res.send(colores);
-            } else {
-              res.status(404).json({
-                message: 'Vacío'
-              });
+            if (!(colores.length > 0)) {
+              _context.next = 8;
+              break;
             }
 
-            _context.next = 10;
+            res.send(colores);
+            _context.next = 9;
             break;
 
-          case 7:
-            _context.prev = 7;
+          case 8:
+            return _context.abrupt("return", res.status(404).json({
+              message: 'No existen Colores'
+            }));
+
+          case 9:
+            _context.next = 15;
+            break;
+
+          case 11:
+            _context.prev = 11;
             _context.t0 = _context["catch"](0);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context.t0);
+            res.status(409).json({
+              message: _context.t0.message
             });
 
-          case 10:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[0, 11]]);
   }));
 
   return function getColors(_x, _x2) {
@@ -71,36 +81,45 @@ var getColorByActivo = /*#__PURE__*/function () {
             _context2.next = 3;
             return _Colores.default.find({
               status: "Activo"
+            }).sort({
+              name: 'asc'
             });
 
           case 3:
             colores = _context2.sent;
 
-            if (colores.length > 0) {
-              res.send(colores);
-            } else {
-              res.status(404).json({
-                message: 'Vacío'
-              });
+            if (!(colores.length > 0)) {
+              _context2.next = 8;
+              break;
             }
 
-            _context2.next = 10;
+            res.json(colores);
+            _context2.next = 9;
             break;
 
-          case 7:
-            _context2.prev = 7;
+          case 8:
+            return _context2.abrupt("return", res.status(404).json({
+              message: 'No existen colores Activos'
+            }));
+
+          case 9:
+            _context2.next = 15;
+            break;
+
+          case 11:
+            _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
-            //console.log(err);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context2.t0);
+            res.status(409).json({
+              message: _context2.t0.message
             });
 
-          case 10:
+          case 15:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 7]]);
+    }, _callee2, null, [[0, 11]]);
   }));
 
   return function getColorByActivo(_x3, _x4) {
@@ -133,17 +152,18 @@ var getColorById = /*#__PURE__*/function () {
               });
             }
 
-            _context3.next = 11;
+            _context3.next = 12;
             break;
 
           case 8:
             _context3.prev = 8;
             _context3.t0 = _context3["catch"](1);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context3.t0);
+            res.status(409).json({
+              message: _context3.t0.message
             });
 
-          case 11:
+          case 12:
           case "end":
             return _context3.stop();
         }
@@ -184,17 +204,18 @@ var createColor = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 12;
+            _context4.next = 13;
             break;
 
           case 9:
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context4.t0);
+            res.status(409).json({
+              message: _context4.t0.message
             });
 
-          case 12:
+          case 13:
           case "end":
             return _context4.stop();
         }
@@ -224,8 +245,6 @@ var updateColor = /*#__PURE__*/function () {
             return _Colores.default.findByIdAndUpdate(colorId, {
               name: name,
               status: status
-            }, {
-              new: true
             });
 
           case 5:
@@ -241,18 +260,18 @@ var updateColor = /*#__PURE__*/function () {
               });
             }
 
-            _context5.next = 12;
+            _context5.next = 13;
             break;
 
           case 9:
             _context5.prev = 9;
             _context5.t0 = _context5["catch"](2);
-            //console.log(e);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context5.t0);
+            res.status(409).json({
+              message: _context5.t0.message
             });
 
-          case 12:
+          case 13:
           case "end":
             return _context5.stop();
         }
@@ -293,18 +312,18 @@ var deleteColor = /*#__PURE__*/function () {
               });
             }
 
-            _context6.next = 11;
+            _context6.next = 12;
             break;
 
           case 8:
             _context6.prev = 8;
             _context6.t0 = _context6["catch"](1);
-            //console.log(e);
-            res.status(403).json({
-              message: 'No Autorizado'
+            console.log(_context6.t0);
+            res.status(409).json({
+              message: _context6.t0.message
             });
 
-          case 11:
+          case 12:
           case "end":
             return _context6.stop();
         }

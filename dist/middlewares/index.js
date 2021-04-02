@@ -5,7 +5,7 @@ var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWild
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.authJwt = exports.verifySignup = void 0;
+exports.verifyDuplicate = exports.authJwt = exports.verifySignup = void 0;
 
 var verifySignup = _interopRequireWildcard(require("./verifySignup"));
 
@@ -14,4 +14,8 @@ exports.verifySignup = verifySignup;
 var authJwt = _interopRequireWildcard(require("./auth.jwt"));
 
 exports.authJwt = authJwt;
+
+var verifyDuplicate = _interopRequireWildcard(require("./verifyDuplicate"));
+
+exports.verifyDuplicate = verifyDuplicate;
 //# sourceMappingURL=index.js.map

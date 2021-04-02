@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as bancoCtrl from '../controllers/banco.controller'
-import { authJwt, verifySignup } from "../middlewares";
+import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
@@ -13,13 +13,13 @@ router.get('/activos', bancoCtrl.getBancoByActivo);
 //Obtener Banco por ID
 router.get('/:bancoId', bancoCtrl.getBancoById);
 
-//Crear Modelo
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], bancoCtrl.createBanco);
+//Crear Banco
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateBanco], bancoCtrl.createBanco);
 
-//Actualizar Modelo
+//Actualizar Banco
 router.patch('/:bancoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], bancoCtrl.updateBanco);
 
-//Eliminar Modelo
+//Eliminar Banco
 router.delete('/:bancoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], bancoCtrl.deleteBanco);
 
 export default router;

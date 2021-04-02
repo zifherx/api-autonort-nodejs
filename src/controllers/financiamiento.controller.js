@@ -2,14 +2,15 @@ import Financiamiento from "../models/Financiamiento";
 
 export const getFinanciamientos = async(req, res) => {
     try {
-        const query = await Financiamiento.find();
+        const query = await Financiamiento.find().sort({ name: 'asc' });
         if (query.length > 0) {
-            res.send(query);
+            res.json(query);
         } else {
-            res.status(404).json({ message: 'Vacío' })
+            return res.status(404).json({ message: 'No existen Financiamientos' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -18,26 +19,27 @@ export const getFinanciamientoById = async(req, res) => {
     try {
         const query = await Financiamiento.findById(financiamientoId);
         if (query) {
-            res.send(query);
+            res.json(query);
         } else {
-            res.status(404).json({ message: 'No existe' })
+            return res.status(404).json({ message: 'No existe Financiamiento' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getFinanciamientoByActivo = async(req, res) => {
     try {
-        const query = await Financiamiento.find({ status: "Activo" });
-        if (query) {
-            res.send(query);
+        const query = await Financiamiento.find({ status: "Activo" }).sort({ name: "asc" });
+        if (query.length > 0) {
+            res.json(query);
         } else {
-            res.status(404).json({ message: 'Vacío' })
+            return res.status(404).json({ message: 'No existen Financiamientos Activos' })
         }
     } catch (err) {
-        //console.log(err);
-        res.status(403).json({ message: 'No Autorizado' });
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -45,14 +47,13 @@ export const createFinanciamiento = async(req, res) => {
     const { name, status } = req.body;
     try {
         const objeto = new Financiamiento({ name, status });
-
         const query = await objeto.save();
-
         if (query) {
             res.json({ message: 'Financiamiento creado con éxito' })
         }
     } catch (err) {
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -60,17 +61,15 @@ export const updateFinanciamiento = async(req, res) => {
     const { name, status } = req.body;
     const { financiamientoId } = req.params;
     try {
-
-        const query = await Financiamiento.findByIdAndUpdate(financiamientoId, { name, status }, { new: true });
-
+        const query = await Financiamiento.findByIdAndUpdate(financiamientoId, { name, status });
         if (query) {
             res.json({ message: 'Financiamiento actualizado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Financiamiento' });
+            res.status(404).json({ message: 'No existe Financiamiento a actualizar' });
         }
     } catch (err) {
-        //console.log(e);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -82,10 +81,10 @@ export const deleteFinanciamiento = async(req, res) => {
         if (query) {
             res.json({ message: 'Financiamiento eliminado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Financiamiento' });
+            return res.status(404).json({ message: 'No existe Financiamiento a eliminar' });
         }
     } catch (err) {
-        //console.log(e);
-        res.status(403).json({ message: 'No Autorizado' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }

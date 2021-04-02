@@ -13,16 +13,18 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _Customer = _interopRequireDefault(require("../models/Customer"));
 
+var _User = _interopRequireDefault(require("../models/User"));
+
 var createCustomer = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, name, document, cellphone, email, address, newCustomer, customerSaved;
+    var _req$body, name, document, cellphone, email, address, empleado, newCustomer, foundEmployee, customerSaved;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            _req$body = req.body, name = _req$body.name, document = _req$body.document, cellphone = _req$body.cellphone, email = _req$body.email, address = _req$body.address;
+            _req$body = req.body, name = _req$body.name, document = _req$body.document, cellphone = _req$body.cellphone, email = _req$body.email, address = _req$body.address, empleado = _req$body.empleado;
+            _context.prev = 1;
             newCustomer = new _Customer.default({
               name: name,
               document: document,
@@ -31,30 +33,46 @@ var createCustomer = /*#__PURE__*/function () {
               address: address
             });
             _context.next = 5;
-            return newCustomer.save();
+            return _User.default.find({
+              username: {
+                $in: empleado
+              }
+            });
 
           case 5:
-            customerSaved = _context.sent;
-            res.json({
-              message: 'Cliente creado con éxito'
+            foundEmployee = _context.sent;
+            newCustomer.empleado = foundEmployee.map(function (em) {
+              return em._id;
             });
-            _context.next = 13;
-            break;
+            _context.next = 9;
+            return newCustomer.save();
 
           case 9:
-            _context.prev = 9;
-            _context.t0 = _context["catch"](0);
-            console.log(_context.t0);
-            res.status(401).json({
-              messsage: 'No se puede ejecutar la consulta'
-            });
+            customerSaved = _context.sent;
+
+            if (customerSaved) {
+              res.json({
+                message: 'Cliente creado con éxito'
+              });
+            }
+
+            _context.next = 17;
+            break;
 
           case 13:
+            _context.prev = 13;
+            _context.t0 = _context["catch"](1);
+            console.log(_context.t0);
+            res.status(409).json({
+              message: _context.t0.message
+            });
+
+          case 17:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 9]]);
+    }, _callee, null, [[1, 13]]);
   }));
 
   return function createCustomer(_x, _x2) {
@@ -73,28 +91,45 @@ var getCustomers = /*#__PURE__*/function () {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _Customer.default.find();
+            return _Customer.default.find().sort({
+              name: 'asc'
+            });
 
           case 3:
             customers = _context2.sent;
-            res.send(customers);
-            _context2.next = 11;
+
+            if (!(customers.length > 0)) {
+              _context2.next = 8;
+              break;
+            }
+
+            res.json(customers);
+            _context2.next = 9;
             break;
 
-          case 7:
-            _context2.prev = 7;
-            _context2.t0 = _context2["catch"](0);
-            console.log(_context2.t0);
-            res.status(401).json({
-              messsage: 'No se puede ejecutar la consulta'
-            });
+          case 8:
+            return _context2.abrupt("return", res.status(404).json({
+              message: 'No existen Clientes'
+            }));
+
+          case 9:
+            _context2.next = 15;
+            break;
 
           case 11:
+            _context2.prev = 11;
+            _context2.t0 = _context2["catch"](0);
+            console.log(_context2.t0);
+            res.status(409).json({
+              message: _context2.t0.message
+            });
+
+          case 15:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 7]]);
+    }, _callee2, null, [[0, 11]]);
   }));
 
   return function getCustomers(_x3, _x4) {
@@ -111,39 +146,46 @@ var getCustomerById = /*#__PURE__*/function () {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _context3.prev = 0;
             customerId = req.params.customerId;
+            _context3.prev = 1;
             _context3.next = 4;
             return _Customer.default.findById(customerId);
 
           case 4:
             customer = _context3.sent;
 
-            if (customer) {
-              res.status(200).json(customer);
-            } else {
-              res.status(201).json({
-                messsage: 'No existe cliente a mostrar'
-              });
+            if (!customer) {
+              _context3.next = 9;
+              break;
             }
 
-            _context3.next = 12;
+            res.json(customer);
+            _context3.next = 10;
             break;
 
-          case 8:
-            _context3.prev = 8;
-            _context3.t0 = _context3["catch"](0);
-            console.log(_context3.t0);
-            res.status(409).json({
-              messsage: 'No se puede ejecutar la consulta'
-            });
+          case 9:
+            return _context3.abrupt("return", res.status(404).json({
+              messsage: 'No existe cliente'
+            }));
+
+          case 10:
+            _context3.next = 16;
+            break;
 
           case 12:
+            _context3.prev = 12;
+            _context3.t0 = _context3["catch"](1);
+            console.log(_context3.t0);
+            res.status(409).json({
+              message: _context3.t0.message
+            });
+
+          case 16:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 8]]);
+    }, _callee3, null, [[1, 12]]);
   }));
 
   return function getCustomerById(_x5, _x6) {
@@ -160,8 +202,8 @@ var getCustomerByDni = /*#__PURE__*/function () {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _context4.prev = 0;
             customerDni = req.body.customerDni;
+            _context4.prev = 1;
             _context4.next = 4;
             return _Customer.default.findOne({
               document: customerDni
@@ -175,13 +217,12 @@ var getCustomerByDni = /*#__PURE__*/function () {
               break;
             }
 
-            //console.log(customer);
-            res.send(customer);
+            res.json(customer);
             _context4.next = 10;
             break;
 
           case 9:
-            return _context4.abrupt("return", res.status(201).json({
+            return _context4.abrupt("return", res.status(404).json({
               message: 'No existe el DNI en el Sistema'
             }));
 
@@ -191,18 +232,18 @@ var getCustomerByDni = /*#__PURE__*/function () {
 
           case 12:
             _context4.prev = 12;
-            _context4.t0 = _context4["catch"](0);
+            _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            return _context4.abrupt("return", res.status(403).json({
-              message: 'No Autorizado'
-            }));
+            res.status(409).json({
+              message: _context4.t0.message
+            });
 
           case 16:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 12]]);
+    }, _callee4, null, [[1, 12]]);
   }));
 
   return function getCustomerByDni(_x7, _x8) {
@@ -214,19 +255,25 @@ exports.getCustomerByDni = getCustomerByDni;
 
 var updateCustomerById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var customerId, updateCustomer;
+    var customerId, _req$body2, name, document, cellphone, email, address, updateCustomer;
+
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _context5.prev = 0;
             customerId = req.params.customerId;
-            _context5.next = 4;
-            return _Customer.default.findByIdAndUpdate(customerId, req.body, {
-              new: true
+            _req$body2 = req.body, name = _req$body2.name, document = _req$body2.document, cellphone = _req$body2.cellphone, email = _req$body2.email, address = _req$body2.address;
+            _context5.prev = 2;
+            _context5.next = 5;
+            return _Customer.default.findByIdAndUpdate(customerId, {
+              name: name,
+              document: document,
+              cellphone: cellphone,
+              email: email,
+              address: address
             });
 
-          case 4:
+          case 5:
             updateCustomer = _context5.sent;
 
             if (updateCustomer) {
@@ -234,28 +281,28 @@ var updateCustomerById = /*#__PURE__*/function () {
                 message: 'Cliente actualizado con éxito'
               });
             } else {
-              res.status(201).json({
-                messsage: 'No existe cliente a actualizar'
+              res.status(404).json({
+                messsage: 'No existe Cliente a actualizar'
               });
             }
 
-            _context5.next = 12;
+            _context5.next = 13;
             break;
 
-          case 8:
-            _context5.prev = 8;
-            _context5.t0 = _context5["catch"](0);
+          case 9:
+            _context5.prev = 9;
+            _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
             res.status(409).json({
-              messsage: 'No se puede ejecutar la consulta'
+              message: _context5.t0.message
             });
 
-          case 12:
+          case 13:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[0, 8]]);
+    }, _callee5, null, [[2, 9]]);
   }));
 
   return function updateCustomerById(_x9, _x10) {
@@ -272,41 +319,48 @@ var deleteCustomerById = /*#__PURE__*/function () {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            _context6.prev = 0;
             customerId = req.params.customerId;
+            _context6.prev = 1;
             _context6.next = 4;
             return _Customer.default.findByIdAndDelete(customerId);
 
           case 4:
             deletedCustomer = _context6.sent;
 
-            if (deletedCustomer) {
-              res.json({
-                message: 'Cliente eliminado con éxito'
-              });
-            } else {
-              res.status(401).json({
-                messsage: 'Cliente no Existe'
-              });
+            if (!deletedCustomer) {
+              _context6.next = 9;
+              break;
             }
 
-            _context6.next = 12;
+            res.json({
+              message: 'Cliente eliminado con éxito'
+            });
+            _context6.next = 10;
             break;
 
-          case 8:
-            _context6.prev = 8;
-            _context6.t0 = _context6["catch"](0);
-            console.log(_context6.t0);
-            res.status(409).json({
-              messsage: 'No se puede ejecutar la consulta'
-            });
+          case 9:
+            return _context6.abrupt("return", res.status(404).json({
+              messsage: 'No existe Cliente a eliminar'
+            }));
+
+          case 10:
+            _context6.next = 16;
+            break;
 
           case 12:
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](1);
+            console.log(_context6.t0);
+            res.status(409).json({
+              message: _context6.t0.message
+            });
+
+          case 16:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[0, 8]]);
+    }, _callee6, null, [[1, 12]]);
   }));
 
   return function deleteCustomerById(_x11, _x12) {

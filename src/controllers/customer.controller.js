@@ -1,85 +1,94 @@
 import Customer from '../models/Customer'
+import User from '../models/User';
 
 export const createCustomer = async(req, res) => {
+    const { name, document, cellphone, email, address, empleado } = req.body;
     try {
-        const { name, document, cellphone, email, address } = req.body;
         const newCustomer = new Customer({ name, document, cellphone, email, address });
+        const foundEmployee = await User.find({ username: { $in: empleado } });
+        newCustomer.empleado = foundEmployee.map(em => em._id)
         const customerSaved = await newCustomer.save();
-        res.json({ message: 'Cliente creado con éxito' });
-    } catch (e) {
-        console.log(e);
-        res.status(401).json({ messsage: 'No se puede ejecutar la consulta' });
+        if (customerSaved) {
+            res.json({ message: 'Cliente creado con éxito' });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getCustomers = async(req, res) => {
     try {
-        const customers = await Customer.find();
-        res.send(customers)
-    } catch (e) {
-        console.log(e);
-        res.status(401).json({ messsage: 'No se puede ejecutar la consulta' });
+        const customers = await Customer.find().sort({ name: 'asc' });
+        if (customers.length > 0) {
+            res.json(customers);
+        } else {
+            return res.status(404).json({ message: 'No existen Clientes' });
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getCustomerById = async(req, res) => {
+    const { customerId } = req.params;
     try {
-        const { customerId } = req.params;
         const customer = await Customer.findById(customerId);
         if (customer) {
-            res.status(200).json(customer);
+            res.json(customer);
         } else {
-            res.status(201).json({ messsage: 'No existe cliente a mostrar' });
+            return res.status(404).json({ messsage: 'No existe cliente' });
         }
-    } catch (e) {
-        console.log(e);
-        res.status(409).json({ messsage: 'No se puede ejecutar la consulta' });
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getCustomerByDni = async(req, res) => {
+    const { customerDni } = req.body;
     try {
-        const { customerDni } = req.body;
         const customer = await Customer.findOne({ document: customerDni });
-        //console.log(customer);
         if (customer) {
-            //console.log(customer);
-            res.send(customer);
+            res.json(customer);
         } else {
-            return res.status(201).json({ message: 'No existe el DNI en el Sistema' })
+            return res.status(404).json({ message: 'No existe el DNI en el Sistema' })
         }
-    } catch (e) {
-        console.log(e);
-        return res.status(403).json({ message: 'No Autorizado' });
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const updateCustomerById = async(req, res) => {
+    const { customerId } = req.params;
+    const { name, document, cellphone, email, address } = req.body;
     try {
-        const { customerId } = req.params;
-        const updateCustomer = await Customer.findByIdAndUpdate(customerId, req.body, { new: true });
+        const updateCustomer = await Customer.findByIdAndUpdate(customerId, { name, document, cellphone, email, address });
         if (updateCustomer) {
             res.json({ message: 'Cliente actualizado con éxito' });
         } else {
-            res.status(201).json({ messsage: 'No existe cliente a actualizar' });
+            res.status(404).json({ messsage: 'No existe Cliente a actualizar' });
         }
-    } catch (e) {
-        console.log(e);
-        res.status(409).json({ messsage: 'No se puede ejecutar la consulta' });
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const deleteCustomerById = async(req, res) => {
+    const { customerId } = req.params;
     try {
-        const { customerId } = req.params;
         const deletedCustomer = await Customer.findByIdAndDelete(customerId);
         if (deletedCustomer) {
             res.json({ message: 'Cliente eliminado con éxito' });
         } else {
-            res.status(401).json({ messsage: 'Cliente no Existe' });
+            return res.status(404).json({ messsage: 'No existe Cliente a eliminar' });
         }
-    } catch (e) {
-        console.log(e);
-        res.status(409).json({ messsage: 'No se puede ejecutar la consulta' });
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }

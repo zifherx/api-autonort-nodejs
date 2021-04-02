@@ -1,27 +1,27 @@
 import { Router } from 'express'
 import * as propsCtrl from '../controllers/props.controller'
-import { authJwt, verifySignup } from '../middlewares'
+import { authJwt, verifySignup, verifyDuplicate } from '../middlewares'
 const router = Router();
 
-//Obtener Vendedores
+//Obtener Accesorios
 router.get('/', propsCtrl.getAll);
 
-//Obtener Accesorios activos de
+//Obtener Accesorios activos
 router.get('/activos', propsCtrl.getAccesoriosActivos)
 
-//Obtener Vendedor por Id
+//Obtener Accesorio por Id
 router.get('/:propsId', propsCtrl.getAccesorioById);
 
-//Obtener Accesosrio por código Vehicular
+//Obtener Accesorio por código Vehicular
 router.post('/find', propsCtrl.getAccesorioByAuto);
 
-//Crear Vendedor
-router.post('/', [authJwt.verifyToken, authJwt.isChiefTunning, verifySignup.checkRolesExist], propsCtrl.createProp);
+//Crear Accesorio
+router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateAccesorio], propsCtrl.createProp);
 
-//Actualizar Vendedor
-router.patch('/:propsId', [authJwt.verifyToken, authJwt.isChiefTunning, verifySignup.checkRolesExist], propsCtrl.updatePropById);
+//Actualizar Accesorio
+router.patch('/:propsId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], propsCtrl.updatePropById);
 
-//Remover Vendedor
-router.delete('/:propsId', [authJwt.verifyToken, authJwt.isChiefTunning, verifySignup.checkRolesExist], propsCtrl.deletePropById);
+//Remover Accesorio
+router.delete('/:propsId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], propsCtrl.deletePropById);
 
 export default router;

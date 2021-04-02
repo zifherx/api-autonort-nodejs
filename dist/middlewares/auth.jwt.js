@@ -40,17 +40,18 @@ var verifyToken = /*#__PURE__*/function () {
 
           case 4:
             decoded = _jsonwebtoken.default.verify(token, _config.default.SECRET);
+            res.locals.jwtPayload = decoded;
             req.userId = decoded.id;
-            _context.next = 8;
+            _context.next = 9;
             return _User.default.findById(req.userId, {
               password: 0
             });
 
-          case 8:
+          case 9:
             user = _context.sent;
 
             if (user) {
-              _context.next = 11;
+              _context.next = 12;
               break;
             }
 
@@ -58,24 +59,36 @@ var verifyToken = /*#__PURE__*/function () {
               message: 'No se encontró usuario'
             }));
 
-          case 11:
+          case 12:
             next();
-            _context.next = 17;
+            _context.next = 23;
             break;
 
-          case 14:
-            _context.prev = 14;
+          case 15:
+            _context.prev = 15;
             _context.t0 = _context["catch"](0);
+
+            if (!(_context.t0.message == "jwt expired")) {
+              _context.next = 21;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(401).json({
+              message: 'Token ha expirado'
+            }));
+
+          case 21:
+            console.log(_context.t0.message);
             return _context.abrupt("return", res.status(403).json({
               message: 'No Autorizado'
             }));
 
-          case 17:
+          case 23:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 14]]);
+    }, _callee, null, [[0, 15]]);
   }));
 
   return function verifyToken(_x, _x2, _x3) {
@@ -377,7 +390,7 @@ var isInmatriculadosAsistant = /*#__PURE__*/function () {
 
           case 14:
             return _context6.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Asistente de Inmatriculacion'
+              message: 'Requiere permiso del Asistente-Inmatriculacion'
             }));
 
           case 15:

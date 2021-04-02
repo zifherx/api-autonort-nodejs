@@ -21,7 +21,7 @@ router.get('/activos', ubicacionCtrl.getUbicacionByActivo); //Obtener Ubicacion 
 
 router.get('/:ubicacionId', ubicacionCtrl.getUbicacionById); //Crear Ubicacion
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], ubicacionCtrl.createUbicacion); //Actualizar Ubicacion
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateUbicacion], ubicacionCtrl.createUbicacion); //Actualizar Ubicacion
 
 router.patch('/:ubicacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], ubicacionCtrl.updateUbicacion); //Eliminar Ubicacion
 

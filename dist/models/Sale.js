@@ -122,6 +122,10 @@ var saleSchema = new _mongoose.Schema({
     ref: 'Campaign',
     type: _mongoose.Schema.Types.ObjectId
   }],
+  adicional: [{
+    ref: 'Adicional',
+    type: _mongoose.Schema.Types.ObjectId
+  }],
   descuento_autonort: {
     type: Number
   },
@@ -164,6 +168,11 @@ var saleSchema = new _mongoose.Schema({
   },
   fecha_cancelacion: {
     type: Date
+  },
+  //Empleado
+  empleado: {
+    ref: 'User',
+    type: _mongoose.Schema.Types.ObjectId
   }
 }, {
   timestamps: true,

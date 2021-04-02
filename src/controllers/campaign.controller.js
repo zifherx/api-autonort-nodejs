@@ -1,10 +1,15 @@
 import Campaign from '../models/Campaign'
 import Vehicle from '../models/Vehicle'
+import User from '../models/User'
 
 export const createCampaign = async(req, res) => {
+    const { name, descripcion, bono, startDate, endDate, status, empleado } = req.body;
+
     try {
-        const { name, descripcion, bono, startDate, endDate, status } = req.body;
+
         const newCampaign = new Campaign({ name, descripcion, bono, startDate, endDate, status });
+        const foundEmployee = await User.find({ username: { $in: empleado } });
+        newCampaign.empleado = foundEmployee.map(em => em._id);
 
         //const foundAuto = await Vehicle.find({ cod_tdp: { $in: auto } });
         //newCampaign.auto = foundAuto.map(auto => auto._id);
@@ -14,106 +19,103 @@ export const createCampaign = async(req, res) => {
         if (campaignSaved) {
             res.json({ message: 'Campaña creada con éxito' });
         }
-    } catch (e) {
-        console.log(e);
-        res.status(404).json({ message: 'Campaña ya existe' })
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getAll = async(req, res) => {
     try {
-        const campaign = await Campaign.find();
-        if (campaign) {
-            res.send(campaign);
+        const campaign = await Campaign.find().sort({ name: 'asc' });
+        if (campaign.length > 0) {
+            res.json(campaign);
         } else {
-            return res.status(201).json({ message: 'No existen Campañas' })
+            return res.status(404).json({ message: 'No existen Campañas' })
         }
-    } catch (e) {
-        console.log(e);
-        res.status(404).json({ message: `${e}` })
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getOne = async(req, res) => {
+    const { campaignId } = req.params;
     try {
-        const { campaignId } = req.params;
         const campaigns = await Campaign.findById(campaignId);
         if (campaigns) {
             res.json(campaigns);
         } else {
-            res.status(201).json({ message: 'No existe la campaña' })
+            return res.status(404).json({ message: 'No existe la campaña' })
         }
-    } catch (e) {
-        console.log(e);
-        res.status(404).json({ message: 'Error de Servidor' })
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getCampaniasActivas = async(req, res) => {
     try {
-        const activos = await Campaign.find({ status: 'Activo' });
-        if (activos) {
+        const activos = await Campaign.find({ status: 'Activo' }).sort({ name: 'asc' });
+        if (activos.length > 0) {
             res.json(activos);
+        } else {
+            res.status(404).json({ message: 'No existen Campañas Activas' })
         }
     } catch (err) {
-        res.status(404).json({ message: 'Erro de Servidor' });
         console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getCampaignByVehicle = async(req, res) => {
+    const { modelo } = req.body;
     try {
-        const { modelo } = req.body;
-
         const vehiculo = await Vehicle.findOne({ cod_tdp: modelo })
 
         const campana = await Campaign.find({ auto: vehiculo });
 
         if (campana) {
-            //console.log(campana);
             res.json(campana);
         } else {
-            res.status(201).json({ message: 'No existen campañas para ese vehículo' });
+            res.status(404).json({ message: 'No existen campañas para ese vehículo' });
         }
-    } catch (e) {
-        console.log(e);
-        res.status(404).json({ message: 'Error filtrando Campañas' });
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const updateCampaignById = async(req, res) => {
+    const { campaignId } = req.params;
+    const { name, descripcion, bono, startDate, endDate, status } = req.body;
     try {
-        const { campaignId } = req.params;
-
-        const { name, descripcion, bono, startDate, endDate, status } = req.body;
-
         //const foundAuto = await Vehicle.find({ cod_tdp: { $in: auto } });
 
-        const updateCampaign = await Campaign.findByIdAndUpdate(campaignId, { name, descripcion, bono, startDate, endDate, status }, { new: true });
+        const updateCampaign = await Campaign.findByIdAndUpdate(campaignId, { name, descripcion, bono, startDate, endDate, status });
         if (updateCampaign) {
             res.json({ message: 'Campaña actualizada con éxito' });
         } else {
-            res.status(201).json({ message: 'Campaña no existe' });
+            res.status(404).json({ message: 'No existe Campaña' });
         }
-
-    } catch (e) {
-        console.log(e);
-        res.status(404).json({ message: 'Error al actualizar la campaña' })
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const deleteCampaignById = async(req, res) => {
+    const { campaignId } = req.params;
     try {
-        const { campaignId } = req.params;
-        const deletedCampaign = await Campaign.findByIdAndRemove(campaignId);
+        const deletedCampaign = await Campaign.findByIdAndDelete(campaignId);
         if (deletedCampaign) {
             res.json({ message: 'Campaña eliminada con éxito' });
         } else {
-            res.status(201).json({ message: 'Campaña no existe' });
+            return res.status(404).json({ message: 'Campaña no existe' });
         }
 
-    } catch (e) {
-        console.log(e);
-        res.status(404).json({ message: 'Error al eliminar la campaña' })
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }

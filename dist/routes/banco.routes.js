@@ -19,11 +19,11 @@ router.get('/', bancoCtrl.getBancos); //Obtener Banco Activos
 
 router.get('/activos', bancoCtrl.getBancoByActivo); //Obtener Banco por ID
 
-router.get('/:bancoId', bancoCtrl.getBancoById); //Crear Modelo
+router.get('/:bancoId', bancoCtrl.getBancoById); //Crear Banco
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], bancoCtrl.createBanco); //Actualizar Modelo
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateBanco], bancoCtrl.createBanco); //Actualizar Banco
 
-router.patch('/:bancoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], bancoCtrl.updateBanco); //Eliminar Modelo
+router.patch('/:bancoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], bancoCtrl.updateBanco); //Eliminar Banco
 
 router.delete('/:bancoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], bancoCtrl.deleteBanco);
 var _default = router;

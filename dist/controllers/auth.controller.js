@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.signIn = exports.signUp = void 0;
+exports.changePassword = exports.signIn = exports.signUp = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -96,37 +96,39 @@ exports.signUp = signUp;
 
 var signIn = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var userFound, matchPassword, token;
+    var _req$body2, username, password, userFound, matchPassword, token;
+
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
+            _req$body2 = req.body, username = _req$body2.username, password = _req$body2.password;
+            _context2.next = 3;
             return _User.default.findOne({
-              username: req.body.username
+              username: username
             }).populate("roles");
 
-          case 2:
+          case 3:
             userFound = _context2.sent;
 
             if (userFound) {
-              _context2.next = 5;
+              _context2.next = 6;
               break;
             }
 
-            return _context2.abrupt("return", res.status(400).json({
+            return _context2.abrupt("return", res.status(404).json({
               message: 'Usuario no existe'
             }));
 
-          case 5:
-            _context2.next = 7;
-            return _User.default.comparePassword(req.body.password, userFound.password);
+          case 6:
+            _context2.next = 8;
+            return _User.default.comparePassword(password, userFound.password);
 
-          case 7:
+          case 8:
             matchPassword = _context2.sent;
 
             if (matchPassword) {
-              _context2.next = 10;
+              _context2.next = 11;
               break;
             }
 
@@ -135,19 +137,19 @@ var signIn = /*#__PURE__*/function () {
               message: 'Contraseña Errónea'
             }));
 
-          case 10:
+          case 11:
             token = _jsonwebtoken.default.sign({
               id: userFound._id
             }, _config.default.SECRET, {
-              expiresIn: 86400
+              expiresIn: 60 * 60 * 24
             });
-            res.status(201).json({
+            res.json({
               token: token,
               codigo: userFound._id,
               status: userFound.activo
             });
 
-          case 12:
+          case 13:
           case "end":
             return _context2.stop();
         }
@@ -161,4 +163,98 @@ var signIn = /*#__PURE__*/function () {
 }();
 
 exports.signIn = signIn;
+
+var changePassword = /*#__PURE__*/function () {
+  var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
+    var id, _req$body3, oldPassword, newPassword, user, matchPassword, guardado;
+
+    return _regenerator.default.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            id = res.locals.jwtPayload.id;
+            _req$body3 = req.body, oldPassword = _req$body3.oldPassword, newPassword = _req$body3.newPassword;
+
+            if (!(oldPassword && newPassword)) {
+              res.status(400).json({
+                message: 'Contraseña Anterior y Nueva Contraseña son necesarios'
+              });
+            }
+
+            _context3.prev = 3;
+            _context3.next = 6;
+            return _User.default.findById(id);
+
+          case 6:
+            user = _context3.sent;
+            _context3.next = 12;
+            break;
+
+          case 9:
+            _context3.prev = 9;
+            _context3.t0 = _context3["catch"](3);
+            res.status(404).json({
+              message: 'Usuario no existe'
+            });
+
+          case 12:
+            _context3.next = 14;
+            return _User.default.comparePassword(oldPassword, user.password);
+
+          case 14:
+            matchPassword = _context3.sent;
+
+            if (matchPassword) {
+              _context3.next = 17;
+              break;
+            }
+
+            return _context3.abrupt("return", res.status(401).json({
+              message: 'Contraseña Anterior Errónea'
+            }));
+
+          case 17:
+            _context3.prev = 17;
+            _context3.next = 20;
+            return _User.default.encryptPassword(newPassword);
+
+          case 20:
+            user.password = _context3.sent;
+            _context3.next = 23;
+            return user.save();
+
+          case 23:
+            guardado = _context3.sent;
+
+            if (guardado) {
+              res.json({
+                message: 'Contraseña actualizada con éxito'
+              });
+            }
+
+            _context3.next = 31;
+            break;
+
+          case 27:
+            _context3.prev = 27;
+            _context3.t1 = _context3["catch"](17);
+            console.log(_context3.t1);
+            res.status(409).json({
+              message: _context3.t1.message
+            });
+
+          case 31:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[3, 9], [17, 27]]);
+  }));
+
+  return function changePassword(_x5, _x6) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+exports.changePassword = changePassword;
 //# sourceMappingURL=auth.controller.js.map

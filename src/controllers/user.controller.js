@@ -2,20 +2,11 @@ import User from '../models/User'
 import Role from '../models/Role'
 
 export const createUser = async(req, res) => {
+    const { username, email, name, password, sucursal, direccion, pais, codigo_postal, about, roles, activo } = req.body;
+
     try {
-        const { username, email, name, password, sucursal, direccion, pais, codigo_postal, about, roles, activo } = req.body;
-        const newUser = new User({
-            username,
-            email,
-            name,
-            password: await User.encryptPassword(password),
-            sucursal,
-            direccion,
-            pais,
-            codigo_postal,
-            about,
-            activo
-        });
+
+        const newUser = new User({ username, email, name, password: await User.encryptPassword(password), sucursal, direccion, pais, codigo_postal, about, activo });
 
         if (roles) {
             const foundRoles = await Role.find({ name: { $in: roles } });
@@ -26,46 +17,66 @@ export const createUser = async(req, res) => {
         }
 
         const userSaved = await newUser.save();
-        res.json({ message: 'Usuario creado con éxito' });
-    } catch (e) {
-        console.log(e);
-        return res.status(404).json({ message: 'Error' })
+
+        if (userSaved) {
+            res.json({ message: 'Usuario creado con éxito' });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getUsers = async(req, res) => {
     try {
-        await User.find({}, function(err, users) {
-            Role.populate(users, { path: "roles" }, function(err, users) {
-                res.send(users);
-            })
-        });
+        const lista = await User.find().sort({ name: 'asc' }).populate('roles')
+        if (lista.length > 0) {
+            res.json(lista)
+        } else {
+            return res.status(404).json({ message: 'No existen Usuarios' })
+        }
     } catch (err) {
-        return res.status(404).json({ message: 'Error de API' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const getUserById = async(req, res) => {
-    await User.findById(req.params.userId, function(err, user) {
-        Role.populate(user, { path: "roles" }, function(err, user) {
-            res.status(200).json(user);
-        })
-    });
+    const { userId } = req.params;
+
+    try {
+
+        const objeto = await User.findById(userId).populate('roles')
+
+        if (objeto) {
+            res.json(objeto)
+        } else {
+            return res.status(404).json({ message: 'No existe Usuario' })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
+    }
 
 }
 
 export const updateUserById = async(req, res) => {
+    const { userId } = req.params;
     const { username, email, name, sucursal, direccion, pais, codigo_postal, about, roles, activo } = req.body;
 
     try {
         const foundRoles = await Role.find({ name: { $in: roles } })
-        const userFound = await User.findByIdAndUpdate(req.params.userId, { username, email, name, sucursal, direccion, pais, codigo_postal, about, roles: foundRoles.map(role => role._id), activo }, { new: true });
+        const userFound = await User.findByIdAndUpdate(userId, { username, email, name, sucursal, direccion, pais, codigo_postal, about, roles: foundRoles.map(role => role._id), activo });
 
-        //res.status(200).json(userFound);
-        res.json({ message: 'Usuario actualizado con éxito' });
-    } catch (e) {
-        console.log(e);
-        res.status(401).json({ message: 'Error en la consulta' });
+        if (userFound) {
+            res.json({ message: 'Usuario actualizado con éxito' });
+        } else {
+            return res.status(404).json({ messsage: 'No existe usuario a actualizar' })
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -74,19 +85,33 @@ export const updateProfile = async(req, res) => {
     const { userId } = req.params;
 
     try {
-        const objeto = await User.findByIdAndUpdate(userId, { email, direccion, pais, codigo_postal, about }, { new: true });
+        const objeto = await User.findByIdAndUpdate(userId, { email, direccion, pais, codigo_postal, about });
         if (objeto) {
             res.json({ message: 'Actualización de Perfil con éxito' })
         } else {
-            return res.json.status(201).json({ message: 'Perfil ya modificado' })
+            return res.json.status(404).json({ message: 'No existe Perfil a modificar' })
         }
     } catch (err) {
-        res.status(404).json({ message: 'Error en la actualización' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const deleteUserById = async(req, res) => {
-    const { userId } = req.params;
-    const deletedUser = await User.findByIdAndRemove(userId);
-    res.json({ message: 'Usuario eliminado con éxito' });
+    try {
+        const { userId } = req.params;
+
+        const deletedUser = await User.findByIdAndRemove(userId);
+
+        if (deletedUser) {
+            res.json({ message: 'Usuario eliminado con éxito' });
+        } else {
+            return res.status(404).json({ message: 'No existe usuario a eliminar' })
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
+    }
+
 }

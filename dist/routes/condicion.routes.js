@@ -21,7 +21,7 @@ router.get('/activos', condicionCtrl.getCondicionByActivo); //Obtener Condicion 
 
 router.get('/:condicionId', condicionCtrl.getCondicionById); //Crear Condicion
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], condicionCtrl.createCondicion); //Actualizar Condicion
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateCondicion], condicionCtrl.createCondicion); //Actualizar Condicion
 
 router.patch('/:condicionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], condicionCtrl.updateCondicion); //Eliminar Condicion
 

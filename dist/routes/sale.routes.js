@@ -43,11 +43,11 @@ router.get('/conteo/ventas', saleCtrl.conteoVentasByVendedor); //Obtener Venta p
 
 router.get('/:salesId', saleCtrl.getSaleById); //Crear Venta
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], saleCtrl.createSale); //Actualizar Venta
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateExpediente], saleCtrl.createSale); //Actualizar Venta
 
 router.patch('/:salesId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], saleCtrl.updateSaleById); //Remover Venta
 
-router.delete('/:salesId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], saleCtrl.deleteSaleById);
+router.delete('/:salesId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], saleCtrl.deleteSaleById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=sale.routes.js.map

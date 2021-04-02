@@ -1,48 +1,72 @@
 import Vehicle from '../models/Vehicle'
+import User from '../models/User'
 
 export const createVehicle = async(req, res) => {
-    const { marca, cod_tdp, categoria, modelo, version, sucursal } = req.body;
+    const { marca, cod_tdp, categoria, modelo, version, sucursal, empleado } = req.body;
 
-    const newVehicle = new Vehicle({
-        marca,
-        cod_tdp,
-        categoria,
-        modelo,
-        version,
-        sucursal
-    });
+    try {
+        const newVehicle = new Vehicle({ marca, cod_tdp, categoria, modelo, version, sucursal });
 
-    //const foundCampaign = await Campaign.find({ name: { $in: campaign } });
-    //newVehicle.campaign = foundCampaign.map(campaign => campaign._id);
+        const foundEmployee = await User.find({ username: { $in: empleado } });
+        newVehicle.empleado = foundEmployee.map(em => em._id);
 
-    const vehicleSaved = await newVehicle.save();
+        //const foundCampaign = await Campaign.find({ name: { $in: campaign } });
+        //newVehicle.campaign = foundCampaign.map(campaign => campaign._id);
 
-    res.json({ message: 'Vehículo creado con éxito' });
+        const vehicleSaved = await newVehicle.save();
+
+        if (vehicleSaved) {
+            res.json({ message: 'Vehículo creado con éxito' });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
+    }
+
 }
 
 export const getVehicles = async(req, res) => {
-    const vehicles = await Vehicle.find();
-    res.json(vehicles);
+    try {
+        const vehicles = await Vehicle.find().sort({ cod_tdp: 'asc' });
+
+        if (vehicles.length > 0) {
+            res.json(vehicles);
+        } else {
+            return res.status(404).json({ message: 'No existen vehículos' });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
+    }
 }
 
 export const getVehicleById = async(req, res) => {
     const { vehicleId } = req.params;
-    const vehicle = await Vehicle.findById(vehicleId);
-    res.json(vehicle);
-
+    try {
+        const vehicle = await Vehicle.findById(vehicleId);
+        if (vehicle) {
+            res.json(vehicle);
+        } else {
+            return res.status(404).json({ message: 'No existe el Vehículo' });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
+    }
 }
 
 export const getVehicleByCodigo = async(req, res) => {
+    const { codigoAuto } = req.body;
     try {
-        const { codigoAuto } = req.body;
         const carro = await Vehicle.findOne({ cod_tdp: codigoAuto });
         if (carro) {
             res.json(carro);
         } else {
-            return res.status(201).json({ message: 'No existe vehículo a mostrar' });
+            return res.status(404).json({ message: 'No existe vehículo a mostrar' });
         }
-    } catch (e) {
-        return res.status(403).json({ message: 'No Autorizado' });
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
@@ -50,28 +74,30 @@ export const updateVehicleById = async(req, res) => {
     const { vehicleId } = req.params;
     const { marca, cod_tdp, categoria, modelo, version, sucursal } = req.body;
 
-    //Campaign
-    //const foundCampaign = await Campaign.find({ name: { $in: campaign } });
-
     try {
-
-        const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, { marca, cod_tdp, categoria, modelo, version, sucursal }, { new: true });
-
+        const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, { marca, cod_tdp, categoria, modelo, version, sucursal });
         if (updatedVehicle) {
             res.json({ message: 'Vehículo actualizado con éxito' });
         } else {
-            return res.status(404).json({ message: 'Vehículo ya modificado' })
+            return res.status(404).json({ message: 'No existe Vehículo a actualizar' })
         }
-
     } catch (err) {
-        res.status(403).json({ message: 'Vehículo no existe' })
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }
 
 export const deleteVehicleById = async(req, res) => {
     const { vehicleId } = req.params;
-    const deletedVehicle = await Vehicle.findByIdAndRemove(vehicleId);
-    if (deletedVehicle) {
-        res.json({ message: 'Vehículo eliminado con éxito' });
+    try {
+        const deletedVehicle = await Vehicle.findByIdAndDelete(vehicleId);
+        if (deletedVehicle) {
+            res.json({ message: 'Vehículo eliminado con éxito' });
+        } else {
+            return res.status(404).json({ message: 'No existe Vehículo a eliminar' })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
     }
 }

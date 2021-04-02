@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as situacionCtrl from '../controllers/situacion.controller'
-import { authJwt, verifySignup } from "../middlewares";
+import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get('/activos', situacionCtrl.getSituacionByActivo);
 router.get('/:situacionId', situacionCtrl.getSituacionById);
 
 //Crear Situacion
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], situacionCtrl.createSituacion);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateSituacion], situacionCtrl.createSituacion);
 
 //Actualizar Situacion
 router.patch('/:situacionId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], situacionCtrl.updateSituacion);

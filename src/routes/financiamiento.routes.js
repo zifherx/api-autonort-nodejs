@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as financiamientoCtrl from '../controllers/financiamiento.controller'
-import { authJwt, verifySignup } from "../middlewares";
+import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get('/activos', financiamientoCtrl.getFinanciamientoByActivo);
 router.get('/:financiamientoId', financiamientoCtrl.getFinanciamientoById);
 
 //Crear Financiamiento
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], financiamientoCtrl.createFinanciamiento);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateFinanciamiento], financiamientoCtrl.createFinanciamiento);
 
 //Actualizar Financiamiento
 router.patch('/:financiamientoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], financiamientoCtrl.updateFinanciamiento);

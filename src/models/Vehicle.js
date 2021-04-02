@@ -7,6 +7,7 @@ const vehicleSchema = new Schema({
     modelo: { type: String },
     version: { type: String },
     sucursal: { type: String },
+    empleado: { ref: 'User', type: Schema.Types.ObjectId }
 }, {
     timestamps: true,
     versionKey: false
