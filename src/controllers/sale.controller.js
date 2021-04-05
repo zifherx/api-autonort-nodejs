@@ -61,7 +61,8 @@ export const getSales = async(req, res) => {
             .populate('cliente')
             .populate('campanias')
             .populate('adicional')
-            .populate('accesorios');
+            .populate('accesorios')
+            .populate('empleado');
 
         if (ventasfull.length > 0) {
             res.json(ventasfull);
@@ -86,7 +87,8 @@ export const getSaleById = async(req, res) => {
             .populate('cliente')
             .populate('campanias')
             .populate('adicional')
-            .populate('accesorios');
+            .populate('accesorios')
+            .populate('empleado');
 
         if (venta) {
             res.json(venta);
@@ -164,7 +166,8 @@ export const UnidadesByStatus = async(req, res) => {
             .populate('cliente')
             .populate('campanias')
             .populate('adicional')
-            .populate('accesorios');
+            .populate('accesorios')
+            .populate('empleado')
         if (query.length > 0) {
             res.json(query);
         } else {
@@ -184,7 +187,8 @@ export const UnidadesBySucursal = async(req, res) => {
             .populate('cliente')
             .populate('campanias')
             .populate('adicional')
-            .populate('accesorios');
+            .populate('accesorios')
+            .populate('empleado')
         if (query.length > 0) {
             res.json(query);
         } else {

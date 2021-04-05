@@ -222,7 +222,7 @@ var getSales = /*#__PURE__*/function () {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _Sale.default.find().populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios');
+            return _Sale.default.find().populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
 
           case 3:
             ventasfull = _context2.sent;
@@ -278,7 +278,7 @@ var getSaleById = /*#__PURE__*/function () {
             salesId = req.params.salesId;
             _context3.prev = 1;
             _context3.next = 4;
-            return _Sale.default.findById(salesId).populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios');
+            return _Sale.default.findById(salesId).populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
 
           case 4:
             venta = _context3.sent;
@@ -571,7 +571,7 @@ var UnidadesByStatus = /*#__PURE__*/function () {
             _context6.next = 4;
             return _Sale.default.where({
               estatus_venta: estado
-            }).find().populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios');
+            }).find().populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
 
           case 4:
             query = _context6.sent;
@@ -629,7 +629,7 @@ var UnidadesBySucursal = /*#__PURE__*/function () {
             _context7.next = 4;
             return _Sale.default.where({
               sucursal_venta: sucursal
-            }).find().populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios');
+            }).find().populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
 
           case 4:
             query = _context7.sent;
