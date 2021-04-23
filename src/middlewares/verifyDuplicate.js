@@ -19,6 +19,7 @@ import Vehicle from '../models/Vehicle'
 import Props from '../models/Props'
 import Record from '../models/Record'
 import Sale from '../models/Sale'
+import Anio from '../models/Anio'
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -133,6 +134,15 @@ export const checkDuplicateChasis = async(req, res, next) => {
     const encontrado = await Chasis.findOne({ name: name });
 
     if (encontrado) return res.status(201).json({ message: 'El Chasis ya existe' });
+
+    next();
+}
+
+export const checkDuplicateAnio = async(req, res, next) => {
+    const { name } = req.body;
+    const encontrado = await Anio.findOne({ name: name });
+
+    if (encontrado) return res.status(201).json({ message: 'El Año ya existe' });
 
     next();
 }

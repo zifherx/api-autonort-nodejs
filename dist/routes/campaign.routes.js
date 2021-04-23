@@ -19,9 +19,11 @@ router.get('/', campaignCtrl.getAll); //Obtener Campañas Activas de
 
 router.get('/activos', campaignCtrl.getCampaniasActivas); //Obtener Campaña por Id
 
-router.get('/:campaignId', campaignCtrl.getOne); //Obtener Campaña por código Vehicular
-//router.post('/find', campaignCtrl.getCampaignByVehicle);
-//Crear Campaña
+router.get('/:campaignId', campaignCtrl.getOne); //Obtener Campaña por modelo Vehicular 
+
+router.post('/find', campaignCtrl.getCampaignByVehicle); //Obtener Campaña por modelo Vehicular 
+
+router.post('/group', campaignCtrl.getCampaignByGrupo); //Crear Campaña
 
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateCampania], campaignCtrl.createCampaign); //Actualizar Campaña
 

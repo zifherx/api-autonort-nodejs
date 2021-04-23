@@ -17,13 +17,13 @@ var _Sale = _interopRequireDefault(require("../models/Sale"));
 
 var createRecord = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, fecha_recepcion, hora_recepcion, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente, nuevoInmatriculado, expediente, recordSaved;
+    var _req$body, fecha_recepcion, hora_recepcion, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente, nuevoInmatriculado, expediente, recordSaved;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$body = req.body, fecha_recepcion = _req$body.fecha_recepcion, hora_recepcion = _req$body.hora_recepcion, sales = _req$body.sales, fecha_ingreso_file = _req$body.fecha_ingreso_file, hora_ingreso_file = _req$body.hora_ingreso_file, num_titulo = _req$body.num_titulo, status_tarjeta = _req$body.status_tarjeta, num_placa = _req$body.num_placa, fecha_entrega_file = _req$body.fecha_entrega_file, fecha_tramite_placa = _req$body.fecha_tramite_placa, status_placa = _req$body.status_placa, fecha_entrega_placa = _req$body.fecha_entrega_placa, fecha_entrega_cliente = _req$body.fecha_entrega_cliente;
+            _req$body = req.body, fecha_recepcion = _req$body.fecha_recepcion, hora_recepcion = _req$body.hora_recepcion, sales = _req$body.sales, fecha_ingreso_file = _req$body.fecha_ingreso_file, hora_ingreso_file = _req$body.hora_ingreso_file, num_titulo = _req$body.num_titulo, codigo_verificacion = _req$body.codigo_verificacion, observaciones = _req$body.observaciones, status_tarjeta = _req$body.status_tarjeta, num_placa = _req$body.num_placa, fecha_entrega_file = _req$body.fecha_entrega_file, fecha_tramite_placa = _req$body.fecha_tramite_placa, status_placa = _req$body.status_placa, fecha_entrega_placa = _req$body.fecha_entrega_placa, fecha_entrega_cliente = _req$body.fecha_entrega_cliente;
             _context.prev = 1;
             nuevoInmatriculado = new _Record.default({
               fecha_recepcion: fecha_recepcion,
@@ -31,6 +31,8 @@ var createRecord = /*#__PURE__*/function () {
               fecha_ingreso_file: fecha_ingreso_file,
               hora_ingreso_file: hora_ingreso_file,
               num_titulo: num_titulo,
+              codigo_verificacion: codigo_verificacion,
+              observaciones: observaciones,
               status_tarjeta: status_tarjeta,
               num_placa: num_placa,
               fecha_entrega_file: fecha_entrega_file,
@@ -215,14 +217,14 @@ exports.getRecordById = getRecordById;
 
 var updateRecordById = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var recordId, _req$body2, fecha_recepcion, hora_recepcion, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente, foundExpediente, objetoActualizado;
+    var recordId, _req$body2, fecha_recepcion, hora_recepcion, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente, foundExpediente, objetoActualizado;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             recordId = req.params.recordId;
-            _req$body2 = req.body, fecha_recepcion = _req$body2.fecha_recepcion, hora_recepcion = _req$body2.hora_recepcion, sales = _req$body2.sales, fecha_ingreso_file = _req$body2.fecha_ingreso_file, hora_ingreso_file = _req$body2.hora_ingreso_file, num_titulo = _req$body2.num_titulo, status_tarjeta = _req$body2.status_tarjeta, num_placa = _req$body2.num_placa, fecha_entrega_file = _req$body2.fecha_entrega_file, fecha_tramite_placa = _req$body2.fecha_tramite_placa, status_placa = _req$body2.status_placa, fecha_entrega_placa = _req$body2.fecha_entrega_placa, fecha_entrega_cliente = _req$body2.fecha_entrega_cliente;
+            _req$body2 = req.body, fecha_recepcion = _req$body2.fecha_recepcion, hora_recepcion = _req$body2.hora_recepcion, sales = _req$body2.sales, fecha_ingreso_file = _req$body2.fecha_ingreso_file, hora_ingreso_file = _req$body2.hora_ingreso_file, num_titulo = _req$body2.num_titulo, codigo_verificacion = _req$body2.codigo_verificacion, observaciones = _req$body2.observaciones, status_tarjeta = _req$body2.status_tarjeta, num_placa = _req$body2.num_placa, fecha_entrega_file = _req$body2.fecha_entrega_file, fecha_tramite_placa = _req$body2.fecha_tramite_placa, status_placa = _req$body2.status_placa, fecha_entrega_placa = _req$body2.fecha_entrega_placa, fecha_entrega_cliente = _req$body2.fecha_entrega_cliente;
             _context4.prev = 2;
             _context4.next = 5;
             return _Sale.default.find({
@@ -243,6 +245,8 @@ var updateRecordById = /*#__PURE__*/function () {
               fecha_ingreso_file: fecha_ingreso_file,
               hora_ingreso_file: hora_ingreso_file,
               num_titulo: num_titulo,
+              codigo_verificacion: codigo_verificacion,
+              observaciones: observaciones,
               status_tarjeta: status_tarjeta,
               num_placa: num_placa,
               fecha_entrega_file: fecha_entrega_file,

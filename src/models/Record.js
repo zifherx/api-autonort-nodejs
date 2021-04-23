@@ -10,7 +10,9 @@ const recordSchema = new Schema({
     fecha_ingreso_file: { type: Date },
     hora_ingreso_file: { type: String },
     num_titulo: { type: String },
+    codigo_verificacion: { type: String },
     status_tarjeta: { type: String },
+    observaciones: { type: String },
     num_placa: { type: String },
     fecha_entrega_file: { type: Date },
     //AAP

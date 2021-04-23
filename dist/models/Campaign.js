@@ -15,6 +15,12 @@ var campaignSchema = new _mongoose.Schema({
   descripcion: {
     type: String
   },
+  forCar: {
+    type: String
+  },
+  type: {
+    type: String
+  },
   bono: {
     type: Number
   },

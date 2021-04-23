@@ -13,6 +13,7 @@ const saleSchema = new Schema({
     anio_fabricacion: { type: String },
     anio_modelo: { type: String },
     ubicacion_vehiculo: { type: String },
+    fecha_entrega: { type: Date },
     estatus_vehiculo: { type: String },
     //Financiamiento
     tipo_financiamiento: { type: String },

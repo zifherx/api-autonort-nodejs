@@ -8,11 +8,11 @@ import Props from '../models/Props'
 import User from '../models/User'
 
 export const createSale = async(req, res) => {
-    const { vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion, empleado } = req.body;
+    const { vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion, empleado } = req.body;
 
     try {
 
-        const newSale = new Sale({ serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, descuento_autonort, observacion_adv, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion });
+        const newSale = new Sale({ serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, descuento_autonort, observacion_adv, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion });
 
         //Seller
         const foundSeller = await Seller.find({ name: { $in: vendedor } });
@@ -104,7 +104,7 @@ export const getSaleById = async(req, res) => {
 export const updateSaleById = async(req, res) => {
     const { salesId } = req.params;
 
-    const { vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion } = req.body;
+    const { vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion } = req.body;
 
     try {
 
@@ -126,7 +126,7 @@ export const updateSaleById = async(req, res) => {
         //Props
         const foundProps = await Props.find({ name: { $in: accesorios } });
 
-        const ventaActualizada = await Sale.findByIdAndUpdate(salesId, { vendedor: foundSeller.map(seller => seller._id), cliente: foundCustomer.map(customer => customer._id), auto: foundVehicle.map(vehicle => vehicle._id), serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias: foundCampaign.map(campaign => campaign._id), adicional: foundAdicional.map(adicional => adicional._id), descuento_autonort, observacion_adv, accesorios: foundProps.map(props => props._id), condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion });
+        const ventaActualizada = await Sale.findByIdAndUpdate(salesId, { vendedor: foundSeller.map(seller => seller._id), cliente: foundCustomer.map(customer => customer._id), auto: foundVehicle.map(vehicle => vehicle._id), serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias: foundCampaign.map(campaign => campaign._id), adicional: foundAdicional.map(adicional => adicional._id), descuento_autonort, observacion_adv, accesorios: foundProps.map(props => props._id), condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion });
 
         if (ventaActualizada) {
             res.json({ message: 'Expediente actualizado con éxito' });
@@ -180,9 +180,9 @@ export const UnidadesByStatus = async(req, res) => {
 }
 
 export const UnidadesBySucursal = async(req, res) => {
-    const { sucursal } = req.body;
+    const { sucursal, start, end } = req.body;
     try {
-        const query = await Sale.where({ sucursal_venta: sucursal }).find().populate('vendedor')
+        const query = await Sale.where({ sucursal_venta: sucursal, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } }).find().populate('vendedor')
             .populate('auto')
             .populate('cliente')
             .populate('campanias')
@@ -227,97 +227,16 @@ export const conteoUnidadesLibres = async(req, res) => {
     }
 }
 
-export const conteoTarapotoCanceladas = async(req, res) => {
+export const conteoUnidadesBySucursalStatusFecha = async(req, res) => {
+    const { sucursal, status, start, end } = req.body;
+    //console.log(start, end);
     try {
-        const consulta = await Sale.where({ estatus_venta: 'Cancelado', sucursal_venta: 'Tarapoto' }).countDocuments();
+        const consulta = await Sale.find({ sucursal_venta: sucursal, estatus_venta: status, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } }).countDocuments();
+        //console.log('Query: ', consulta);
         if (consulta >= 0) {
             res.json(consulta);
         } else {
-            return res.status(404).json({ message: 'No existen Unidades Canceladas en Tarapoto' })
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(409).json({ message: err.message })
-    }
-}
-
-export const conteoJaenCanceladas = async(req, res) => {
-    try {
-        const consulta = await Sale.where({ estatus_venta: 'Cancelado', sucursal_venta: 'Jaén' }).countDocuments();
-        if (consulta >= 0) {
-            res.json(consulta);
-        } else {
-            return res.status(404).json({ message: 'No existen Unidades Canceladas en Jaén' })
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(409).json({ message: err.message })
-    }
-}
-
-export const conteoTarapotoLibres = async(req, res) => {
-    try {
-        const consulta = await Sale.where({ estatus_venta: 'Libre', sucursal_venta: 'Tarapoto' }).countDocuments();
-        if (consulta >= 0) {
-            res.json(consulta);
-        } else {
-            return res.status(404).json({ message: 'No existen Unidades Libres en Tarapoto' })
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(409).json({ message: err.message })
-    }
-}
-
-export const conteoJaenLibres = async(req, res) => {
-    try {
-        const consulta = await Sale.where({ estatus_venta: 'Libre', sucursal_venta: 'Jaén' }).countDocuments();
-        if (consulta >= 0) {
-            res.json(consulta);
-        } else {
-            return res.status(404).json({ message: 'No existen Unidades Libres en Jaén' })
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(409).json({ message: err.message })
-    }
-}
-
-export const conteoUnidadesAnticipos = async(req, res) => {
-    try {
-        const consulta = await Sale.where({ estatus_venta: 'Anticipo' }).countDocuments();
-        if (consulta >= 0) {
-            res.json(consulta);
-        } else {
-            return res.status(404).json({ message: 'No existen Unidades en Anticipo' })
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(409).json({ message: err.message })
-    }
-}
-
-export const conteoTarapotoAnticipos = async(req, res) => {
-    try {
-        const consulta = await Sale.where({ estatus_venta: 'Anticipo', sucursal_venta: 'Tarapoto' }).countDocuments();
-        if (consulta >= 0) {
-            res.json(consulta);
-        } else {
-            return res.status(404).json({ message: 'No existen Unidades en Anticipo en Tarapoto' })
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(409).json({ message: err.message })
-    }
-}
-
-export const conteoJaenAnticipos = async(req, res) => {
-    try {
-        const consulta = await Sale.where({ estatus_venta: 'Anticipo', sucursal_venta: 'Jaén' }).countDocuments();
-        if (consulta >= 0) {
-            res.json(consulta);
-        } else {
-            return res.status(404).json({ message: 'No existen Unidades en Anticipo en Jaén' })
+            return res.status(404).json({ message: `No existen Unidades ${status} en ${sucursal}` })
         }
     } catch (err) {
         console.log(err);
@@ -326,8 +245,12 @@ export const conteoJaenAnticipos = async(req, res) => {
 }
 
 export const conteoVentasByVendedor = async(req, res) => {
+    const { sucursal, estatus, start, end } = req.body;
     try {
+        const filter = { sucursal_venta: sucursal, estatus_venta: estatus, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } };
         const consulta = await Sale.aggregate([{
+            $match: filter
+        }, {
             $group: {
                 _id: "$vendedor",
                 num_ventas: { $sum: 1 }

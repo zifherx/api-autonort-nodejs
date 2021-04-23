@@ -31,7 +31,7 @@ export const getUbicacionById = async(req, res) => {
 
 export const getUbicacionByActivo = async(req, res) => {
     try {
-        const query = await Ubicacion.find({ status: "Activo" });
+        const query = await Ubicacion.find({ status: "Activo" }).sort({ name: 'asc' });
         if (query.length > 0) {
             res.json(query);
         } else {

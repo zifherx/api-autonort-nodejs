@@ -2,11 +2,11 @@ import Record from '../models/Record'
 import Sale from '../models/Sale'
 
 export const createRecord = async(req, res) => {
-    const { fecha_recepcion, hora_recepcion, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente } = req.body;
+    const { fecha_recepcion, hora_recepcion, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente } = req.body;
 
     try {
 
-        const nuevoInmatriculado = new Record({ fecha_recepcion, hora_recepcion, fecha_ingreso_file, hora_ingreso_file, num_titulo, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente });
+        const nuevoInmatriculado = new Record({ fecha_recepcion, hora_recepcion, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente });
 
         //Sales
         const expediente = await Sale.find({ nro_comprobante: { $in: sales } });
@@ -64,14 +64,14 @@ export const getRecordById = async(req, res) => {
 export const updateRecordById = async(req, res) => {
     const { recordId } = req.params;
 
-    const { fecha_recepcion, hora_recepcion, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente } = req.body;
+    const { fecha_recepcion, hora_recepcion, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente } = req.body;
 
     try {
 
         //Expediente
         const foundExpediente = await Sale.find({ nro_comprobante: { $in: sales } });
 
-        const objetoActualizado = await Record.findByIdAndUpdate(recordId, { fecha_recepcion, hora_recepcion, sales: foundExpediente.map(expediente => expediente._id), fecha_ingreso_file, hora_ingreso_file, num_titulo, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente });
+        const objetoActualizado = await Record.findByIdAndUpdate(recordId, { fecha_recepcion, hora_recepcion, sales: foundExpediente.map(expediente => expediente._id), fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones, status_tarjeta, num_placa, fecha_entrega_file, fecha_tramite_placa, status_placa, fecha_entrega_placa, fecha_entrega_cliente });
 
         if (objetoActualizado) {
             res.json({ message: 'Inmatriculado actualizado con éxito' });

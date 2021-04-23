@@ -30,7 +30,13 @@ var recordSchema = new _mongoose.Schema({
   num_titulo: {
     type: String
   },
+  codigo_verificacion: {
+    type: String
+  },
   status_tarjeta: {
+    type: String
+  },
+  observaciones: {
     type: String
   },
   num_placa: {

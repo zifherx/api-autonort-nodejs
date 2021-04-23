@@ -53,6 +53,8 @@ var _ubicacion = _interopRequireDefault(require("./ubicacion.routes"));
 
 var _chasis = _interopRequireDefault(require("./chasis.routes"));
 
+var _anio = _interopRequireDefault(require("./anio.routes"));
+
 var router = (0, _express.Router)();
 router.use('/auth', _auth.default);
 router.use('/users', _user.default);
@@ -76,6 +78,7 @@ router.use('/sustento', _sustento.default);
 router.use('/financiamiento', _financiamiento.default);
 router.use('/ubicacion', _ubicacion.default);
 router.use('/chasis', _chasis.default);
+router.use('/anios', _anio.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

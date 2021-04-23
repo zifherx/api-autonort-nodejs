@@ -23,6 +23,7 @@ import sucursalRoutes from "./sucursal.routes"
 import sustentoRoutes from "./sustento.routes"
 import ubicacionRoutes from "./ubicacion.routes"
 import chasisRoutes from './chasis.routes'
+import aniosRoutes from './anio.routes'
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
@@ -46,5 +47,6 @@ router.use('/sustento', sustentoRoutes);
 router.use('/financiamiento', financiamientoRoutes);
 router.use('/ubicacion', ubicacionRoutes);
 router.use('/chasis', chasisRoutes);
+router.use('/anios', aniosRoutes);
 
 export default router;

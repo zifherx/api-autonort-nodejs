@@ -3,11 +3,11 @@ import Vehicle from '../models/Vehicle'
 import User from '../models/User'
 
 export const createCampaign = async(req, res) => {
-    const { name, descripcion, bono, startDate, endDate, status, empleado } = req.body;
+    const { name, descripcion, forCar, type, bono, startDate, endDate, status, empleado } = req.body;
 
     try {
 
-        const newCampaign = new Campaign({ name, descripcion, bono, startDate, endDate, status });
+        const newCampaign = new Campaign({ name, descripcion, forCar, type, bono, startDate, endDate, status });
         const foundEmployee = await User.find({ username: { $in: empleado } });
         newCampaign.empleado = foundEmployee.map(em => em._id);
 
@@ -71,14 +71,12 @@ export const getCampaniasActivas = async(req, res) => {
 export const getCampaignByVehicle = async(req, res) => {
     const { modelo } = req.body;
     try {
-        const vehiculo = await Vehicle.findOne({ cod_tdp: modelo })
-
-        const campana = await Campaign.find({ auto: vehiculo });
-
-        if (campana) {
+        const campana = await Campaign.find({ forCar: modelo }).sort({ name: 'asc' });
+        //console.log(campana)
+        if (campana.length > 0) {
             res.json(campana);
         } else {
-            res.status(404).json({ message: 'No existen campañas para ese vehículo' });
+            return res.status(404).json({ message: 'No existen campañas para ese vehículo' });
         }
     } catch (err) {
         console.log(err);
@@ -86,13 +84,28 @@ export const getCampaignByVehicle = async(req, res) => {
     }
 }
 
+export const getCampaignByGrupo = async(req, res) => {
+    const { type } = req.body;
+    try {
+        const campana = await Campaign.find({ type }).sort({ name: 'asc' });
+        if (campana.length > 0) {
+            res.json(campana);
+        } else {
+            return res.status(404).json({ message: 'No existen Cam´pañas en ese grupo' })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: err.message });
+    }
+}
+
 export const updateCampaignById = async(req, res) => {
     const { campaignId } = req.params;
-    const { name, descripcion, bono, startDate, endDate, status } = req.body;
+    const { name, descripcion, forCar, type, bono, startDate, endDate, status } = req.body;
     try {
         //const foundAuto = await Vehicle.find({ cod_tdp: { $in: auto } });
 
-        const updateCampaign = await Campaign.findByIdAndUpdate(campaignId, { name, descripcion, bono, startDate, endDate, status });
+        const updateCampaign = await Campaign.findByIdAndUpdate(campaignId, { name, descripcion, forCar, type, bono, startDate, endDate, status });
         if (updateCampaign) {
             res.json({ message: 'Campaña actualizada con éxito' });
         } else {

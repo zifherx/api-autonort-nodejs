@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.conteoVentasByVendedor = exports.conteoJaenAnticipos = exports.conteoTarapotoAnticipos = exports.conteoUnidadesAnticipos = exports.conteoJaenLibres = exports.conteoTarapotoLibres = exports.conteoJaenCanceladas = exports.conteoTarapotoCanceladas = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
+exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -29,13 +29,13 @@ var _User = _interopRequireDefault(require("../models/User"));
 
 var createSale = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion, empleado, newSale, foundSeller, foundVehicle, foundCustomer, foundCampaign, foundAdicional, foundProps, foundEmployee, saleSaved;
+    var _req$body, vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion, empleado, newSale, foundSeller, foundVehicle, foundCustomer, foundCampaign, foundAdicional, foundProps, foundEmployee, saleSaved;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$body = req.body, vendedor = _req$body.vendedor, cliente = _req$body.cliente, auto = _req$body.auto, serie_tdp = _req$body.serie_tdp, color = _req$body.color, precio = _req$body.precio, anio_fabricacion = _req$body.anio_fabricacion, anio_modelo = _req$body.anio_modelo, ubicacion_vehiculo = _req$body.ubicacion_vehiculo, estatus_vehiculo = _req$body.estatus_vehiculo, tipo_financiamiento = _req$body.tipo_financiamiento, entidad_bancaria = _req$body.entidad_bancaria, sustento = _req$body.sustento, fecha_sustento = _req$body.fecha_sustento, monto_aprobado = _req$body.monto_aprobado, oficina = _req$body.oficina, ejecutivo = _req$body.ejecutivo, montoAdelanto1 = _req$body.montoAdelanto1, fechaAdelanto1 = _req$body.fechaAdelanto1, montoAdelanto2 = _req$body.montoAdelanto2, fechaAdelanto2 = _req$body.fechaAdelanto2, montoAdelanto3 = _req$body.montoAdelanto3, fechaAdelanto3 = _req$body.fechaAdelanto3, montoAdelanto4 = _req$body.montoAdelanto4, fechaAdelanto4 = _req$body.fechaAdelanto4, montoAdelanto5 = _req$body.montoAdelanto5, fechaAdelanto5 = _req$body.fechaAdelanto5, montoAdelanto6 = _req$body.montoAdelanto6, fechaAdelanto6 = _req$body.fechaAdelanto6, montoAdelanto7 = _req$body.montoAdelanto7, fechaAdelanto7 = _req$body.fechaAdelanto7, montoAdelanto8 = _req$body.montoAdelanto8, fechaAdelanto8 = _req$body.fechaAdelanto8, campanias = _req$body.campanias, adicional = _req$body.adicional, descuento_autonort = _req$body.descuento_autonort, observacion_adv = _req$body.observacion_adv, accesorios = _req$body.accesorios, condicion_accesorios = _req$body.condicion_accesorios, fecha_facturacion_tdp = _req$body.fecha_facturacion_tdp, estatus_facturacion = _req$body.estatus_facturacion, tipo_operacion = _req$body.tipo_operacion, fecha_inicio_reserva = _req$body.fecha_inicio_reserva, fecha_fin_reserva = _req$body.fecha_fin_reserva, tipo_comprobante = _req$body.tipo_comprobante, nro_comprobante = _req$body.nro_comprobante, fecha_comprobante = _req$body.fecha_comprobante, estatus_venta = _req$body.estatus_venta, sucursal_venta = _req$body.sucursal_venta, fecha_cancelacion = _req$body.fecha_cancelacion, empleado = _req$body.empleado;
+            _req$body = req.body, vendedor = _req$body.vendedor, cliente = _req$body.cliente, auto = _req$body.auto, serie_tdp = _req$body.serie_tdp, color = _req$body.color, precio = _req$body.precio, anio_fabricacion = _req$body.anio_fabricacion, anio_modelo = _req$body.anio_modelo, ubicacion_vehiculo = _req$body.ubicacion_vehiculo, fecha_entrega = _req$body.fecha_entrega, estatus_vehiculo = _req$body.estatus_vehiculo, tipo_financiamiento = _req$body.tipo_financiamiento, entidad_bancaria = _req$body.entidad_bancaria, sustento = _req$body.sustento, fecha_sustento = _req$body.fecha_sustento, monto_aprobado = _req$body.monto_aprobado, oficina = _req$body.oficina, ejecutivo = _req$body.ejecutivo, montoAdelanto1 = _req$body.montoAdelanto1, fechaAdelanto1 = _req$body.fechaAdelanto1, montoAdelanto2 = _req$body.montoAdelanto2, fechaAdelanto2 = _req$body.fechaAdelanto2, montoAdelanto3 = _req$body.montoAdelanto3, fechaAdelanto3 = _req$body.fechaAdelanto3, montoAdelanto4 = _req$body.montoAdelanto4, fechaAdelanto4 = _req$body.fechaAdelanto4, montoAdelanto5 = _req$body.montoAdelanto5, fechaAdelanto5 = _req$body.fechaAdelanto5, montoAdelanto6 = _req$body.montoAdelanto6, fechaAdelanto6 = _req$body.fechaAdelanto6, montoAdelanto7 = _req$body.montoAdelanto7, fechaAdelanto7 = _req$body.fechaAdelanto7, montoAdelanto8 = _req$body.montoAdelanto8, fechaAdelanto8 = _req$body.fechaAdelanto8, campanias = _req$body.campanias, adicional = _req$body.adicional, descuento_autonort = _req$body.descuento_autonort, observacion_adv = _req$body.observacion_adv, accesorios = _req$body.accesorios, condicion_accesorios = _req$body.condicion_accesorios, fecha_facturacion_tdp = _req$body.fecha_facturacion_tdp, estatus_facturacion = _req$body.estatus_facturacion, tipo_operacion = _req$body.tipo_operacion, fecha_inicio_reserva = _req$body.fecha_inicio_reserva, fecha_fin_reserva = _req$body.fecha_fin_reserva, tipo_comprobante = _req$body.tipo_comprobante, nro_comprobante = _req$body.nro_comprobante, fecha_comprobante = _req$body.fecha_comprobante, estatus_venta = _req$body.estatus_venta, sucursal_venta = _req$body.sucursal_venta, fecha_cancelacion = _req$body.fecha_cancelacion, empleado = _req$body.empleado;
             _context.prev = 1;
             newSale = new _Sale.default({
               serie_tdp: serie_tdp,
@@ -44,6 +44,7 @@ var createSale = /*#__PURE__*/function () {
               anio_fabricacion: anio_fabricacion,
               anio_modelo: anio_modelo,
               ubicacion_vehiculo: ubicacion_vehiculo,
+              fecha_entrega: fecha_entrega,
               estatus_vehiculo: estatus_vehiculo,
               tipo_financiamiento: tipo_financiamiento,
               entidad_bancaria: entidad_bancaria,
@@ -326,14 +327,14 @@ exports.getSaleById = getSaleById;
 
 var updateSaleById = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var salesId, _req$body2, vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion, foundSeller, foundVehicle, foundCustomer, foundCampaign, foundAdicional, foundProps, ventaActualizada;
+    var salesId, _req$body2, vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion, foundSeller, foundVehicle, foundCustomer, foundCampaign, foundAdicional, foundProps, ventaActualizada;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             salesId = req.params.salesId;
-            _req$body2 = req.body, vendedor = _req$body2.vendedor, cliente = _req$body2.cliente, auto = _req$body2.auto, serie_tdp = _req$body2.serie_tdp, color = _req$body2.color, precio = _req$body2.precio, anio_fabricacion = _req$body2.anio_fabricacion, anio_modelo = _req$body2.anio_modelo, ubicacion_vehiculo = _req$body2.ubicacion_vehiculo, estatus_vehiculo = _req$body2.estatus_vehiculo, tipo_financiamiento = _req$body2.tipo_financiamiento, entidad_bancaria = _req$body2.entidad_bancaria, sustento = _req$body2.sustento, fecha_sustento = _req$body2.fecha_sustento, monto_aprobado = _req$body2.monto_aprobado, oficina = _req$body2.oficina, ejecutivo = _req$body2.ejecutivo, montoAdelanto1 = _req$body2.montoAdelanto1, fechaAdelanto1 = _req$body2.fechaAdelanto1, montoAdelanto2 = _req$body2.montoAdelanto2, fechaAdelanto2 = _req$body2.fechaAdelanto2, montoAdelanto3 = _req$body2.montoAdelanto3, fechaAdelanto3 = _req$body2.fechaAdelanto3, montoAdelanto4 = _req$body2.montoAdelanto4, fechaAdelanto4 = _req$body2.fechaAdelanto4, montoAdelanto5 = _req$body2.montoAdelanto5, fechaAdelanto5 = _req$body2.fechaAdelanto5, montoAdelanto6 = _req$body2.montoAdelanto6, fechaAdelanto6 = _req$body2.fechaAdelanto6, montoAdelanto7 = _req$body2.montoAdelanto7, fechaAdelanto7 = _req$body2.fechaAdelanto7, montoAdelanto8 = _req$body2.montoAdelanto8, fechaAdelanto8 = _req$body2.fechaAdelanto8, campanias = _req$body2.campanias, adicional = _req$body2.adicional, descuento_autonort = _req$body2.descuento_autonort, observacion_adv = _req$body2.observacion_adv, accesorios = _req$body2.accesorios, condicion_accesorios = _req$body2.condicion_accesorios, fecha_facturacion_tdp = _req$body2.fecha_facturacion_tdp, estatus_facturacion = _req$body2.estatus_facturacion, tipo_operacion = _req$body2.tipo_operacion, fecha_inicio_reserva = _req$body2.fecha_inicio_reserva, fecha_fin_reserva = _req$body2.fecha_fin_reserva, tipo_comprobante = _req$body2.tipo_comprobante, nro_comprobante = _req$body2.nro_comprobante, fecha_comprobante = _req$body2.fecha_comprobante, estatus_venta = _req$body2.estatus_venta, sucursal_venta = _req$body2.sucursal_venta, fecha_cancelacion = _req$body2.fecha_cancelacion;
+            _req$body2 = req.body, vendedor = _req$body2.vendedor, cliente = _req$body2.cliente, auto = _req$body2.auto, serie_tdp = _req$body2.serie_tdp, color = _req$body2.color, precio = _req$body2.precio, anio_fabricacion = _req$body2.anio_fabricacion, anio_modelo = _req$body2.anio_modelo, ubicacion_vehiculo = _req$body2.ubicacion_vehiculo, fecha_entrega = _req$body2.fecha_entrega, estatus_vehiculo = _req$body2.estatus_vehiculo, tipo_financiamiento = _req$body2.tipo_financiamiento, entidad_bancaria = _req$body2.entidad_bancaria, sustento = _req$body2.sustento, fecha_sustento = _req$body2.fecha_sustento, monto_aprobado = _req$body2.monto_aprobado, oficina = _req$body2.oficina, ejecutivo = _req$body2.ejecutivo, montoAdelanto1 = _req$body2.montoAdelanto1, fechaAdelanto1 = _req$body2.fechaAdelanto1, montoAdelanto2 = _req$body2.montoAdelanto2, fechaAdelanto2 = _req$body2.fechaAdelanto2, montoAdelanto3 = _req$body2.montoAdelanto3, fechaAdelanto3 = _req$body2.fechaAdelanto3, montoAdelanto4 = _req$body2.montoAdelanto4, fechaAdelanto4 = _req$body2.fechaAdelanto4, montoAdelanto5 = _req$body2.montoAdelanto5, fechaAdelanto5 = _req$body2.fechaAdelanto5, montoAdelanto6 = _req$body2.montoAdelanto6, fechaAdelanto6 = _req$body2.fechaAdelanto6, montoAdelanto7 = _req$body2.montoAdelanto7, fechaAdelanto7 = _req$body2.fechaAdelanto7, montoAdelanto8 = _req$body2.montoAdelanto8, fechaAdelanto8 = _req$body2.fechaAdelanto8, campanias = _req$body2.campanias, adicional = _req$body2.adicional, descuento_autonort = _req$body2.descuento_autonort, observacion_adv = _req$body2.observacion_adv, accesorios = _req$body2.accesorios, condicion_accesorios = _req$body2.condicion_accesorios, fecha_facturacion_tdp = _req$body2.fecha_facturacion_tdp, estatus_facturacion = _req$body2.estatus_facturacion, tipo_operacion = _req$body2.tipo_operacion, fecha_inicio_reserva = _req$body2.fecha_inicio_reserva, fecha_fin_reserva = _req$body2.fecha_fin_reserva, tipo_comprobante = _req$body2.tipo_comprobante, nro_comprobante = _req$body2.nro_comprobante, fecha_comprobante = _req$body2.fecha_comprobante, estatus_venta = _req$body2.estatus_venta, sucursal_venta = _req$body2.sucursal_venta, fecha_cancelacion = _req$body2.fecha_cancelacion;
             _context4.prev = 2;
             _context4.next = 5;
             return _Seller.default.find({
@@ -406,6 +407,7 @@ var updateSaleById = /*#__PURE__*/function () {
               anio_fabricacion: anio_fabricacion,
               anio_modelo: anio_modelo,
               ubicacion_vehiculo: ubicacion_vehiculo,
+              fecha_entrega: fecha_entrega,
               estatus_vehiculo: estatus_vehiculo,
               tipo_financiamiento: tipo_financiamiento,
               entidad_bancaria: entidad_bancaria,
@@ -619,16 +621,21 @@ exports.UnidadesByStatus = UnidadesByStatus;
 
 var UnidadesBySucursal = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var sucursal, query;
+    var _req$body3, sucursal, start, end, query;
+
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            sucursal = req.body.sucursal;
+            _req$body3 = req.body, sucursal = _req$body3.sucursal, start = _req$body3.start, end = _req$body3.end;
             _context7.prev = 1;
             _context7.next = 4;
             return _Sale.default.where({
-              sucursal_venta: sucursal
+              sucursal_venta: sucursal,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
             }).find().populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
 
           case 4:
@@ -779,421 +786,93 @@ var conteoUnidadesLibres = /*#__PURE__*/function () {
 
 exports.conteoUnidadesLibres = conteoUnidadesLibres;
 
-var conteoTarapotoCanceladas = /*#__PURE__*/function () {
+var conteoUnidadesBySucursalStatusFecha = /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee10(req, res) {
-    var consulta;
+    var _req$body4, sucursal, status, start, end, consulta;
+
     return _regenerator.default.wrap(function _callee10$(_context10) {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            _context10.prev = 0;
-            _context10.next = 3;
-            return _Sale.default.where({
-              estatus_venta: 'Cancelado',
-              sucursal_venta: 'Tarapoto'
+            _req$body4 = req.body, sucursal = _req$body4.sucursal, status = _req$body4.status, start = _req$body4.start, end = _req$body4.end; //console.log(start, end);
+
+            _context10.prev = 1;
+            _context10.next = 4;
+            return _Sale.default.find({
+              sucursal_venta: sucursal,
+              estatus_venta: status,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
             }).countDocuments();
 
-          case 3:
+          case 4:
             consulta = _context10.sent;
 
             if (!(consulta >= 0)) {
-              _context10.next = 8;
+              _context10.next = 9;
               break;
             }
 
             res.json(consulta);
-            _context10.next = 9;
+            _context10.next = 10;
             break;
-
-          case 8:
-            return _context10.abrupt("return", res.status(404).json({
-              message: 'No existen Unidades Canceladas en Tarapoto'
-            }));
 
           case 9:
-            _context10.next = 15;
+            return _context10.abrupt("return", res.status(404).json({
+              message: "No existen Unidades ".concat(status, " en ").concat(sucursal)
+            }));
+
+          case 10:
+            _context10.next = 16;
             break;
 
-          case 11:
-            _context10.prev = 11;
-            _context10.t0 = _context10["catch"](0);
+          case 12:
+            _context10.prev = 12;
+            _context10.t0 = _context10["catch"](1);
             console.log(_context10.t0);
             res.status(409).json({
               message: _context10.t0.message
             });
 
-          case 15:
+          case 16:
           case "end":
             return _context10.stop();
         }
       }
-    }, _callee10, null, [[0, 11]]);
+    }, _callee10, null, [[1, 12]]);
   }));
 
-  return function conteoTarapotoCanceladas(_x19, _x20) {
+  return function conteoUnidadesBySucursalStatusFecha(_x19, _x20) {
     return _ref10.apply(this, arguments);
   };
 }();
 
-exports.conteoTarapotoCanceladas = conteoTarapotoCanceladas;
+exports.conteoUnidadesBySucursalStatusFecha = conteoUnidadesBySucursalStatusFecha;
 
-var conteoJaenCanceladas = /*#__PURE__*/function () {
+var conteoVentasByVendedor = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res) {
-    var consulta;
+    var _req$body5, sucursal, estatus, start, end, filter, consulta;
+
     return _regenerator.default.wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
-            _context11.prev = 0;
-            _context11.next = 3;
-            return _Sale.default.where({
-              estatus_venta: 'Cancelado',
-              sucursal_venta: 'Jaén'
-            }).countDocuments();
-
-          case 3:
-            consulta = _context11.sent;
-
-            if (!(consulta >= 0)) {
-              _context11.next = 8;
-              break;
-            }
-
-            res.json(consulta);
-            _context11.next = 9;
-            break;
-
-          case 8:
-            return _context11.abrupt("return", res.status(404).json({
-              message: 'No existen Unidades Canceladas en Jaén'
-            }));
-
-          case 9:
-            _context11.next = 15;
-            break;
-
-          case 11:
-            _context11.prev = 11;
-            _context11.t0 = _context11["catch"](0);
-            console.log(_context11.t0);
-            res.status(409).json({
-              message: _context11.t0.message
-            });
-
-          case 15:
-          case "end":
-            return _context11.stop();
-        }
-      }
-    }, _callee11, null, [[0, 11]]);
-  }));
-
-  return function conteoJaenCanceladas(_x21, _x22) {
-    return _ref11.apply(this, arguments);
-  };
-}();
-
-exports.conteoJaenCanceladas = conteoJaenCanceladas;
-
-var conteoTarapotoLibres = /*#__PURE__*/function () {
-  var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res) {
-    var consulta;
-    return _regenerator.default.wrap(function _callee12$(_context12) {
-      while (1) {
-        switch (_context12.prev = _context12.next) {
-          case 0:
-            _context12.prev = 0;
-            _context12.next = 3;
-            return _Sale.default.where({
-              estatus_venta: 'Libre',
-              sucursal_venta: 'Tarapoto'
-            }).countDocuments();
-
-          case 3:
-            consulta = _context12.sent;
-
-            if (!(consulta >= 0)) {
-              _context12.next = 8;
-              break;
-            }
-
-            res.json(consulta);
-            _context12.next = 9;
-            break;
-
-          case 8:
-            return _context12.abrupt("return", res.status(404).json({
-              message: 'No existen Unidades Libres en Tarapoto'
-            }));
-
-          case 9:
-            _context12.next = 15;
-            break;
-
-          case 11:
-            _context12.prev = 11;
-            _context12.t0 = _context12["catch"](0);
-            console.log(_context12.t0);
-            res.status(409).json({
-              message: _context12.t0.message
-            });
-
-          case 15:
-          case "end":
-            return _context12.stop();
-        }
-      }
-    }, _callee12, null, [[0, 11]]);
-  }));
-
-  return function conteoTarapotoLibres(_x23, _x24) {
-    return _ref12.apply(this, arguments);
-  };
-}();
-
-exports.conteoTarapotoLibres = conteoTarapotoLibres;
-
-var conteoJaenLibres = /*#__PURE__*/function () {
-  var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res) {
-    var consulta;
-    return _regenerator.default.wrap(function _callee13$(_context13) {
-      while (1) {
-        switch (_context13.prev = _context13.next) {
-          case 0:
-            _context13.prev = 0;
-            _context13.next = 3;
-            return _Sale.default.where({
-              estatus_venta: 'Libre',
-              sucursal_venta: 'Jaén'
-            }).countDocuments();
-
-          case 3:
-            consulta = _context13.sent;
-
-            if (!(consulta >= 0)) {
-              _context13.next = 8;
-              break;
-            }
-
-            res.json(consulta);
-            _context13.next = 9;
-            break;
-
-          case 8:
-            return _context13.abrupt("return", res.status(404).json({
-              message: 'No existen Unidades Libres en Jaén'
-            }));
-
-          case 9:
-            _context13.next = 15;
-            break;
-
-          case 11:
-            _context13.prev = 11;
-            _context13.t0 = _context13["catch"](0);
-            console.log(_context13.t0);
-            res.status(409).json({
-              message: _context13.t0.message
-            });
-
-          case 15:
-          case "end":
-            return _context13.stop();
-        }
-      }
-    }, _callee13, null, [[0, 11]]);
-  }));
-
-  return function conteoJaenLibres(_x25, _x26) {
-    return _ref13.apply(this, arguments);
-  };
-}();
-
-exports.conteoJaenLibres = conteoJaenLibres;
-
-var conteoUnidadesAnticipos = /*#__PURE__*/function () {
-  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
-    var consulta;
-    return _regenerator.default.wrap(function _callee14$(_context14) {
-      while (1) {
-        switch (_context14.prev = _context14.next) {
-          case 0:
-            _context14.prev = 0;
-            _context14.next = 3;
-            return _Sale.default.where({
-              estatus_venta: 'Anticipo'
-            }).countDocuments();
-
-          case 3:
-            consulta = _context14.sent;
-
-            if (!(consulta >= 0)) {
-              _context14.next = 8;
-              break;
-            }
-
-            res.json(consulta);
-            _context14.next = 9;
-            break;
-
-          case 8:
-            return _context14.abrupt("return", res.status(404).json({
-              message: 'No existen Unidades en Anticipo'
-            }));
-
-          case 9:
-            _context14.next = 15;
-            break;
-
-          case 11:
-            _context14.prev = 11;
-            _context14.t0 = _context14["catch"](0);
-            console.log(_context14.t0);
-            res.status(409).json({
-              message: _context14.t0.message
-            });
-
-          case 15:
-          case "end":
-            return _context14.stop();
-        }
-      }
-    }, _callee14, null, [[0, 11]]);
-  }));
-
-  return function conteoUnidadesAnticipos(_x27, _x28) {
-    return _ref14.apply(this, arguments);
-  };
-}();
-
-exports.conteoUnidadesAnticipos = conteoUnidadesAnticipos;
-
-var conteoTarapotoAnticipos = /*#__PURE__*/function () {
-  var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res) {
-    var consulta;
-    return _regenerator.default.wrap(function _callee15$(_context15) {
-      while (1) {
-        switch (_context15.prev = _context15.next) {
-          case 0:
-            _context15.prev = 0;
-            _context15.next = 3;
-            return _Sale.default.where({
-              estatus_venta: 'Anticipo',
-              sucursal_venta: 'Tarapoto'
-            }).countDocuments();
-
-          case 3:
-            consulta = _context15.sent;
-
-            if (!(consulta >= 0)) {
-              _context15.next = 8;
-              break;
-            }
-
-            res.json(consulta);
-            _context15.next = 9;
-            break;
-
-          case 8:
-            return _context15.abrupt("return", res.status(404).json({
-              message: 'No existen Unidades en Anticipo en Tarapoto'
-            }));
-
-          case 9:
-            _context15.next = 15;
-            break;
-
-          case 11:
-            _context15.prev = 11;
-            _context15.t0 = _context15["catch"](0);
-            console.log(_context15.t0);
-            res.status(409).json({
-              message: _context15.t0.message
-            });
-
-          case 15:
-          case "end":
-            return _context15.stop();
-        }
-      }
-    }, _callee15, null, [[0, 11]]);
-  }));
-
-  return function conteoTarapotoAnticipos(_x29, _x30) {
-    return _ref15.apply(this, arguments);
-  };
-}();
-
-exports.conteoTarapotoAnticipos = conteoTarapotoAnticipos;
-
-var conteoJaenAnticipos = /*#__PURE__*/function () {
-  var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee16(req, res) {
-    var consulta;
-    return _regenerator.default.wrap(function _callee16$(_context16) {
-      while (1) {
-        switch (_context16.prev = _context16.next) {
-          case 0:
-            _context16.prev = 0;
-            _context16.next = 3;
-            return _Sale.default.where({
-              estatus_venta: 'Anticipo',
-              sucursal_venta: 'Jaén'
-            }).countDocuments();
-
-          case 3:
-            consulta = _context16.sent;
-
-            if (!(consulta >= 0)) {
-              _context16.next = 8;
-              break;
-            }
-
-            res.json(consulta);
-            _context16.next = 9;
-            break;
-
-          case 8:
-            return _context16.abrupt("return", res.status(404).json({
-              message: 'No existen Unidades en Anticipo en Jaén'
-            }));
-
-          case 9:
-            _context16.next = 15;
-            break;
-
-          case 11:
-            _context16.prev = 11;
-            _context16.t0 = _context16["catch"](0);
-            console.log(_context16.t0);
-            res.status(409).json({
-              message: _context16.t0.message
-            });
-
-          case 15:
-          case "end":
-            return _context16.stop();
-        }
-      }
-    }, _callee16, null, [[0, 11]]);
-  }));
-
-  return function conteoJaenAnticipos(_x31, _x32) {
-    return _ref16.apply(this, arguments);
-  };
-}();
-
-exports.conteoJaenAnticipos = conteoJaenAnticipos;
-
-var conteoVentasByVendedor = /*#__PURE__*/function () {
-  var _ref17 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee17(req, res) {
-    var consulta;
-    return _regenerator.default.wrap(function _callee17$(_context17) {
-      while (1) {
-        switch (_context17.prev = _context17.next) {
-          case 0:
-            _context17.prev = 0;
-            _context17.next = 3;
+            _req$body5 = req.body, sucursal = _req$body5.sucursal, estatus = _req$body5.estatus, start = _req$body5.start, end = _req$body5.end;
+            _context11.prev = 1;
+            filter = {
+              sucursal_venta: sucursal,
+              estatus_venta: estatus,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context11.next = 5;
             return _Sale.default.aggregate([{
+              $match: filter
+            }, {
               $group: {
                 _id: "$vendedor",
                 num_ventas: {
@@ -1202,8 +881,8 @@ var conteoVentasByVendedor = /*#__PURE__*/function () {
               }
             }]);
 
-          case 3:
-            consulta = _context17.sent;
+          case 5:
+            consulta = _context11.sent;
 
             if (consulta.length > 0) {
               res.json(consulta);
@@ -1213,27 +892,27 @@ var conteoVentasByVendedor = /*#__PURE__*/function () {
               });
             }
 
-            _context17.next = 11;
+            _context11.next = 13;
             break;
 
-          case 7:
-            _context17.prev = 7;
-            _context17.t0 = _context17["catch"](0);
-            console.log(_context17.t0);
+          case 9:
+            _context11.prev = 9;
+            _context11.t0 = _context11["catch"](1);
+            console.log(_context11.t0);
             res.status(409).json({
-              message: _context17.t0.message
+              message: _context11.t0.message
             });
 
-          case 11:
+          case 13:
           case "end":
-            return _context17.stop();
+            return _context11.stop();
         }
       }
-    }, _callee17, null, [[0, 7]]);
+    }, _callee11, null, [[1, 9]]);
   }));
 
-  return function conteoVentasByVendedor(_x33, _x34) {
-    return _ref17.apply(this, arguments);
+  return function conteoVentasByVendedor(_x21, _x22) {
+    return _ref11.apply(this, arguments);
   };
 }();
 
