@@ -258,7 +258,7 @@ var getRecordByStatus = /*#__PURE__*/function () {
             };
             _context4.prev = 2;
             _context4.next = 5;
-            return _Record.default.find({}).populate(filtro).where("status_tarjeta").equals(tarjeta).where("status_placa").equals(placa).where('pasoaEntrega').equals(entrega);
+            return _Record.default.find({}).populate(filtro).where("status_tarjeta").equals(tarjeta).where("status_placa").equals(placa);
 
           case 5:
             objeto = _context4.sent;

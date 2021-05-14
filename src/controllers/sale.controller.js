@@ -160,7 +160,7 @@ export const deleteSaleById = async(req, res) => {
 export const UnidadesByStatus = async(req, res) => {
     const { estado, tramite } = req.body;
     try {
-        const query = await Sale.find().where({ estatus_venta: estado, pasoaTramite: tramite })
+        const query = await Sale.find().where({ estatus_venta: estado })
             .populate('vendedor')
             .populate('auto')
             .populate('cliente')

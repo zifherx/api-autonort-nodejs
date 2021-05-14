@@ -118,8 +118,8 @@ export const getRecordByStatus = async (req, res) => {
   try {
     const objeto = await Record.find({}).populate(filtro)
       .where("status_tarjeta").equals(tarjeta)
-      .where("status_placa").equals(placa)
-      .where('pasoaEntrega').equals(entrega);
+      .where("status_placa").equals(placa);
+      /* .where('pasoaEntrega').equals(entrega); */
 
     //console.log(req.body);
 

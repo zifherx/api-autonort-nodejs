@@ -573,8 +573,7 @@ var UnidadesByStatus = /*#__PURE__*/function () {
             _context6.prev = 1;
             _context6.next = 4;
             return _Sale.default.find().where({
-              estatus_venta: estado,
-              pasoaTramite: tramite
+              estatus_venta: estado
             }).populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
 
           case 4:
