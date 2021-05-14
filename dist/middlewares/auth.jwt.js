@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
+exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -469,4 +469,66 @@ var isCSAsistant = /*#__PURE__*/function () {
 }();
 
 exports.isCSAsistant = isCSAsistant;
+
+var isConexosAsistant = /*#__PURE__*/function () {
+  var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res, next) {
+    var user, roles, i;
+    return _regenerator.default.wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.next = 2;
+            return _User.default.findById(req.userId);
+
+          case 2:
+            user = _context8.sent;
+            _context8.next = 5;
+            return _Role.default.find({
+              _id: {
+                $in: user.roles
+              }
+            });
+
+          case 5:
+            roles = _context8.sent;
+            i = 0;
+
+          case 7:
+            if (!(i < roles.length)) {
+              _context8.next = 14;
+              break;
+            }
+
+            if (!(roles[i].name === 'Asistente-Conexos')) {
+              _context8.next = 11;
+              break;
+            }
+
+            next();
+            return _context8.abrupt("return");
+
+          case 11:
+            i++;
+            _context8.next = 7;
+            break;
+
+          case 14:
+            return _context8.abrupt("return", res.status(403).json({
+              message: 'Requiere permiso del Asistente-Conexos'
+            }));
+
+          case 15:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8);
+  }));
+
+  return function isConexosAsistant(_x22, _x23, _x24) {
+    return _ref8.apply(this, arguments);
+  };
+}();
+
+exports.isConexosAsistant = isConexosAsistant;
 //# sourceMappingURL=auth.jwt.js.map

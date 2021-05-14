@@ -211,19 +211,18 @@ var getCampaniasActivas = /*#__PURE__*/function () {
           case 0:
             fechaDesde = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().substr(0, 10);
             fechaHasta = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).toISOString().substr(0, 10);
-            console.log("fecha-Desde: ", fechaDesde);
-            console.log("fecha-Hasta: ", fechaHasta);
-            _context4.prev = 4;
-            _context4.next = 7;
+            /*     console.log("fecha-Desde: ",fechaDesde);
+                console.log("fecha-Hasta: ",fechaHasta); */
+
+            _context4.prev = 2;
+            _context4.next = 5;
             return _Campaign.default.find({
-              status: 'Activo',
-              startDate: fechaDesde,
-              endDate: fechaHasta
+              status: 'Activo'
             }).sort({
               name: 'asc'
             });
 
-          case 7:
+          case 5:
             activos = _context4.sent;
 
             if (activos.length > 0) {
@@ -234,23 +233,23 @@ var getCampaniasActivas = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 15;
+            _context4.next = 13;
             break;
 
-          case 11:
-            _context4.prev = 11;
-            _context4.t0 = _context4["catch"](4);
+          case 9:
+            _context4.prev = 9;
+            _context4.t0 = _context4["catch"](2);
             console.log(_context4.t0);
             res.status(409).json({
               message: _context4.t0.message
             });
 
-          case 15:
+          case 13:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[4, 11]]);
+    }, _callee4, null, [[2, 9]]);
   }));
 
   return function getCampaniasActivas(_x7, _x8) {

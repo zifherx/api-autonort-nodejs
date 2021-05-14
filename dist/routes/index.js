@@ -59,6 +59,8 @@ var _marca = _interopRequireDefault(require("./marca.routes"));
 
 var _delivery = _interopRequireDefault(require("./delivery.routes"));
 
+var _seguro = _interopRequireDefault(require("./seguro.routes"));
+
 var router = (0, _express.Router)();
 router.use('/auth', _auth.default);
 router.use('/users', _user.default);
@@ -85,6 +87,7 @@ router.use('/chasis', _chasis.default);
 router.use('/anios', _anio.default);
 router.use('/marca', _marca.default);
 router.use('/delivery', _delivery.default);
+router.use('/seguro', _seguro.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

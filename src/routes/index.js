@@ -26,6 +26,7 @@ import chasisRoutes from './chasis.routes'
 import aniosRoutes from './anio.routes'
 import marcaRoutes from './marca.routes'
 import deliveryRoutes from './delivery.routes'
+import seguroRoutes from "./seguro.routes";
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
@@ -52,5 +53,6 @@ router.use('/chasis', chasisRoutes);
 router.use('/anios', aniosRoutes);
 router.use('/marca', marcaRoutes);
 router.use('/delivery', deliveryRoutes);
+router.use('/seguro', seguroRoutes);
 
 export default router;
