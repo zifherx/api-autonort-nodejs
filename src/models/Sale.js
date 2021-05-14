@@ -59,7 +59,9 @@ const saleSchema = new Schema({
     sucursal_venta: { type: String },
     fecha_cancelacion: { type: Date },
     //Empleado
-    empleado: { ref: 'User', type: Schema.Types.ObjectId }
+    empleado: { ref: 'User', type: Schema.Types.ObjectId },
+    //Está en Tramite
+    pasoaTramite: {type: Number, default: 0}
 }, {
     timestamps: true,
     versionKey: false

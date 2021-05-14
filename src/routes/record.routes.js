@@ -10,6 +10,9 @@ router.get('/', recordCtrl.getRecords);
 //Obtener Inmatriculado por Id
 router.get('/:recordId', recordCtrl.getRecordById);
 
+//Obtener Inmatriculado por Status
+router.post('/estado', recordCtrl.getRecordByStatus);
+
 //Crear Inmatriculado
 router.post('/', [authJwt.verifyToken, authJwt.isInmatriculadosAsistant, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateTramite], recordCtrl.createRecord);
 

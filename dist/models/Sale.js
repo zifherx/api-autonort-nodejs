@@ -176,6 +176,11 @@ var saleSchema = new _mongoose.Schema({
   empleado: {
     ref: 'User',
     type: _mongoose.Schema.Types.ObjectId
+  },
+  //Está en Tramite
+  pasoaTramite: {
+    type: Number,
+    default: 0
   }
 }, {
   timestamps: true,

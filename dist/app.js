@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
@@ -19,11 +21,24 @@ var _helmet = _interopRequireDefault(require("helmet"));
 
 var _routes = _interopRequireDefault(require("./routes"));
 
-var _initialSetup = require("./libs/initialSetup");
+var initData = _interopRequireWildcard(require("./libs/initialSetup"));
 
 var app = (0, _express.default)();
-(0, _initialSetup.createRoles)();
-(0, _initialSetup.createUserAdmin)(); //Settings
+initData.createRoles();
+initData.createUserAdmin();
+initData.createConfigAnios();
+initData.createConfigColor();
+initData.createConfigChasis();
+initData.createConfigMarca();
+initData.createConfigBanco();
+initData.createConfigFinanciamiento();
+initData.createConfigModelo();
+initData.createConfigSectorista();
+initData.createConfigCondicion();
+initData.createConfigSituacion();
+initData.createConfigSucursal();
+initData.createConfigSustento();
+initData.createConfigUbicacion(); //Settings
 
 app.set('port', process.env.PORT || 4000); //Middlewares
 

@@ -20,6 +20,7 @@ import Props from '../models/Props'
 import Record from '../models/Record'
 import Sale from '../models/Sale'
 import Anio from '../models/Anio'
+import Marca from '../models/Marca'
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -71,6 +72,15 @@ export const checkDuplicateSectorista = async(req, res, next) => {
     const encontrado = await Sectorista.findOne({ name: name });
 
     if (encontrado) return res.status(201).json({ message: 'El Sectorista ya existe' });
+
+    next();
+}
+
+export const checkDuplicateMarca = async(req, res, next) => {
+    const { name } = req.body;
+    const encontrado = await Marca.findOne({ name: name });
+
+    if (encontrado) return res.status(201).json({ message: 'La Marca ya existe' });
 
     next();
 }

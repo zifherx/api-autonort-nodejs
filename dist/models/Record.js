@@ -15,6 +15,12 @@ var recordSchema = new _mongoose.Schema({
   hora_recepcion: {
     type: String
   },
+  fecha_recepcion_vendedor: {
+    type: Date
+  },
+  fecha_devolucion_vendedor: {
+    type: Date
+  },
   //Expediente
   sales: {
     ref: "Sale",
@@ -42,7 +48,7 @@ var recordSchema = new _mongoose.Schema({
   num_placa: {
     type: String
   },
-  fecha_entrega_file: {
+  fecha_entrega_file_recepcion: {
     type: Date
   },
   //AAP
@@ -52,12 +58,22 @@ var recordSchema = new _mongoose.Schema({
   status_placa: {
     type: String
   },
-  fecha_entrega_placa: {
+  fecha_entrega_placa_recepcion: {
     type: Date
   },
   //Cliente
   fecha_entrega_cliente: {
     type: Date
+  },
+  //Empleado
+  empleado: {
+    ref: 'User',
+    type: _mongoose.Schema.Types.ObjectId
+  },
+  //Entrega
+  pasoaEntrega: {
+    type: Number,
+    default: 0
   }
 }, {
   timestamps: true,

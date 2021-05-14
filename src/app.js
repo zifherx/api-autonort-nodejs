@@ -4,12 +4,25 @@ import cors from 'cors'
 import path from 'path'
 import helmet from 'helmet'
 import routes from "./routes"
-import { createRoles, createUserAdmin } from './libs/initialSetup'
+import * as initData from './libs/initialSetup'
 
 const app = express();
 
-createRoles();
-createUserAdmin();
+initData.createRoles();
+initData.createUserAdmin();
+initData.createConfigAnios();
+initData.createConfigColor();
+initData.createConfigChasis();
+initData.createConfigMarca();
+initData.createConfigBanco();
+initData.createConfigFinanciamiento();
+initData.createConfigModelo();
+initData.createConfigSectorista();
+initData.createConfigCondicion();
+initData.createConfigSituacion();
+initData.createConfigSucursal();
+initData.createConfigSustento();
+initData.createConfigUbicacion();
 
 //Settings
 app.set('port', process.env.PORT || 4000);

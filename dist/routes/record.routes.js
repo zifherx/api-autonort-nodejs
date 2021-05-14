@@ -17,7 +17,9 @@ var router = (0, _express.Router)(); //Obtener Inmatriculados
 
 router.get('/', recordCtrl.getRecords); //Obtener Inmatriculado por Id
 
-router.get('/:recordId', recordCtrl.getRecordById); //Crear Inmatriculado
+router.get('/:recordId', recordCtrl.getRecordById); //Obtener Inmatriculado por Status
+
+router.post('/estado', recordCtrl.getRecordByStatus); //Crear Inmatriculado
 
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistant, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateTramite], recordCtrl.createRecord); //Actualizar Inmatriculado
 

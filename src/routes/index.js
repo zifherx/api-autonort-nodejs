@@ -24,6 +24,8 @@ import sustentoRoutes from "./sustento.routes"
 import ubicacionRoutes from "./ubicacion.routes"
 import chasisRoutes from './chasis.routes'
 import aniosRoutes from './anio.routes'
+import marcaRoutes from './marca.routes'
+import deliveryRoutes from './delivery.routes'
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
@@ -48,5 +50,7 @@ router.use('/financiamiento', financiamientoRoutes);
 router.use('/ubicacion', ubicacionRoutes);
 router.use('/chasis', chasisRoutes);
 router.use('/anios', aniosRoutes);
+router.use('/marca', marcaRoutes);
+router.use('/delivery', deliveryRoutes);
 
 export default router;

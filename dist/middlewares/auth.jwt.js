@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
+exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -407,4 +407,66 @@ var isInmatriculadosAsistant = /*#__PURE__*/function () {
 }();
 
 exports.isInmatriculadosAsistant = isInmatriculadosAsistant;
+
+var isCSAsistant = /*#__PURE__*/function () {
+  var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res, next) {
+    var user, roles, i;
+    return _regenerator.default.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.next = 2;
+            return _User.default.findById(req.userId);
+
+          case 2:
+            user = _context7.sent;
+            _context7.next = 5;
+            return _Role.default.find({
+              _id: {
+                $in: user.roles
+              }
+            });
+
+          case 5:
+            roles = _context7.sent;
+            i = 0;
+
+          case 7:
+            if (!(i < roles.length)) {
+              _context7.next = 14;
+              break;
+            }
+
+            if (!(roles[i].name === 'Asistente-CS')) {
+              _context7.next = 11;
+              break;
+            }
+
+            next();
+            return _context7.abrupt("return");
+
+          case 11:
+            i++;
+            _context7.next = 7;
+            break;
+
+          case 14:
+            return _context7.abrupt("return", res.status(403).json({
+              message: 'Requiere permiso del Asistente-CS'
+            }));
+
+          case 15:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7);
+  }));
+
+  return function isCSAsistant(_x19, _x20, _x21) {
+    return _ref7.apply(this, arguments);
+  };
+}();
+
+exports.isCSAsistant = isCSAsistant;
 //# sourceMappingURL=auth.jwt.js.map

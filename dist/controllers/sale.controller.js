@@ -563,17 +563,19 @@ exports.deleteSaleById = deleteSaleById;
 
 var UnidadesByStatus = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var estado, query;
+    var _req$body3, estado, tramite, query;
+
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            estado = req.body.estado;
+            _req$body3 = req.body, estado = _req$body3.estado, tramite = _req$body3.tramite;
             _context6.prev = 1;
             _context6.next = 4;
-            return _Sale.default.where({
-              estatus_venta: estado
-            }).find().populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
+            return _Sale.default.find().where({
+              estatus_venta: estado,
+              pasoaTramite: tramite
+            }).populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
 
           case 4:
             query = _context6.sent;
@@ -589,7 +591,7 @@ var UnidadesByStatus = /*#__PURE__*/function () {
 
           case 9:
             return _context6.abrupt("return", res.status(404).json({
-              message: 'No existen Unidades Canceladas'
+              message: "No existen Unidades ".concat(estado)
             }));
 
           case 10:
@@ -621,13 +623,13 @@ exports.UnidadesByStatus = UnidadesByStatus;
 
 var UnidadesBySucursal = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var _req$body3, sucursal, start, end, query;
+    var _req$body4, sucursal, start, end, query;
 
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            _req$body3 = req.body, sucursal = _req$body3.sucursal, start = _req$body3.start, end = _req$body3.end;
+            _req$body4 = req.body, sucursal = _req$body4.sucursal, start = _req$body4.start, end = _req$body4.end;
             _context7.prev = 1;
             _context7.next = 4;
             return _Sale.default.where({
@@ -788,13 +790,13 @@ exports.conteoUnidadesLibres = conteoUnidadesLibres;
 
 var conteoUnidadesBySucursalStatusFecha = /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee10(req, res) {
-    var _req$body4, sucursal, status, start, end, consulta;
+    var _req$body5, sucursal, status, start, end, consulta;
 
     return _regenerator.default.wrap(function _callee10$(_context10) {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            _req$body4 = req.body, sucursal = _req$body4.sucursal, status = _req$body4.status, start = _req$body4.start, end = _req$body4.end; //console.log(start, end);
+            _req$body5 = req.body, sucursal = _req$body5.sucursal, status = _req$body5.status, start = _req$body5.start, end = _req$body5.end; //console.log(start, end);
 
             _context10.prev = 1;
             _context10.next = 4;
@@ -853,13 +855,13 @@ exports.conteoUnidadesBySucursalStatusFecha = conteoUnidadesBySucursalStatusFech
 
 var conteoVentasByVendedor = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res) {
-    var _req$body5, sucursal, estatus, start, end, filter, consulta;
+    var _req$body6, sucursal, estatus, start, end, filter, consulta;
 
     return _regenerator.default.wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
-            _req$body5 = req.body, sucursal = _req$body5.sucursal, estatus = _req$body5.estatus, start = _req$body5.start, end = _req$body5.end;
+            _req$body6 = req.body, sucursal = _req$body6.sucursal, estatus = _req$body6.estatus, start = _req$body6.start, end = _req$body6.end;
             _context11.prev = 1;
             filter = {
               sucursal_venta: sucursal,

@@ -55,8 +55,12 @@ export const getOne = async(req, res) => {
 }
 
 export const getCampaniasActivas = async(req, res) => {
+    const fechaDesde = new Date(new Date().getFullYear(), new Date().getMonth(),1).toISOString().substr(0,10);
+    const fechaHasta = new Date(new Date().getFullYear(), new Date().getMonth() + 1,0).toISOString().substr(0,10);
+    console.log("fecha-Desde: ",fechaDesde);
+    console.log("fecha-Hasta: ",fechaHasta);
     try {
-        const activos = await Campaign.find({ status: 'Activo' }).sort({ name: 'asc' });
+        const activos = await Campaign.find({ status: 'Activo',startDate: fechaDesde, endDate: (fechaHasta) }).sort({ name: 'asc' });
         if (activos.length > 0) {
             res.json(activos);
         } else {
@@ -91,7 +95,7 @@ export const getCampaignByGrupo = async(req, res) => {
         if (campana.length > 0) {
             res.json(campana);
         } else {
-            return res.status(404).json({ message: 'No existen Cam´pañas en ese grupo' })
+            return res.status(404).json({ message: 'No existen Campañas en ese grupo' })
         }
     } catch (err) {
         console.log(err);

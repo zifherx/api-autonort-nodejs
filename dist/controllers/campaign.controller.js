@@ -204,20 +204,26 @@ exports.getOne = getOne;
 
 var getCampaniasActivas = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var activos;
+    var fechaDesde, fechaHasta, activos;
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _context4.prev = 0;
-            _context4.next = 3;
+            fechaDesde = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().substr(0, 10);
+            fechaHasta = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).toISOString().substr(0, 10);
+            console.log("fecha-Desde: ", fechaDesde);
+            console.log("fecha-Hasta: ", fechaHasta);
+            _context4.prev = 4;
+            _context4.next = 7;
             return _Campaign.default.find({
-              status: 'Activo'
+              status: 'Activo',
+              startDate: fechaDesde,
+              endDate: fechaHasta
             }).sort({
               name: 'asc'
             });
 
-          case 3:
+          case 7:
             activos = _context4.sent;
 
             if (activos.length > 0) {
@@ -228,23 +234,23 @@ var getCampaniasActivas = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 11;
+            _context4.next = 15;
             break;
 
-          case 7:
-            _context4.prev = 7;
-            _context4.t0 = _context4["catch"](0);
+          case 11:
+            _context4.prev = 11;
+            _context4.t0 = _context4["catch"](4);
             console.log(_context4.t0);
             res.status(409).json({
               message: _context4.t0.message
             });
 
-          case 11:
+          case 15:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 7]]);
+    }, _callee4, null, [[4, 11]]);
   }));
 
   return function getCampaniasActivas(_x7, _x8) {
@@ -344,7 +350,7 @@ var getCampaignByGrupo = /*#__PURE__*/function () {
 
           case 9:
             return _context6.abrupt("return", res.status(404).json({
-              message: 'No existen Cam´pañas en ese grupo'
+              message: 'No existen Campañas en ese grupo'
             }));
 
           case 10:
