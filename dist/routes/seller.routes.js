@@ -17,7 +17,9 @@ var router = (0, _express.Router)(); //Obtener Vendedores
 
 router.get('/', sellerCtrl.getSellers); //Obtener Vendedor por Id
 
-router.get('/:sellerId', sellerCtrl.getSellerById); //Crear Vendedor
+router.get('/:sellerId', sellerCtrl.getSellerById); //Obtener Vendedor por Sucursal
+
+router.post('/find', sellerCtrl.getSellerBySucursal); //Crear Vendedor
 
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller); //Actualizar Vendedor
 

@@ -9,14 +9,14 @@ router.get('/', customerCtrl.getCustomers);
 //Obtener Cliente por Id
 router.get('/:customerId', customerCtrl.getCustomerById);
 
-//Crear Cliente
-router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateCliente], customerCtrl.createCustomer);
-
 //Obtener Cliente por DNI
-router.post('/find', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], customerCtrl.getCustomerByDni);
+router.post('/find', customerCtrl.getCustomerByDni);
+
+//Crear Cliente
+router.post('/', [authJwt.verifyToken,authJwt.isConexosOrADV, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateCliente], customerCtrl.createCustomer);
 
 //Actualizar Cliente
-router.patch('/:customerId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], customerCtrl.updateCustomerById);
+router.patch('/:customerId', [authJwt.verifyToken,authJwt.isChiefAdv , verifySignup.checkRolesExist], customerCtrl.updateCustomerById);
 
 //Remover Cliente
 router.delete('/:customerId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], customerCtrl.deleteCustomerById);

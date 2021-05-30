@@ -17,11 +17,11 @@ var router = (0, _express.Router)(); //Obtener Clientes
 
 router.get('/', customerCtrl.getCustomers); //Obtener Cliente por Id
 
-router.get('/:customerId', customerCtrl.getCustomerById); //Crear Cliente
+router.get('/:customerId', customerCtrl.getCustomerById); //Obtener Cliente por DNI
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateCliente], customerCtrl.createCustomer); //Obtener Cliente por DNI
+router.post('/find', customerCtrl.getCustomerByDni); //Crear Cliente
 
-router.post('/find', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], customerCtrl.getCustomerByDni); //Actualizar Cliente
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosOrADV, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateCliente], customerCtrl.createCustomer); //Actualizar Cliente
 
 router.patch('/:customerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], customerCtrl.updateCustomerById); //Remover Cliente
 

@@ -61,6 +61,14 @@ var _delivery = _interopRequireDefault(require("./delivery.routes"));
 
 var _seguro = _interopRequireDefault(require("./seguro.routes"));
 
+var _conexos = _interopRequireDefault(require("./conexos.routes"));
+
+var _endoso = _interopRequireDefault(require("./endoso.routes"));
+
+var _aseguradora = _interopRequireDefault(require("./aseguradora.routes"));
+
+var _tasacion = _interopRequireDefault(require("./tasacion.routes"));
+
 var router = (0, _express.Router)();
 router.use('/auth', _auth.default);
 router.use('/users', _user.default);
@@ -75,6 +83,8 @@ router.use('/sale', _sale.default);
 router.use('/record', _record.default);
 router.use('/modelo', _modelo.default);
 router.use('/banco', _banco.default);
+router.use('/conexo', _conexos.default);
+router.use('/endoso', _endoso.default);
 router.use('/color', _colores.default);
 router.use('/sectorista', _sectorista.default);
 router.use('/situacion', _situacion.default);
@@ -88,6 +98,8 @@ router.use('/anios', _anio.default);
 router.use('/marca', _marca.default);
 router.use('/delivery', _delivery.default);
 router.use('/seguro', _seguro.default);
+router.use('/aseguradora', _aseguradora.default);
+router.use('/tasacion', _tasacion.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

@@ -9,16 +9,10 @@ var _mongoose = require("mongoose");
 
 var seguroSchema = new _mongoose.Schema({
   //Cliente
-  name: {
-    type: String,
-    required: true
-  },
-  document: {
-    type: String,
-    required: true
-  },
-  telefono: {
-    type: String
+  cliente: {
+    ref: 'Customer',
+    type: _mongoose.Schema.Types.ObjectId,
+    allowEmpty: true
   },
   //Venta
   company: {
@@ -29,10 +23,11 @@ var seguroSchema = new _mongoose.Schema({
     type: String
   },
   fecha_registro: {
-    type: Date
+    type: Date,
+    default: new Date().toISOString().substr(0, 10)
   },
   mes: {
-    type: String
+    type: Number
   },
   status: {
     type: String
@@ -88,6 +83,9 @@ var seguroSchema = new _mongoose.Schema({
     type: String
   },
   endoso: {
+    type: String
+  },
+  entidad: {
     type: String
   },
   inicio_vigencia: {

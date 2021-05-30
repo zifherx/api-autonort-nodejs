@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteSellerById = exports.updateSellerById = exports.getSellers = exports.getSellerById = exports.createSeller = void 0;
+exports.deleteSellerById = exports.updateSellerById = exports.getSellerBySucursal = exports.getSellers = exports.getSellerById = exports.createSeller = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -193,18 +193,76 @@ var getSellers = /*#__PURE__*/function () {
 
 exports.getSellers = getSellers;
 
-var updateSellerById = /*#__PURE__*/function () {
+var getSellerBySucursal = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var sellerId, _req$body2, name, sucursal, document, updateSeller;
-
+    var sucursal, query;
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
+            sucursal = req.body.sucursal;
+            _context4.prev = 1;
+            _context4.next = 4;
+            return _Seller.default.find().where({
+              sucursal: sucursal
+            });
+
+          case 4:
+            query = _context4.sent;
+
+            if (!(query.length > 0)) {
+              _context4.next = 9;
+              break;
+            }
+
+            res.json(query);
+            _context4.next = 10;
+            break;
+
+          case 9:
+            return _context4.abrupt("return", res.status(404).json({
+              message: 'No existen Vendedores en esta Sucursal'
+            }));
+
+          case 10:
+            _context4.next = 16;
+            break;
+
+          case 12:
+            _context4.prev = 12;
+            _context4.t0 = _context4["catch"](1);
+            console.log(_context4.t0);
+            return _context4.abrupt("return", res.status(404).json({
+              message: _context4.t0.message
+            }));
+
+          case 16:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[1, 12]]);
+  }));
+
+  return function getSellerBySucursal(_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+exports.getSellerBySucursal = getSellerBySucursal;
+
+var updateSellerById = /*#__PURE__*/function () {
+  var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
+    var sellerId, _req$body2, name, sucursal, document, updateSeller;
+
+    return _regenerator.default.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
             sellerId = req.params.sellerId;
             _req$body2 = req.body, name = _req$body2.name, sucursal = _req$body2.sucursal, document = _req$body2.document;
-            _context4.prev = 2;
-            _context4.next = 5;
+            _context5.prev = 2;
+            _context5.next = 5;
             return _Seller.default.findByIdAndUpdate(sellerId, {
               name: name,
               sucursal: sucursal,
@@ -212,104 +270,104 @@ var updateSellerById = /*#__PURE__*/function () {
             });
 
           case 5:
-            updateSeller = _context4.sent;
+            updateSeller = _context5.sent;
 
             if (!updateSeller) {
-              _context4.next = 10;
+              _context5.next = 10;
               break;
             }
 
             res.json({
               message: 'Vendedor actualizado con éxito'
             });
-            _context4.next = 11;
+            _context5.next = 11;
             break;
 
           case 10:
-            return _context4.abrupt("return", res.status(404).json({
+            return _context5.abrupt("return", res.status(404).json({
               message: 'No existe Vendedor a actualizar'
             }));
 
           case 11:
-            _context4.next = 17;
+            _context5.next = 17;
             break;
 
           case 13:
-            _context4.prev = 13;
-            _context4.t0 = _context4["catch"](2);
-            console.log(_context4.t0);
+            _context5.prev = 13;
+            _context5.t0 = _context5["catch"](2);
+            console.log(_context5.t0);
             res.status(409).json({
-              message: _context4.t0.message
+              message: _context5.t0.message
             });
 
           case 17:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
       }
-    }, _callee4, null, [[2, 13]]);
+    }, _callee5, null, [[2, 13]]);
   }));
 
-  return function updateSellerById(_x7, _x8) {
-    return _ref4.apply(this, arguments);
+  return function updateSellerById(_x9, _x10) {
+    return _ref5.apply(this, arguments);
   };
 }();
 
 exports.updateSellerById = updateSellerById;
 
 var deleteSellerById = /*#__PURE__*/function () {
-  var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
+  var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
     var sellerId, deletedSeller;
-    return _regenerator.default.wrap(function _callee5$(_context5) {
+    return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
             sellerId = req.params.sellerId;
-            _context5.prev = 1;
-            _context5.next = 4;
+            _context6.prev = 1;
+            _context6.next = 4;
             return _Seller.default.findByIdAndDelete(sellerId);
 
           case 4:
-            deletedSeller = _context5.sent;
+            deletedSeller = _context6.sent;
 
             if (!deletedSeller) {
-              _context5.next = 9;
+              _context6.next = 9;
               break;
             }
 
             res.json({
               message: 'Vendedor eliminado con éxito'
             });
-            _context5.next = 10;
+            _context6.next = 10;
             break;
 
           case 9:
-            return _context5.abrupt("return", res.status(404).json({
+            return _context6.abrupt("return", res.status(404).json({
               message: 'No existe Vendedor a eliminar'
             }));
 
           case 10:
-            _context5.next = 16;
+            _context6.next = 16;
             break;
 
           case 12:
-            _context5.prev = 12;
-            _context5.t0 = _context5["catch"](1);
-            console.log(_context5.t0);
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](1);
+            console.log(_context6.t0);
             res.status(409).json({
-              message: _context5.t0.message
+              message: _context6.t0.message
             });
 
           case 16:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5, null, [[1, 12]]);
+    }, _callee6, null, [[1, 12]]);
   }));
 
-  return function deleteSellerById(_x9, _x10) {
-    return _ref5.apply(this, arguments);
+  return function deleteSellerById(_x11, _x12) {
+    return _ref6.apply(this, arguments);
   };
 }();
 

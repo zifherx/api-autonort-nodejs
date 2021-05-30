@@ -21,6 +21,9 @@ import Record from '../models/Record'
 import Sale from '../models/Sale'
 import Anio from '../models/Anio'
 import Marca from '../models/Marca'
+import Endoso from '../models/Endoso'
+import Conexos from '../models/Conexos'
+import Aseguradora from '../models/Aseguradora'
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -63,6 +66,15 @@ export const checkDuplicateBanco = async(req, res, next) => {
     const bancoEncontrado = await Banco.findOne({ name: name });
 
     if (bancoEncontrado) return res.status(201).json({ message: 'La entidad Financiera ya existe' });
+
+    next();
+}
+
+export const checkDuplicateAseguradora = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await Aseguradora.findOne({ name: name });
+
+    if (query) return res.status(201).json({ message: 'La Aseguradora ya existe' });
 
     next();
 }
@@ -153,6 +165,24 @@ export const checkDuplicateAnio = async(req, res, next) => {
     const encontrado = await Anio.findOne({ name: name });
 
     if (encontrado) return res.status(201).json({ message: 'El Año ya existe' });
+
+    next();
+}
+
+export const checkDuplicateConexo = async(req, res, next) => {
+    const { name } = req.body;
+    const encontrado = await Conexos.findOne({ name: name });
+
+    if (encontrado) return res.status(201).json({ message: 'El Asesor Conexo ya existe' });
+
+    next();
+}
+
+export const checkDuplicateEndoso = async(req, res, next) => {
+    const { name } = req.body;
+    const encontrado = await Endoso.findOne({ name: name });
+
+    if (encontrado) return res.status(201).json({ message: 'El Endoso ya existe' });
 
     next();
 }

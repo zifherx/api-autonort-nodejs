@@ -26,7 +26,11 @@ import chasisRoutes from './chasis.routes'
 import aniosRoutes from './anio.routes'
 import marcaRoutes from './marca.routes'
 import deliveryRoutes from './delivery.routes'
-import seguroRoutes from "./seguro.routes";
+import seguroRoutes from "./seguro.routes"
+import conexoRoutes from './conexos.routes'
+import endosoRoutes from './endoso.routes'
+import aseguradoraRoutes from './aseguradora.routes'
+import tasacionRoutes from './tasacion.routes'
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
@@ -41,6 +45,8 @@ router.use('/sale', saleRoutes);
 router.use('/record', recordRoutes);
 router.use('/modelo', modeloRoutes);
 router.use('/banco', bancoRoutes);
+router.use('/conexo', conexoRoutes);
+router.use('/endoso', endosoRoutes);
 router.use('/color', coloresRoutes);
 router.use('/sectorista', sectoristeRoutes);
 router.use('/situacion', situacionRoutes);
@@ -54,5 +60,7 @@ router.use('/anios', aniosRoutes);
 router.use('/marca', marcaRoutes);
 router.use('/delivery', deliveryRoutes);
 router.use('/seguro', seguroRoutes);
+router.use('/aseguradora', aseguradoraRoutes);
+router.use('/tasacion', tasacionRoutes);
 
 export default router;

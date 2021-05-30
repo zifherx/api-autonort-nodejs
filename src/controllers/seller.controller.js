@@ -48,6 +48,22 @@ export const getSellers = async(req, res) => {
     }
 }
 
+export const getSellerBySucursal = async(req,res) => {
+    const {sucursal} = req.body;
+    try {
+        const query = await Seller.find().where({sucursal});
+
+        if(query.length > 0){
+            res.json(query);
+        }else{
+            return res.status(404).json({message: 'No existen Vendedores en esta Sucursal'});
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(404).json({message: err.message});
+    }
+}
+
 export const updateSellerById = async(req, res) => {
     const { sellerId } = req.params;
     const { name, sucursal, document } = req.body;

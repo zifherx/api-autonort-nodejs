@@ -17,7 +17,11 @@ var router = (0, _express.Router)(); //Obtener Vehiculos
 
 router.get('/', vehicleCtrl.getVehicles); //Obtener Vehiculo por ID
 
-router.get('/:vehicleId', vehicleCtrl.getVehicleById); //Crear Vehiculo
+router.get('/:vehicleId', vehicleCtrl.getVehicleById); //Obtener Vehiculo por Marca
+
+router.post('/marca', vehicleCtrl.getVehiculeByMarca); //Obtener Vehiculo por Modelo
+
+router.post('/modelo', vehicleCtrl.getVehiculeByModelo); //Crear Vehiculo
 
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateVehiculo], vehicleCtrl.createVehicle); //Obtener Vehiculo por COD-TDP
 

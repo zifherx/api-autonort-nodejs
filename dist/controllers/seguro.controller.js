@@ -11,6 +11,8 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
+var _Customer = _interopRequireDefault(require("../models/Customer"));
+
 var _Seguro = _interopRequireDefault(require("../models/Seguro"));
 
 var _User = _interopRequireDefault(require("../models/User"));
@@ -24,9 +26,7 @@ var getAll = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _Seguro.default.find().sort({
-              name: "asc"
-            });
+            return _Seguro.default.find().populate('cliente').populate('empleado');
 
           case 3:
             query = _context.sent;
@@ -102,7 +102,7 @@ var getSeguroById = /*#__PURE__*/function () {
             seguroId = req.params.seguroId;
             _context3.prev = 1;
             _context3.next = 4;
-            return _Seguro.default.findById(seguroId);
+            return _Seguro.default.findById(seguroId).populate('cliente').populate('empleado');
 
           case 4:
             query = _context3.sent;
@@ -150,21 +150,17 @@ exports.getSeguroById = getSeguroById;
 
 var createSeguro = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, document, telefono, company, sucursal, fecha_registro, mes, status, forma_pago, cuotas, fecha_emision, tipo_venta, area_venta, poliza, vendedor, placa, chasis, motor, marca, modelo, anio, uso, asesor, endoso, inicio_vigencia, fin_vigencia, suma_asegurada, aseguradora, comision_seguro, comision_asesor, empleado, newObj, foundEmployee, objSaved;
+    var _req$body, cliente, company, sucursal, mes, status, forma_pago, cuotas, fecha_emision, tipo_venta, area_venta, poliza, vendedor, placa, chasis, motor, marca, modelo, anio, uso, asesor, endoso, entidad, inicio_vigencia, fin_vigencia, suma_asegurada, aseguradora, comision_seguro, comision_asesor, empleado, newObj, foundCliente, foundEmployee, objSaved;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, document = _req$body.document, telefono = _req$body.telefono, company = _req$body.company, sucursal = _req$body.sucursal, fecha_registro = _req$body.fecha_registro, mes = _req$body.mes, status = _req$body.status, forma_pago = _req$body.forma_pago, cuotas = _req$body.cuotas, fecha_emision = _req$body.fecha_emision, tipo_venta = _req$body.tipo_venta, area_venta = _req$body.area_venta, poliza = _req$body.poliza, vendedor = _req$body.vendedor, placa = _req$body.placa, chasis = _req$body.chasis, motor = _req$body.motor, marca = _req$body.marca, modelo = _req$body.modelo, anio = _req$body.anio, uso = _req$body.uso, asesor = _req$body.asesor, endoso = _req$body.endoso, inicio_vigencia = _req$body.inicio_vigencia, fin_vigencia = _req$body.fin_vigencia, suma_asegurada = _req$body.suma_asegurada, aseguradora = _req$body.aseguradora, comision_seguro = _req$body.comision_seguro, comision_asesor = _req$body.comision_asesor, empleado = _req$body.empleado;
+            _req$body = req.body, cliente = _req$body.cliente, company = _req$body.company, sucursal = _req$body.sucursal, mes = _req$body.mes, status = _req$body.status, forma_pago = _req$body.forma_pago, cuotas = _req$body.cuotas, fecha_emision = _req$body.fecha_emision, tipo_venta = _req$body.tipo_venta, area_venta = _req$body.area_venta, poliza = _req$body.poliza, vendedor = _req$body.vendedor, placa = _req$body.placa, chasis = _req$body.chasis, motor = _req$body.motor, marca = _req$body.marca, modelo = _req$body.modelo, anio = _req$body.anio, uso = _req$body.uso, asesor = _req$body.asesor, endoso = _req$body.endoso, entidad = _req$body.entidad, inicio_vigencia = _req$body.inicio_vigencia, fin_vigencia = _req$body.fin_vigencia, suma_asegurada = _req$body.suma_asegurada, aseguradora = _req$body.aseguradora, comision_seguro = _req$body.comision_seguro, comision_asesor = _req$body.comision_asesor, empleado = _req$body.empleado;
             _context4.prev = 1;
             newObj = new _Seguro.default({
-              name: name,
-              document: document,
-              telefono: telefono,
               company: company,
               sucursal: sucursal,
-              fecha_registro: fecha_registro,
               mes: mes,
               status: status,
               forma_pago: forma_pago,
@@ -183,6 +179,7 @@ var createSeguro = /*#__PURE__*/function () {
               uso: uso,
               asesor: asesor,
               endoso: endoso,
+              entidad: entidad,
               inicio_vigencia: inicio_vigencia,
               fin_vigencia: fin_vigencia,
               suma_asegurada: suma_asegurada,
@@ -191,21 +188,44 @@ var createSeguro = /*#__PURE__*/function () {
               comision_asesor: comision_asesor
             });
             _context4.next = 5;
+            return _Customer.default.find({
+              name: {
+                $in: cliente
+              }
+            });
+
+          case 5:
+            foundCliente = _context4.sent;
+            newObj.cliente = foundCliente.map(function (a) {
+              return a._id;
+            });
+
+            if (!(!foundCliente.length > 0)) {
+              _context4.next = 9;
+              break;
+            }
+
+            return _context4.abrupt("return", res.status(404).json({
+              message: 'No existe este cliente'
+            }));
+
+          case 9:
+            _context4.next = 11;
             return _User.default.find({
               username: {
                 $in: empleado
               }
             });
 
-          case 5:
+          case 11:
             foundEmployee = _context4.sent;
-            newObj.empleado = foundEmployee.map(function (a) {
-              return a._id;
+            newObj.empleado = foundEmployee.map(function (b) {
+              return b._id;
             });
-            _context4.next = 9;
+            _context4.next = 15;
             return newObj.save();
 
-          case 9:
+          case 15:
             objSaved = _context4.sent;
 
             if (objSaved) {
@@ -214,23 +234,23 @@ var createSeguro = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 17;
+            _context4.next = 23;
             break;
 
-          case 13:
-            _context4.prev = 13;
+          case 19:
+            _context4.prev = 19;
             _context4.t0 = _context4["catch"](1);
             console.error(_context4.t0);
             res.json({
               message: _context4.t0.message
             });
 
-          case 17:
+          case 23:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[1, 13]]);
+    }, _callee4, null, [[1, 19]]);
   }));
 
   return function createSeguro(_x7, _x8) {
@@ -242,32 +262,40 @@ exports.createSeguro = createSeguro;
 
 var updateSeguro = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var seguroId, _req$body2, name, document, telefono, company, sucursal, fecha_registro, mes, status, forma_pago, cuotas, fecha_emision, tipo_venta, area_venta, poliza, vendedor, placa, chasis, motor, marca, modelo, anio, uso, asesor, endoso, inicio_vigencia, fin_vigencia, suma_asegurada, aseguradora, comision_seguro, comision_asesor, empleado, foundEmployee, updateObj;
+    var seguroId, _req$body2, cliente, company, sucursal, mes, status, forma_pago, cuotas, fecha_emision, tipo_venta, area_venta, poliza, vendedor, placa, chasis, motor, marca, modelo, anio, uso, asesor, endoso, entidad, inicio_vigencia, fin_vigencia, suma_asegurada, aseguradora, comision_seguro, comision_asesor, empleado, foundCliente, foundEmployee, updateObj;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             seguroId = req.params.seguroId;
-            _req$body2 = req.body, name = _req$body2.name, document = _req$body2.document, telefono = _req$body2.telefono, company = _req$body2.company, sucursal = _req$body2.sucursal, fecha_registro = _req$body2.fecha_registro, mes = _req$body2.mes, status = _req$body2.status, forma_pago = _req$body2.forma_pago, cuotas = _req$body2.cuotas, fecha_emision = _req$body2.fecha_emision, tipo_venta = _req$body2.tipo_venta, area_venta = _req$body2.area_venta, poliza = _req$body2.poliza, vendedor = _req$body2.vendedor, placa = _req$body2.placa, chasis = _req$body2.chasis, motor = _req$body2.motor, marca = _req$body2.marca, modelo = _req$body2.modelo, anio = _req$body2.anio, uso = _req$body2.uso, asesor = _req$body2.asesor, endoso = _req$body2.endoso, inicio_vigencia = _req$body2.inicio_vigencia, fin_vigencia = _req$body2.fin_vigencia, suma_asegurada = _req$body2.suma_asegurada, aseguradora = _req$body2.aseguradora, comision_seguro = _req$body2.comision_seguro, comision_asesor = _req$body2.comision_asesor, empleado = _req$body2.empleado;
+            _req$body2 = req.body, cliente = _req$body2.cliente, company = _req$body2.company, sucursal = _req$body2.sucursal, mes = _req$body2.mes, status = _req$body2.status, forma_pago = _req$body2.forma_pago, cuotas = _req$body2.cuotas, fecha_emision = _req$body2.fecha_emision, tipo_venta = _req$body2.tipo_venta, area_venta = _req$body2.area_venta, poliza = _req$body2.poliza, vendedor = _req$body2.vendedor, placa = _req$body2.placa, chasis = _req$body2.chasis, motor = _req$body2.motor, marca = _req$body2.marca, modelo = _req$body2.modelo, anio = _req$body2.anio, uso = _req$body2.uso, asesor = _req$body2.asesor, endoso = _req$body2.endoso, entidad = _req$body2.entidad, inicio_vigencia = _req$body2.inicio_vigencia, fin_vigencia = _req$body2.fin_vigencia, suma_asegurada = _req$body2.suma_asegurada, aseguradora = _req$body2.aseguradora, comision_seguro = _req$body2.comision_seguro, comision_asesor = _req$body2.comision_asesor, empleado = _req$body2.empleado;
             _context5.prev = 2;
             _context5.next = 5;
+            return _Customer.default.find({
+              name: {
+                $in: cliente
+              }
+            });
+
+          case 5:
+            foundCliente = _context5.sent;
+            _context5.next = 8;
             return _User.default.find({
               username: {
                 $in: empleado
               }
             });
 
-          case 5:
+          case 8:
             foundEmployee = _context5.sent;
-            _context5.next = 8;
+            _context5.next = 11;
             return _Seguro.default.findByIdAndUpdate(seguroId, {
-              name: name,
-              document: document,
-              telefono: telefono,
+              cliente: foundCliente.map(function (a) {
+                return a._id;
+              }),
               company: company,
               sucursal: sucursal,
-              fecha_registro: fecha_registro,
               mes: mes,
               status: status,
               forma_pago: forma_pago,
@@ -286,54 +314,55 @@ var updateSeguro = /*#__PURE__*/function () {
               uso: uso,
               asesor: asesor,
               endoso: endoso,
+              entidad: entidad,
               inicio_vigencia: inicio_vigencia,
               fin_vigencia: fin_vigencia,
               suma_asegurada: suma_asegurada,
               aseguradora: aseguradora,
               comision_seguro: comision_seguro,
               comision_asesor: comision_asesor,
-              empleado: foundEmployee.map(function (a) {
-                return a._id;
+              empleado: foundEmployee.map(function (b) {
+                return b._id;
               })
             });
 
-          case 8:
+          case 11:
             updateObj = _context5.sent;
 
             if (!updateObj) {
-              _context5.next = 13;
+              _context5.next = 16;
               break;
             }
 
             res.json({
-              message: 'Seguro actualizado con éxito'
+              message: "Seguro actualizado con éxito"
             });
-            _context5.next = 14;
-            break;
-
-          case 13:
-            return _context5.abrupt("return", res.status(404).json({
-              message: 'No existe Seguro a actualizar'
-            }));
-
-          case 14:
-            _context5.next = 20;
+            _context5.next = 17;
             break;
 
           case 16:
-            _context5.prev = 16;
+            return _context5.abrupt("return", res.status(404).json({
+              message: "No existe Seguro a actualizar"
+            }));
+
+          case 17:
+            _context5.next = 23;
+            break;
+
+          case 19:
+            _context5.prev = 19;
             _context5.t0 = _context5["catch"](2);
             console.error(_context5.t0);
             res.status(409).json({
               message: _context5.t0.message
             });
 
-          case 20:
+          case 23:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 16]]);
+    }, _callee5, null, [[2, 19]]);
   }));
 
   return function updateSeguro(_x9, _x10) {

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.checkDuplicateExpediente = exports.checkDuplicateTramite = exports.checkDuplicateAccesorio = exports.checkDuplicateVehiculo = exports.checkDuplicateAdicional = exports.checkDuplicateCampania = exports.checkDuplicateCliente = exports.checkDuplicateVendedor = exports.checkDuplicateAnio = exports.checkDuplicateChasis = exports.checkDuplicateUbicacion = exports.checkDuplicateFinanciamiento = exports.checkDuplicateSustento = exports.checkDuplicateSucursal = exports.checkDuplicateSituacion = exports.checkDuplicateCondicion = exports.checkDuplicateMarca = exports.checkDuplicateSectorista = exports.checkDuplicateBanco = exports.checkDuplicateColor = exports.checkDuplicateModelo = exports.checkDuplicateUser = exports.checkDuplicateRole = void 0;
+exports.checkDuplicateExpediente = exports.checkDuplicateTramite = exports.checkDuplicateAccesorio = exports.checkDuplicateVehiculo = exports.checkDuplicateAdicional = exports.checkDuplicateCampania = exports.checkDuplicateCliente = exports.checkDuplicateVendedor = exports.checkDuplicateEndoso = exports.checkDuplicateConexo = exports.checkDuplicateAnio = exports.checkDuplicateChasis = exports.checkDuplicateUbicacion = exports.checkDuplicateFinanciamiento = exports.checkDuplicateSustento = exports.checkDuplicateSucursal = exports.checkDuplicateSituacion = exports.checkDuplicateCondicion = exports.checkDuplicateMarca = exports.checkDuplicateSectorista = exports.checkDuplicateAseguradora = exports.checkDuplicateBanco = exports.checkDuplicateColor = exports.checkDuplicateModelo = exports.checkDuplicateUser = exports.checkDuplicateRole = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -56,6 +56,12 @@ var _Sale = _interopRequireDefault(require("../models/Sale"));
 var _Anio = _interopRequireDefault(require("../models/Anio"));
 
 var _Marca = _interopRequireDefault(require("../models/Marca"));
+
+var _Endoso = _interopRequireDefault(require("../models/Endoso"));
+
+var _Conexos = _interopRequireDefault(require("../models/Conexos"));
+
+var _Aseguradora = _interopRequireDefault(require("../models/Aseguradora"));
 
 var checkDuplicateRole = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res, next) {
@@ -272,29 +278,29 @@ var checkDuplicateBanco = /*#__PURE__*/function () {
 
 exports.checkDuplicateBanco = checkDuplicateBanco;
 
-var checkDuplicateSectorista = /*#__PURE__*/function () {
+var checkDuplicateAseguradora = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res, next) {
-    var name, encontrado;
+    var name, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             name = req.body.name;
             _context6.next = 3;
-            return _Sectorista.default.findOne({
+            return _Aseguradora.default.findOne({
               name: name
             });
 
           case 3:
-            encontrado = _context6.sent;
+            query = _context6.sent;
 
-            if (!encontrado) {
+            if (!query) {
               _context6.next = 6;
               break;
             }
 
             return _context6.abrupt("return", res.status(201).json({
-              message: 'El Sectorista ya existe'
+              message: 'La Aseguradora ya existe'
             }));
 
           case 6:
@@ -308,14 +314,14 @@ var checkDuplicateSectorista = /*#__PURE__*/function () {
     }, _callee6);
   }));
 
-  return function checkDuplicateSectorista(_x16, _x17, _x18) {
+  return function checkDuplicateAseguradora(_x16, _x17, _x18) {
     return _ref6.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateSectorista = checkDuplicateSectorista;
+exports.checkDuplicateAseguradora = checkDuplicateAseguradora;
 
-var checkDuplicateMarca = /*#__PURE__*/function () {
+var checkDuplicateSectorista = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res, next) {
     var name, encontrado;
     return _regenerator.default.wrap(function _callee7$(_context7) {
@@ -324,7 +330,7 @@ var checkDuplicateMarca = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context7.next = 3;
-            return _Marca.default.findOne({
+            return _Sectorista.default.findOne({
               name: name
             });
 
@@ -337,7 +343,7 @@ var checkDuplicateMarca = /*#__PURE__*/function () {
             }
 
             return _context7.abrupt("return", res.status(201).json({
-              message: 'La Marca ya existe'
+              message: 'El Sectorista ya existe'
             }));
 
           case 6:
@@ -351,14 +357,14 @@ var checkDuplicateMarca = /*#__PURE__*/function () {
     }, _callee7);
   }));
 
-  return function checkDuplicateMarca(_x19, _x20, _x21) {
+  return function checkDuplicateSectorista(_x19, _x20, _x21) {
     return _ref7.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateMarca = checkDuplicateMarca;
+exports.checkDuplicateSectorista = checkDuplicateSectorista;
 
-var checkDuplicateCondicion = /*#__PURE__*/function () {
+var checkDuplicateMarca = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res, next) {
     var name, encontrado;
     return _regenerator.default.wrap(function _callee8$(_context8) {
@@ -367,7 +373,7 @@ var checkDuplicateCondicion = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context8.next = 3;
-            return _Condicion.default.findOne({
+            return _Marca.default.findOne({
               name: name
             });
 
@@ -380,7 +386,7 @@ var checkDuplicateCondicion = /*#__PURE__*/function () {
             }
 
             return _context8.abrupt("return", res.status(201).json({
-              message: 'La Condición Vehicular ya existe'
+              message: 'La Marca ya existe'
             }));
 
           case 6:
@@ -394,14 +400,14 @@ var checkDuplicateCondicion = /*#__PURE__*/function () {
     }, _callee8);
   }));
 
-  return function checkDuplicateCondicion(_x22, _x23, _x24) {
+  return function checkDuplicateMarca(_x22, _x23, _x24) {
     return _ref8.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateCondicion = checkDuplicateCondicion;
+exports.checkDuplicateMarca = checkDuplicateMarca;
 
-var checkDuplicateSituacion = /*#__PURE__*/function () {
+var checkDuplicateCondicion = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res, next) {
     var name, encontrado;
     return _regenerator.default.wrap(function _callee9$(_context9) {
@@ -410,7 +416,7 @@ var checkDuplicateSituacion = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context9.next = 3;
-            return _Situacion.default.findOne({
+            return _Condicion.default.findOne({
               name: name
             });
 
@@ -423,7 +429,7 @@ var checkDuplicateSituacion = /*#__PURE__*/function () {
             }
 
             return _context9.abrupt("return", res.status(201).json({
-              message: 'La Situación de Venta ya existe'
+              message: 'La Condición Vehicular ya existe'
             }));
 
           case 6:
@@ -437,14 +443,14 @@ var checkDuplicateSituacion = /*#__PURE__*/function () {
     }, _callee9);
   }));
 
-  return function checkDuplicateSituacion(_x25, _x26, _x27) {
+  return function checkDuplicateCondicion(_x25, _x26, _x27) {
     return _ref9.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateSituacion = checkDuplicateSituacion;
+exports.checkDuplicateCondicion = checkDuplicateCondicion;
 
-var checkDuplicateSucursal = /*#__PURE__*/function () {
+var checkDuplicateSituacion = /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee10(req, res, next) {
     var name, encontrado;
     return _regenerator.default.wrap(function _callee10$(_context10) {
@@ -453,7 +459,7 @@ var checkDuplicateSucursal = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context10.next = 3;
-            return _Sucursal.default.findOne({
+            return _Situacion.default.findOne({
               name: name
             });
 
@@ -466,7 +472,7 @@ var checkDuplicateSucursal = /*#__PURE__*/function () {
             }
 
             return _context10.abrupt("return", res.status(201).json({
-              message: 'La Sucursal ya existe'
+              message: 'La Situación de Venta ya existe'
             }));
 
           case 6:
@@ -480,14 +486,14 @@ var checkDuplicateSucursal = /*#__PURE__*/function () {
     }, _callee10);
   }));
 
-  return function checkDuplicateSucursal(_x28, _x29, _x30) {
+  return function checkDuplicateSituacion(_x28, _x29, _x30) {
     return _ref10.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateSucursal = checkDuplicateSucursal;
+exports.checkDuplicateSituacion = checkDuplicateSituacion;
 
-var checkDuplicateSustento = /*#__PURE__*/function () {
+var checkDuplicateSucursal = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res, next) {
     var name, encontrado;
     return _regenerator.default.wrap(function _callee11$(_context11) {
@@ -496,7 +502,7 @@ var checkDuplicateSustento = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context11.next = 3;
-            return _Sustento.default.findOne({
+            return _Sucursal.default.findOne({
               name: name
             });
 
@@ -509,7 +515,7 @@ var checkDuplicateSustento = /*#__PURE__*/function () {
             }
 
             return _context11.abrupt("return", res.status(201).json({
-              message: 'El Sustento ya existe'
+              message: 'La Sucursal ya existe'
             }));
 
           case 6:
@@ -523,14 +529,14 @@ var checkDuplicateSustento = /*#__PURE__*/function () {
     }, _callee11);
   }));
 
-  return function checkDuplicateSustento(_x31, _x32, _x33) {
+  return function checkDuplicateSucursal(_x31, _x32, _x33) {
     return _ref11.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateSustento = checkDuplicateSustento;
+exports.checkDuplicateSucursal = checkDuplicateSucursal;
 
-var checkDuplicateFinanciamiento = /*#__PURE__*/function () {
+var checkDuplicateSustento = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res, next) {
     var name, encontrado;
     return _regenerator.default.wrap(function _callee12$(_context12) {
@@ -539,7 +545,7 @@ var checkDuplicateFinanciamiento = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context12.next = 3;
-            return _Financiamiento.default.findOne({
+            return _Sustento.default.findOne({
               name: name
             });
 
@@ -552,7 +558,7 @@ var checkDuplicateFinanciamiento = /*#__PURE__*/function () {
             }
 
             return _context12.abrupt("return", res.status(201).json({
-              message: 'El Financiamiento ya existe'
+              message: 'El Sustento ya existe'
             }));
 
           case 6:
@@ -566,14 +572,14 @@ var checkDuplicateFinanciamiento = /*#__PURE__*/function () {
     }, _callee12);
   }));
 
-  return function checkDuplicateFinanciamiento(_x34, _x35, _x36) {
+  return function checkDuplicateSustento(_x34, _x35, _x36) {
     return _ref12.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateFinanciamiento = checkDuplicateFinanciamiento;
+exports.checkDuplicateSustento = checkDuplicateSustento;
 
-var checkDuplicateUbicacion = /*#__PURE__*/function () {
+var checkDuplicateFinanciamiento = /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res, next) {
     var name, encontrado;
     return _regenerator.default.wrap(function _callee13$(_context13) {
@@ -582,7 +588,7 @@ var checkDuplicateUbicacion = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context13.next = 3;
-            return _Ubicacion.default.findOne({
+            return _Financiamiento.default.findOne({
               name: name
             });
 
@@ -595,7 +601,7 @@ var checkDuplicateUbicacion = /*#__PURE__*/function () {
             }
 
             return _context13.abrupt("return", res.status(201).json({
-              message: 'La Ubicacion ya existe'
+              message: 'El Financiamiento ya existe'
             }));
 
           case 6:
@@ -609,14 +615,14 @@ var checkDuplicateUbicacion = /*#__PURE__*/function () {
     }, _callee13);
   }));
 
-  return function checkDuplicateUbicacion(_x37, _x38, _x39) {
+  return function checkDuplicateFinanciamiento(_x37, _x38, _x39) {
     return _ref13.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateUbicacion = checkDuplicateUbicacion;
+exports.checkDuplicateFinanciamiento = checkDuplicateFinanciamiento;
 
-var checkDuplicateChasis = /*#__PURE__*/function () {
+var checkDuplicateUbicacion = /*#__PURE__*/function () {
   var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res, next) {
     var name, encontrado;
     return _regenerator.default.wrap(function _callee14$(_context14) {
@@ -625,7 +631,7 @@ var checkDuplicateChasis = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context14.next = 3;
-            return _Chasis.default.findOne({
+            return _Ubicacion.default.findOne({
               name: name
             });
 
@@ -638,7 +644,7 @@ var checkDuplicateChasis = /*#__PURE__*/function () {
             }
 
             return _context14.abrupt("return", res.status(201).json({
-              message: 'El Chasis ya existe'
+              message: 'La Ubicacion ya existe'
             }));
 
           case 6:
@@ -652,14 +658,14 @@ var checkDuplicateChasis = /*#__PURE__*/function () {
     }, _callee14);
   }));
 
-  return function checkDuplicateChasis(_x40, _x41, _x42) {
+  return function checkDuplicateUbicacion(_x40, _x41, _x42) {
     return _ref14.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateChasis = checkDuplicateChasis;
+exports.checkDuplicateUbicacion = checkDuplicateUbicacion;
 
-var checkDuplicateAnio = /*#__PURE__*/function () {
+var checkDuplicateChasis = /*#__PURE__*/function () {
   var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res, next) {
     var name, encontrado;
     return _regenerator.default.wrap(function _callee15$(_context15) {
@@ -668,7 +674,7 @@ var checkDuplicateAnio = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context15.next = 3;
-            return _Anio.default.findOne({
+            return _Chasis.default.findOne({
               name: name
             });
 
@@ -681,7 +687,7 @@ var checkDuplicateAnio = /*#__PURE__*/function () {
             }
 
             return _context15.abrupt("return", res.status(201).json({
-              message: 'El Año ya existe'
+              message: 'El Chasis ya existe'
             }));
 
           case 6:
@@ -695,60 +701,42 @@ var checkDuplicateAnio = /*#__PURE__*/function () {
     }, _callee15);
   }));
 
-  return function checkDuplicateAnio(_x43, _x44, _x45) {
+  return function checkDuplicateChasis(_x43, _x44, _x45) {
     return _ref15.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateAnio = checkDuplicateAnio;
+exports.checkDuplicateChasis = checkDuplicateChasis;
 
-var checkDuplicateVendedor = /*#__PURE__*/function () {
+var checkDuplicateAnio = /*#__PURE__*/function () {
   var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee16(req, res, next) {
-    var _req$body, name, document, encontrado, encontrado1;
-
+    var name, encontrado;
     return _regenerator.default.wrap(function _callee16$(_context16) {
       while (1) {
         switch (_context16.prev = _context16.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, document = _req$body.document;
+            name = req.body.name;
             _context16.next = 3;
-            return _Seller.default.findOne({
+            return _Anio.default.findOne({
               name: name
             });
 
           case 3:
             encontrado = _context16.sent;
-            _context16.next = 6;
-            return _Seller.default.findOne({
-              document: document
-            });
-
-          case 6:
-            encontrado1 = _context16.sent;
 
             if (!encontrado) {
-              _context16.next = 9;
+              _context16.next = 6;
               break;
             }
 
             return _context16.abrupt("return", res.status(201).json({
-              message: 'El Vendedor ya existe'
+              message: 'El Año ya existe'
             }));
 
-          case 9:
-            if (!encontrado1) {
-              _context16.next = 11;
-              break;
-            }
-
-            return _context16.abrupt("return", res.status(201).json({
-              message: 'El DNI ya existe'
-            }));
-
-          case 11:
+          case 6:
             next();
 
-          case 12:
+          case 7:
           case "end":
             return _context16.stop();
         }
@@ -756,60 +744,42 @@ var checkDuplicateVendedor = /*#__PURE__*/function () {
     }, _callee16);
   }));
 
-  return function checkDuplicateVendedor(_x46, _x47, _x48) {
+  return function checkDuplicateAnio(_x46, _x47, _x48) {
     return _ref16.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateVendedor = checkDuplicateVendedor;
+exports.checkDuplicateAnio = checkDuplicateAnio;
 
-var checkDuplicateCliente = /*#__PURE__*/function () {
+var checkDuplicateConexo = /*#__PURE__*/function () {
   var _ref17 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee17(req, res, next) {
-    var _req$body2, name, document, encontrado, encontrado1;
-
+    var name, encontrado;
     return _regenerator.default.wrap(function _callee17$(_context17) {
       while (1) {
         switch (_context17.prev = _context17.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, document = _req$body2.document;
+            name = req.body.name;
             _context17.next = 3;
-            return _Customer.default.findOne({
+            return _Conexos.default.findOne({
               name: name
             });
 
           case 3:
             encontrado = _context17.sent;
-            _context17.next = 6;
-            return _Customer.default.findOne({
-              document: document
-            });
-
-          case 6:
-            encontrado1 = _context17.sent;
 
             if (!encontrado) {
-              _context17.next = 9;
+              _context17.next = 6;
               break;
             }
 
             return _context17.abrupt("return", res.status(201).json({
-              message: 'El Cliente ya existe'
+              message: 'El Asesor Conexo ya existe'
             }));
 
-          case 9:
-            if (!encontrado1) {
-              _context17.next = 11;
-              break;
-            }
-
-            return _context17.abrupt("return", res.status(201).json({
-              message: 'El DNI ya existe'
-            }));
-
-          case 11:
+          case 6:
             next();
 
-          case 12:
+          case 7:
           case "end":
             return _context17.stop();
         }
@@ -817,14 +787,14 @@ var checkDuplicateCliente = /*#__PURE__*/function () {
     }, _callee17);
   }));
 
-  return function checkDuplicateCliente(_x49, _x50, _x51) {
+  return function checkDuplicateConexo(_x49, _x50, _x51) {
     return _ref17.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateCliente = checkDuplicateCliente;
+exports.checkDuplicateConexo = checkDuplicateConexo;
 
-var checkDuplicateCampania = /*#__PURE__*/function () {
+var checkDuplicateEndoso = /*#__PURE__*/function () {
   var _ref18 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee18(req, res, next) {
     var name, encontrado;
     return _regenerator.default.wrap(function _callee18$(_context18) {
@@ -833,7 +803,7 @@ var checkDuplicateCampania = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context18.next = 3;
-            return _Campaign.default.findOne({
+            return _Endoso.default.findOne({
               name: name
             });
 
@@ -846,7 +816,7 @@ var checkDuplicateCampania = /*#__PURE__*/function () {
             }
 
             return _context18.abrupt("return", res.status(201).json({
-              message: 'La Campaña ya existe'
+              message: 'El Endoso ya existe'
             }));
 
           case 6:
@@ -860,42 +830,60 @@ var checkDuplicateCampania = /*#__PURE__*/function () {
     }, _callee18);
   }));
 
-  return function checkDuplicateCampania(_x52, _x53, _x54) {
+  return function checkDuplicateEndoso(_x52, _x53, _x54) {
     return _ref18.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateCampania = checkDuplicateCampania;
+exports.checkDuplicateEndoso = checkDuplicateEndoso;
 
-var checkDuplicateAdicional = /*#__PURE__*/function () {
+var checkDuplicateVendedor = /*#__PURE__*/function () {
   var _ref19 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee19(req, res, next) {
-    var name, encontrado;
+    var _req$body, name, document, encontrado, encontrado1;
+
     return _regenerator.default.wrap(function _callee19$(_context19) {
       while (1) {
         switch (_context19.prev = _context19.next) {
           case 0:
-            name = req.body.name;
+            _req$body = req.body, name = _req$body.name, document = _req$body.document;
             _context19.next = 3;
-            return _Adicional.default.findOne({
+            return _Seller.default.findOne({
               name: name
             });
 
           case 3:
             encontrado = _context19.sent;
+            _context19.next = 6;
+            return _Seller.default.findOne({
+              document: document
+            });
+
+          case 6:
+            encontrado1 = _context19.sent;
 
             if (!encontrado) {
-              _context19.next = 6;
+              _context19.next = 9;
               break;
             }
 
             return _context19.abrupt("return", res.status(201).json({
-              message: 'El Adicional ya existe'
+              message: 'El Vendedor ya existe'
             }));
 
-          case 6:
+          case 9:
+            if (!encontrado1) {
+              _context19.next = 11;
+              break;
+            }
+
+            return _context19.abrupt("return", res.status(201).json({
+              message: 'El DNI ya existe'
+            }));
+
+          case 11:
             next();
 
-          case 7:
+          case 12:
           case "end":
             return _context19.stop();
         }
@@ -903,32 +891,32 @@ var checkDuplicateAdicional = /*#__PURE__*/function () {
     }, _callee19);
   }));
 
-  return function checkDuplicateAdicional(_x55, _x56, _x57) {
+  return function checkDuplicateVendedor(_x55, _x56, _x57) {
     return _ref19.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateAdicional = checkDuplicateAdicional;
+exports.checkDuplicateVendedor = checkDuplicateVendedor;
 
-var checkDuplicateVehiculo = /*#__PURE__*/function () {
+var checkDuplicateCliente = /*#__PURE__*/function () {
   var _ref20 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee20(req, res, next) {
-    var _req$body3, cod_tdp, version, encontrado, encontrado1;
+    var _req$body2, name, document, encontrado, encontrado1;
 
     return _regenerator.default.wrap(function _callee20$(_context20) {
       while (1) {
         switch (_context20.prev = _context20.next) {
           case 0:
-            _req$body3 = req.body, cod_tdp = _req$body3.cod_tdp, version = _req$body3.version;
+            _req$body2 = req.body, name = _req$body2.name, document = _req$body2.document;
             _context20.next = 3;
-            return _Vehicle.default.findOne({
-              cod_tdp: cod_tdp
+            return _Customer.default.findOne({
+              name: name
             });
 
           case 3:
             encontrado = _context20.sent;
             _context20.next = 6;
-            return _Vehicle.default.findOne({
-              version: version
+            return _Customer.default.findOne({
+              document: document
             });
 
           case 6:
@@ -940,7 +928,7 @@ var checkDuplicateVehiculo = /*#__PURE__*/function () {
             }
 
             return _context20.abrupt("return", res.status(201).json({
-              message: 'El COD-TDP ya existe'
+              message: 'El Cliente ya existe'
             }));
 
           case 9:
@@ -950,7 +938,7 @@ var checkDuplicateVehiculo = /*#__PURE__*/function () {
             }
 
             return _context20.abrupt("return", res.status(201).json({
-              message: 'El vehículo ya existe'
+              message: 'El DNI ya existe'
             }));
 
           case 11:
@@ -964,14 +952,14 @@ var checkDuplicateVehiculo = /*#__PURE__*/function () {
     }, _callee20);
   }));
 
-  return function checkDuplicateVehiculo(_x58, _x59, _x60) {
+  return function checkDuplicateCliente(_x58, _x59, _x60) {
     return _ref20.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateVehiculo = checkDuplicateVehiculo;
+exports.checkDuplicateCliente = checkDuplicateCliente;
 
-var checkDuplicateAccesorio = /*#__PURE__*/function () {
+var checkDuplicateCampania = /*#__PURE__*/function () {
   var _ref21 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee21(req, res, next) {
     var name, encontrado;
     return _regenerator.default.wrap(function _callee21$(_context21) {
@@ -980,7 +968,7 @@ var checkDuplicateAccesorio = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context21.next = 3;
-            return _Props.default.findOne({
+            return _Campaign.default.findOne({
               name: name
             });
 
@@ -993,7 +981,7 @@ var checkDuplicateAccesorio = /*#__PURE__*/function () {
             }
 
             return _context21.abrupt("return", res.status(201).json({
-              message: 'El Accesorio ya existe'
+              message: 'La Campaña ya existe'
             }));
 
           case 6:
@@ -1007,22 +995,169 @@ var checkDuplicateAccesorio = /*#__PURE__*/function () {
     }, _callee21);
   }));
 
-  return function checkDuplicateAccesorio(_x61, _x62, _x63) {
+  return function checkDuplicateCampania(_x61, _x62, _x63) {
     return _ref21.apply(this, arguments);
+  };
+}();
+
+exports.checkDuplicateCampania = checkDuplicateCampania;
+
+var checkDuplicateAdicional = /*#__PURE__*/function () {
+  var _ref22 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee22(req, res, next) {
+    var name, encontrado;
+    return _regenerator.default.wrap(function _callee22$(_context22) {
+      while (1) {
+        switch (_context22.prev = _context22.next) {
+          case 0:
+            name = req.body.name;
+            _context22.next = 3;
+            return _Adicional.default.findOne({
+              name: name
+            });
+
+          case 3:
+            encontrado = _context22.sent;
+
+            if (!encontrado) {
+              _context22.next = 6;
+              break;
+            }
+
+            return _context22.abrupt("return", res.status(201).json({
+              message: 'El Adicional ya existe'
+            }));
+
+          case 6:
+            next();
+
+          case 7:
+          case "end":
+            return _context22.stop();
+        }
+      }
+    }, _callee22);
+  }));
+
+  return function checkDuplicateAdicional(_x64, _x65, _x66) {
+    return _ref22.apply(this, arguments);
+  };
+}();
+
+exports.checkDuplicateAdicional = checkDuplicateAdicional;
+
+var checkDuplicateVehiculo = /*#__PURE__*/function () {
+  var _ref23 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee23(req, res, next) {
+    var _req$body3, cod_tdp, version, encontrado, encontrado1;
+
+    return _regenerator.default.wrap(function _callee23$(_context23) {
+      while (1) {
+        switch (_context23.prev = _context23.next) {
+          case 0:
+            _req$body3 = req.body, cod_tdp = _req$body3.cod_tdp, version = _req$body3.version;
+            _context23.next = 3;
+            return _Vehicle.default.findOne({
+              cod_tdp: cod_tdp
+            });
+
+          case 3:
+            encontrado = _context23.sent;
+            _context23.next = 6;
+            return _Vehicle.default.findOne({
+              version: version
+            });
+
+          case 6:
+            encontrado1 = _context23.sent;
+
+            if (!encontrado) {
+              _context23.next = 9;
+              break;
+            }
+
+            return _context23.abrupt("return", res.status(201).json({
+              message: 'El COD-TDP ya existe'
+            }));
+
+          case 9:
+            if (!encontrado1) {
+              _context23.next = 11;
+              break;
+            }
+
+            return _context23.abrupt("return", res.status(201).json({
+              message: 'El vehículo ya existe'
+            }));
+
+          case 11:
+            next();
+
+          case 12:
+          case "end":
+            return _context23.stop();
+        }
+      }
+    }, _callee23);
+  }));
+
+  return function checkDuplicateVehiculo(_x67, _x68, _x69) {
+    return _ref23.apply(this, arguments);
+  };
+}();
+
+exports.checkDuplicateVehiculo = checkDuplicateVehiculo;
+
+var checkDuplicateAccesorio = /*#__PURE__*/function () {
+  var _ref24 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee24(req, res, next) {
+    var name, encontrado;
+    return _regenerator.default.wrap(function _callee24$(_context24) {
+      while (1) {
+        switch (_context24.prev = _context24.next) {
+          case 0:
+            name = req.body.name;
+            _context24.next = 3;
+            return _Props.default.findOne({
+              name: name
+            });
+
+          case 3:
+            encontrado = _context24.sent;
+
+            if (!encontrado) {
+              _context24.next = 6;
+              break;
+            }
+
+            return _context24.abrupt("return", res.status(201).json({
+              message: 'El Accesorio ya existe'
+            }));
+
+          case 6:
+            next();
+
+          case 7:
+          case "end":
+            return _context24.stop();
+        }
+      }
+    }, _callee24);
+  }));
+
+  return function checkDuplicateAccesorio(_x70, _x71, _x72) {
+    return _ref24.apply(this, arguments);
   };
 }();
 
 exports.checkDuplicateAccesorio = checkDuplicateAccesorio;
 
 var checkDuplicateTramite = /*#__PURE__*/function () {
-  var _ref22 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee22(req, res, next) {
+  var _ref25 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee25(req, res, next) {
     var sales, expediente, cod_exp, encontrado;
-    return _regenerator.default.wrap(function _callee22$(_context22) {
+    return _regenerator.default.wrap(function _callee25$(_context25) {
       while (1) {
-        switch (_context22.prev = _context22.next) {
+        switch (_context25.prev = _context25.next) {
           case 0:
             sales = req.body.sales;
-            _context22.next = 3;
+            _context25.next = 3;
             return _Sale.default.find({
               nro_comprobante: {
                 $in: sales
@@ -1030,24 +1165,24 @@ var checkDuplicateTramite = /*#__PURE__*/function () {
             });
 
           case 3:
-            expediente = _context22.sent;
+            expediente = _context25.sent;
             cod_exp = expediente.map(function (rs) {
               return rs._id;
             });
-            _context22.next = 7;
+            _context25.next = 7;
             return _Record.default.findOne({
               sales: cod_exp
             });
 
           case 7:
-            encontrado = _context22.sent;
+            encontrado = _context25.sent;
 
             if (!encontrado) {
-              _context22.next = 10;
+              _context25.next = 10;
               break;
             }
 
-            return _context22.abrupt("return", res.status(201).json({
+            return _context25.abrupt("return", res.status(201).json({
               message: 'El Trámite ya existe'
             }));
 
@@ -1056,53 +1191,53 @@ var checkDuplicateTramite = /*#__PURE__*/function () {
 
           case 11:
           case "end":
-            return _context22.stop();
+            return _context25.stop();
         }
       }
-    }, _callee22);
+    }, _callee25);
   }));
 
-  return function checkDuplicateTramite(_x64, _x65, _x66) {
-    return _ref22.apply(this, arguments);
+  return function checkDuplicateTramite(_x73, _x74, _x75) {
+    return _ref25.apply(this, arguments);
   };
 }();
 
 exports.checkDuplicateTramite = checkDuplicateTramite;
 
 var checkDuplicateExpediente = /*#__PURE__*/function () {
-  var _ref23 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee23(req, res, next) {
+  var _ref26 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee26(req, res, next) {
     var serie_tdp, encontrado;
-    return _regenerator.default.wrap(function _callee23$(_context23) {
+    return _regenerator.default.wrap(function _callee26$(_context26) {
       while (1) {
-        switch (_context23.prev = _context23.next) {
+        switch (_context26.prev = _context26.next) {
           case 0:
             serie_tdp = req.body.serie_tdp;
 
             if (!(serie_tdp.length > 0)) {
-              _context23.next = 10;
+              _context26.next = 10;
               break;
             }
 
-            _context23.next = 4;
+            _context26.next = 4;
             return _Sale.default.findOne({
               serie_tdp: serie_tdp
             });
 
           case 4:
-            encontrado = _context23.sent;
+            encontrado = _context26.sent;
 
             if (!encontrado) {
-              _context23.next = 7;
+              _context26.next = 7;
               break;
             }
 
-            return _context23.abrupt("return", res.status(201).json({
+            return _context26.abrupt("return", res.status(201).json({
               message: 'Esta SERIE-TDP ya está asignada'
             }));
 
           case 7:
             next();
-            _context23.next = 11;
+            _context26.next = 11;
             break;
 
           case 10:
@@ -1110,14 +1245,14 @@ var checkDuplicateExpediente = /*#__PURE__*/function () {
 
           case 11:
           case "end":
-            return _context23.stop();
+            return _context26.stop();
         }
       }
-    }, _callee23);
+    }, _callee26);
   }));
 
-  return function checkDuplicateExpediente(_x67, _x68, _x69) {
-    return _ref23.apply(this, arguments);
+  return function checkDuplicateExpediente(_x76, _x77, _x78) {
+    return _ref26.apply(this, arguments);
   };
 }();
 

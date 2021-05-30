@@ -9,6 +9,9 @@ router.get('/', sellerCtrl.getSellers);
 //Obtener Vendedor por Id
 router.get('/:sellerId', sellerCtrl.getSellerById);
 
+//Obtener Vendedor por Sucursal
+router.post('/find', sellerCtrl.getSellerBySucursal);
+
 //Crear Vendedor
 router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller);
 

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
+exports.isConexosOrADV = exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -531,4 +531,66 @@ var isConexosAsistant = /*#__PURE__*/function () {
 }();
 
 exports.isConexosAsistant = isConexosAsistant;
+
+var isConexosOrADV = /*#__PURE__*/function () {
+  var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res, next) {
+    var user, roles, i;
+    return _regenerator.default.wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.next = 2;
+            return _User.default.findById(req.userId);
+
+          case 2:
+            user = _context9.sent;
+            _context9.next = 5;
+            return _Role.default.find({
+              _id: {
+                $in: user.roles
+              }
+            });
+
+          case 5:
+            roles = _context9.sent;
+            i = 0;
+
+          case 7:
+            if (!(i < roles.length)) {
+              _context9.next = 14;
+              break;
+            }
+
+            if (!(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV')) {
+              _context9.next = 11;
+              break;
+            }
+
+            next();
+            return _context9.abrupt("return");
+
+          case 11:
+            i++;
+            _context9.next = 7;
+            break;
+
+          case 14:
+            return _context9.abrupt("return", res.status(403).json({
+              message: 'Requiere permiso del Asistente-Conexos || Jefe ADV'
+            }));
+
+          case 15:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9);
+  }));
+
+  return function isConexosOrADV(_x25, _x26, _x27) {
+    return _ref9.apply(this, arguments);
+  };
+}();
+
+exports.isConexosOrADV = isConexosOrADV;
 //# sourceMappingURL=auth.jwt.js.map

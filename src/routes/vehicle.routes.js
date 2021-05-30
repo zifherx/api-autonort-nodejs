@@ -10,6 +10,12 @@ router.get('/', vehicleCtrl.getVehicles);
 //Obtener Vehiculo por ID
 router.get('/:vehicleId', vehicleCtrl.getVehicleById);
 
+//Obtener Vehiculo por Marca
+router.post('/marca', vehicleCtrl.getVehiculeByMarca);
+
+//Obtener Vehiculo por Modelo
+router.post('/modelo', vehicleCtrl.getVehiculeByModelo);
+
 //Crear Vehiculo
 router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateVehiculo], vehicleCtrl.createVehicle);
 

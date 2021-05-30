@@ -57,10 +57,10 @@ export const getOne = async(req, res) => {
 export const getCampaniasActivas = async(req, res) => {
     const fechaDesde = new Date(new Date().getFullYear(), new Date().getMonth(),1).toISOString().substr(0,10);
     const fechaHasta = new Date(new Date().getFullYear(), new Date().getMonth() + 1,0).toISOString().substr(0,10);
-/*     console.log("fecha-Desde: ",fechaDesde);
-    console.log("fecha-Hasta: ",fechaHasta); */
+    console.log("fecha-Desde: ",fechaDesde);
+    console.log("fecha-Hasta: ",fechaHasta);
     try {
-        const activos = await Campaign.find({ status: 'Activo' }).sort({ name: 'asc' });
+        const activos = await Campaign.find({ status: 'Activo',startDate: {$gte: fechaDesde}, endDate: { $lt: fechaHasta} }).sort({ name: 'asc' });
         if (activos.length > 0) {
             res.json(activos);
         } else {

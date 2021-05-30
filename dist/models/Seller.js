@@ -17,8 +17,11 @@ var sellerSchema = new _mongoose.Schema({
   document: {
     type: String
   },
+  telefono: {
+    type: String
+  },
   empleado: {
-    ref: 'User',
+    ref: "User",
     type: _mongoose.Schema.Types.ObjectId
   }
 }, {
@@ -26,7 +29,7 @@ var sellerSchema = new _mongoose.Schema({
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('Seller', sellerSchema);
+var _default = (0, _mongoose.model)("Seller", sellerSchema);
 
 exports.default = _default;
 //# sourceMappingURL=Seller.js.map

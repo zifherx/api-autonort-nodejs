@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteVehicleById = exports.updateVehicleById = exports.getVehicleByCodigo = exports.getVehicleById = exports.getVehicles = exports.createVehicle = void 0;
+exports.deleteVehicleById = exports.updateVehicleById = exports.getVehiculeByModelo = exports.getVehiculeByMarca = exports.getVehicleByCodigo = exports.getVehicleById = exports.getVehicles = exports.createVehicle = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -256,102 +256,93 @@ var getVehicleByCodigo = /*#__PURE__*/function () {
 
 exports.getVehicleByCodigo = getVehicleByCodigo;
 
-var updateVehicleById = /*#__PURE__*/function () {
+var getVehiculeByMarca = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var vehicleId, _req$body2, marca, cod_tdp, categoria, modelo, version, sucursal, updatedVehicle;
-
+    var marca, query;
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            vehicleId = req.params.vehicleId;
-            _req$body2 = req.body, marca = _req$body2.marca, cod_tdp = _req$body2.cod_tdp, categoria = _req$body2.categoria, modelo = _req$body2.modelo, version = _req$body2.version, sucursal = _req$body2.sucursal;
-            _context5.prev = 2;
-            _context5.next = 5;
-            return _Vehicle.default.findByIdAndUpdate(vehicleId, {
-              marca: marca,
-              cod_tdp: cod_tdp,
-              categoria: categoria,
-              modelo: modelo,
-              version: version,
-              sucursal: sucursal
+            marca = req.body.marca;
+            _context5.prev = 1;
+            _context5.next = 4;
+            return _Vehicle.default.find({
+              marca: marca
             });
 
-          case 5:
-            updatedVehicle = _context5.sent;
+          case 4:
+            query = _context5.sent;
 
-            if (!updatedVehicle) {
-              _context5.next = 10;
+            if (!(query.length > 0)) {
+              _context5.next = 9;
               break;
             }
 
-            res.json({
-              message: 'Vehículo actualizado con éxito'
-            });
-            _context5.next = 11;
+            res.json(query);
+            _context5.next = 10;
             break;
 
-          case 10:
+          case 9:
             return _context5.abrupt("return", res.status(404).json({
-              message: 'No existe Vehículo a actualizar'
+              message: 'No existen Vehículos en esa Marca'
             }));
 
-          case 11:
-            _context5.next = 17;
+          case 10:
+            _context5.next = 16;
             break;
 
-          case 13:
-            _context5.prev = 13;
-            _context5.t0 = _context5["catch"](2);
+          case 12:
+            _context5.prev = 12;
+            _context5.t0 = _context5["catch"](1);
             console.log(_context5.t0);
             res.status(409).json({
               message: _context5.t0.message
             });
 
-          case 17:
+          case 16:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 13]]);
+    }, _callee5, null, [[1, 12]]);
   }));
 
-  return function updateVehicleById(_x9, _x10) {
+  return function getVehiculeByMarca(_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.updateVehicleById = updateVehicleById;
+exports.getVehiculeByMarca = getVehiculeByMarca;
 
-var deleteVehicleById = /*#__PURE__*/function () {
+var getVehiculeByModelo = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var vehicleId, deletedVehicle;
+    var modelo, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            vehicleId = req.params.vehicleId;
+            modelo = req.body.modelo;
             _context6.prev = 1;
             _context6.next = 4;
-            return _Vehicle.default.findByIdAndDelete(vehicleId);
+            return _Vehicle.default.find({
+              modelo: modelo
+            });
 
           case 4:
-            deletedVehicle = _context6.sent;
+            query = _context6.sent;
 
-            if (!deletedVehicle) {
+            if (!(query.length > 0)) {
               _context6.next = 9;
               break;
             }
 
-            res.json({
-              message: 'Vehículo eliminado con éxito'
-            });
+            res.json(query);
             _context6.next = 10;
             break;
 
           case 9:
             return _context6.abrupt("return", res.status(404).json({
-              message: 'No existe Vehículo a eliminar'
+              message: 'No existen Vehículos en ese Modelo'
             }));
 
           case 10:
@@ -374,8 +365,133 @@ var deleteVehicleById = /*#__PURE__*/function () {
     }, _callee6, null, [[1, 12]]);
   }));
 
-  return function deleteVehicleById(_x11, _x12) {
+  return function getVehiculeByModelo(_x11, _x12) {
     return _ref6.apply(this, arguments);
+  };
+}();
+
+exports.getVehiculeByModelo = getVehiculeByModelo;
+
+var updateVehicleById = /*#__PURE__*/function () {
+  var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
+    var vehicleId, _req$body2, marca, cod_tdp, categoria, modelo, version, sucursal, updatedVehicle;
+
+    return _regenerator.default.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            vehicleId = req.params.vehicleId;
+            _req$body2 = req.body, marca = _req$body2.marca, cod_tdp = _req$body2.cod_tdp, categoria = _req$body2.categoria, modelo = _req$body2.modelo, version = _req$body2.version, sucursal = _req$body2.sucursal;
+            _context7.prev = 2;
+            _context7.next = 5;
+            return _Vehicle.default.findByIdAndUpdate(vehicleId, {
+              marca: marca,
+              cod_tdp: cod_tdp,
+              categoria: categoria,
+              modelo: modelo,
+              version: version,
+              sucursal: sucursal
+            });
+
+          case 5:
+            updatedVehicle = _context7.sent;
+
+            if (!updatedVehicle) {
+              _context7.next = 10;
+              break;
+            }
+
+            res.json({
+              message: 'Vehículo actualizado con éxito'
+            });
+            _context7.next = 11;
+            break;
+
+          case 10:
+            return _context7.abrupt("return", res.status(404).json({
+              message: 'No existe Vehículo a actualizar'
+            }));
+
+          case 11:
+            _context7.next = 17;
+            break;
+
+          case 13:
+            _context7.prev = 13;
+            _context7.t0 = _context7["catch"](2);
+            console.log(_context7.t0);
+            res.status(409).json({
+              message: _context7.t0.message
+            });
+
+          case 17:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, null, [[2, 13]]);
+  }));
+
+  return function updateVehicleById(_x13, _x14) {
+    return _ref7.apply(this, arguments);
+  };
+}();
+
+exports.updateVehicleById = updateVehicleById;
+
+var deleteVehicleById = /*#__PURE__*/function () {
+  var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
+    var vehicleId, deletedVehicle;
+    return _regenerator.default.wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            vehicleId = req.params.vehicleId;
+            _context8.prev = 1;
+            _context8.next = 4;
+            return _Vehicle.default.findByIdAndDelete(vehicleId);
+
+          case 4:
+            deletedVehicle = _context8.sent;
+
+            if (!deletedVehicle) {
+              _context8.next = 9;
+              break;
+            }
+
+            res.json({
+              message: 'Vehículo eliminado con éxito'
+            });
+            _context8.next = 10;
+            break;
+
+          case 9:
+            return _context8.abrupt("return", res.status(404).json({
+              message: 'No existe Vehículo a eliminar'
+            }));
+
+          case 10:
+            _context8.next = 16;
+            break;
+
+          case 12:
+            _context8.prev = 12;
+            _context8.t0 = _context8["catch"](1);
+            console.log(_context8.t0);
+            res.status(409).json({
+              message: _context8.t0.message
+            });
+
+          case 16:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8, null, [[1, 12]]);
+  }));
+
+  return function deleteVehicleById(_x15, _x16) {
+    return _ref8.apply(this, arguments);
   };
 }();
 

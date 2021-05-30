@@ -70,6 +70,36 @@ export const getVehicleByCodigo = async(req, res) => {
     }
 }
 
+export const getVehiculeByMarca = async(req,res) => {
+    const {marca} = req.body;
+    try {
+        const query = await Vehicle.find({marca});
+        if(query.length > 0){
+            res.json(query);
+        }else{
+            return res.status(404).json({message: 'No existen Vehículos en esa Marca'})
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
+    }
+}
+
+export const getVehiculeByModelo = async(req,res) => {
+    const {modelo} = req.body;
+    try {
+        const query = await Vehicle.find({modelo});
+        if(query.length > 0){
+            res.json(query);
+        }else{
+            return res.status(404).json({message: 'No existen Vehículos en ese Modelo'})
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
+    }
+}
+
 export const updateVehicleById = async(req, res) => {
     const { vehicleId } = req.params;
     const { marca, cod_tdp, categoria, modelo, version, sucursal } = req.body;
