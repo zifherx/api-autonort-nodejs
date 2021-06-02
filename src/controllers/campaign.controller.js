@@ -60,7 +60,7 @@ export const getCampaniasActivas = async(req, res) => {
     console.log("fecha-Desde: ",fechaDesde);
     console.log("fecha-Hasta: ",fechaHasta);
     try {
-        const activos = await Campaign.find({ status: 'Activo',startDate: {$gte: fechaDesde}, endDate: { $lt: fechaHasta} }).sort({ name: 'asc' });
+        const activos = await Campaign.find({ status: 'Activo'/* ,startDate: {$gte: fechaDesde}, endDate: { $lt: fechaHasta}  */}).sort({ name: 'asc' });
         if (activos.length > 0) {
             res.json(activos);
         } else {

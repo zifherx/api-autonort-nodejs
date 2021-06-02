@@ -216,13 +216,9 @@ var getCampaniasActivas = /*#__PURE__*/function () {
             _context4.prev = 4;
             _context4.next = 7;
             return _Campaign.default.find({
-              status: 'Activo',
-              startDate: {
-                $gte: fechaDesde
-              },
-              endDate: {
-                $lt: fechaHasta
-              }
+              status: 'Activo'
+              /* ,startDate: {$gte: fechaDesde}, endDate: { $lt: fechaHasta}  */
+
             }).sort({
               name: 'asc'
             });
