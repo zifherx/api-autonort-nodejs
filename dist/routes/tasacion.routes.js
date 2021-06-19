@@ -15,9 +15,7 @@ var _middlewares = require("../middlewares");
 
 var router = (0, _express.Router)(); //Obtener Tasacion
 
-router.get('/', tasacionCtrl.getAll); //Obtener Tasacion Activos
-
-router.get('/activos', tasacionCtrl.getTasacionByActivo); //Obtener Tasacion por ID
+router.get('/', tasacionCtrl.getAll); //Obtener Tasacion por ID
 
 router.get('/:tasacionId', tasacionCtrl.getTasacionById); //Crear Tasacion
 

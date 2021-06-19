@@ -18,6 +18,9 @@ var tasacionSchema = new _mongoose.Schema({
   marca: {
     type: String
   },
+  chasis: {
+    type: String
+  },
   modelo: {
     type: String
   },
@@ -32,6 +35,9 @@ var tasacionSchema = new _mongoose.Schema({
   },
   kilometraje: {
     type: Number
+  },
+  placa: {
+    type: String
   },
   //Operacion
   empresa: {

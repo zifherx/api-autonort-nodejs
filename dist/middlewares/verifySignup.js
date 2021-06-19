@@ -76,6 +76,7 @@ var checkDuplicateUsernameOrEmail = /*#__PURE__*/function () {
 exports.checkDuplicateUsernameOrEmail = checkDuplicateUsernameOrEmail;
 
 var checkRolesExist = function checkRolesExist(req, res, next) {
+  //console.log(req.body.roles)
   if (req.body.roles) {
     for (var h = 0; h < req.body.roles.size; h++) {
       if (!_Role.ROLES.includes(req.body.roles[h])) {

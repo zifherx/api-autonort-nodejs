@@ -31,6 +31,7 @@ import conexoRoutes from './conexos.routes'
 import endosoRoutes from './endoso.routes'
 import aseguradoraRoutes from './aseguradora.routes'
 import tasacionRoutes from './tasacion.routes'
+import operacionRoutes from './operacion.routes'
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
@@ -62,5 +63,6 @@ router.use('/delivery', deliveryRoutes);
 router.use('/seguro', seguroRoutes);
 router.use('/aseguradora', aseguradoraRoutes);
 router.use('/tasacion', tasacionRoutes);
+router.use('/operacion', operacionRoutes);
 
 export default router;

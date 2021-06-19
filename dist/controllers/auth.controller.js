@@ -141,7 +141,7 @@ var signIn = /*#__PURE__*/function () {
             token = _jsonwebtoken.default.sign({
               id: userFound._id
             }, _config.default.SECRET, {
-              expiresIn: 60 * 60 * 24
+              expiresIn: '24h'
             });
             res.json({
               token: token,

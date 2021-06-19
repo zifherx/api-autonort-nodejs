@@ -21,6 +21,7 @@ export const verifyToken = async(req, res, next) => {
         next();
 
     } catch (error) {
+        console.log(error)
         if (error.message == "jwt expired") {
             return res.status(401).json({ message: 'Token ha expirado' });
         } else {
@@ -97,41 +98,41 @@ export const isInmatriculadosAsistant = async(req, res, next) => {
 }
 
 
-export const isCSAsistant = async (req,res,next) => {
+export const isCSAsistant = async(req, res, next) => {
     const user = await User.findById(req.userId);
-    const roles = await Role.find({_id: { $in: user.roles}})
+    const roles = await Role.find({ _id: { $in: user.roles } })
 
-    for(let i = 0; i < roles.length; i++){
-        if(roles[i].name === 'Asistente-CS'){
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'Asistente-CS') {
             next();
             return;
         }
     }
-    return res.status(403).json({ message: 'Requiere permiso del Asistente-CS'})
+    return res.status(403).json({ message: 'Requiere permiso del Asistente-CS' })
 }
 
-export const isConexosAsistant = async (req,res,next) => {
+export const isConexosAsistant = async(req, res, next) => {
     const user = await User.findById(req.userId);
-    const roles = await Role.find({_id: { $in: user.roles}})
+    const roles = await Role.find({ _id: { $in: user.roles } })
 
-    for(let i = 0; i < roles.length; i++){
-        if(roles[i].name === 'Asistente-Conexos'){
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'Asistente-Conexos') {
             next();
             return;
         }
     }
-    return res.status(403).json({ message: 'Requiere permiso del Asistente-Conexos'})
+    return res.status(403).json({ message: 'Requiere permiso del Asistente-Conexos' })
 }
 
-export const isConexosOrADV = async (req,res,next) => {
+export const isConexosOrADV = async(req, res, next) => {
     const user = await User.findById(req.userId);
-    const roles = await Role.find({_id: { $in: user.roles}})
+    const roles = await Role.find({ _id: { $in: user.roles } })
 
-    for(let i = 0; i < roles.length; i++){
-        if(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV'){
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV') {
             next();
             return;
         }
     }
-    return res.status(403).json({ message: 'Requiere permiso del Asistente-Conexos || Jefe ADV'})
+    return res.status(403).json({ message: 'Requiere permiso del Asistente-Conexos || Jefe ADV' })
 }

@@ -1,21 +1,18 @@
 import Seller from '../models/Seller'
 import User from '../models/User'
 
-export const createSeller = async(req, res) => {
-    const { name, sucursal, document, empleado } = req.body;
+export const getSellers = async(req, res) => {
     try {
-        const newSeller = new Seller({ name, sucursal, document });
-        const foundEmployee = await User.find({ username: { $in: empleado } });
-        newSeller.empleado = foundEmployee.map(em => em._id);
-        const sellerSaved = await newSeller.save();
-        if (sellerSaved) {
-            res.json({ message: 'Vendedor creado con éxito' });
+        const seller = await Seller.find().sort({ name: 'asc' });
+        if (seller.length > 0) {
+            res.json(seller);
+        } else {
+            return res.status(404).json({ message: 'No existen Vendedores' })
         }
     } catch (err) {
         console.log(err);
         res.status(409).json({ message: err.message })
     }
-
 }
 
 export const getSellerById = async(req, res) => {
@@ -34,13 +31,47 @@ export const getSellerById = async(req, res) => {
 
 }
 
-export const getSellers = async(req, res) => {
+export const getSellerBySucursal = async(req, res) => {
+    const { sucursal } = req.body;
     try {
-        const seller = await Seller.find().sort({ name: 'asc' });
-        if (seller.length > 0) {
-            res.json(seller);
+        const query = await Seller.find().where({ sucursal });
+
+        if (query.length > 0) {
+            res.json(query);
         } else {
-            return res.status(404).json({ message: 'No existen Vendedores' })
+            return res.status(404).json({ message: 'No existen Vendedores en esta Sucursal' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(404).json({ message: err.message });
+    }
+}
+
+export const getSellerByName = async(req, res) => {
+    const { name } = req.body;
+    try {
+        const query = await Seller.findOne().where({ name });
+
+        if (query) {
+            res.json(query);
+        } else {
+            return res.status(404).json({ message: 'No existen Vendedores con este Nombre' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(404).json({ message: err.message });
+    }
+}
+
+export const createSeller = async(req, res) => {
+    const { name, sucursal, document, telefono, empleado } = req.body;
+    try {
+        const newSeller = new Seller({ name, sucursal, document, telefono });
+        const foundEmployee = await User.find({ username: { $in: empleado } });
+        newSeller.empleado = foundEmployee.map(em => em._id);
+        const sellerSaved = await newSeller.save();
+        if (sellerSaved) {
+            res.json({ message: 'Vendedor creado con éxito' });
         }
     } catch (err) {
         console.log(err);
@@ -48,28 +79,12 @@ export const getSellers = async(req, res) => {
     }
 }
 
-export const getSellerBySucursal = async(req,res) => {
-    const {sucursal} = req.body;
-    try {
-        const query = await Seller.find().where({sucursal});
-
-        if(query.length > 0){
-            res.json(query);
-        }else{
-            return res.status(404).json({message: 'No existen Vendedores en esta Sucursal'});
-        }
-    } catch (err) {
-        console.log(err);
-        return res.status(404).json({message: err.message});
-    }
-}
-
 export const updateSellerById = async(req, res) => {
     const { sellerId } = req.params;
-    const { name, sucursal, document } = req.body;
+    const { name, sucursal, document, telefono, empleado } = req.body;
     try {
-
-        const updateSeller = await Seller.findByIdAndUpdate(sellerId, { name, sucursal, document });
+        const foundEmployee = await User.find({ username: { $in: empleado } });
+        const updateSeller = await Seller.findByIdAndUpdate(sellerId, { name, sucursal, document, telefono, empleado: foundEmployee.map(em => em._id) });
         if (updateSeller) {
             res.json({ message: 'Vendedor actualizado con éxito' });
         } else {

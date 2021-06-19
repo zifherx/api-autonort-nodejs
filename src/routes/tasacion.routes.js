@@ -7,9 +7,6 @@ const router = Router();
 //Obtener Tasacion
 router.get('/', tasacionCtrl.getAll);
 
-//Obtener Tasacion Activos
-router.get('/activos', tasacionCtrl.getTasacionByActivo);
-
 //Obtener Tasacion por ID
 router.get('/:tasacionId', tasacionCtrl.getTasacionById);
 

@@ -44,6 +44,9 @@ var saleSchema = new _mongoose.Schema({
   ubicacion_vehiculo: {
     type: String
   },
+  fecha_ciguena: {
+    type: Date
+  },
   fecha_entrega: {
     type: Date
   },

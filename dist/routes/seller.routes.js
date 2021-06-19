@@ -19,7 +19,9 @@ router.get('/', sellerCtrl.getSellers); //Obtener Vendedor por Id
 
 router.get('/:sellerId', sellerCtrl.getSellerById); //Obtener Vendedor por Sucursal
 
-router.post('/find', sellerCtrl.getSellerBySucursal); //Crear Vendedor
+router.post('/find', sellerCtrl.getSellerBySucursal); //Obtener Vendedor por Nombre
+
+router.post('/name', sellerCtrl.getSellerByName); //Crear Vendedor
 
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller); //Actualizar Vendedor
 

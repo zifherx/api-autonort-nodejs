@@ -26,7 +26,7 @@ var getAll = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _Seguro.default.find().populate('cliente').populate('empleado');
+            return _Seguro.default.find().populate("cliente").populate("empleado");
 
           case 3:
             query = _context.sent;
@@ -102,7 +102,7 @@ var getSeguroById = /*#__PURE__*/function () {
             seguroId = req.params.seguroId;
             _context3.prev = 1;
             _context3.next = 4;
-            return _Seguro.default.findById(seguroId).populate('cliente').populate('empleado');
+            return _Seguro.default.findById(seguroId).populate("cliente").populate("empleado");
 
           case 4:
             query = _context3.sent;
@@ -206,7 +206,7 @@ var createSeguro = /*#__PURE__*/function () {
             }
 
             return _context4.abrupt("return", res.status(404).json({
-              message: 'No existe este cliente'
+              message: "No existe este cliente"
             }));
 
           case 9:
@@ -241,7 +241,7 @@ var createSeguro = /*#__PURE__*/function () {
             _context4.prev = 19;
             _context4.t0 = _context4["catch"](1);
             console.error(_context4.t0);
-            res.json({
+            res.status(409).json({
               message: _context4.t0.message
             });
 

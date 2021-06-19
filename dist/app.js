@@ -50,13 +50,9 @@ app.use(_express.default.urlencoded({
   extended: true
 })); //Routes
 
-app.get('/', function (req, res) {
-  res.json('Bienvenido Puto');
-});
 app.use('/api', _routes.default); //Static Files
 
-app.use(_express.default.static(_path.default.join(__dirname, '/public'))); //app.use(express.static(__dirname + '\\public'));
-
+app.use(_express.default.static(_path.default.join(__dirname, 'public')));
 var _default = app;
 exports.default = _default;
 //# sourceMappingURL=app.js.map

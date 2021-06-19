@@ -38,7 +38,7 @@ export const signIn = async(req, res) => {
 
     if (!matchPassword) return res.status(401).json({ token: null, message: 'Contraseña Errónea' });
 
-    const token = jwt.sign({ id: userFound._id }, config.SECRET, { expiresIn: 60 * 60 * 24 });
+    const token = jwt.sign({ id: userFound._id }, config.SECRET, { expiresIn: '24h' });
 
     res.json({ token, codigo: userFound._id, status: userFound.activo });
 }

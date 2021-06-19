@@ -35,13 +35,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Routes
-app.get('/', (req, res) => {
-    res.json('Bienvenido Puto')
-});
 app.use('/api', routes);
 
 //Static Files
-app.use(express.static(path.join(__dirname, '/public')));
-//app.use(express.static(__dirname + '\\public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 export default app;

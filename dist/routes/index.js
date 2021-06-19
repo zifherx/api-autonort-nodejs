@@ -69,6 +69,8 @@ var _aseguradora = _interopRequireDefault(require("./aseguradora.routes"));
 
 var _tasacion = _interopRequireDefault(require("./tasacion.routes"));
 
+var _operacion = _interopRequireDefault(require("./operacion.routes"));
+
 var router = (0, _express.Router)();
 router.use('/auth', _auth.default);
 router.use('/users', _user.default);
@@ -100,6 +102,7 @@ router.use('/delivery', _delivery.default);
 router.use('/seguro', _seguro.default);
 router.use('/aseguradora', _aseguradora.default);
 router.use('/tasacion', _tasacion.default);
+router.use('/operacion', _operacion.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

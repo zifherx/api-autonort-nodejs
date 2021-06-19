@@ -61,15 +61,16 @@ var verifyToken = /*#__PURE__*/function () {
 
           case 12:
             next();
-            _context.next = 23;
+            _context.next = 24;
             break;
 
           case 15:
             _context.prev = 15;
             _context.t0 = _context["catch"](0);
+            console.log(_context.t0);
 
             if (!(_context.t0.message == "jwt expired")) {
-              _context.next = 21;
+              _context.next = 22;
               break;
             }
 
@@ -77,13 +78,13 @@ var verifyToken = /*#__PURE__*/function () {
               message: 'Token ha expirado'
             }));
 
-          case 21:
+          case 22:
             console.log(_context.t0.message);
             return _context.abrupt("return", res.status(403).json({
               message: 'No Autorizado'
             }));
 
-          case 23:
+          case 24:
           case "end":
             return _context.stop();
         }

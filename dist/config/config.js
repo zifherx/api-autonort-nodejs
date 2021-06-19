@@ -10,6 +10,7 @@ var _dotenv = require("dotenv");
 (0, _dotenv.config)();
 var _default = {
   SECRET: 'ADV_API',
+  // mongodbURL: process.env.MONGO_URI
   mongodbURL: process.env.MONGO_URI_PUBLIC
 };
 exports.default = _default;
