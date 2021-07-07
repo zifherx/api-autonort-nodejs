@@ -25,7 +25,7 @@ export const getAll = async(req, res) => {
         if (props.length > 0) {
             res.json(props);
         } else {
-            res.status(404).json({ messsage: 'No existen Accesorios' });
+            res.status(404).json({ message: 'No existen Accesorios' });
         }
     } catch (err) {
         console.log(err);
@@ -39,7 +39,7 @@ export const getAccesoriosActivos = async(req, res) => {
         if (activos.length > 0) {
             res.json(activos);
         } else {
-            return res.status(404).json({ messsage: 'No existe Accesorios Activos' })
+            return res.status(404).json({ message: 'No existe Accesorios Activos' })
         }
     } catch (err) {
         console.log(err);

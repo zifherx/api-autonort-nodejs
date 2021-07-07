@@ -102,7 +102,7 @@ var getAll = /*#__PURE__*/function () {
               res.json(props);
             } else {
               res.status(404).json({
-                messsage: 'No existen Accesorios'
+                message: 'No existen Accesorios'
               });
             }
 
@@ -161,7 +161,7 @@ var getAccesoriosActivos = /*#__PURE__*/function () {
 
           case 8:
             return _context3.abrupt("return", res.status(404).json({
-              messsage: 'No existe Accesorios Activos'
+              message: 'No existe Accesorios Activos'
             }));
 
           case 9:

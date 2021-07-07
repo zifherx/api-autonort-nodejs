@@ -374,62 +374,74 @@ exports.getVehiculeByModelo = getVehiculeByModelo;
 
 var updateVehicleById = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var vehicleId, _req$body2, marca, cod_tdp, categoria, modelo, version, sucursal, updatedVehicle;
+    var vehicleId, _req$body2, marca, cod_tdp, categoria, modelo, version, sucursal, empleado, foundEmployee, updatedVehicle;
 
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
             vehicleId = req.params.vehicleId;
-            _req$body2 = req.body, marca = _req$body2.marca, cod_tdp = _req$body2.cod_tdp, categoria = _req$body2.categoria, modelo = _req$body2.modelo, version = _req$body2.version, sucursal = _req$body2.sucursal;
+            _req$body2 = req.body, marca = _req$body2.marca, cod_tdp = _req$body2.cod_tdp, categoria = _req$body2.categoria, modelo = _req$body2.modelo, version = _req$body2.version, sucursal = _req$body2.sucursal, empleado = _req$body2.empleado;
             _context7.prev = 2;
             _context7.next = 5;
+            return _User.default.find({
+              username: {
+                $in: empleado
+              }
+            });
+
+          case 5:
+            foundEmployee = _context7.sent;
+            _context7.next = 8;
             return _Vehicle.default.findByIdAndUpdate(vehicleId, {
               marca: marca,
               cod_tdp: cod_tdp,
               categoria: categoria,
               modelo: modelo,
               version: version,
-              sucursal: sucursal
+              sucursal: sucursal,
+              empleado: foundEmployee.map(function (b) {
+                return b._id;
+              })
             });
 
-          case 5:
+          case 8:
             updatedVehicle = _context7.sent;
 
             if (!updatedVehicle) {
-              _context7.next = 10;
+              _context7.next = 13;
               break;
             }
 
             res.json({
               message: 'Vehículo actualizado con éxito'
             });
-            _context7.next = 11;
+            _context7.next = 14;
             break;
 
-          case 10:
+          case 13:
             return _context7.abrupt("return", res.status(404).json({
               message: 'No existe Vehículo a actualizar'
             }));
 
-          case 11:
-            _context7.next = 17;
+          case 14:
+            _context7.next = 20;
             break;
 
-          case 13:
-            _context7.prev = 13;
+          case 16:
+            _context7.prev = 16;
             _context7.t0 = _context7["catch"](2);
             console.log(_context7.t0);
             res.status(409).json({
               message: _context7.t0.message
             });
 
-          case 17:
+          case 20:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[2, 13]]);
+    }, _callee7, null, [[2, 16]]);
   }));
 
   return function updateVehicleById(_x13, _x14) {

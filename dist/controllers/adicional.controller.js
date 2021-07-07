@@ -336,7 +336,7 @@ var deleteAdicionalById = /*#__PURE__*/function () {
 
           case 9:
             return _context6.abrupt("return", res.status(404).json({
-              message: 'Adicional no existe a eliminar'
+              message: 'No existe Eliminar a eliminar'
             }));
 
           case 10:

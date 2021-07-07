@@ -320,18 +320,19 @@ exports.updateUserById = updateUserById;
 
 var updateProfile = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body3, email, direccion, pais, codigo_postal, about, userId, objeto;
+    var _req$body3, email, phone, direccion, pais, codigo_postal, about, userId, objeto;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body3 = req.body, email = _req$body3.email, direccion = _req$body3.direccion, pais = _req$body3.pais, codigo_postal = _req$body3.codigo_postal, about = _req$body3.about;
+            _req$body3 = req.body, email = _req$body3.email, phone = _req$body3.phone, direccion = _req$body3.direccion, pais = _req$body3.pais, codigo_postal = _req$body3.codigo_postal, about = _req$body3.about;
             userId = req.params.userId;
             _context5.prev = 2;
             _context5.next = 5;
             return _User.default.findByIdAndUpdate(userId, {
               email: email,
+              phone: phone,
               direccion: direccion,
               pais: pais,
               codigo_postal: codigo_postal,

@@ -70,14 +70,14 @@ export const getVehicleByCodigo = async(req, res) => {
     }
 }
 
-export const getVehiculeByMarca = async(req,res) => {
-    const {marca} = req.body;
+export const getVehiculeByMarca = async(req, res) => {
+    const { marca } = req.body;
     try {
-        const query = await Vehicle.find({marca});
-        if(query.length > 0){
+        const query = await Vehicle.find({ marca });
+        if (query.length > 0) {
             res.json(query);
-        }else{
-            return res.status(404).json({message: 'No existen Vehículos en esa Marca'})
+        } else {
+            return res.status(404).json({ message: 'No existen Vehículos en esa Marca' })
         }
     } catch (err) {
         console.log(err);
@@ -85,14 +85,14 @@ export const getVehiculeByMarca = async(req,res) => {
     }
 }
 
-export const getVehiculeByModelo = async(req,res) => {
-    const {modelo} = req.body;
+export const getVehiculeByModelo = async(req, res) => {
+    const { modelo } = req.body;
     try {
-        const query = await Vehicle.find({modelo});
-        if(query.length > 0){
+        const query = await Vehicle.find({ modelo });
+        if (query.length > 0) {
             res.json(query);
-        }else{
-            return res.status(404).json({message: 'No existen Vehículos en ese Modelo'})
+        } else {
+            return res.status(404).json({ message: 'No existen Vehículos en ese Modelo' })
         }
     } catch (err) {
         console.log(err);
@@ -102,10 +102,11 @@ export const getVehiculeByModelo = async(req,res) => {
 
 export const updateVehicleById = async(req, res) => {
     const { vehicleId } = req.params;
-    const { marca, cod_tdp, categoria, modelo, version, sucursal } = req.body;
+    const { marca, cod_tdp, categoria, modelo, version, sucursal, empleado } = req.body;
 
     try {
-        const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, { marca, cod_tdp, categoria, modelo, version, sucursal });
+        const foundEmployee = await User.find({ username: { $in: empleado } });
+        const updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId, { marca, cod_tdp, categoria, modelo, version, sucursal, empleado: foundEmployee.map(b => b._id) });
         if (updatedVehicle) {
             res.json({ message: 'Vehículo actualizado con éxito' });
         } else {

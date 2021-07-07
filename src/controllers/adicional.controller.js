@@ -89,7 +89,7 @@ export const deleteAdicionalById = async(req, res) => {
         if (query) {
             res.json({ message: 'Adicional eliminada con éxito' });
         } else {
-            return res.status(404).json({ message: 'Adicional no existe a eliminar' });
+            return res.status(404).json({ message: 'No existe Eliminar a eliminar' });
         }
 
     } catch (err) {

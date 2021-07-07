@@ -279,3 +279,16 @@ export const checkDuplicateExpediente = async(req, res, next) => {
         next();
     }
 }
+
+/* export const checkDuplicateMeta = async(req, res, next) => {
+    const { sales } = req.body;
+
+    const expediente = await Sale.find({ nro_comprobante: { $in: sales } });
+    let cod_exp = expediente.map(rs => rs._id)
+
+    const encontrado = await Record.findOne({ sales: cod_exp });
+
+    if (encontrado) return res.status(201).json({ message: 'La Meta ya existe' });
+
+    next();
+} */
