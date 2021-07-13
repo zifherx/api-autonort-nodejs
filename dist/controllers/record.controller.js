@@ -19,24 +19,26 @@ var _User = _interopRequireDefault(require("../models/User"));
 
 var createRecord = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, fecha_recepcion, hora_recepcion, fecha_recepcion_vendedor, fecha_devolucion_vendedor, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones, status_tarjeta, num_placa, fecha_entrega_file_recepcion, fecha_tramite_placa, status_placa, fecha_entrega_placa_recepcion, fecha_entrega_cliente, empleado, nuevoInmatriculado, expediente, cod_exp, act, foundEmployee, recordSaved;
+    var _req$body, fecha_recepcion, hora_recepcion, statusFile, fecha_devolucion_vendedor, hora_devolucion_vendedor, observaciones_file, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones_registros, status_tarjeta, num_placa, fecha_entrega_file_recepcion, fecha_tramite_placa, status_placa, fecha_entrega_placa_recepcion, fecha_entrega_cliente, empleado, nuevoInmatriculado, expediente, cod_exp, act, foundEmployee, recordSaved;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$body = req.body, fecha_recepcion = _req$body.fecha_recepcion, hora_recepcion = _req$body.hora_recepcion, fecha_recepcion_vendedor = _req$body.fecha_recepcion_vendedor, fecha_devolucion_vendedor = _req$body.fecha_devolucion_vendedor, sales = _req$body.sales, fecha_ingreso_file = _req$body.fecha_ingreso_file, hora_ingreso_file = _req$body.hora_ingreso_file, num_titulo = _req$body.num_titulo, codigo_verificacion = _req$body.codigo_verificacion, observaciones = _req$body.observaciones, status_tarjeta = _req$body.status_tarjeta, num_placa = _req$body.num_placa, fecha_entrega_file_recepcion = _req$body.fecha_entrega_file_recepcion, fecha_tramite_placa = _req$body.fecha_tramite_placa, status_placa = _req$body.status_placa, fecha_entrega_placa_recepcion = _req$body.fecha_entrega_placa_recepcion, fecha_entrega_cliente = _req$body.fecha_entrega_cliente, empleado = _req$body.empleado;
+            _req$body = req.body, fecha_recepcion = _req$body.fecha_recepcion, hora_recepcion = _req$body.hora_recepcion, statusFile = _req$body.statusFile, fecha_devolucion_vendedor = _req$body.fecha_devolucion_vendedor, hora_devolucion_vendedor = _req$body.hora_devolucion_vendedor, observaciones_file = _req$body.observaciones_file, sales = _req$body.sales, fecha_ingreso_file = _req$body.fecha_ingreso_file, hora_ingreso_file = _req$body.hora_ingreso_file, num_titulo = _req$body.num_titulo, codigo_verificacion = _req$body.codigo_verificacion, observaciones_registros = _req$body.observaciones_registros, status_tarjeta = _req$body.status_tarjeta, num_placa = _req$body.num_placa, fecha_entrega_file_recepcion = _req$body.fecha_entrega_file_recepcion, fecha_tramite_placa = _req$body.fecha_tramite_placa, status_placa = _req$body.status_placa, fecha_entrega_placa_recepcion = _req$body.fecha_entrega_placa_recepcion, fecha_entrega_cliente = _req$body.fecha_entrega_cliente, empleado = _req$body.empleado;
             _context.prev = 1;
             nuevoInmatriculado = new _Record.default({
               fecha_recepcion: fecha_recepcion,
               hora_recepcion: hora_recepcion,
-              fecha_recepcion_vendedor: fecha_recepcion_vendedor,
+              statusFile: statusFile,
               fecha_devolucion_vendedor: fecha_devolucion_vendedor,
+              hora_devolucion_vendedor: hora_devolucion_vendedor,
+              observaciones_file: observaciones_file,
               fecha_ingreso_file: fecha_ingreso_file,
               hora_ingreso_file: hora_ingreso_file,
               num_titulo: num_titulo,
               codigo_verificacion: codigo_verificacion,
-              observaciones: observaciones,
+              observaciones_registros: observaciones_registros,
               status_tarjeta: status_tarjeta,
               num_placa: num_placa,
               fecha_entrega_file_recepcion: fecha_entrega_file_recepcion,
@@ -133,7 +135,7 @@ var getRecords = /*#__PURE__*/function () {
             };
             _context2.prev = 1;
             _context2.next = 4;
-            return _Record.default.find().populate(filtro1).populate('empleado');
+            return _Record.default.find().populate(filtro1).populate("empleado");
 
           case 4:
             expedientes = _context2.sent;
@@ -306,14 +308,14 @@ exports.getRecordByStatus = getRecordByStatus;
 
 var updateRecordById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var recordId, _req$body3, fecha_recepcion, hora_recepcion, fecha_recepcion_vendedor, fecha_devolucion_vendedor, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones, status_tarjeta, num_placa, fecha_entrega_file_recepcion, fecha_tramite_placa, status_placa, fecha_entrega_placa_recepcion, fecha_entrega_cliente, foundExpediente, objetoActualizado;
+    var recordId, _req$body3, fecha_recepcion, hora_recepcion, statusFile, fecha_devolucion_vendedor, hora_devolucion_vendedor, observaciones_file, sales, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones_registros, status_tarjeta, num_placa, fecha_entrega_file_recepcion, fecha_tramite_placa, status_placa, fecha_entrega_placa_recepcion, fecha_entrega_cliente, foundExpediente, objetoActualizado;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             recordId = req.params.recordId;
-            _req$body3 = req.body, fecha_recepcion = _req$body3.fecha_recepcion, hora_recepcion = _req$body3.hora_recepcion, fecha_recepcion_vendedor = _req$body3.fecha_recepcion_vendedor, fecha_devolucion_vendedor = _req$body3.fecha_devolucion_vendedor, sales = _req$body3.sales, fecha_ingreso_file = _req$body3.fecha_ingreso_file, hora_ingreso_file = _req$body3.hora_ingreso_file, num_titulo = _req$body3.num_titulo, codigo_verificacion = _req$body3.codigo_verificacion, observaciones = _req$body3.observaciones, status_tarjeta = _req$body3.status_tarjeta, num_placa = _req$body3.num_placa, fecha_entrega_file_recepcion = _req$body3.fecha_entrega_file_recepcion, fecha_tramite_placa = _req$body3.fecha_tramite_placa, status_placa = _req$body3.status_placa, fecha_entrega_placa_recepcion = _req$body3.fecha_entrega_placa_recepcion, fecha_entrega_cliente = _req$body3.fecha_entrega_cliente;
+            _req$body3 = req.body, fecha_recepcion = _req$body3.fecha_recepcion, hora_recepcion = _req$body3.hora_recepcion, statusFile = _req$body3.statusFile, fecha_devolucion_vendedor = _req$body3.fecha_devolucion_vendedor, hora_devolucion_vendedor = _req$body3.hora_devolucion_vendedor, observaciones_file = _req$body3.observaciones_file, sales = _req$body3.sales, fecha_ingreso_file = _req$body3.fecha_ingreso_file, hora_ingreso_file = _req$body3.hora_ingreso_file, num_titulo = _req$body3.num_titulo, codigo_verificacion = _req$body3.codigo_verificacion, observaciones_registros = _req$body3.observaciones_registros, status_tarjeta = _req$body3.status_tarjeta, num_placa = _req$body3.num_placa, fecha_entrega_file_recepcion = _req$body3.fecha_entrega_file_recepcion, fecha_tramite_placa = _req$body3.fecha_tramite_placa, status_placa = _req$body3.status_placa, fecha_entrega_placa_recepcion = _req$body3.fecha_entrega_placa_recepcion, fecha_entrega_cliente = _req$body3.fecha_entrega_cliente;
             _context5.prev = 2;
             _context5.next = 5;
             return _Sale.default.find({
@@ -328,8 +330,10 @@ var updateRecordById = /*#__PURE__*/function () {
             return _Record.default.findByIdAndUpdate(recordId, {
               fecha_recepcion: fecha_recepcion,
               hora_recepcion: hora_recepcion,
-              fecha_recepcion_vendedor: fecha_recepcion_vendedor,
+              statusFile: statusFile,
               fecha_devolucion_vendedor: fecha_devolucion_vendedor,
+              hora_devolucion_vendedor: hora_devolucion_vendedor,
+              observaciones_file: observaciones_file,
               sales: foundExpediente.map(function (expediente) {
                 return expediente._id;
               }),
@@ -337,7 +341,7 @@ var updateRecordById = /*#__PURE__*/function () {
               hora_ingreso_file: hora_ingreso_file,
               num_titulo: num_titulo,
               codigo_verificacion: codigo_verificacion,
-              observaciones: observaciones,
+              observaciones_registros: observaciones_registros,
               status_tarjeta: status_tarjeta,
               num_placa: num_placa,
               fecha_entrega_file_recepcion: fecha_entrega_file_recepcion,

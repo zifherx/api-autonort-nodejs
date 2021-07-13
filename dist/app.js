@@ -38,7 +38,8 @@ initData.createConfigCondicion();
 initData.createConfigSituacion();
 initData.createConfigSucursal();
 initData.createConfigSustento();
-initData.createConfigUbicacion(); //Settings
+initData.createConfigUbicacion();
+initData.createConfigStatusFile(); //Settings
 
 app.set('port', process.env.PORT || 4000); //Middlewares
 

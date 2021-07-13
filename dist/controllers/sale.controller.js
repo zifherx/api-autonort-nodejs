@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
+exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -862,7 +862,8 @@ var conteoVentasByVendedor = /*#__PURE__*/function () {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
-            _req$body6 = req.body, sucursal = _req$body6.sucursal, estatus = _req$body6.estatus, start = _req$body6.start, end = _req$body6.end;
+            _req$body6 = req.body, sucursal = _req$body6.sucursal, estatus = _req$body6.estatus, start = _req$body6.start, end = _req$body6.end; // console.log(req.body)
+
             _context11.prev = 1;
             filter = {
               sucursal_venta: sucursal,
@@ -920,4 +921,71 @@ var conteoVentasByVendedor = /*#__PURE__*/function () {
 }();
 
 exports.conteoVentasByVendedor = conteoVentasByVendedor;
+
+var conteoVentasByModelo = /*#__PURE__*/function () {
+  var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res) {
+    var _req$body7, sucursal, estatus, start, end, filter, consulta;
+
+    return _regenerator.default.wrap(function _callee12$(_context12) {
+      while (1) {
+        switch (_context12.prev = _context12.next) {
+          case 0:
+            _req$body7 = req.body, sucursal = _req$body7.sucursal, estatus = _req$body7.estatus, start = _req$body7.start, end = _req$body7.end;
+            _context12.prev = 1;
+            filter = {
+              sucursal_venta: sucursal,
+              estatus_venta: estatus,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context12.next = 5;
+            return _Sale.default.aggregate([{
+              $match: filter
+            }, {
+              $group: {
+                _id: "$auto",
+                num_ventas: {
+                  $sum: 1
+                }
+              }
+            }]);
+
+          case 5:
+            consulta = _context12.sent;
+
+            if (consulta.length > 0) {
+              res.json(consulta);
+            } else {
+              res.status(404).json({
+                message: 'No existen Ventas aún'
+              });
+            }
+
+            _context12.next = 13;
+            break;
+
+          case 9:
+            _context12.prev = 9;
+            _context12.t0 = _context12["catch"](1);
+            console.log(_context12.t0);
+            res.status(409).json({
+              message: _context12.t0.message
+            });
+
+          case 13:
+          case "end":
+            return _context12.stop();
+        }
+      }
+    }, _callee12, null, [[1, 9]]);
+  }));
+
+  return function conteoVentasByModelo(_x23, _x24) {
+    return _ref12.apply(this, arguments);
+  };
+}();
+
+exports.conteoVentasByModelo = conteoVentasByModelo;
 //# sourceMappingURL=sale.controller.js.map

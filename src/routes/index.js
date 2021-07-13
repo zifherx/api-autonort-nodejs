@@ -33,6 +33,7 @@ import aseguradoraRoutes from './aseguradora.routes'
 import tasacionRoutes from './tasacion.routes'
 import operacionRoutes from './operacion.routes'
 import goalsRoutes from './goals.routes'
+import statusFileRoutes from './statusFile.routes'
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
@@ -66,5 +67,6 @@ router.use('/aseguradora', aseguradoraRoutes);
 router.use('/tasacion', tasacionRoutes);
 router.use('/operacion', operacionRoutes);
 router.use('/goals', goalsRoutes);
+router.use('/status-file', statusFileRoutes);
 
 export default router;

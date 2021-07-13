@@ -4,8 +4,10 @@ const recordSchema = new Schema({
     //Inmatriculados
     fecha_recepcion: { type: Date },
     hora_recepcion: { type: String },
-    fecha_recepcion_vendedor: {type: Date},
-    fecha_devolucion_vendedor: {type: Date},
+    statusFile: { type: String },
+    fecha_devolucion_vendedor: { type: Date },
+    hora_devolucion_vendedor: { type: String },
+    observaciones_file: { type: String },
     //Expediente
     sales: { ref: "Sale", type: Schema.Types.ObjectId },
     //Regisros Publicos
@@ -14,7 +16,7 @@ const recordSchema = new Schema({
     num_titulo: { type: String },
     codigo_verificacion: { type: String },
     status_tarjeta: { type: String },
-    observaciones: { type: String },
+    observaciones_registros: { type: String },
     num_placa: { type: String },
     fecha_entrega_file_recepcion: { type: Date },
     //AAP
@@ -26,7 +28,7 @@ const recordSchema = new Schema({
     //Empleado
     empleado: { ref: 'User', type: Schema.Types.ObjectId },
     //Entrega
-    pasoaEntrega: {type: Number, default: 0}
+    pasoaEntrega: { type: Number, default: 0 }
 }, {
     timestamps: true,
     versionKey: false

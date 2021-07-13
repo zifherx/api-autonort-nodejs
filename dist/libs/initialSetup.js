@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createConfigUbicacion = exports.createConfigSustento = exports.createConfigSucursal = exports.createConfigSituacion = exports.createConfigCondicion = exports.createConfigSectorista = exports.createConfigModelo = exports.createConfigFinanciamiento = exports.createConfigBanco = exports.createConfigMarca = exports.createConfigChasis = exports.createConfigColor = exports.createConfigAnios = exports.createUserAdmin = exports.createRoles = void 0;
+exports.createConfigStatusFile = exports.createConfigUbicacion = exports.createConfigSustento = exports.createConfigSucursal = exports.createConfigSituacion = exports.createConfigCondicion = exports.createConfigSectorista = exports.createConfigModelo = exports.createConfigFinanciamiento = exports.createConfigBanco = exports.createConfigMarca = exports.createConfigChasis = exports.createConfigColor = exports.createConfigAnios = exports.createUserAdmin = exports.createRoles = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -40,6 +40,8 @@ var _Sucursal = _interopRequireDefault(require("../models/Sucursal"));
 var _Sustento = _interopRequireDefault(require("../models/Sustento"));
 
 var _Ubicacion = _interopRequireDefault(require("../models/Ubicacion"));
+
+var _StatusFile = _interopRequireDefault(require("../models/StatusFile"));
 
 var createRoles = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
@@ -1255,4 +1257,64 @@ var createConfigUbicacion = /*#__PURE__*/function () {
 }();
 
 exports.createConfigUbicacion = createConfigUbicacion;
+
+var createConfigStatusFile = /*#__PURE__*/function () {
+  var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee16() {
+    var count, poblado;
+    return _regenerator.default.wrap(function _callee16$(_context16) {
+      while (1) {
+        switch (_context16.prev = _context16.next) {
+          case 0:
+            _context16.prev = 0;
+            _context16.next = 3;
+            return _StatusFile.default.estimatedDocumentCount();
+
+          case 3:
+            count = _context16.sent;
+
+            if (!(count > 0)) {
+              _context16.next = 6;
+              break;
+            }
+
+            return _context16.abrupt("return");
+
+          case 6:
+            _context16.next = 8;
+            return Promise.all([new _StatusFile.default({
+              name: 'Pendiente de Firma',
+              status: 'Activo'
+            }).save(), new _StatusFile.default({
+              name: 'Legalizado',
+              status: 'Activo'
+            }).save(), new _StatusFile.default({
+              name: 'Firmado',
+              status: 'Activo'
+            }).save()]);
+
+          case 8:
+            poblado = _context16.sent;
+            console.log(poblado);
+            _context16.next = 15;
+            break;
+
+          case 12:
+            _context16.prev = 12;
+            _context16.t0 = _context16["catch"](0);
+            console.error(_context16.t0);
+
+          case 15:
+          case "end":
+            return _context16.stop();
+        }
+      }
+    }, _callee16, null, [[0, 12]]);
+  }));
+
+  return function createConfigStatusFile() {
+    return _ref16.apply(this, arguments);
+  };
+}();
+
+exports.createConfigStatusFile = createConfigStatusFile;
 //# sourceMappingURL=initialSetup.js.map

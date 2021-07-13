@@ -23,6 +23,7 @@ initData.createConfigSituacion();
 initData.createConfigSucursal();
 initData.createConfigSustento();
 initData.createConfigUbicacion();
+initData.createConfigStatusFile();
 
 //Settings
 app.set('port', process.env.PORT || 4000);

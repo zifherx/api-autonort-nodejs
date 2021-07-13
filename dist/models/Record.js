@@ -15,11 +15,17 @@ var recordSchema = new _mongoose.Schema({
   hora_recepcion: {
     type: String
   },
-  fecha_recepcion_vendedor: {
-    type: Date
+  statusFile: {
+    type: String
   },
   fecha_devolucion_vendedor: {
     type: Date
+  },
+  hora_devolucion_vendedor: {
+    type: String
+  },
+  observaciones_file: {
+    type: String
   },
   //Expediente
   sales: {
@@ -42,7 +48,7 @@ var recordSchema = new _mongoose.Schema({
   status_tarjeta: {
     type: String
   },
-  observaciones: {
+  observaciones_registros: {
     type: String
   },
   num_placa: {
