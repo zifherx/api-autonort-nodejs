@@ -290,3 +290,20 @@ export const conteoVentasByModelo = async(req, res) => {
         res.status(409).json({ message: err.message });
     }
 }
+
+export const vistaUnidadesEntregadasByStatus = async(req, res) => {
+    const { sucursal, statusVenta, start, end, statusVehiculo } = req.body;
+    //console.log(start, end);
+    try {
+        const consulta = await Sale.where({ sucursal_venta: sucursal, estatus_venta: statusVenta, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) }, ubicacion_vehiculo: statusVehiculo }).find().countDocuments();
+        console.log('Query: ', consulta);
+        if (consulta >= 0) {
+            res.json(consulta);
+        } else {
+            return res.status(404).json({ message: `No existen Unidades ${statusVenta} y ${statusVehiculo} en ${sucursal}` })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(409).json({ message: err.message })
+    }
+}

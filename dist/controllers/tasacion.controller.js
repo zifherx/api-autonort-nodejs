@@ -19,6 +19,8 @@ var _Customer = _interopRequireDefault(require("../models/Customer"));
 
 var _User = _interopRequireDefault(require("../models/User"));
 
+var _Tasador = _interopRequireDefault(require("../models/Tasador"));
+
 var getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
     var query;
@@ -28,8 +30,8 @@ var getAll = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _Tasacion.default.find().populate('cliente').populate('asesor_venta').populate('asesor_servicio').populate('empleado').sort({
-              fecha_operacion: 'asc'
+            return _Tasacion.default.find().populate("cliente").populate("asesor_venta").populate("asesor_servicio").populate("empleado").sort({
+              fecha_operacion: "asc"
             });
 
           case 3:
@@ -46,7 +48,7 @@ var getAll = /*#__PURE__*/function () {
 
           case 8:
             return _context.abrupt("return", res.status(404).json({
-              message: 'No existen Tasaciones'
+              message: "No existen Tasaciones"
             }));
 
           case 9:
@@ -86,7 +88,7 @@ var getTasacionById = /*#__PURE__*/function () {
             tasacionId = req.params.tasacionId;
             _context2.prev = 1;
             _context2.next = 4;
-            return _Tasacion.default.findById(tasacionId).populate('cliente').populate('asesor_venta').populate('asesor_servicio').populate('empleado');
+            return _Tasacion.default.findById(tasacionId).populate("cliente").populate("asesor_venta").populate("asesor_servicio").populate("empleado");
 
           case 4:
             query = _context2.sent;
@@ -95,7 +97,7 @@ var getTasacionById = /*#__PURE__*/function () {
               res.json(query);
             } else {
               res.status(404).json({
-                message: 'No existe la Tasación'
+                message: "No existe la Tasación"
               });
             }
 
@@ -127,13 +129,13 @@ exports.getTasacionById = getTasacionById;
 
 var createTasacion = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var _req$body, cliente, marca, chasis, modelo, version, color, anio_fabricacion, kilometraje, placa, empresa, sucursal, origen_operacion, metodo, fecha_operacion, precio, mes, asesor_venta, asesor_derivado, asesor_servicio, empleado, newObj, foundCliente, foundAsesorV, foundAsesorS, foundEmployee, objSaved;
+    var _req$body, cliente, marca, chasis, modelo, version, color, anio_fabricacion, kilometraje, placa, precio, observacion, sucursal, origen_operacion, metodo, fecha_operacion, mes, status_tasacion, nro_serie_nuevo_vehiculo, modelo_nuevo_vehiculo, asesor_venta, asesor_servicio, asesor_tasador, inspeccion_tecnica, empleado, newObj, foundCliente, foundAsesorV, foundAsesorS, foundAsesorT, foundEmployee, objSaved;
 
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _req$body = req.body, cliente = _req$body.cliente, marca = _req$body.marca, chasis = _req$body.chasis, modelo = _req$body.modelo, version = _req$body.version, color = _req$body.color, anio_fabricacion = _req$body.anio_fabricacion, kilometraje = _req$body.kilometraje, placa = _req$body.placa, empresa = _req$body.empresa, sucursal = _req$body.sucursal, origen_operacion = _req$body.origen_operacion, metodo = _req$body.metodo, fecha_operacion = _req$body.fecha_operacion, precio = _req$body.precio, mes = _req$body.mes, asesor_venta = _req$body.asesor_venta, asesor_derivado = _req$body.asesor_derivado, asesor_servicio = _req$body.asesor_servicio, empleado = _req$body.empleado;
+            _req$body = req.body, cliente = _req$body.cliente, marca = _req$body.marca, chasis = _req$body.chasis, modelo = _req$body.modelo, version = _req$body.version, color = _req$body.color, anio_fabricacion = _req$body.anio_fabricacion, kilometraje = _req$body.kilometraje, placa = _req$body.placa, precio = _req$body.precio, observacion = _req$body.observacion, sucursal = _req$body.sucursal, origen_operacion = _req$body.origen_operacion, metodo = _req$body.metodo, fecha_operacion = _req$body.fecha_operacion, mes = _req$body.mes, status_tasacion = _req$body.status_tasacion, nro_serie_nuevo_vehiculo = _req$body.nro_serie_nuevo_vehiculo, modelo_nuevo_vehiculo = _req$body.modelo_nuevo_vehiculo, asesor_venta = _req$body.asesor_venta, asesor_servicio = _req$body.asesor_servicio, asesor_tasador = _req$body.asesor_tasador, inspeccion_tecnica = _req$body.inspeccion_tecnica, empleado = _req$body.empleado;
             _context3.prev = 1;
             newObj = new _Tasacion.default({
               marca: marca,
@@ -144,15 +146,22 @@ var createTasacion = /*#__PURE__*/function () {
               anio_fabricacion: anio_fabricacion,
               kilometraje: kilometraje,
               placa: placa,
-              empresa: empresa,
+              precio: precio,
+              observacion: observacion,
               sucursal: sucursal,
               origen_operacion: origen_operacion,
               metodo: metodo,
               fecha_operacion: fecha_operacion,
-              precio: precio,
               mes: mes,
-              asesor_derivado: asesor_derivado
-            });
+              status_tasacion: status_tasacion,
+              nro_serie_nuevo_vehiculo: nro_serie_nuevo_vehiculo,
+              modelo_nuevo_vehiculo: modelo_nuevo_vehiculo,
+              asesor_venta: asesor_venta,
+              asesor_servicio: asesor_servicio,
+              asesor_tasador: asesor_tasador,
+              inspeccion_tecnica: inspeccion_tecnica
+            }); //Cliente
+
             _context3.next = 5;
             return _Customer.default.find({
               name: {
@@ -172,7 +181,7 @@ var createTasacion = /*#__PURE__*/function () {
             }
 
             return _context3.abrupt("return", res.status(404).json({
-              message: "No existe este cliente"
+              message: "No existe Cliente"
             }));
 
           case 9:
@@ -195,7 +204,7 @@ var createTasacion = /*#__PURE__*/function () {
             }
 
             return _context3.abrupt("return", res.status(404).json({
-              message: "No existe este Asesor de Ventas"
+              message: "No existe Asesor de Ventas"
             }));
 
           case 15:
@@ -218,51 +227,74 @@ var createTasacion = /*#__PURE__*/function () {
             }
 
             return _context3.abrupt("return", res.status(404).json({
-              message: "No existe este Asesor de Servicio"
+              message: "No existe Asesor de Servicio"
             }));
 
           case 21:
             _context3.next = 23;
+            return _Tasador.default.find({
+              name: {
+                $in: asesor_tasador
+              }
+            });
+
+          case 23:
+            foundAsesorT = _context3.sent;
+            newObj.asesor_tasador = foundAsesorT.map(function (e) {
+              return e._id;
+            });
+
+            if (!(!foundAsesorT.length > 0)) {
+              _context3.next = 27;
+              break;
+            }
+
+            return _context3.abrupt("return", res.status(404).json({
+              message: "No existe Tasador"
+            }));
+
+          case 27:
+            _context3.next = 29;
             return _User.default.find({
               username: {
                 $in: empleado
               }
             });
 
-          case 23:
+          case 29:
             foundEmployee = _context3.sent;
             newObj.empleado = foundEmployee.map(function (d) {
               return d._id;
             });
-            _context3.next = 27;
+            _context3.next = 33;
             return newObj.save();
 
-          case 27:
+          case 33:
             objSaved = _context3.sent;
 
             if (objSaved) {
               res.json({
-                message: 'Tasación creada con éxito'
+                message: "Tasación creada con éxito"
               });
             }
 
-            _context3.next = 35;
+            _context3.next = 41;
             break;
 
-          case 31:
-            _context3.prev = 31;
+          case 37:
+            _context3.prev = 37;
             _context3.t0 = _context3["catch"](1);
             console.error(_context3.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context3.t0.message
             });
 
-          case 35:
+          case 41:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 31]]);
+    }, _callee3, null, [[1, 37]]);
   }));
 
   return function createTasacion(_x5, _x6) {
@@ -360,14 +392,14 @@ var updateTasacion = /*#__PURE__*/function () {
             }
 
             res.json({
-              message: 'Tasacion actualizada con éxito'
+              message: "Tasacion actualizada con éxito"
             });
             _context4.next = 23;
             break;
 
           case 22:
             return _context4.abrupt("return", res.status(404).json({
-              message: 'No existe Tasación a actualizar'
+              message: "No existe Tasación a actualizar"
             }));
 
           case 23:
@@ -418,14 +450,14 @@ var deleteTasacion = /*#__PURE__*/function () {
             }
 
             res.json({
-              message: 'Tasacion eliminada con éxito'
+              message: "Tasacion eliminada con éxito"
             });
             _context5.next = 10;
             break;
 
           case 9:
             return _context5.abrupt("return", res.status(404).json({
-              message: 'No existe Tasación a eliminar'
+              message: "No existe Tasación a eliminar"
             }));
 
           case 10:

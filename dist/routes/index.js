@@ -75,7 +75,12 @@ var _goals = _interopRequireDefault(require("./goals.routes"));
 
 var _statusFile = _interopRequireDefault(require("./statusFile.routes"));
 
+var _tasador = _interopRequireDefault(require("./tasador.routes"));
+
 var router = (0, _express.Router)();
+router.get('/', function (req, res) {
+  res.send('Api Swagger');
+});
 router.use('/auth', _auth.default);
 router.use('/users', _user.default);
 router.use('/roles', _roles.default);
@@ -109,6 +114,7 @@ router.use('/tasacion', _tasacion.default);
 router.use('/operacion', _operacion.default);
 router.use('/goals', _goals.default);
 router.use('/status-file', _statusFile.default);
+router.use('/tasador', _tasador.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

@@ -34,6 +34,11 @@ import tasacionRoutes from './tasacion.routes'
 import operacionRoutes from './operacion.routes'
 import goalsRoutes from './goals.routes'
 import statusFileRoutes from './statusFile.routes'
+import tasadorRoutes from './tasador.routes'
+
+router.get('/', (req, res) => {
+    res.send('Api Swagger')
+})
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
@@ -68,5 +73,6 @@ router.use('/tasacion', tasacionRoutes);
 router.use('/operacion', operacionRoutes);
 router.use('/goals', goalsRoutes);
 router.use('/status-file', statusFileRoutes);
+router.use('/tasador', tasadorRoutes);
 
 export default router;

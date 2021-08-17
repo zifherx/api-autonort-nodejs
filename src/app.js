@@ -26,7 +26,7 @@ initData.createConfigUbicacion();
 initData.createConfigStatusFile();
 
 //Settings
-app.set('port', process.env.PORT || 4000);
+app.set('port', Number(process.env.PORT) || 4000);
 
 //Middlewares
 app.use(morgan('dev'));

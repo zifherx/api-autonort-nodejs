@@ -150,13 +150,13 @@ exports.getSeguroById = getSeguroById;
 
 var createSeguro = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, cliente, company, sucursal, mes, status, forma_pago, cuotas, fecha_emision, tipo_venta, area_venta, poliza, vendedor, placa, chasis, motor, marca, modelo, anio, uso, asesor, endoso, entidad, inicio_vigencia, fin_vigencia, suma_asegurada, aseguradora, comision_seguro, comision_asesor, empleado, newObj, foundCliente, foundEmployee, objSaved;
+    var _req$body, cliente, company, sucursal, mes, status, forma_pago, cuotas, fecha_emision, tipo_venta, area_venta, poliza, vendedor, placa, chasis, serie, motor, marca, modelo, anio, uso, asesor, endoso, entidad, inicio_vigencia, fin_vigencia, suma_asegurada, aseguradora, comision_seguro, comision_asesor, empleado, newObj, foundCliente, foundEmployee, objSaved;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, cliente = _req$body.cliente, company = _req$body.company, sucursal = _req$body.sucursal, mes = _req$body.mes, status = _req$body.status, forma_pago = _req$body.forma_pago, cuotas = _req$body.cuotas, fecha_emision = _req$body.fecha_emision, tipo_venta = _req$body.tipo_venta, area_venta = _req$body.area_venta, poliza = _req$body.poliza, vendedor = _req$body.vendedor, placa = _req$body.placa, chasis = _req$body.chasis, motor = _req$body.motor, marca = _req$body.marca, modelo = _req$body.modelo, anio = _req$body.anio, uso = _req$body.uso, asesor = _req$body.asesor, endoso = _req$body.endoso, entidad = _req$body.entidad, inicio_vigencia = _req$body.inicio_vigencia, fin_vigencia = _req$body.fin_vigencia, suma_asegurada = _req$body.suma_asegurada, aseguradora = _req$body.aseguradora, comision_seguro = _req$body.comision_seguro, comision_asesor = _req$body.comision_asesor, empleado = _req$body.empleado;
+            _req$body = req.body, cliente = _req$body.cliente, company = _req$body.company, sucursal = _req$body.sucursal, mes = _req$body.mes, status = _req$body.status, forma_pago = _req$body.forma_pago, cuotas = _req$body.cuotas, fecha_emision = _req$body.fecha_emision, tipo_venta = _req$body.tipo_venta, area_venta = _req$body.area_venta, poliza = _req$body.poliza, vendedor = _req$body.vendedor, placa = _req$body.placa, chasis = _req$body.chasis, serie = _req$body.serie, motor = _req$body.motor, marca = _req$body.marca, modelo = _req$body.modelo, anio = _req$body.anio, uso = _req$body.uso, asesor = _req$body.asesor, endoso = _req$body.endoso, entidad = _req$body.entidad, inicio_vigencia = _req$body.inicio_vigencia, fin_vigencia = _req$body.fin_vigencia, suma_asegurada = _req$body.suma_asegurada, aseguradora = _req$body.aseguradora, comision_seguro = _req$body.comision_seguro, comision_asesor = _req$body.comision_asesor, empleado = _req$body.empleado;
             _context4.prev = 1;
             newObj = new _Seguro.default({
               company: company,
@@ -172,6 +172,7 @@ var createSeguro = /*#__PURE__*/function () {
               vendedor: vendedor,
               placa: placa,
               chasis: chasis,
+              serie: serie,
               motor: motor,
               marca: marca,
               modelo: modelo,
@@ -262,14 +263,14 @@ exports.createSeguro = createSeguro;
 
 var updateSeguro = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var seguroId, _req$body2, cliente, company, sucursal, mes, status, forma_pago, cuotas, fecha_emision, tipo_venta, area_venta, poliza, vendedor, placa, chasis, motor, marca, modelo, anio, uso, asesor, endoso, entidad, inicio_vigencia, fin_vigencia, suma_asegurada, aseguradora, comision_seguro, comision_asesor, empleado, foundCliente, foundEmployee, updateObj;
+    var seguroId, _req$body2, cliente, company, sucursal, mes, status, forma_pago, cuotas, fecha_emision, tipo_venta, area_venta, poliza, vendedor, placa, chasis, serie, motor, marca, modelo, anio, uso, asesor, endoso, entidad, inicio_vigencia, fin_vigencia, suma_asegurada, aseguradora, comision_seguro, comision_asesor, empleado, foundCliente, foundEmployee, updateObj;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             seguroId = req.params.seguroId;
-            _req$body2 = req.body, cliente = _req$body2.cliente, company = _req$body2.company, sucursal = _req$body2.sucursal, mes = _req$body2.mes, status = _req$body2.status, forma_pago = _req$body2.forma_pago, cuotas = _req$body2.cuotas, fecha_emision = _req$body2.fecha_emision, tipo_venta = _req$body2.tipo_venta, area_venta = _req$body2.area_venta, poliza = _req$body2.poliza, vendedor = _req$body2.vendedor, placa = _req$body2.placa, chasis = _req$body2.chasis, motor = _req$body2.motor, marca = _req$body2.marca, modelo = _req$body2.modelo, anio = _req$body2.anio, uso = _req$body2.uso, asesor = _req$body2.asesor, endoso = _req$body2.endoso, entidad = _req$body2.entidad, inicio_vigencia = _req$body2.inicio_vigencia, fin_vigencia = _req$body2.fin_vigencia, suma_asegurada = _req$body2.suma_asegurada, aseguradora = _req$body2.aseguradora, comision_seguro = _req$body2.comision_seguro, comision_asesor = _req$body2.comision_asesor, empleado = _req$body2.empleado;
+            _req$body2 = req.body, cliente = _req$body2.cliente, company = _req$body2.company, sucursal = _req$body2.sucursal, mes = _req$body2.mes, status = _req$body2.status, forma_pago = _req$body2.forma_pago, cuotas = _req$body2.cuotas, fecha_emision = _req$body2.fecha_emision, tipo_venta = _req$body2.tipo_venta, area_venta = _req$body2.area_venta, poliza = _req$body2.poliza, vendedor = _req$body2.vendedor, placa = _req$body2.placa, chasis = _req$body2.chasis, serie = _req$body2.serie, motor = _req$body2.motor, marca = _req$body2.marca, modelo = _req$body2.modelo, anio = _req$body2.anio, uso = _req$body2.uso, asesor = _req$body2.asesor, endoso = _req$body2.endoso, entidad = _req$body2.entidad, inicio_vigencia = _req$body2.inicio_vigencia, fin_vigencia = _req$body2.fin_vigencia, suma_asegurada = _req$body2.suma_asegurada, aseguradora = _req$body2.aseguradora, comision_seguro = _req$body2.comision_seguro, comision_asesor = _req$body2.comision_asesor, empleado = _req$body2.empleado;
             _context5.prev = 2;
             _context5.next = 5;
             return _Customer.default.find({
@@ -307,6 +308,7 @@ var updateSeguro = /*#__PURE__*/function () {
               vendedor: vendedor,
               placa: placa,
               chasis: chasis,
+              serie: serie,
               motor: motor,
               marca: marca,
               modelo: modelo,

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
+exports.vistaUnidadesEntregadasByStatus = exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -988,4 +988,71 @@ var conteoVentasByModelo = /*#__PURE__*/function () {
 }();
 
 exports.conteoVentasByModelo = conteoVentasByModelo;
+
+var vistaUnidadesEntregadasByStatus = /*#__PURE__*/function () {
+  var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res) {
+    var _req$body8, sucursal, statusVenta, start, end, statusVehiculo, consulta;
+
+    return _regenerator.default.wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+            _req$body8 = req.body, sucursal = _req$body8.sucursal, statusVenta = _req$body8.statusVenta, start = _req$body8.start, end = _req$body8.end, statusVehiculo = _req$body8.statusVehiculo; //console.log(start, end);
+
+            _context13.prev = 1;
+            _context13.next = 4;
+            return _Sale.default.where({
+              sucursal_venta: sucursal,
+              estatus_venta: statusVenta,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              },
+              ubicacion_vehiculo: statusVehiculo
+            }).find().countDocuments();
+
+          case 4:
+            consulta = _context13.sent;
+            console.log('Query: ', consulta);
+
+            if (!(consulta >= 0)) {
+              _context13.next = 10;
+              break;
+            }
+
+            res.json(consulta);
+            _context13.next = 11;
+            break;
+
+          case 10:
+            return _context13.abrupt("return", res.status(404).json({
+              message: "No existen Unidades ".concat(statusVenta, " y ").concat(statusVehiculo, " en ").concat(sucursal)
+            }));
+
+          case 11:
+            _context13.next = 17;
+            break;
+
+          case 13:
+            _context13.prev = 13;
+            _context13.t0 = _context13["catch"](1);
+            console.log(_context13.t0);
+            res.status(409).json({
+              message: _context13.t0.message
+            });
+
+          case 17:
+          case "end":
+            return _context13.stop();
+        }
+      }
+    }, _callee13, null, [[1, 13]]);
+  }));
+
+  return function vistaUnidadesEntregadasByStatus(_x25, _x26) {
+    return _ref13.apply(this, arguments);
+  };
+}();
+
+exports.vistaUnidadesEntregadasByStatus = vistaUnidadesEntregadasByStatus;
 //# sourceMappingURL=sale.controller.js.map

@@ -21,7 +21,9 @@ router.post('/estado', saleCtrl.UnidadesByStatus); //Reporte de Sucursal
 
 router.post('/sucursal', saleCtrl.UnidadesBySucursal); //Conteo por Sucursal, Situación y Fecha
 
-router.post('/conteo', saleCtrl.conteoUnidadesBySucursalStatusFecha); //Conteo de Canceladas
+router.post('/conteo', saleCtrl.conteoUnidadesBySucursalStatusFecha); //Conteo de Unidades Entregadas
+
+router.post('/entregadas', saleCtrl.vistaUnidadesEntregadasByStatus); //Conteo de Canceladas
 
 router.get('/conteo/canceladas', saleCtrl.conteoUnidadesCanceladas); //Conteo de Libres
 

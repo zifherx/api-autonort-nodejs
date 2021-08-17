@@ -39,6 +39,12 @@ var tasacionSchema = new _mongoose.Schema({
   placa: {
     type: String
   },
+  precio: {
+    type: Number
+  },
+  observacion: {
+    type: String
+  },
   //Operacion
   empresa: {
     type: String,
@@ -56,11 +62,19 @@ var tasacionSchema = new _mongoose.Schema({
   fecha_operacion: {
     type: Date
   },
-  precio: {
-    type: Number
-  },
   mes: {
     type: Number
+  },
+  status_tasacion: {
+    type: String
+  },
+  nro_serie_nuevo_vehiculo: {
+    type: String,
+    allowEmpty: true
+  },
+  modelo_nuevo_vehiculo: {
+    type: String,
+    allowEmpty: true
   },
   //Vendedor
   asesor_venta: {
@@ -68,13 +82,18 @@ var tasacionSchema = new _mongoose.Schema({
     type: _mongoose.Schema.Types.ObjectId,
     allowEmpty: true
   },
-  asesor_derivado: {
-    type: String
-  },
   asesor_servicio: {
     ref: "Seller",
     type: _mongoose.Schema.Types.ObjectId,
     allowEmpty: true
+  },
+  asesor_tasador: {
+    ref: "Tasador",
+    type: _mongoose.Schema.Types.ObjectId,
+    allowEmpty: true
+  },
+  inspeccion_tecnica: {
+    type: Boolean
   },
   //Empleado
   empleado: {

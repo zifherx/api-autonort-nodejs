@@ -63,6 +63,9 @@ var seguroSchema = new _mongoose.Schema({
   chasis: {
     type: String
   },
+  serie: {
+    type: String
+  },
   motor: {
     type: String
   },
