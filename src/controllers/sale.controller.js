@@ -49,7 +49,7 @@ export const createSale = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -72,7 +72,7 @@ export const getSales = async(req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -97,7 +97,7 @@ export const getSaleById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -136,7 +136,7 @@ export const updateSaleById = async(req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -153,7 +153,7 @@ export const deleteSaleById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -175,7 +175,7 @@ export const UnidadesByStatus = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -196,7 +196,7 @@ export const UnidadesBySucursal = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -209,7 +209,7 @@ export const conteoUnidadesCanceladas = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -223,7 +223,7 @@ export const conteoUnidadesLibres = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -240,7 +240,7 @@ export const conteoUnidadesBySucursalStatusFecha = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -264,7 +264,7 @@ export const conteoVentasByVendedor = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -287,7 +287,7 @@ export const conteoVentasByModelo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 }
 
@@ -296,7 +296,7 @@ export const vistaUnidadesEntregadasByStatus = async(req, res) => {
     //console.log(start, end);
     try {
         const consulta = await Sale.where({ sucursal_venta: sucursal, estatus_venta: statusVenta, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) }, ubicacion_vehiculo: statusVehiculo }).find().countDocuments();
-        console.log('Query: ', consulta);
+        // console.log('Query: ', consulta);
         if (consulta >= 0) {
             res.json(consulta);
         } else {
@@ -304,6 +304,39 @@ export const vistaUnidadesEntregadasByStatus = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
+    }
+}
+
+export const obtenerToyotaValues = async(req, res) => {
+    const { sucursal, statusVenta, start, end } = req.body;
+    const objetos = []
+    try {
+        // const query = await Sale.where({ sucursal_venta: sucursal, estatus_venta: statusVenta, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) }, adicional: { $gte: 1 } }).find();
+        const query = await Sale.where({ sucursal_venta: sucursal, estatus_venta: statusVenta, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } }).find().populate('adicional vendedor auto')
+            // const values = await query.adicional
+            // console.log(query)
+        query.forEach((element) => {
+            console.log(element)
+            if (element.adicional.length > 0) {
+                let perra = {};
+                perra.sucursal = element.sucursal_venta
+                perra.serie = element.serie_tdp
+                perra.adicional = element.adicional
+                perra.vendedor = element.vendedor
+                perra.vehiculo = element.auto
+                objetos.push(perra)
+            }
+        })
+        if (query >= 0) {
+
+            res.json({ nro_adicionales: objetos.length, toyota_values: objetos })
+        } else {
+            return res.status(404).json({ message: `No existen Unidades ${statusVenta} en ${sucursal} con Toyota Value en ese rango de fechas` })
+        }
+
+    } catch (err) {
+        console.log(err.message)
+        res.status(503).json({ message: err.message })
     }
 }

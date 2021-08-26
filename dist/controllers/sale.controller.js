@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.vistaUnidadesEntregadasByStatus = exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
+exports.obtenerToyotaValues = exports.vistaUnidadesEntregadasByStatus = exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -196,7 +196,7 @@ var createSale = /*#__PURE__*/function () {
             _context.prev = 37;
             _context.t0 = _context["catch"](1);
             console.log(_context.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context.t0.message
             });
 
@@ -251,7 +251,7 @@ var getSales = /*#__PURE__*/function () {
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context2.t0.message
             });
 
@@ -307,7 +307,7 @@ var getSaleById = /*#__PURE__*/function () {
             _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context3.t0.message
             });
 
@@ -486,7 +486,7 @@ var updateSaleById = /*#__PURE__*/function () {
             _context4.prev = 31;
             _context4.t0 = _context4["catch"](2);
             console.log(_context4.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context4.t0.message
             });
 
@@ -544,7 +544,7 @@ var deleteSaleById = /*#__PURE__*/function () {
             _context5.prev = 12;
             _context5.t0 = _context5["catch"](1);
             console.log(_context5.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context5.t0.message
             });
 
@@ -603,7 +603,7 @@ var UnidadesByStatus = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context6.t0.message
             });
 
@@ -666,7 +666,7 @@ var UnidadesBySucursal = /*#__PURE__*/function () {
             _context7.prev = 12;
             _context7.t0 = _context7["catch"](1);
             console.log(_context7.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context7.t0.message
             });
 
@@ -713,7 +713,7 @@ var conteoUnidadesCanceladas = /*#__PURE__*/function () {
             _context8.prev = 7;
             _context8.t0 = _context8["catch"](0);
             console.log(_context8.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context8.t0.message
             });
 
@@ -770,7 +770,7 @@ var conteoUnidadesLibres = /*#__PURE__*/function () {
             _context9.prev = 11;
             _context9.t0 = _context9["catch"](0);
             console.log(_context9.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context9.t0.message
             });
 
@@ -835,7 +835,7 @@ var conteoUnidadesBySucursalStatusFecha = /*#__PURE__*/function () {
             _context10.prev = 12;
             _context10.t0 = _context10["catch"](1);
             console.log(_context10.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context10.t0.message
             });
 
@@ -903,7 +903,7 @@ var conteoVentasByVendedor = /*#__PURE__*/function () {
             _context11.prev = 9;
             _context11.t0 = _context11["catch"](1);
             console.log(_context11.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context11.t0.message
             });
 
@@ -970,7 +970,7 @@ var conteoVentasByModelo = /*#__PURE__*/function () {
             _context12.prev = 9;
             _context12.t0 = _context12["catch"](1);
             console.log(_context12.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context12.t0.message
             });
 
@@ -1013,40 +1013,39 @@ var vistaUnidadesEntregadasByStatus = /*#__PURE__*/function () {
 
           case 4:
             consulta = _context13.sent;
-            console.log('Query: ', consulta);
 
             if (!(consulta >= 0)) {
-              _context13.next = 10;
+              _context13.next = 9;
               break;
             }
 
             res.json(consulta);
-            _context13.next = 11;
+            _context13.next = 10;
             break;
 
-          case 10:
+          case 9:
             return _context13.abrupt("return", res.status(404).json({
               message: "No existen Unidades ".concat(statusVenta, " y ").concat(statusVehiculo, " en ").concat(sucursal)
             }));
 
-          case 11:
-            _context13.next = 17;
+          case 10:
+            _context13.next = 16;
             break;
 
-          case 13:
-            _context13.prev = 13;
+          case 12:
+            _context13.prev = 12;
             _context13.t0 = _context13["catch"](1);
             console.log(_context13.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context13.t0.message
             });
 
-          case 17:
+          case 16:
           case "end":
             return _context13.stop();
         }
       }
-    }, _callee13, null, [[1, 13]]);
+    }, _callee13, null, [[1, 12]]);
   }));
 
   return function vistaUnidadesEntregadasByStatus(_x25, _x26) {
@@ -1055,4 +1054,87 @@ var vistaUnidadesEntregadasByStatus = /*#__PURE__*/function () {
 }();
 
 exports.vistaUnidadesEntregadasByStatus = vistaUnidadesEntregadasByStatus;
+
+var obtenerToyotaValues = /*#__PURE__*/function () {
+  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
+    var _req$body9, sucursal, statusVenta, start, end, objetos, query;
+
+    return _regenerator.default.wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            _req$body9 = req.body, sucursal = _req$body9.sucursal, statusVenta = _req$body9.statusVenta, start = _req$body9.start, end = _req$body9.end;
+            objetos = [];
+            _context14.prev = 2;
+            _context14.next = 5;
+            return _Sale.default.where({
+              sucursal_venta: sucursal,
+              estatus_venta: statusVenta,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            }).find().populate('adicional vendedor auto');
+
+          case 5:
+            query = _context14.sent;
+            // const values = await query.adicional
+            // console.log(query)
+            query.forEach(function (element) {
+              console.log(element);
+
+              if (element.adicional.length > 0) {
+                var perra = {};
+                perra.sucursal = element.sucursal_venta;
+                perra.serie = element.serie_tdp;
+                perra.adicional = element.adicional;
+                perra.vendedor = element.vendedor;
+                perra.vehiculo = element.auto;
+                objetos.push(perra);
+              }
+            });
+
+            if (!(query >= 0)) {
+              _context14.next = 11;
+              break;
+            }
+
+            res.json({
+              nro_adicionales: objetos.length,
+              toyota_values: objetos
+            });
+            _context14.next = 12;
+            break;
+
+          case 11:
+            return _context14.abrupt("return", res.status(404).json({
+              message: "No existen Unidades ".concat(statusVenta, " en ").concat(sucursal, " con Toyota Value en ese rango de fechas")
+            }));
+
+          case 12:
+            _context14.next = 18;
+            break;
+
+          case 14:
+            _context14.prev = 14;
+            _context14.t0 = _context14["catch"](2);
+            console.log(_context14.t0.message);
+            res.status(503).json({
+              message: _context14.t0.message
+            });
+
+          case 18:
+          case "end":
+            return _context14.stop();
+        }
+      }
+    }, _callee14, null, [[2, 14]]);
+  }));
+
+  return function obtenerToyotaValues(_x27, _x28) {
+    return _ref14.apply(this, arguments);
+  };
+}();
+
+exports.obtenerToyotaValues = obtenerToyotaValues;
 //# sourceMappingURL=sale.controller.js.map
