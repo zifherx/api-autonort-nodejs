@@ -260,11 +260,11 @@ export const conteoVentasByVendedor = async(req, res) => {
         if (consulta.length > 0) {
             res.json(consulta);
         } else {
-            res.status(404).json({ message: 'No existen Ventas aún' })
+            return res.status(404).json({ message: 'No existen Ventas aún' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 

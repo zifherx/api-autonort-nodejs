@@ -8,9 +8,7 @@ var _config = _interopRequireDefault(require("./config"));
 
 _mongoose.default.connect(_config.default.mongodbURL, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true
+  useUnifiedTopology: true
 }).then(function (db) {
   return console.log("DB ".concat(db.connection.name, " is connected"));
 }).catch(function (err) {

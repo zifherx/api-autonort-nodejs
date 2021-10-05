@@ -2,11 +2,17 @@ import User from '../models/User'
 import Role from '../models/Role'
 
 export const createUser = async(req, res) => {
-    const { username, email, name, password, sucursal, direccion, pais, codigo_postal, about, roles, activo } = req.body;
+    const { username, name, password, sucursal, roles, status } = req.body;
 
     try {
 
-        const newUser = new User({ username, email, name, password: await User.encryptPassword(password), sucursal, direccion, pais, codigo_postal, about, activo });
+        const newUser = new User({
+            username,
+            name,
+            password: await User.encryptPassword(password),
+            sucursal,
+            status
+        });
 
         if (roles) {
             const foundRoles = await Role.find({ name: { $in: roles } });
@@ -23,13 +29,13 @@ export const createUser = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ error: err })
     }
 }
 
 export const getUsers = async(req, res) => {
     try {
-        const lista = await User.find().sort({ name: 'asc' }).populate('roles')
+        const lista = await User.find().sort({ name: 'asc' }).populate('roles', 'name')
         if (lista.length > 0) {
             res.json(lista)
         } else {
@@ -37,7 +43,7 @@ export const getUsers = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ error: err })
     }
 }
 
@@ -46,7 +52,7 @@ export const getUserById = async(req, res) => {
 
     try {
 
-        const objeto = await User.findById(userId).populate('roles')
+        const objeto = await User.findById(userId).populate('roles', 'name')
 
         if (objeto) {
             res.json(objeto)
@@ -55,18 +61,24 @@ export const getUserById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ error: err })
     }
 
 }
 
 export const updateUserById = async(req, res) => {
     const { userId } = req.params;
-    const { username, email, name, sucursal, direccion, pais, codigo_postal, about, roles, activo } = req.body;
+    const { username, name, sucursal, roles, status } = req.body;
 
     try {
         const foundRoles = await Role.find({ name: { $in: roles } })
-        const userFound = await User.findByIdAndUpdate(userId, { username, email, name, sucursal, direccion, pais, codigo_postal, about, roles: foundRoles.map(role => role._id), activo });
+        const userFound = await User.findByIdAndUpdate(userId, {
+            username,
+            name,
+            sucursal,
+            roles: foundRoles.map(role => role._id),
+            status
+        });
 
         if (userFound) {
             res.json({ message: 'Usuario actualizado con éxito' });
@@ -76,7 +88,7 @@ export const updateUserById = async(req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ error: err })
     }
 }
 
@@ -93,13 +105,13 @@ export const updateProfile = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
 export const deleteUserById = async(req, res) => {
+    const { userId } = req.params;
     try {
-        const { userId } = req.params;
 
         const deletedUser = await User.findByIdAndRemove(userId);
 
@@ -111,7 +123,30 @@ export const deleteUserById = async(req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 
+}
+
+export const countAll = async(req, res) => {
+    try {
+        const query = await User.countDocuments();
+
+        if (query >= 0) return res.json({ count_user: query });
+    } catch (err) {
+        console.log(err);
+        res.status(503).json({ error: err })
+    }
+}
+
+export const countByOnline = async(req, res) => {
+    const { online } = req.body;
+    try {
+        const query = await User.where({ online }).find().countDocuments();
+
+        if (query >= 0) return res.json({ count_onlines: query });
+    } catch (err) {
+        console.log(err);
+        res.status(503).json({ error: err })
+    }
 }

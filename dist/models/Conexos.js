@@ -11,8 +11,21 @@ var conexoSchema = new _mongoose.Schema({
   name: {
     type: String
   },
+  email: {
+    type: String
+  },
+  area: {
+    type: String
+  },
+  sucursal: {
+    type: String
+  },
   status: {
     type: String
+  },
+  createdBy: {
+    ref: 'User',
+    type: _mongoose.Schema.Types.ObjectId
   }
 }, {
   timestamps: true,

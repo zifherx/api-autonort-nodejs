@@ -35,6 +35,9 @@ import operacionRoutes from './operacion.routes'
 import goalsRoutes from './goals.routes'
 import statusFileRoutes from './statusFile.routes'
 import tasadorRoutes from './tasador.routes'
+import mafRoutes from './maf.routes'
+import jefaturaVentasRoutes from './jefaturaVentas.routes'
+import statusMafRequestRoutes from './statusMafRequest.routes'
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -74,5 +77,8 @@ router.use('/operacion', operacionRoutes);
 router.use('/goals', goalsRoutes);
 router.use('/status-file', statusFileRoutes);
 router.use('/tasador', tasadorRoutes);
+router.use('/maf', mafRoutes)
+router.use('/jefatura-ventas', jefaturaVentasRoutes);
+router.use('/status-maf-request', statusMafRequestRoutes);
 
 export default router;

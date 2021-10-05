@@ -888,31 +888,38 @@ var conteoVentasByVendedor = /*#__PURE__*/function () {
           case 5:
             consulta = _context11.sent;
 
-            if (consulta.length > 0) {
-              res.json(consulta);
-            } else {
-              res.status(404).json({
-                message: 'No existen Ventas aún'
-              });
+            if (!(consulta.length > 0)) {
+              _context11.next = 10;
+              break;
             }
 
-            _context11.next = 13;
+            res.json(consulta);
+            _context11.next = 11;
             break;
 
-          case 9:
-            _context11.prev = 9;
-            _context11.t0 = _context11["catch"](1);
-            console.log(_context11.t0);
-            res.status(503).json({
-              message: _context11.t0.message
-            });
+          case 10:
+            return _context11.abrupt("return", res.status(404).json({
+              message: 'No existen Ventas aún'
+            }));
+
+          case 11:
+            _context11.next = 17;
+            break;
 
           case 13:
+            _context11.prev = 13;
+            _context11.t0 = _context11["catch"](1);
+            console.log(_context11.t0);
+            return _context11.abrupt("return", res.status(503).json({
+              message: _context11.t0.message
+            }));
+
+          case 17:
           case "end":
             return _context11.stop();
         }
       }
-    }, _callee11, null, [[1, 9]]);
+    }, _callee11, null, [[1, 13]]);
   }));
 
   return function conteoVentasByVendedor(_x21, _x22) {

@@ -16,6 +16,9 @@ router.get('/:conexoId', conexoCtrl.getConexoById);
 //Crear Conexo
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateConexo], conexoCtrl.createConexo);
 
+//Obtener Asesor x Sucursal
+router.post('/sucursal', conexoCtrl.obtenerAsesorxSucursal)
+
 //Actualizar Conexo
 router.patch('/:conexoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], conexoCtrl.updateConexo);
 

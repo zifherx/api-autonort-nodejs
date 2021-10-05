@@ -51,7 +51,7 @@ var getSectoristas = /*#__PURE__*/function () {
             _context.prev = 11;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context.t0.message
             });
 
@@ -107,7 +107,7 @@ var getSectoristaById = /*#__PURE__*/function () {
             _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
             console.log(_context2.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context2.t0.message
             });
 
@@ -166,7 +166,7 @@ var getSectoristaByActivo = /*#__PURE__*/function () {
             _context3.prev = 11;
             _context3.t0 = _context3["catch"](0);
             console.log(_context3.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context3.t0.message
             });
 
@@ -218,7 +218,7 @@ var createSectorista = /*#__PURE__*/function () {
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context4.t0.message
             });
 
@@ -274,7 +274,7 @@ var updateSectorista = /*#__PURE__*/function () {
             _context5.prev = 9;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context5.t0.message
             });
 
@@ -326,7 +326,7 @@ var deleteSectorista = /*#__PURE__*/function () {
             _context6.prev = 8;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context6.t0.message
             });
 

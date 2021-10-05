@@ -21,7 +21,7 @@ router.get('/activos', operacionCtrl.getOperacionActivos); //Obtener Operacion p
 
 router.get('/:operacionId', operacionCtrl.getOperacionById); //Crear Operacion
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateAnio], operacionCtrl.createOperacion); //Actualizar Operacion
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], operacionCtrl.createOperacion); //Actualizar Operacion
 
 router.patch('/:operacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], operacionCtrl.updateOperacion); //Eliminar Operacion
 

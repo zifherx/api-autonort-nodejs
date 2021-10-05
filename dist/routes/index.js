@@ -77,6 +77,12 @@ var _statusFile = _interopRequireDefault(require("./statusFile.routes"));
 
 var _tasador = _interopRequireDefault(require("./tasador.routes"));
 
+var _maf = _interopRequireDefault(require("./maf.routes"));
+
+var _jefaturaVentas = _interopRequireDefault(require("./jefaturaVentas.routes"));
+
+var _statusMafRequest = _interopRequireDefault(require("./statusMafRequest.routes"));
+
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
   res.send('Api Swagger');
@@ -115,6 +121,9 @@ router.use('/operacion', _operacion.default);
 router.use('/goals', _goals.default);
 router.use('/status-file', _statusFile.default);
 router.use('/tasador', _tasador.default);
+router.use('/maf', _maf.default);
+router.use('/jefatura-ventas', _jefaturaVentas.default);
+router.use('/status-maf-request', _statusMafRequest.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

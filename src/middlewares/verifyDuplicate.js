@@ -25,6 +25,7 @@ import Endoso from '../models/Endoso'
 import Conexos from '../models/Conexos'
 import Aseguradora from '../models/Aseguradora'
 import StatusFile from '../models/StatusFile'
+import StatusMafRequest from '../models/StatusMafRequest'
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -299,6 +300,15 @@ export const checkDuplicateStatusFile = async(req, res, next) => {
     const query = await StatusFile.findOne({ name: name });
 
     if (query) return res.status(201).json({ message: 'El Status File ya existe' });
+
+    next();
+}
+
+export const checkDuplicateStatusMafRequest = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await StatusMafRequest.findOne({ name: name });
+
+    if (query) return res.status(201).json({ message: 'El Estado Maf ya existe' });
 
     next();
 }

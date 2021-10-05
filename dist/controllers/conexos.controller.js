@@ -5,13 +5,15 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteConexo = exports.updateConexo = exports.createConexo = exports.getConexoById = exports.getConexoByActivo = exports.getConexos = void 0;
+exports.obtenerAsesorxSucursal = exports.deleteConexo = exports.updateConexo = exports.createConexo = exports.getConexoById = exports.getConexoByActivo = exports.getConexos = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 var _Conexos = _interopRequireDefault(require("../models/Conexos"));
+
+var _User = _interopRequireDefault(require("../models/User"));
 
 var getConexos = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
@@ -51,7 +53,7 @@ var getConexos = /*#__PURE__*/function () {
             _context.prev = 11;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context.t0.message
             });
 
@@ -110,7 +112,7 @@ var getConexoByActivo = /*#__PURE__*/function () {
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context2.t0.message
             });
 
@@ -166,7 +168,7 @@ var getConexoById = /*#__PURE__*/function () {
             _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context3.t0.message
             });
 
@@ -187,22 +189,37 @@ exports.getConexoById = getConexoById;
 
 var createConexo = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, newObj, query;
+    var _req$body, name, email, area, sucursal, status, createdBy, newObj, userFound, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, email = _req$body.email, area = _req$body.area, sucursal = _req$body.sucursal, status = _req$body.status, createdBy = _req$body.createdBy;
             _context4.prev = 1;
             newObj = new _Conexos.default({
               name: name,
+              email: email,
+              area: area,
+              sucursal: sucursal,
               status: status
             });
             _context4.next = 5;
-            return newObj.save();
+            return _User.default.find({
+              username: {
+                $in: createdBy
+              }
+            });
 
           case 5:
+            userFound = _context4.sent;
+            newObj.createdBy = userFound.map(function (a) {
+              return a._id;
+            });
+            _context4.next = 9;
+            return newObj.save();
+
+          case 9:
             query = _context4.sent;
 
             if (query) {
@@ -211,23 +228,23 @@ var createConexo = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 13;
+            _context4.next = 17;
             break;
 
-          case 9:
-            _context4.prev = 9;
+          case 13:
+            _context4.prev = 13;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context4.t0.message
             });
 
-          case 13:
+          case 17:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[1, 9]]);
+    }, _callee4, null, [[1, 13]]);
   }));
 
   return function createConexo(_x7, _x8) {
@@ -239,18 +256,21 @@ exports.createConexo = createConexo;
 
 var updateConexo = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, conexoId, newObj;
+    var _req$body2, name, email, area, sucursal, status, conexoId, newObj;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, email = _req$body2.email, area = _req$body2.area, sucursal = _req$body2.sucursal, status = _req$body2.status;
             conexoId = req.params.conexoId;
             _context5.prev = 2;
             _context5.next = 5;
             return _Conexos.default.findByIdAndUpdate(conexoId, {
               name: name,
+              email: email,
+              area: area,
+              sucursal: sucursal,
               status: status
             });
 
@@ -281,7 +301,7 @@ var updateConexo = /*#__PURE__*/function () {
             _context5.prev = 13;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context5.t0.message
             });
 
@@ -339,7 +359,7 @@ var deleteConexo = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context6.t0.message
             });
 
@@ -357,4 +377,67 @@ var deleteConexo = /*#__PURE__*/function () {
 }();
 
 exports.deleteConexo = deleteConexo;
+
+var obtenerAsesorxSucursal = /*#__PURE__*/function () {
+  var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
+    var _req$body3, sucursal, area, query;
+
+    return _regenerator.default.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _req$body3 = req.body, sucursal = _req$body3.sucursal, area = _req$body3.area;
+            _context7.prev = 1;
+            _context7.next = 4;
+            return _Conexos.default.findOne({
+              sucursal: sucursal,
+              area: area,
+              status: 'Activo'
+            }).select('name email');
+
+          case 4:
+            query = _context7.sent;
+
+            if (!query) {
+              _context7.next = 9;
+              break;
+            }
+
+            res.json({
+              asesor: query
+            });
+            _context7.next = 10;
+            break;
+
+          case 9:
+            return _context7.abrupt("return", res.status(404).json({
+              message: 'No se encontraron asesores'
+            }));
+
+          case 10:
+            _context7.next = 16;
+            break;
+
+          case 12:
+            _context7.prev = 12;
+            _context7.t0 = _context7["catch"](1);
+            console.log(_context7.t0);
+            res.status(503).json({
+              message: _context7.t0.message
+            });
+
+          case 16:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, null, [[1, 12]]);
+  }));
+
+  return function obtenerAsesorxSucursal(_x13, _x14) {
+    return _ref7.apply(this, arguments);
+  };
+}();
+
+exports.obtenerAsesorxSucursal = obtenerAsesorxSucursal;
 //# sourceMappingURL=conexos.controller.js.map

@@ -13,7 +13,8 @@ const userSchema = new Schema({
     codigo_postal: { type: String },
     about: { type: String },
     roles: { ref: "Role", type: Schema.Types.ObjectId },
-    activo: { type: String },
+    status: { type: Boolean, default: true },
+    online: { type: Boolean, default: false }
 }, {
     timestamps: true,
     versionKey: false

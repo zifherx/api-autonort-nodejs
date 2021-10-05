@@ -10,7 +10,7 @@ export const getSectoristas = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -25,7 +25,7 @@ export const getSectoristaById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -39,21 +39,23 @@ export const getSectoristaByActivo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
 export const createSectorista = async(req, res) => {
     const { name, status } = req.body;
     try {
+
         const newSectorista = new Sectorista({ name, status });
+
         const sectoristaCreado = await newSectorista.save();
         if (sectoristaCreado) {
             res.json({ message: 'Sectorista creado con éxito' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -61,7 +63,9 @@ export const updateSectorista = async(req, res) => {
     const { name, status } = req.body;
     const { sectoristaId } = req.params;
     try {
+
         const updateSectorista = await Sectorista.findByIdAndUpdate(sectoristaId, { name, status });
+
         if (updateSectorista) {
             res.json({ message: 'Sectorista actualizado con éxito' });
         } else {
@@ -69,7 +73,7 @@ export const updateSectorista = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -84,6 +88,6 @@ export const deleteSectorista = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }

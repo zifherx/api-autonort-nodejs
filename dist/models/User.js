@@ -54,8 +54,13 @@ var userSchema = new _mongoose.Schema({
     ref: "Role",
     type: _mongoose.Schema.Types.ObjectId
   },
-  activo: {
-    type: String
+  status: {
+    type: Boolean,
+    default: true
+  },
+  online: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true,

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.changePassword = exports.signIn = exports.signUp = void 0;
+exports.forzarCierre = exports.cerrarSesion = exports.changePassword = exports.signIn = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -19,67 +19,89 @@ var _User = _interopRequireDefault(require("../models/User"));
 
 var _Role = _interopRequireDefault(require("../models/Role"));
 
-var signUp = /*#__PURE__*/function () {
+var signIn = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, username, email, password, roles, newUser, foundRoles, role, saveUser, token;
+    var _req$body, username, password, userFound, matchPassword, token;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$body = req.body, username = _req$body.username, email = _req$body.email, password = _req$body.password, roles = _req$body.roles;
-            newUser = new _User.default({
-              username: username,
-              email: email
+            _req$body = req.body, username = _req$body.username, password = _req$body.password;
+            _context.next = 3;
+            return _User.default.findOne({
+              username: username
             });
 
-            if (!roles) {
-              _context.next = 9;
+          case 3:
+            userFound = _context.sent;
+
+            if (userFound) {
+              _context.next = 6;
               break;
             }
 
-            _context.next = 5;
-            return _Role.default.find({
-              name: {
-                $in: roles
-              }
-            });
+            return _context.abrupt("return", res.status(404).json({
+              message: 'Usuario no existe'
+            }));
 
-          case 5:
-            foundRoles = _context.sent;
-            newUser.roles = foundRoles.map(function (role) {
-              return role._id;
-            });
-            _context.next = 13;
-            break;
+          case 6:
+            if (userFound.status) {
+              _context.next = 8;
+              break;
+            }
 
-          case 9:
-            _context.next = 11;
-            return _Role.default.findOne({
-              name: "user"
-            });
+            return _context.abrupt("return", res.status(403).json({
+              message: 'Usuario inactivo'
+            }));
 
-          case 11:
-            role = _context.sent;
-            newUser.roles = [role._id];
+          case 8:
+            if (!userFound.online) {
+              _context.next = 10;
+              break;
+            }
 
-          case 13:
-            _context.next = 15;
-            return newUser.save();
+            return _context.abrupt("return", res.status(401).json({
+              message: 'Usuario ya se encuentra logueado'
+            }));
+
+          case 10:
+            _context.next = 12;
+            return _User.default.comparePassword(password, userFound.password);
+
+          case 12:
+            matchPassword = _context.sent;
+
+            if (matchPassword) {
+              _context.next = 15;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(403).json({
+              token: null,
+              message: 'Contraseña Errónea'
+            }));
 
           case 15:
-            saveUser = _context.sent;
-            //console.log(saveUser);
             token = _jsonwebtoken.default.sign({
-              id: saveUser._id
+              id: userFound._id
             }, _config.default.SECRET, {
-              expiresIn: 86400
-            });
-            res.status(200).json({
-              token: token
+              expiresIn: '24h'
+            }); //Cambio de estado a online
+
+            _context.next = 18;
+            return _User.default.findByIdAndUpdate(userFound._id, {
+              online: true
             });
 
           case 18:
+            console.log('Token:', token);
+            res.json({
+              token: token,
+              codigo: userFound._id
+            });
+
+          case 20:
           case "end":
             return _context.stop();
         }
@@ -87,93 +109,23 @@ var signUp = /*#__PURE__*/function () {
     }, _callee);
   }));
 
-  return function signUp(_x, _x2) {
+  return function signIn(_x, _x2) {
     return _ref.apply(this, arguments);
-  };
-}();
-
-exports.signUp = signUp;
-
-var signIn = /*#__PURE__*/function () {
-  var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var _req$body2, username, password, userFound, matchPassword, token;
-
-    return _regenerator.default.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _req$body2 = req.body, username = _req$body2.username, password = _req$body2.password;
-            _context2.next = 3;
-            return _User.default.findOne({
-              username: username
-            }).populate("roles");
-
-          case 3:
-            userFound = _context2.sent;
-
-            if (userFound) {
-              _context2.next = 6;
-              break;
-            }
-
-            return _context2.abrupt("return", res.status(404).json({
-              message: 'Usuario no existe'
-            }));
-
-          case 6:
-            _context2.next = 8;
-            return _User.default.comparePassword(password, userFound.password);
-
-          case 8:
-            matchPassword = _context2.sent;
-
-            if (matchPassword) {
-              _context2.next = 11;
-              break;
-            }
-
-            return _context2.abrupt("return", res.status(401).json({
-              token: null,
-              message: 'Contraseña Errónea'
-            }));
-
-          case 11:
-            token = _jsonwebtoken.default.sign({
-              id: userFound._id
-            }, _config.default.SECRET, {
-              expiresIn: '24h'
-            });
-            res.json({
-              token: token,
-              codigo: userFound._id,
-              status: userFound.activo
-            });
-
-          case 13:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-
-  return function signIn(_x3, _x4) {
-    return _ref2.apply(this, arguments);
   };
 }();
 
 exports.signIn = signIn;
 
 var changePassword = /*#__PURE__*/function () {
-  var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var id, _req$body3, oldPassword, newPassword, user, matchPassword, guardado;
+  var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
+    var id, _req$body2, oldPassword, newPassword, user, matchPassword, guardado;
 
-    return _regenerator.default.wrap(function _callee3$(_context3) {
+    return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context2.prev = _context2.next) {
           case 0:
             id = res.locals.jwtPayload.id;
-            _req$body3 = req.body, oldPassword = _req$body3.oldPassword, newPassword = _req$body3.newPassword;
+            _req$body2 = req.body, oldPassword = _req$body2.oldPassword, newPassword = _req$body2.newPassword;
 
             if (!(oldPassword && newPassword)) {
               res.status(400).json({
@@ -181,50 +133,50 @@ var changePassword = /*#__PURE__*/function () {
               });
             }
 
-            _context3.prev = 3;
-            _context3.next = 6;
+            _context2.prev = 3;
+            _context2.next = 6;
             return _User.default.findById(id);
 
           case 6:
-            user = _context3.sent;
-            _context3.next = 12;
+            user = _context2.sent;
+            _context2.next = 12;
             break;
 
           case 9:
-            _context3.prev = 9;
-            _context3.t0 = _context3["catch"](3);
+            _context2.prev = 9;
+            _context2.t0 = _context2["catch"](3);
             res.status(404).json({
               message: 'Usuario no existe'
             });
 
           case 12:
-            _context3.next = 14;
+            _context2.next = 14;
             return _User.default.comparePassword(oldPassword, user.password);
 
           case 14:
-            matchPassword = _context3.sent;
+            matchPassword = _context2.sent;
 
             if (matchPassword) {
-              _context3.next = 17;
+              _context2.next = 17;
               break;
             }
 
-            return _context3.abrupt("return", res.status(401).json({
+            return _context2.abrupt("return", res.status(401).json({
               message: 'Contraseña Anterior Errónea'
             }));
 
           case 17:
-            _context3.prev = 17;
-            _context3.next = 20;
+            _context2.prev = 17;
+            _context2.next = 20;
             return _User.default.encryptPassword(newPassword);
 
           case 20:
-            user.password = _context3.sent;
-            _context3.next = 23;
+            user.password = _context2.sent;
+            _context2.next = 23;
             return user.save();
 
           case 23:
-            guardado = _context3.sent;
+            guardado = _context2.sent;
 
             if (guardado) {
               res.json({
@@ -232,29 +184,178 @@ var changePassword = /*#__PURE__*/function () {
               });
             }
 
-            _context3.next = 31;
+            _context2.next = 31;
             break;
 
           case 27:
-            _context3.prev = 27;
-            _context3.t1 = _context3["catch"](17);
-            console.log(_context3.t1);
-            res.status(409).json({
-              message: _context3.t1.message
+            _context2.prev = 27;
+            _context2.t1 = _context2["catch"](17);
+            console.log(_context2.t1);
+            res.status(503).json({
+              error: _context2.t1
             });
 
           case 31:
           case "end":
-            return _context3.stop();
+            return _context2.stop();
         }
       }
-    }, _callee3, null, [[3, 9], [17, 27]]);
+    }, _callee2, null, [[3, 9], [17, 27]]);
   }));
 
-  return function changePassword(_x5, _x6) {
-    return _ref3.apply(this, arguments);
+  return function changePassword(_x3, _x4) {
+    return _ref2.apply(this, arguments);
   };
 }();
 
 exports.changePassword = changePassword;
+
+var cerrarSesion = /*#__PURE__*/function () {
+  var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
+    var id, userFound, offline;
+    return _regenerator.default.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            id = res.locals.jwtPayload.id;
+            _context3.prev = 1;
+            _context3.next = 4;
+            return _User.default.findById(id);
+
+          case 4:
+            userFound = _context3.sent;
+
+            if (userFound.online) {
+              _context3.next = 7;
+              break;
+            }
+
+            return _context3.abrupt("return", res.status(401).json({
+              message: 'No existe sesión abierta'
+            }));
+
+          case 7:
+            _context3.next = 9;
+            return _User.default.findByIdAndUpdate(id, {
+              online: false
+            });
+
+          case 9:
+            offline = _context3.sent;
+
+            if (!offline) {
+              _context3.next = 12;
+              break;
+            }
+
+            return _context3.abrupt("return", res.json({
+              message: 'Sesión cerrada con éxito'
+            }));
+
+          case 12:
+            _context3.next = 17;
+            break;
+
+          case 14:
+            _context3.prev = 14;
+            _context3.t0 = _context3["catch"](1);
+            return _context3.abrupt("return", res.status(503).json({
+              error: _context3.t0
+            }));
+
+          case 17:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[1, 14]]);
+  }));
+
+  return function cerrarSesion(_x5, _x6) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+exports.cerrarSesion = cerrarSesion;
+
+var forzarCierre = /*#__PURE__*/function () {
+  var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
+    var username, userFound, codUser, offline;
+    return _regenerator.default.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            username = req.body.username;
+            _context4.prev = 1;
+            _context4.next = 4;
+            return _User.default.findOne({
+              username: username
+            });
+
+          case 4:
+            userFound = _context4.sent;
+            codUser = userFound._id;
+
+            if (userFound) {
+              _context4.next = 8;
+              break;
+            }
+
+            return _context4.abrupt("return", res.status(404).json({
+              message: 'Usuario no existe'
+            }));
+
+          case 8:
+            if (userFound.online) {
+              _context4.next = 10;
+              break;
+            }
+
+            return _context4.abrupt("return", res.status(401).json({
+              message: 'No existe sesión iniciada'
+            }));
+
+          case 10:
+            _context4.next = 12;
+            return _User.default.findByIdAndUpdate(codUser, {
+              online: false
+            });
+
+          case 12:
+            offline = _context4.sent;
+
+            if (!offline) {
+              _context4.next = 15;
+              break;
+            }
+
+            return _context4.abrupt("return", res.json({
+              message: 'Se cerró la sesión de forma forzada'
+            }));
+
+          case 15:
+            _context4.next = 20;
+            break;
+
+          case 17:
+            _context4.prev = 17;
+            _context4.t0 = _context4["catch"](1);
+            return _context4.abrupt("return", res.status(503).json({
+              error: _context4.t0
+            }));
+
+          case 20:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[1, 17]]);
+  }));
+
+  return function forzarCierre(_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+exports.forzarCierre = forzarCierre;
 //# sourceMappingURL=auth.controller.js.map

@@ -3,44 +3,29 @@ import config from '../config/config'
 import User from '../models/User'
 import Role from '../models/Role'
 
-export const signUp = async(req, res) => {
-    const { username, email, password, roles } = req.body
-
-    const newUser = new User({
-        username,
-        email,
-    });
-
-    if (roles) {
-        const foundRoles = await Role.find({ name: { $in: roles } });
-        newUser.roles = foundRoles.map(role => role._id);
-    } else {
-        const role = await Role.findOne({ name: "user" });
-        newUser.roles = [role._id];
-    }
-
-    const saveUser = await newUser.save();
-    //console.log(saveUser);
-
-    const token = jwt.sign({ id: saveUser._id }, config.SECRET, { expiresIn: 86400 });
-
-    res.status(200).json({ token })
-}
-
 export const signIn = async(req, res) => {
     const { username, password } = req.body;
 
-    const userFound = await User.findOne({ username }).populate("roles");
+    const userFound = await User.findOne({ username });
 
     if (!userFound) return res.status(404).json({ message: 'Usuario no existe' });
 
+    if (!userFound.status) return res.status(403).json({ message: 'Usuario inactivo' });
+
+    if (userFound.online) return res.status(401).json({ message: 'Usuario ya se encuentra logueado' });
+
     const matchPassword = await User.comparePassword(password, userFound.password);
 
-    if (!matchPassword) return res.status(401).json({ token: null, message: 'Contraseña Errónea' });
+    if (!matchPassword) return res.status(403).json({ token: null, message: 'Contraseña Errónea' });
 
     const token = jwt.sign({ id: userFound._id }, config.SECRET, { expiresIn: '24h' });
 
-    res.json({ token, codigo: userFound._id, status: userFound.activo });
+    //Cambio de estado a online
+    await User.findByIdAndUpdate(userFound._id, { online: true });
+
+    console.log('Token:', token);
+
+    res.json({ token, codigo: userFound._id });
 }
 
 export const changePassword = async(req, res) => {
@@ -72,7 +57,43 @@ export const changePassword = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ error: err });
     }
+}
 
+export const cerrarSesion = async(req, res) => {
+    const { id } = res.locals.jwtPayload;
+
+    try {
+        const userFound = await User.findById(id);
+
+        if (!userFound.online) return res.status(401).json({ message: 'No existe sesión abierta' });
+
+        const offline = await User.findByIdAndUpdate(id, { online: false });
+
+        if (offline) return res.json({ message: 'Sesión cerrada con éxito' });
+    } catch (err) {
+        return res.status(503).json({ error: err });
+    }
+}
+
+export const forzarCierre = async(req, res) => {
+    const { username } = req.body;
+
+    try {
+        const userFound = await User.findOne({ username });
+
+        let codUser = userFound._id;
+
+        if (!userFound) return res.status(404).json({ message: 'Usuario no existe' });
+
+        if (!userFound.online) return res.status(401).json({ message: 'No existe sesión iniciada' });
+
+        const offline = await User.findByIdAndUpdate(codUser, { online: false });
+
+        if (offline) return res.json({ message: 'Se cerró la sesión de forma forzada' })
+
+    } catch (err) {
+        return res.status(503).json({ error: err });
+    }
 }
