@@ -59,8 +59,18 @@ export const createRequest = async(req, res) => {
         fecha_ingreso,
         sucursal,
         cliente,
+        estado_civil,
+        lugar_trabajo,
+        conyuge,
+        document_conyuge,
+        fecha_nacimiento_conyuge,
+        ingreso_promedio,
+        cuota_inicial,
         vendedor,
         vehiculo,
+        anio_fab,
+        anio_mod,
+        pvp,
         plan,
         tipo_uso,
         primer_status_request
@@ -83,6 +93,16 @@ export const createRequest = async(req, res) => {
             nro_solicitud,
             fecha_ingreso,
             sucursal,
+            estado_civil,
+            lugar_trabajo,
+            conyuge,
+            document_conyuge,
+            fecha_nacimiento_conyuge,
+            ingreso_promedio,
+            cuota_inicial,
+            anio_fab,
+            anio_mod,
+            pvp,
             plan,
             tipo_uso,
             evidencias: filePaths,
@@ -136,6 +156,10 @@ export const actualizarRequest = async(req, res) => {
         console.log(err)
         return res.status(503).json({ error: err });
     }
+}
+
+export const agregarNewDocuments = async(req, res) => {
+
 }
 
 export const actualizarReqAprobada = async(req, res) => {
@@ -237,7 +261,7 @@ export const enviarCorreoSolicitud = async(req, res) => {
         let email = await transporter.sendMail({
             from: '"Sistema ADV 👻" <sistemadv@autonortnor.com>',
             to: to,
-            cc: cc,
+            cc: [cc, 'frojas@autonortnor.com.pe'],
             subject: subject,
             text: text,
             html: html

@@ -22,6 +22,31 @@ var mafSchema = new _mongoose.Schema({
     ref: 'Customer',
     type: _mongoose.Types.ObjectId
   },
+  estado_civil: {
+    type: String
+  },
+  lugar_trabajo: {
+    type: String
+  },
+  //Conyuge
+  conyuge: {
+    type: String
+  },
+  document_conyuge: {
+    type: String
+  },
+  fecha_nacimiento_conyuge: {
+    type: Date
+  },
+  //Sueldo
+  ingreso_promedio: {
+    type: Number,
+    min: 0
+  },
+  cuota_inicial: {
+    type: Number,
+    min: 0
+  },
   seller: {
     ref: 'Seller',
     type: _mongoose.Types.ObjectId
@@ -29,6 +54,16 @@ var mafSchema = new _mongoose.Schema({
   car: {
     ref: 'Vehicle',
     type: _mongoose.Types.ObjectId
+  },
+  anio_fab: {
+    type: Number
+  },
+  anio_mod: {
+    type: Number
+  },
+  pvp: {
+    type: Number,
+    min: 0
   },
   plan: {
     type: String

@@ -15,6 +15,8 @@ router.post('/by-status', mafCtrl.obtenerRequestbyStatus)
 
 router.post('/send-request', [authJwt.verifyToken, authJwt.isVendedor], mafCtrl.enviarCorreoSolicitud)
 
+router.patch('/evidences/:mafId', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 10), mafCtrl.agregarNewDocuments)
+
 router.patch('/hot/:mafId', [authJwt.verifyToken, authJwt.isChiefSales], mafCtrl.requestaHot)
 
 router.patch('/approve/:mafId', [authJwt.verifyToken, authJwt.isExecutiveMaf], multer.single('carta'), mafCtrl.actualizarReqAprobada)

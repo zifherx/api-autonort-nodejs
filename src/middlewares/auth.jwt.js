@@ -136,6 +136,19 @@ export const isConexosOrADV = async(req, res, next) => {
     return res.status(403).json({ message: 'Requiere permiso del Asistente-Conexos || Jefe ADV' })
 }
 
+export const isConexosOrADVOrVendedor = async(req, res, next) => {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } })
+
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Vendedor') {
+            next();
+            return;
+        }
+    }
+    return res.status(403).json({ message: 'Requiere permiso del Asistente-Conexos || Jefe ADV || Vendedor' })
+}
+
 export const isTasador = async(req, res, next) => {
     const user = await User.findById(req.userId);
     const roles = await Role.find({ _id: { $in: user.roles } })
