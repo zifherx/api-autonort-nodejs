@@ -286,7 +286,7 @@ var createRequest = /*#__PURE__*/function () {
           case 26:
             _context4.prev = 26;
             _context4.t0 = _context4["catch"](3);
-            console.log(_context4.t0.response);
+            console.log(_context4.t0);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
             }));
@@ -373,15 +373,72 @@ exports.actualizarRequest = actualizarRequest;
 
 var agregarNewDocuments = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
+    var mafId, adicionales, filePaths, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
+            mafId = req.params.mafId;
+            adicionales = req.files; // console.log(req)
+
+            filePaths = [];
+            _context6.prev = 3;
+
+            if (!(adicionales.length === 0)) {
+              _context6.next = 6;
+              break;
+            }
+
+            return _context6.abrupt("return", res.status(400).json({
+              message: 'Falta los Documentos'
+            }));
+
+          case 6:
+            adicionales.map(function (file) {
+              filePaths.push(file.location);
+            });
+            _context6.next = 9;
+            return _Maf.default.findByIdAndUpdate(mafId, {
+              files_adicionales: filePaths
+            });
+
+          case 9:
+            query = _context6.sent;
+
+            if (!query) {
+              _context6.next = 14;
+              break;
+            }
+
+            res.json({
+              message: 'Documentos agregados con éxito'
+            });
+            _context6.next = 15;
+            break;
+
+          case 14:
+            return _context6.abrupt("return", res.status(404).json({
+              message: 'No existe Solicitud a modificar'
+            }));
+
+          case 15:
+            _context6.next = 21;
+            break;
+
+          case 17:
+            _context6.prev = 17;
+            _context6.t0 = _context6["catch"](3);
+            console.log(_context6.t0);
+            return _context6.abrupt("return", res.status(503).json({
+              error: _context6.t0
+            }));
+
+          case 21:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6);
+    }, _callee6, null, [[3, 17]]);
   }));
 
   return function agregarNewDocuments(_x11, _x12) {
@@ -429,7 +486,7 @@ var actualizarReqAprobada = /*#__PURE__*/function () {
 
           case 11:
             return _context7.abrupt("return", res.status(404).json({
-              messsage: 'No existe Solicitud a aprobar'
+              message: 'No existe Solicitud a aprobar'
             }));
 
           case 12:

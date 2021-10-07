@@ -9,13 +9,13 @@ router.get('/', mafCtrl.getAll)
 
 router.get('/:mafId', mafCtrl.getOneById)
 
-router.post('/', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 10), mafCtrl.createRequest)
+router.post('/', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 50), mafCtrl.createRequest)
 
 router.post('/by-status', mafCtrl.obtenerRequestbyStatus)
 
 router.post('/send-request', [authJwt.verifyToken, authJwt.isVendedor], mafCtrl.enviarCorreoSolicitud)
 
-router.patch('/evidences/:mafId', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 10), mafCtrl.agregarNewDocuments)
+router.patch('/evidences/:mafId', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 20), mafCtrl.agregarNewDocuments)
 
 router.patch('/hot/:mafId', [authJwt.verifyToken, authJwt.isChiefSales], mafCtrl.requestaHot)
 

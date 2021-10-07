@@ -23,6 +23,8 @@ const mafSchema = new Schema({
     plan: { type: String },
     tipo_uso: { type: String },
     evidencias: [{ type: String }],
+    //Adicionales
+    files_adicionales: [{ type: String }],
     //Contestacion
     fecha_respuesta: { type: Date },
     fecha_aprobacion: { type: Date },

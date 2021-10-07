@@ -94,6 +94,8 @@ export const forzarCierre = async(req, res) => {
         if (offline) return res.json({ message: 'Se cerró la sesión de forma forzada' })
 
     } catch (err) {
-        return res.status(503).json({ error: err });
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+        // return res.status(503).json({ error: err });
     }
 }

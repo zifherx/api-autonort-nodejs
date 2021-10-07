@@ -334,17 +334,18 @@ var forzarCierre = /*#__PURE__*/function () {
             }));
 
           case 15:
-            _context4.next = 20;
+            _context4.next = 21;
             break;
 
           case 17:
             _context4.prev = 17;
             _context4.t0 = _context4["catch"](1);
+            console.log(_context4.t0);
             return _context4.abrupt("return", res.status(503).json({
-              error: _context4.t0
+              message: _context4.t0.message
             }));
 
-          case 20:
+          case 21:
           case "end":
             return _context4.stop();
         }

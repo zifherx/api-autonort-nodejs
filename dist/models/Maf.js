@@ -74,6 +74,10 @@ var mafSchema = new _mongoose.Schema({
   evidencias: [{
     type: String
   }],
+  //Adicionales
+  files_adicionales: [{
+    type: String
+  }],
   //Contestacion
   fecha_respuesta: {
     type: Date

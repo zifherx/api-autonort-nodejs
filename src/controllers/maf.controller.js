@@ -125,7 +125,7 @@ export const createRequest = async(req, res) => {
         }
 
     } catch (err) {
-        console.log(err.response)
+        console.log(err)
         return res.status(503).json({ message: err.message })
     }
 }
@@ -159,7 +159,31 @@ export const actualizarRequest = async(req, res) => {
 }
 
 export const agregarNewDocuments = async(req, res) => {
+    const { mafId } = req.params;
+    const adicionales = req.files;
+    // console.log(req)
+    let filePaths = [];
 
+    try {
+        if (adicionales.length === 0) return res.status(400).json({ message: 'Falta los Documentos' });
+
+        adicionales.map((file) => {
+            filePaths.push(file.location);
+        });
+
+        const query = await Maf.findByIdAndUpdate(mafId, {
+            files_adicionales: filePaths
+        });
+
+        if (query) {
+            res.json({ message: 'Documentos agregados con éxito' });
+        } else {
+            return res.status(404).json({ message: 'No existe Solicitud a modificar' })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ error: err })
+    }
 }
 
 export const actualizarReqAprobada = async(req, res) => {
@@ -186,7 +210,7 @@ export const actualizarReqAprobada = async(req, res) => {
         if (query) {
             res.json({ message: 'Solicitud MAF aprobada con éxito' });
         } else {
-            return res.status(404).json({ messsage: 'No existe Solicitud a aprobar' });
+            return res.status(404).json({ message: 'No existe Solicitud a aprobar' });
         }
     } catch (err) {
         console.log(err)
