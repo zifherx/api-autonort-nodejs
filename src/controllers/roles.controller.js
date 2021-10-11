@@ -1,16 +1,16 @@
 import Role from '../models/Role'
 
 export const createRole = async(req, res) => {
+    const { name, description } = req.body;
     try {
-        const { name, description } = req.body;
-        const newRole = new Role({ name, description });
-        const roleSaved = await newRole.save();
-        if (roleSaved) {
+        const obj = new Role({ name, description });
+        const query = await obj.save();
+        if (query) {
             res.json({ message: 'Rol creado con éxito' });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -24,9 +24,18 @@ export const getRoles = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
+}
 
+export const getCountAll = async(req, res) => {
+    try {
+        const query = await Role.countDocuments();
+        if (query >= 0) return res.json({ count_roles: query });
+    } catch (err) {
+        console.log(err);
+        res.status(503).json({ message: err.message })
+    }
 }
 
 export const getRolesById = async(req, res) => {
@@ -40,7 +49,7 @@ export const getRolesById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -56,7 +65,7 @@ export const updateRoleById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -71,6 +80,6 @@ export const deleteRoleById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }

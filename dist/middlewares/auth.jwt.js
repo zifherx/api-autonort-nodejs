@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isExecutiveMaf = exports.isVendedor = exports.isChiefTasador = exports.isTasador = exports.isConexosOrADVOrVendedor = exports.isConexosOrADV = exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
+exports.isExecutiveMaf = exports.isVendedor = exports.isChiefTasador = exports.isTasador = exports.isConexosOrADVOrVendedorOrAdmin = exports.isConexosOrADV = exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -595,7 +595,7 @@ var isConexosOrADV = /*#__PURE__*/function () {
 
 exports.isConexosOrADV = isConexosOrADV;
 
-var isConexosOrADVOrVendedor = /*#__PURE__*/function () {
+var isConexosOrADVOrVendedorOrAdmin = /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee10(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee10$(_context10) {
@@ -624,7 +624,7 @@ var isConexosOrADVOrVendedor = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Vendedor')) {
+            if (!(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Vendedor' || roles[i].name === 'Administrador')) {
               _context10.next = 11;
               break;
             }
@@ -639,7 +639,7 @@ var isConexosOrADVOrVendedor = /*#__PURE__*/function () {
 
           case 14:
             return _context10.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Asistente-Conexos || Jefe ADV || Vendedor'
+              message: 'Requiere permiso del Asistente-Conexos || Jefe ADV || Vendedor || Administrador'
             }));
 
           case 15:
@@ -650,12 +650,12 @@ var isConexosOrADVOrVendedor = /*#__PURE__*/function () {
     }, _callee10);
   }));
 
-  return function isConexosOrADVOrVendedor(_x28, _x29, _x30) {
+  return function isConexosOrADVOrVendedorOrAdmin(_x28, _x29, _x30) {
     return _ref10.apply(this, arguments);
   };
 }();
 
-exports.isConexosOrADVOrVendedor = isConexosOrADVOrVendedor;
+exports.isConexosOrADVOrVendedorOrAdmin = isConexosOrADVOrVendedorOrAdmin;
 
 var isTasador = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res, next) {

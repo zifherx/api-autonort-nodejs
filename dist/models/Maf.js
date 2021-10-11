@@ -15,6 +15,9 @@ var mafSchema = new _mongoose.Schema({
   fecha_ingreso: {
     type: Date
   },
+  hora_ingreso: {
+    type: String
+  },
   sucursal: {
     type: String
   },

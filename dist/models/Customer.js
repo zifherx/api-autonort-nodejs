@@ -11,7 +11,18 @@ var customerSchema = new _mongoose.Schema({
   name: {
     type: String
   },
+  typeDocument: {
+    type: Number,
+    min: 0,
+    max: 2
+  },
   document: {
+    type: String
+  },
+  representanteLegal: {
+    type: String
+  },
+  documentoRepresentante: {
     type: String
   },
   cellphone: {

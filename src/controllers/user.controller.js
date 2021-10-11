@@ -150,3 +150,22 @@ export const countByOnline = async(req, res) => {
         res.status(503).json({ error: err })
     }
 }
+
+export const uploadPhotoProfile = async(req, res) => {
+    const { userId } = req.params;
+    const photo = req.file;
+
+    try {
+        const query = await User.findByIdAndUpdate(userId, {
+            avatar: photo.location
+        })
+
+        if (query) {
+            res.json({ message: 'Foto subida con éxito' });
+        } else {
+            return res.status(404).json({ message: 'No existe el usuario' });
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}

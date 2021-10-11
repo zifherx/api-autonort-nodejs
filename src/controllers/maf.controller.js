@@ -57,6 +57,7 @@ export const createRequest = async(req, res) => {
     const {
         nro_solicitud,
         fecha_ingreso,
+        hora_ingreso,
         sucursal,
         cliente,
         estado_civil,
@@ -92,6 +93,7 @@ export const createRequest = async(req, res) => {
         const obj = new Maf({
             nro_solicitud,
             fecha_ingreso,
+            hora_ingreso,
             sucursal,
             estado_civil,
             lugar_trabajo,
@@ -256,7 +258,7 @@ export const deleteRequest = async(req, res) => {
     const { mafId } = req.params;
 
     try {
-        const query = await Maf.findOneAndDelete(mafId);
+        const query = await Maf.findByIdAndRemove(mafId);
         if (query) {
             res.json({ message: 'Solicitud eliminada con éxito' });
         } else {

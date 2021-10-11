@@ -17,17 +17,20 @@ var _User = _interopRequireDefault(require("../models/User"));
 
 var createCustomer = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, name, document, cellphone, email, address, empleado, newCustomer, foundEmployee, customerSaved;
+    var _req$body, name, typeDocument, document, representanteLegal, documentoRepresentante, cellphone, email, address, empleado, newCustomer, foundEmployee, customerSaved;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, document = _req$body.document, cellphone = _req$body.cellphone, email = _req$body.email, address = _req$body.address, empleado = _req$body.empleado;
+            _req$body = req.body, name = _req$body.name, typeDocument = _req$body.typeDocument, document = _req$body.document, representanteLegal = _req$body.representanteLegal, documentoRepresentante = _req$body.documentoRepresentante, cellphone = _req$body.cellphone, email = _req$body.email, address = _req$body.address, empleado = _req$body.empleado;
             _context.prev = 1;
             newCustomer = new _Customer.default({
               name: name,
+              typeDocument: typeDocument,
               document: document,
+              representanteLegal: representanteLegal,
+              documentoRepresentante: documentoRepresentante,
               cellphone: cellphone,
               email: email,
               address: address
@@ -255,19 +258,22 @@ exports.getCustomerByDni = getCustomerByDni;
 
 var updateCustomerById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var customerId, _req$body2, name, document, cellphone, email, address, updateCustomer;
+    var customerId, _req$body2, name, typeDocument, document, representanteLegal, documentoRepresentante, cellphone, email, address, updateCustomer;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             customerId = req.params.customerId;
-            _req$body2 = req.body, name = _req$body2.name, document = _req$body2.document, cellphone = _req$body2.cellphone, email = _req$body2.email, address = _req$body2.address;
+            _req$body2 = req.body, name = _req$body2.name, typeDocument = _req$body2.typeDocument, document = _req$body2.document, representanteLegal = _req$body2.representanteLegal, documentoRepresentante = _req$body2.documentoRepresentante, cellphone = _req$body2.cellphone, email = _req$body2.email, address = _req$body2.address;
             _context5.prev = 2;
             _context5.next = 5;
             return _Customer.default.findByIdAndUpdate(customerId, {
               name: name,
+              typeDocument: typeDocument,
               document: document,
+              representanteLegal: representanteLegal,
+              documentoRepresentante: documentoRepresentante,
               cellphone: cellphone,
               email: email,
               address: address

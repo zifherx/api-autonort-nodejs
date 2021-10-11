@@ -194,13 +194,13 @@ exports.obtenerRequestbyStatus = obtenerRequestbyStatus;
 
 var createRequest = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body2, nro_solicitud, fecha_ingreso, sucursal, cliente, estado_civil, lugar_trabajo, conyuge, document_conyuge, fecha_nacimiento_conyuge, ingreso_promedio, cuota_inicial, vendedor, vehiculo, anio_fab, anio_mod, pvp, plan, tipo_uso, primer_status_request, files, filePaths, obj, clienteEncontrado, vendedorEncontrado, vehiculoEncontrado, objCreated;
+    var _req$body2, nro_solicitud, fecha_ingreso, hora_ingreso, sucursal, cliente, estado_civil, lugar_trabajo, conyuge, document_conyuge, fecha_nacimiento_conyuge, ingreso_promedio, cuota_inicial, vendedor, vehiculo, anio_fab, anio_mod, pvp, plan, tipo_uso, primer_status_request, files, filePaths, obj, clienteEncontrado, vendedorEncontrado, vehiculoEncontrado, objCreated;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body2 = req.body, nro_solicitud = _req$body2.nro_solicitud, fecha_ingreso = _req$body2.fecha_ingreso, sucursal = _req$body2.sucursal, cliente = _req$body2.cliente, estado_civil = _req$body2.estado_civil, lugar_trabajo = _req$body2.lugar_trabajo, conyuge = _req$body2.conyuge, document_conyuge = _req$body2.document_conyuge, fecha_nacimiento_conyuge = _req$body2.fecha_nacimiento_conyuge, ingreso_promedio = _req$body2.ingreso_promedio, cuota_inicial = _req$body2.cuota_inicial, vendedor = _req$body2.vendedor, vehiculo = _req$body2.vehiculo, anio_fab = _req$body2.anio_fab, anio_mod = _req$body2.anio_mod, pvp = _req$body2.pvp, plan = _req$body2.plan, tipo_uso = _req$body2.tipo_uso, primer_status_request = _req$body2.primer_status_request;
+            _req$body2 = req.body, nro_solicitud = _req$body2.nro_solicitud, fecha_ingreso = _req$body2.fecha_ingreso, hora_ingreso = _req$body2.hora_ingreso, sucursal = _req$body2.sucursal, cliente = _req$body2.cliente, estado_civil = _req$body2.estado_civil, lugar_trabajo = _req$body2.lugar_trabajo, conyuge = _req$body2.conyuge, document_conyuge = _req$body2.document_conyuge, fecha_nacimiento_conyuge = _req$body2.fecha_nacimiento_conyuge, ingreso_promedio = _req$body2.ingreso_promedio, cuota_inicial = _req$body2.cuota_inicial, vendedor = _req$body2.vendedor, vehiculo = _req$body2.vehiculo, anio_fab = _req$body2.anio_fab, anio_mod = _req$body2.anio_mod, pvp = _req$body2.pvp, plan = _req$body2.plan, tipo_uso = _req$body2.tipo_uso, primer_status_request = _req$body2.primer_status_request;
             files = req.files; // console.log(req);
 
             filePaths = [];
@@ -222,6 +222,7 @@ var createRequest = /*#__PURE__*/function () {
             obj = new _Maf.default({
               nro_solicitud: nro_solicitud,
               fecha_ingreso: fecha_ingreso,
+              hora_ingreso: hora_ingreso,
               sucursal: sucursal,
               estado_civil: estado_civil,
               lugar_trabajo: lugar_trabajo,
@@ -648,7 +649,7 @@ var deleteRequest = /*#__PURE__*/function () {
             mafId = req.params.mafId;
             _context10.prev = 1;
             _context10.next = 4;
-            return _Maf.default.findOneAndDelete(mafId);
+            return _Maf.default.findByIdAndRemove(mafId);
 
           case 4:
             query = _context10.sent;

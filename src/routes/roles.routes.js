@@ -6,6 +6,8 @@ const router = Router();
 
 router.get('/', rolesCtrl.getRoles);
 
+router.get('/count/all', rolesCtrl.getCountAll);
+
 router.get('/:roleId', rolesCtrl.getRolesById);
 
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateRole], rolesCtrl.createRole);

@@ -10,8 +10,12 @@ var _mongoose = require("mongoose");
 var ROLES = ["Aministrador", "Usuario", "Vendedor", "Jefe-Ventas", "Jefe-ADV"];
 exports.ROLES = ROLES;
 var roleSchema = new _mongoose.Schema({
-  name: String,
-  description: String
+  name: {
+    type: String
+  },
+  description: {
+    type: String
+  }
 }, {
   timestamps: true,
   versionKey: false

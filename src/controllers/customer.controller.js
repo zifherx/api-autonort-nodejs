@@ -2,9 +2,28 @@ import Customer from '../models/Customer'
 import User from '../models/User';
 
 export const createCustomer = async(req, res) => {
-    const { name, document, cellphone, email, address, empleado } = req.body;
+    const {
+        name,
+        typeDocument,
+        document,
+        representanteLegal,
+        documentoRepresentante,
+        cellphone,
+        email,
+        address,
+        empleado
+    } = req.body;
     try {
-        const newCustomer = new Customer({ name, document, cellphone, email, address });
+        const newCustomer = new Customer({
+            name,
+            typeDocument,
+            document,
+            representanteLegal,
+            documentoRepresentante,
+            cellphone,
+            email,
+            address
+        });
         const foundEmployee = await User.find({ username: { $in: empleado } });
         newCustomer.empleado = foundEmployee.map(em => em._id)
         const customerSaved = await newCustomer.save();
@@ -64,9 +83,27 @@ export const getCustomerByDni = async(req, res) => {
 
 export const updateCustomerById = async(req, res) => {
     const { customerId } = req.params;
-    const { name, document, cellphone, email, address } = req.body;
+    const {
+        name,
+        typeDocument,
+        document,
+        representanteLegal,
+        documentoRepresentante,
+        cellphone,
+        email,
+        address
+    } = req.body;
     try {
-        const updateCustomer = await Customer.findByIdAndUpdate(customerId, { name, document, cellphone, email, address });
+        const updateCustomer = await Customer.findByIdAndUpdate(customerId, {
+            name,
+            typeDocument,
+            document,
+            representanteLegal,
+            documentoRepresentante,
+            cellphone,
+            email,
+            address
+        });
         if (updateCustomer) {
             res.json({ message: 'Cliente actualizado con éxito' });
         } else {

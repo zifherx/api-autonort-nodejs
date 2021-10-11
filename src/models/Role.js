@@ -3,8 +3,8 @@ import { Schema, model } from 'mongoose'
 export const ROLES = ["Aministrador", "Usuario", "Vendedor", "Jefe-Ventas", "Jefe-ADV"];
 
 const roleSchema = new Schema({
-    name: String,
-    description: String
+    name: { type: String },
+    description: { type: String }
 }, {
     timestamps: true,
     versionKey: false

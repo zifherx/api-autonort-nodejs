@@ -15,6 +15,7 @@ var _middlewares = require("../middlewares");
 
 var router = (0, _express.Router)();
 router.get('/', rolesCtrl.getRoles);
+router.get('/count/all', rolesCtrl.getCountAll);
 router.get('/:roleId', rolesCtrl.getRolesById);
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateRole], rolesCtrl.createRole);
 router.patch('/:roleId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], rolesCtrl.updateRoleById);

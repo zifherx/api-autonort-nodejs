@@ -14,7 +14,8 @@ const userSchema = new Schema({
     about: { type: String },
     roles: { ref: "Role", type: Schema.Types.ObjectId },
     status: { type: Boolean, default: true },
-    online: { type: Boolean, default: false }
+    online: { type: Boolean, default: false },
+    avatar: { type: String }
 }, {
     timestamps: true,
     versionKey: false

@@ -4,6 +4,7 @@ const mafSchema = new Schema({
     //Solicitud a Evaluacion
     nro_solicitud: { type: String },
     fecha_ingreso: { type: Date },
+    hora_ingreso: { type: String },
     sucursal: { type: String },
     customer: { ref: 'Customer', type: Types.ObjectId },
     estado_civil: { type: String },

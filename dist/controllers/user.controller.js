@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.countByOnline = exports.countAll = exports.deleteUserById = exports.updateProfile = exports.updateUserById = exports.getUserById = exports.getUsers = exports.createUser = void 0;
+exports.uploadPhotoProfile = exports.countByOnline = exports.countAll = exports.deleteUserById = exports.updateProfile = exports.updateUserById = exports.getUserById = exports.getUsers = exports.createUser = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -530,4 +530,64 @@ var countByOnline = /*#__PURE__*/function () {
 }();
 
 exports.countByOnline = countByOnline;
+
+var uploadPhotoProfile = /*#__PURE__*/function () {
+  var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res) {
+    var userId, photo, query;
+    return _regenerator.default.wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            userId = req.params.userId;
+            photo = req.file;
+            _context9.prev = 2;
+            _context9.next = 5;
+            return _User.default.findByIdAndUpdate(userId, {
+              avatar: photo.location
+            });
+
+          case 5:
+            query = _context9.sent;
+
+            if (!query) {
+              _context9.next = 10;
+              break;
+            }
+
+            res.json({
+              message: 'Foto subida con éxito'
+            });
+            _context9.next = 11;
+            break;
+
+          case 10:
+            return _context9.abrupt("return", res.status(404).json({
+              message: 'No existe el usuario'
+            }));
+
+          case 11:
+            _context9.next = 16;
+            break;
+
+          case 13:
+            _context9.prev = 13;
+            _context9.t0 = _context9["catch"](2);
+            return _context9.abrupt("return", res.status(503).json({
+              message: _context9.t0.message
+            }));
+
+          case 16:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9, null, [[2, 13]]);
+  }));
+
+  return function uploadPhotoProfile(_x17, _x18) {
+    return _ref9.apply(this, arguments);
+  };
+}();
+
+exports.uploadPhotoProfile = uploadPhotoProfile;
 //# sourceMappingURL=user.controller.js.map
