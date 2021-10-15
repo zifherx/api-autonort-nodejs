@@ -34,7 +34,7 @@ export const getSellerById = async(req, res) => {
 export const getSellerBySucursal = async(req, res) => {
     const { sucursal } = req.body;
     try {
-        const query = await Seller.find().where({ sucursal });
+        const query = await Seller.find({ sucursal: sucursal, estatus: true });
 
         if (query.length > 0) {
             res.json(query);
@@ -64,9 +64,16 @@ export const getSellerByName = async(req, res) => {
 }
 
 export const createSeller = async(req, res) => {
-    const { name, sucursal, document, telefono, empleado } = req.body;
+    const { name, sucursal, document, telefono, email, estatus, empleado } = req.body;
     try {
-        const newSeller = new Seller({ name, sucursal, document, telefono });
+        const newSeller = new Seller({
+            name,
+            sucursal,
+            document,
+            telefono,
+            email,
+            estatus
+        });
         const foundEmployee = await User.find({ username: { $in: empleado } });
         newSeller.empleado = foundEmployee.map(em => em._id);
         const sellerSaved = await newSeller.save();
@@ -81,10 +88,16 @@ export const createSeller = async(req, res) => {
 
 export const updateSellerById = async(req, res) => {
     const { sellerId } = req.params;
-    const { name, sucursal, document, telefono, empleado } = req.body;
+    const { name, sucursal, document, telefono, email, estatus, empleado } = req.body;
     try {
-        const foundEmployee = await User.find({ username: { $in: empleado } });
-        const updateSeller = await Seller.findByIdAndUpdate(sellerId, { name, sucursal, document, telefono, empleado: foundEmployee.map(em => em._id) });
+        const updateSeller = await Seller.findByIdAndUpdate(sellerId, {
+            name,
+            sucursal,
+            document,
+            telefono,
+            email,
+            estatus
+        });
         if (updateSeller) {
             res.json({ message: 'Vendedor actualizado con éxito' });
         } else {

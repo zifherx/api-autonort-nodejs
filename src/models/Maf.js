@@ -9,6 +9,7 @@ const mafSchema = new Schema({
     customer: { ref: 'Customer', type: Types.ObjectId },
     estado_civil: { type: String },
     lugar_trabajo: { type: String },
+    observaciones_ingreso: { type: String },
     //Conyuge
     conyuge: { type: String },
     document_conyuge: { type: String },
@@ -25,6 +26,7 @@ const mafSchema = new Schema({
     tipo_uso: { type: String },
     evidencias: [{ type: String }],
     //Adicionales
+    isReingresado: { type: Boolean, default: false },
     files_adicionales: [{ type: String }],
     //Contestacion
     fecha_respuesta: { type: Date },

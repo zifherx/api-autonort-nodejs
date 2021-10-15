@@ -138,8 +138,9 @@ var getSellerBySucursal = /*#__PURE__*/function () {
             sucursal = req.body.sucursal;
             _context3.prev = 1;
             _context3.next = 4;
-            return _Seller.default.find().where({
-              sucursal: sucursal
+            return _Seller.default.find({
+              sucursal: sucursal,
+              estatus: true
             });
 
           case 4:
@@ -246,19 +247,21 @@ exports.getSellerByName = getSellerByName;
 
 var createSeller = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body, name, sucursal, document, telefono, empleado, newSeller, foundEmployee, sellerSaved;
+    var _req$body, name, sucursal, document, telefono, email, estatus, empleado, newSeller, foundEmployee, sellerSaved;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, sucursal = _req$body.sucursal, document = _req$body.document, telefono = _req$body.telefono, empleado = _req$body.empleado;
+            _req$body = req.body, name = _req$body.name, sucursal = _req$body.sucursal, document = _req$body.document, telefono = _req$body.telefono, email = _req$body.email, estatus = _req$body.estatus, empleado = _req$body.empleado;
             _context5.prev = 1;
             newSeller = new _Seller.default({
               name: name,
               sucursal: sucursal,
               document: document,
-              telefono: telefono
+              telefono: telefono,
+              email: email,
+              estatus: estatus
             });
             _context5.next = 5;
             return _User.default.find({
@@ -312,72 +315,62 @@ exports.createSeller = createSeller;
 
 var updateSellerById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var sellerId, _req$body2, name, sucursal, document, telefono, empleado, foundEmployee, updateSeller;
+    var sellerId, _req$body2, name, sucursal, document, telefono, email, estatus, empleado, updateSeller;
 
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             sellerId = req.params.sellerId;
-            _req$body2 = req.body, name = _req$body2.name, sucursal = _req$body2.sucursal, document = _req$body2.document, telefono = _req$body2.telefono, empleado = _req$body2.empleado;
+            _req$body2 = req.body, name = _req$body2.name, sucursal = _req$body2.sucursal, document = _req$body2.document, telefono = _req$body2.telefono, email = _req$body2.email, estatus = _req$body2.estatus, empleado = _req$body2.empleado;
             _context6.prev = 2;
             _context6.next = 5;
-            return _User.default.find({
-              username: {
-                $in: empleado
-              }
-            });
-
-          case 5:
-            foundEmployee = _context6.sent;
-            _context6.next = 8;
             return _Seller.default.findByIdAndUpdate(sellerId, {
               name: name,
               sucursal: sucursal,
               document: document,
               telefono: telefono,
-              empleado: foundEmployee.map(function (em) {
-                return em._id;
-              })
+              email: email,
+              estatus: estatus
             });
 
-          case 8:
+          case 5:
             updateSeller = _context6.sent;
 
             if (!updateSeller) {
-              _context6.next = 13;
+              _context6.next = 10;
               break;
             }
 
             res.json({
               message: 'Vendedor actualizado con éxito'
             });
-            _context6.next = 14;
+            _context6.next = 11;
             break;
 
-          case 13:
+          case 10:
             return _context6.abrupt("return", res.status(404).json({
               message: 'No existe Vendedor a actualizar'
             }));
 
-          case 14:
-            _context6.next = 20;
+          case 11:
+            _context6.next = 17;
             break;
 
-          case 16:
-            _context6.prev = 16;
+          case 13:
+            _context6.prev = 13;
             _context6.t0 = _context6["catch"](2);
             console.log(_context6.t0);
             res.status(409).json({
               message: _context6.t0.message
             });
 
-          case 20:
+          case 17:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[2, 16]]);
+    }, _callee6, null, [[2, 13]]);
   }));
 
   return function updateSellerById(_x11, _x12) {

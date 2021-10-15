@@ -194,13 +194,13 @@ exports.obtenerRequestbyStatus = obtenerRequestbyStatus;
 
 var createRequest = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body2, nro_solicitud, fecha_ingreso, hora_ingreso, sucursal, cliente, estado_civil, lugar_trabajo, conyuge, document_conyuge, fecha_nacimiento_conyuge, ingreso_promedio, cuota_inicial, vendedor, vehiculo, anio_fab, anio_mod, pvp, plan, tipo_uso, primer_status_request, files, filePaths, obj, clienteEncontrado, vendedorEncontrado, vehiculoEncontrado, objCreated;
+    var _req$body2, nro_solicitud, fecha_ingreso, hora_ingreso, sucursal, cliente, estado_civil, lugar_trabajo, conyuge, document_conyuge, fecha_nacimiento_conyuge, ingreso_promedio, cuota_inicial, vendedor, vehiculo, anio_fab, anio_mod, pvp, plan, tipo_uso, primer_status_request, observaciones_ingreso, files, filePaths, obj, clienteEncontrado, vendedorEncontrado, vehiculoEncontrado, objCreated;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body2 = req.body, nro_solicitud = _req$body2.nro_solicitud, fecha_ingreso = _req$body2.fecha_ingreso, hora_ingreso = _req$body2.hora_ingreso, sucursal = _req$body2.sucursal, cliente = _req$body2.cliente, estado_civil = _req$body2.estado_civil, lugar_trabajo = _req$body2.lugar_trabajo, conyuge = _req$body2.conyuge, document_conyuge = _req$body2.document_conyuge, fecha_nacimiento_conyuge = _req$body2.fecha_nacimiento_conyuge, ingreso_promedio = _req$body2.ingreso_promedio, cuota_inicial = _req$body2.cuota_inicial, vendedor = _req$body2.vendedor, vehiculo = _req$body2.vehiculo, anio_fab = _req$body2.anio_fab, anio_mod = _req$body2.anio_mod, pvp = _req$body2.pvp, plan = _req$body2.plan, tipo_uso = _req$body2.tipo_uso, primer_status_request = _req$body2.primer_status_request;
+            _req$body2 = req.body, nro_solicitud = _req$body2.nro_solicitud, fecha_ingreso = _req$body2.fecha_ingreso, hora_ingreso = _req$body2.hora_ingreso, sucursal = _req$body2.sucursal, cliente = _req$body2.cliente, estado_civil = _req$body2.estado_civil, lugar_trabajo = _req$body2.lugar_trabajo, conyuge = _req$body2.conyuge, document_conyuge = _req$body2.document_conyuge, fecha_nacimiento_conyuge = _req$body2.fecha_nacimiento_conyuge, ingreso_promedio = _req$body2.ingreso_promedio, cuota_inicial = _req$body2.cuota_inicial, vendedor = _req$body2.vendedor, vehiculo = _req$body2.vehiculo, anio_fab = _req$body2.anio_fab, anio_mod = _req$body2.anio_mod, pvp = _req$body2.pvp, plan = _req$body2.plan, tipo_uso = _req$body2.tipo_uso, primer_status_request = _req$body2.primer_status_request, observaciones_ingreso = _req$body2.observaciones_ingreso;
             files = req.files; // console.log(req);
 
             filePaths = [];
@@ -237,7 +237,8 @@ var createRequest = /*#__PURE__*/function () {
               plan: plan,
               tipo_uso: tipo_uso,
               evidencias: filePaths,
-              primer_status_request: primer_status_request
+              primer_status_request: primer_status_request,
+              observaciones_ingreso: observaciones_ingreso
             });
             _context4.next = 10;
             return _Customer.default.find({
@@ -374,19 +375,20 @@ exports.actualizarRequest = actualizarRequest;
 
 var agregarNewDocuments = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var mafId, adicionales, filePaths, query;
+    var mafId, reingresado, adicionales, filePaths, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             mafId = req.params.mafId;
+            reingresado = req.body.reingresado;
             adicionales = req.files; // console.log(req)
 
             filePaths = [];
-            _context6.prev = 3;
+            _context6.prev = 4;
 
             if (!(adicionales.length === 0)) {
-              _context6.next = 6;
+              _context6.next = 7;
               break;
             }
 
@@ -394,52 +396,53 @@ var agregarNewDocuments = /*#__PURE__*/function () {
               message: 'Falta los Documentos'
             }));
 
-          case 6:
+          case 7:
             adicionales.map(function (file) {
               filePaths.push(file.location);
             });
-            _context6.next = 9;
+            _context6.next = 10;
             return _Maf.default.findByIdAndUpdate(mafId, {
+              isReingresado: reingresado,
               files_adicionales: filePaths
             });
 
-          case 9:
+          case 10:
             query = _context6.sent;
 
             if (!query) {
-              _context6.next = 14;
+              _context6.next = 15;
               break;
             }
 
             res.json({
               message: 'Documentos agregados con éxito'
             });
-            _context6.next = 15;
+            _context6.next = 16;
             break;
 
-          case 14:
+          case 15:
             return _context6.abrupt("return", res.status(404).json({
               message: 'No existe Solicitud a modificar'
             }));
 
-          case 15:
-            _context6.next = 21;
+          case 16:
+            _context6.next = 22;
             break;
 
-          case 17:
-            _context6.prev = 17;
-            _context6.t0 = _context6["catch"](3);
+          case 18:
+            _context6.prev = 18;
+            _context6.t0 = _context6["catch"](4);
             console.log(_context6.t0);
             return _context6.abrupt("return", res.status(503).json({
-              error: _context6.t0
+              message: _context6.t0.message
             }));
 
-          case 21:
+          case 22:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[3, 17]]);
+    }, _callee6, null, [[4, 18]]);
   }));
 
   return function agregarNewDocuments(_x11, _x12) {
@@ -499,7 +502,7 @@ var actualizarReqAprobada = /*#__PURE__*/function () {
             _context7.t0 = _context7["catch"](3);
             console.log(_context7.t0);
             return _context7.abrupt("return", res.status(503).json({
-              error: _context7.t0
+              message: _context7.t0.message
             }));
 
           case 18:

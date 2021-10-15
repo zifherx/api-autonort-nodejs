@@ -31,6 +31,9 @@ var mafSchema = new _mongoose.Schema({
   lugar_trabajo: {
     type: String
   },
+  observaciones_ingreso: {
+    type: String
+  },
   //Conyuge
   conyuge: {
     type: String
@@ -78,6 +81,10 @@ var mafSchema = new _mongoose.Schema({
     type: String
   }],
   //Adicionales
+  isReingresado: {
+    type: Boolean,
+    default: false
+  },
   files_adicionales: [{
     type: String
   }],

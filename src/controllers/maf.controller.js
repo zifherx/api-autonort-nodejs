@@ -74,7 +74,8 @@ export const createRequest = async(req, res) => {
         pvp,
         plan,
         tipo_uso,
-        primer_status_request
+        primer_status_request,
+        observaciones_ingreso
     } = req.body
     const files = req.files;
 
@@ -108,7 +109,8 @@ export const createRequest = async(req, res) => {
             plan,
             tipo_uso,
             evidencias: filePaths,
-            primer_status_request
+            primer_status_request,
+            observaciones_ingreso
         })
 
         let clienteEncontrado = await Customer.find({ name: cliente })
@@ -162,6 +164,7 @@ export const actualizarRequest = async(req, res) => {
 
 export const agregarNewDocuments = async(req, res) => {
     const { mafId } = req.params;
+    const { reingresado } = req.body;
     const adicionales = req.files;
     // console.log(req)
     let filePaths = [];
@@ -174,6 +177,7 @@ export const agregarNewDocuments = async(req, res) => {
         });
 
         const query = await Maf.findByIdAndUpdate(mafId, {
+            isReingresado: reingresado,
             files_adicionales: filePaths
         });
 
@@ -184,7 +188,7 @@ export const agregarNewDocuments = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({ error: err })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -216,7 +220,7 @@ export const actualizarReqAprobada = async(req, res) => {
         }
     } catch (err) {
         console.log(err)
-        return res.status(503).json({ error: err });
+        return res.status(503).json({ message: err.message })
     }
 }
 

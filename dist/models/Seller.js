@@ -20,6 +20,13 @@ var sellerSchema = new _mongoose.Schema({
   telefono: {
     type: String
   },
+  email: {
+    type: String
+  },
+  estatus: {
+    type: Boolean,
+    default: true
+  },
   empleado: {
     ref: "User",
     type: _mongoose.Schema.Types.ObjectId
