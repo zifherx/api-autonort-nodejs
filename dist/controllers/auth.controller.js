@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.forzarCierre = exports.cerrarSesion = exports.changePassword = exports.signIn = void 0;
+exports.refreshToken = exports.forzarCierre = exports.cerrarSesion = exports.changePassword = exports.signIn = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -359,4 +359,31 @@ var forzarCierre = /*#__PURE__*/function () {
 }();
 
 exports.forzarCierre = forzarCierre;
+
+var refreshToken = /*#__PURE__*/function () {
+  var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
+    var refreshTok;
+    return _regenerator.default.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            refreshTok = req.headers.refresh;
+            if (!refreshTok) res.status(400).json({
+              message: 'Algo salió mal'
+            });
+
+          case 2:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5);
+  }));
+
+  return function refreshToken(_x9, _x10) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+exports.refreshToken = refreshToken;
 //# sourceMappingURL=auth.controller.js.map

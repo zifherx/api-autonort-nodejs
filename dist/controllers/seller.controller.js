@@ -141,6 +141,8 @@ var getSellerBySucursal = /*#__PURE__*/function () {
             return _Seller.default.find({
               sucursal: sucursal,
               estatus: true
+            }).sort({
+              name: 'asc'
             });
 
           case 4:

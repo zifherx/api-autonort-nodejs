@@ -122,6 +122,15 @@ var mafSchema = new _mongoose.Schema({
   //Estatus que cambia por asesor MAF
   tercer_status_request: {
     type: String
+  },
+  //Aprobadores
+  userCreator: {
+    type: _mongoose.Types.ObjectId,
+    ref: 'User'
+  },
+  userApprove: {
+    type: _mongoose.Types.ObjectId,
+    ref: 'User'
   }
 }, {
   timestamps: true,

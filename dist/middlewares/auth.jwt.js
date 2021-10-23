@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isExecutiveMaf = exports.isVendedor = exports.isChiefTasador = exports.isTasador = exports.isConexosOrADVOrVendedorOrAdmin = exports.isConexosOrADV = exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
+exports.isExecutiveMaf = exports.isVendedor = exports.isChiefTasador = exports.isTasador = exports.isConexosOrADVOrVendedorOrAdmin = exports.isConexosOrADV = exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdvorAdmin = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -285,7 +285,7 @@ var isChiefAdv = /*#__PURE__*/function () {
 
 exports.isChiefAdv = isChiefAdv;
 
-var isChiefTunning = /*#__PURE__*/function () {
+var isChiefAdvorAdmin = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee5$(_context5) {
@@ -314,7 +314,7 @@ var isChiefTunning = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Jefe-Tunning')) {
+            if (!(roles[i].name === 'Jefe-ADV' || roles[i].name === 'Administrador')) {
               _context5.next = 11;
               break;
             }
@@ -329,7 +329,7 @@ var isChiefTunning = /*#__PURE__*/function () {
 
           case 14:
             return _context5.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso de Jefe-Tunning'
+              message: 'Requiere permiso de Jefe-ADV'
             }));
 
           case 15:
@@ -340,14 +340,14 @@ var isChiefTunning = /*#__PURE__*/function () {
     }, _callee5);
   }));
 
-  return function isChiefTunning(_x13, _x14, _x15) {
+  return function isChiefAdvorAdmin(_x13, _x14, _x15) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.isChiefTunning = isChiefTunning;
+exports.isChiefAdvorAdmin = isChiefAdvorAdmin;
 
-var isInmatriculadosAsistant = /*#__PURE__*/function () {
+var isChiefTunning = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee6$(_context6) {
@@ -376,7 +376,7 @@ var isInmatriculadosAsistant = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Asistente-Inmatriculaciones')) {
+            if (!(roles[i].name === 'Jefe-Tunning')) {
               _context6.next = 11;
               break;
             }
@@ -391,7 +391,7 @@ var isInmatriculadosAsistant = /*#__PURE__*/function () {
 
           case 14:
             return _context6.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Asistente-Inmatriculacion'
+              message: 'Requiere permiso de Jefe-Tunning'
             }));
 
           case 15:
@@ -402,14 +402,14 @@ var isInmatriculadosAsistant = /*#__PURE__*/function () {
     }, _callee6);
   }));
 
-  return function isInmatriculadosAsistant(_x16, _x17, _x18) {
+  return function isChiefTunning(_x16, _x17, _x18) {
     return _ref6.apply(this, arguments);
   };
 }();
 
-exports.isInmatriculadosAsistant = isInmatriculadosAsistant;
+exports.isChiefTunning = isChiefTunning;
 
-var isCSAsistant = /*#__PURE__*/function () {
+var isInmatriculadosAsistant = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee7$(_context7) {
@@ -438,7 +438,7 @@ var isCSAsistant = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Asistente-CS')) {
+            if (!(roles[i].name === 'Asistente-Inmatriculaciones')) {
               _context7.next = 11;
               break;
             }
@@ -453,7 +453,7 @@ var isCSAsistant = /*#__PURE__*/function () {
 
           case 14:
             return _context7.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Asistente-CS'
+              message: 'Requiere permiso del Asistente-Inmatriculacion'
             }));
 
           case 15:
@@ -464,14 +464,14 @@ var isCSAsistant = /*#__PURE__*/function () {
     }, _callee7);
   }));
 
-  return function isCSAsistant(_x19, _x20, _x21) {
+  return function isInmatriculadosAsistant(_x19, _x20, _x21) {
     return _ref7.apply(this, arguments);
   };
 }();
 
-exports.isCSAsistant = isCSAsistant;
+exports.isInmatriculadosAsistant = isInmatriculadosAsistant;
 
-var isConexosAsistant = /*#__PURE__*/function () {
+var isCSAsistant = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee8$(_context8) {
@@ -500,7 +500,7 @@ var isConexosAsistant = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Asistente-Conexos')) {
+            if (!(roles[i].name === 'Asistente-CS')) {
               _context8.next = 11;
               break;
             }
@@ -515,7 +515,7 @@ var isConexosAsistant = /*#__PURE__*/function () {
 
           case 14:
             return _context8.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Asistente-Conexos'
+              message: 'Requiere permiso del Asistente-CS'
             }));
 
           case 15:
@@ -526,14 +526,14 @@ var isConexosAsistant = /*#__PURE__*/function () {
     }, _callee8);
   }));
 
-  return function isConexosAsistant(_x22, _x23, _x24) {
+  return function isCSAsistant(_x22, _x23, _x24) {
     return _ref8.apply(this, arguments);
   };
 }();
 
-exports.isConexosAsistant = isConexosAsistant;
+exports.isCSAsistant = isCSAsistant;
 
-var isConexosOrADV = /*#__PURE__*/function () {
+var isConexosAsistant = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee9$(_context9) {
@@ -562,7 +562,7 @@ var isConexosOrADV = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV')) {
+            if (!(roles[i].name === 'Asistente-Conexos')) {
               _context9.next = 11;
               break;
             }
@@ -577,7 +577,7 @@ var isConexosOrADV = /*#__PURE__*/function () {
 
           case 14:
             return _context9.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Asistente-Conexos || Jefe ADV'
+              message: 'Requiere permiso del Asistente-Conexos'
             }));
 
           case 15:
@@ -588,14 +588,14 @@ var isConexosOrADV = /*#__PURE__*/function () {
     }, _callee9);
   }));
 
-  return function isConexosOrADV(_x25, _x26, _x27) {
+  return function isConexosAsistant(_x25, _x26, _x27) {
     return _ref9.apply(this, arguments);
   };
 }();
 
-exports.isConexosOrADV = isConexosOrADV;
+exports.isConexosAsistant = isConexosAsistant;
 
-var isConexosOrADVOrVendedorOrAdmin = /*#__PURE__*/function () {
+var isConexosOrADV = /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee10(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee10$(_context10) {
@@ -624,7 +624,7 @@ var isConexosOrADVOrVendedorOrAdmin = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Vendedor' || roles[i].name === 'Administrador')) {
+            if (!(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV')) {
               _context10.next = 11;
               break;
             }
@@ -639,7 +639,7 @@ var isConexosOrADVOrVendedorOrAdmin = /*#__PURE__*/function () {
 
           case 14:
             return _context10.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Asistente-Conexos || Jefe ADV || Vendedor || Administrador'
+              message: 'Requiere permiso del Asistente-Conexos || Jefe ADV'
             }));
 
           case 15:
@@ -650,14 +650,14 @@ var isConexosOrADVOrVendedorOrAdmin = /*#__PURE__*/function () {
     }, _callee10);
   }));
 
-  return function isConexosOrADVOrVendedorOrAdmin(_x28, _x29, _x30) {
+  return function isConexosOrADV(_x28, _x29, _x30) {
     return _ref10.apply(this, arguments);
   };
 }();
 
-exports.isConexosOrADVOrVendedorOrAdmin = isConexosOrADVOrVendedorOrAdmin;
+exports.isConexosOrADV = isConexosOrADV;
 
-var isTasador = /*#__PURE__*/function () {
+var isConexosOrADVOrVendedorOrAdmin = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee11$(_context11) {
@@ -686,7 +686,7 @@ var isTasador = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Tasador')) {
+            if (!(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Vendedor' || roles[i].name === 'Administrador')) {
               _context11.next = 11;
               break;
             }
@@ -701,7 +701,7 @@ var isTasador = /*#__PURE__*/function () {
 
           case 14:
             return _context11.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Tasador'
+              message: 'Requiere permiso del Asistente-Conexos || Jefe ADV || Vendedor || Administrador'
             }));
 
           case 15:
@@ -712,14 +712,14 @@ var isTasador = /*#__PURE__*/function () {
     }, _callee11);
   }));
 
-  return function isTasador(_x31, _x32, _x33) {
+  return function isConexosOrADVOrVendedorOrAdmin(_x31, _x32, _x33) {
     return _ref11.apply(this, arguments);
   };
 }();
 
-exports.isTasador = isTasador;
+exports.isConexosOrADVOrVendedorOrAdmin = isConexosOrADVOrVendedorOrAdmin;
 
-var isChiefTasador = /*#__PURE__*/function () {
+var isTasador = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee12$(_context12) {
@@ -748,7 +748,7 @@ var isChiefTasador = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Jefe-Tasación')) {
+            if (!(roles[i].name === 'Tasador')) {
               _context12.next = 11;
               break;
             }
@@ -763,7 +763,7 @@ var isChiefTasador = /*#__PURE__*/function () {
 
           case 14:
             return _context12.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Jefe de Tasaciones'
+              message: 'Requiere permiso del Tasador'
             }));
 
           case 15:
@@ -774,14 +774,14 @@ var isChiefTasador = /*#__PURE__*/function () {
     }, _callee12);
   }));
 
-  return function isChiefTasador(_x34, _x35, _x36) {
+  return function isTasador(_x34, _x35, _x36) {
     return _ref12.apply(this, arguments);
   };
 }();
 
-exports.isChiefTasador = isChiefTasador;
+exports.isTasador = isTasador;
 
-var isVendedor = /*#__PURE__*/function () {
+var isChiefTasador = /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee13$(_context13) {
@@ -810,7 +810,7 @@ var isVendedor = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Vendedor')) {
+            if (!(roles[i].name === 'Jefe-Tasación')) {
               _context13.next = 11;
               break;
             }
@@ -825,7 +825,7 @@ var isVendedor = /*#__PURE__*/function () {
 
           case 14:
             return _context13.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Vendedor'
+              message: 'Requiere permiso del Jefe de Tasaciones'
             }));
 
           case 15:
@@ -836,14 +836,14 @@ var isVendedor = /*#__PURE__*/function () {
     }, _callee13);
   }));
 
-  return function isVendedor(_x37, _x38, _x39) {
+  return function isChiefTasador(_x37, _x38, _x39) {
     return _ref13.apply(this, arguments);
   };
 }();
 
-exports.isVendedor = isVendedor;
+exports.isChiefTasador = isChiefTasador;
 
-var isExecutiveMaf = /*#__PURE__*/function () {
+var isVendedor = /*#__PURE__*/function () {
   var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee14$(_context14) {
@@ -872,7 +872,7 @@ var isExecutiveMaf = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Ejecutivo-MAF')) {
+            if (!(roles[i].name === 'Vendedor')) {
               _context14.next = 11;
               break;
             }
@@ -887,7 +887,7 @@ var isExecutiveMaf = /*#__PURE__*/function () {
 
           case 14:
             return _context14.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Ejecutivo MAF'
+              message: 'Requiere permiso del Vendedor'
             }));
 
           case 15:
@@ -898,8 +898,70 @@ var isExecutiveMaf = /*#__PURE__*/function () {
     }, _callee14);
   }));
 
-  return function isExecutiveMaf(_x40, _x41, _x42) {
+  return function isVendedor(_x40, _x41, _x42) {
     return _ref14.apply(this, arguments);
+  };
+}();
+
+exports.isVendedor = isVendedor;
+
+var isExecutiveMaf = /*#__PURE__*/function () {
+  var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res, next) {
+    var user, roles, i;
+    return _regenerator.default.wrap(function _callee15$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            _context15.next = 2;
+            return _User.default.findById(req.userId);
+
+          case 2:
+            user = _context15.sent;
+            _context15.next = 5;
+            return _Role.default.find({
+              _id: {
+                $in: user.roles
+              }
+            });
+
+          case 5:
+            roles = _context15.sent;
+            i = 0;
+
+          case 7:
+            if (!(i < roles.length)) {
+              _context15.next = 14;
+              break;
+            }
+
+            if (!(roles[i].name === 'Ejecutivo-MAF')) {
+              _context15.next = 11;
+              break;
+            }
+
+            next();
+            return _context15.abrupt("return");
+
+          case 11:
+            i++;
+            _context15.next = 7;
+            break;
+
+          case 14:
+            return _context15.abrupt("return", res.status(403).json({
+              message: 'Requiere permiso del Ejecutivo MAF'
+            }));
+
+          case 15:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee15);
+  }));
+
+  return function isExecutiveMaf(_x43, _x44, _x45) {
+    return _ref15.apply(this, arguments);
   };
 }();
 

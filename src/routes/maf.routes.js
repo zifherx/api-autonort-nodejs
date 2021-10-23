@@ -9,11 +9,15 @@ router.get('/', mafCtrl.getAll)
 
 router.get('/:mafId', mafCtrl.getOneById)
 
-router.post('/', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 50), mafCtrl.createRequest)
-
 router.post('/by-status', mafCtrl.obtenerRequestbyStatus)
 
+router.post('/by-seller', mafCtrl.getAllByVendedor);
+
+router.post('/by-sucursal', mafCtrl.getAllBySucursal);
+
 router.post('/send-request', [authJwt.verifyToken, authJwt.isVendedor], mafCtrl.enviarCorreoSolicitud)
+
+router.post('/', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 50), mafCtrl.createRequest)
 
 router.patch('/evidences/:mafId', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 20), mafCtrl.agregarNewDocuments)
 

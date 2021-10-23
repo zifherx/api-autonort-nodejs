@@ -20,12 +20,12 @@ export const verifyToken = async(req, res, next) => {
 
         next();
 
-    } catch (error) {
-        console.log(error)
-        if (error.message == "jwt expired") {
+    } catch (err) {
+        console.log(err)
+        if (err.message == "jwt expired") {
             return res.status(401).json({ message: 'Token ha expirado' });
         } else {
-            console.log(error.message)
+            console.log(err.message)
             return res.status(403).json({ message: 'No Autorizado' });
         }
     }
@@ -64,6 +64,19 @@ export const isChiefAdv = async(req, res, next) => {
 
     for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === 'Jefe-ADV') {
+            next()
+            return;
+        }
+    }
+    return res.status(403).json({ message: 'Requiere permiso de Jefe-ADV' });
+}
+
+export const isChiefAdvorAdmin = async(req, res, next) => {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'Jefe-ADV' || roles[i].name === 'Administrador') {
             next()
             return;
         }

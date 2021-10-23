@@ -23,6 +23,9 @@ var sellerSchema = new _mongoose.Schema({
   email: {
     type: String
   },
+  avatar: {
+    type: String
+  },
   estatus: {
     type: Boolean,
     default: true

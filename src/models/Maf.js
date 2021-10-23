@@ -41,6 +41,9 @@ const mafSchema = new Schema({
     pasoaHot: { type: Number, min: 0, max: 3, default: 0 },
     //Estatus que cambia por asesor MAF
     tercer_status_request: { type: String },
+    //Aprobadores
+    userCreator: { type: Types.ObjectId, ref: 'User' },
+    userApprove: { type: Types.ObjectId, ref: 'User' },
 }, {
     timestamps: true,
     versionKey: false

@@ -14,7 +14,7 @@ jefaturaCtrl.getAll = async(req, res) => {
         }
     } catch (err) {
         console.error(err)
-        return res.status(503).json({ error: err })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -31,11 +31,47 @@ jefaturaCtrl.createOne = async(req, res) => {
 
         const query = await newObj.save();
         if (query) {
-            res.json({ message: 'Jefatura creada con éxito' });
+            res.json({ message: 'Jefe creada con éxito' });
         }
     } catch (err) {
         console.error(err);
-        res.status(503).json({ error: err });
+        return res.status(503).json({ message: err.message })
+    }
+}
+
+jefaturaCtrl.updateById = async(req, res) => {
+    const { jefaturaId } = req.params;
+    const { name, email, area, sucursal } = req.body;
+
+    try {
+        const query = await JefaturaVentas.findByIdAndUpdate(jefaturaId, {
+            name,
+            email,
+            area,
+            sucursal
+        });
+        if (query) {
+            res.json({ message: 'Jefe actualizado con éxito' });
+        } else {
+            res.status(404).json({ message: 'No existe Jefe a actualizar' });
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message })
+    }
+}
+
+jefaturaCtrl.deleteById = async(req, res) => {
+    const { jefaturaId } = req.params;
+
+    try {
+        const query = await JefaturaVentas.findByIdAndDelete(jefaturaId);
+        if (query) {
+            res.json({ message: 'Jefe eliminado con éxito' });
+        } else {
+            return res.status(404).json({ message: 'No existe Jefe a eliminar' });
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -52,7 +88,7 @@ jefaturaCtrl.obtenerJefexSucursal = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 

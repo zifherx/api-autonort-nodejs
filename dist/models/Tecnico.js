@@ -7,25 +7,29 @@ exports.default = void 0;
 
 var _mongoose = require("mongoose");
 
-var tasadorSchema = new _mongoose.Schema({
+var tecnicoSchema = new _mongoose.Schema({
   name: {
     type: String
   },
   document: {
     type: String
   },
+  email: {
+    type: String
+  },
   sucursal: {
     type: String
   },
   status: {
-    type: String
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true,
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('Tasador', tasadorSchema);
+var _default = (0, _mongoose.model)('Tecnico', tecnicoSchema);
 
 exports.default = _default;
-//# sourceMappingURL=Tasador.js.map
+//# sourceMappingURL=Tecnico.js.map

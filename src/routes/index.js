@@ -30,14 +30,14 @@ import seguroRoutes from "./seguro.routes"
 import conexoRoutes from './conexos.routes'
 import endosoRoutes from './endoso.routes'
 import aseguradoraRoutes from './aseguradora.routes'
-import tasacionRoutes from './tasacion.routes'
 import operacionRoutes from './operacion.routes'
 import goalsRoutes from './goals.routes'
 import statusFileRoutes from './statusFile.routes'
-import tasadorRoutes from './tasador.routes'
 import mafRoutes from './maf.routes'
 import jefaturaVentasRoutes from './jefaturaVentas.routes'
 import statusMafRequestRoutes from './statusMafRequest.routes'
+import tasacionRoutes from './tasacion.routes'
+import tecnicorRoutes from './tecnico.routes'
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -72,13 +72,13 @@ router.use('/marca', marcaRoutes);
 router.use('/delivery', deliveryRoutes);
 router.use('/seguro', seguroRoutes);
 router.use('/aseguradora', aseguradoraRoutes);
-router.use('/tasacion', tasacionRoutes);
 router.use('/operacion', operacionRoutes);
 router.use('/goals', goalsRoutes);
 router.use('/status-file', statusFileRoutes);
-router.use('/tasador', tasadorRoutes);
 router.use('/maf', mafRoutes)
 router.use('/jefatura-ventas', jefaturaVentasRoutes);
 router.use('/status-maf-request', statusMafRequestRoutes);
+router.use('/tasacion', tasacionRoutes);
+router.use('/technical', tecnicorRoutes);
 
 export default router;

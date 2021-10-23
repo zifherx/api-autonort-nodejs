@@ -63,7 +63,6 @@ export const changePassword = async(req, res) => {
 
 export const cerrarSesion = async(req, res) => {
     const { id } = res.locals.jwtPayload;
-
     try {
         const userFound = await User.findById(id);
 
@@ -98,4 +97,12 @@ export const forzarCierre = async(req, res) => {
         return res.status(503).json({ message: err.message });
         // return res.status(503).json({ error: err });
     }
+}
+
+export const refreshToken = async(req, res) => {
+    const refreshTok = req.headers.refresh;
+
+    if (!refreshTok) res.status(400).json({ message: 'Algo salió mal' })
+
+
 }

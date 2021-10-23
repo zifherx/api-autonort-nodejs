@@ -34,7 +34,7 @@ export const getSellerById = async(req, res) => {
 export const getSellerBySucursal = async(req, res) => {
     const { sucursal } = req.body;
     try {
-        const query = await Seller.find({ sucursal: sucursal, estatus: true });
+        const query = await Seller.find({ sucursal: sucursal, estatus: true }).sort({ name: 'asc' });
 
         if (query.length > 0) {
             res.json(query);

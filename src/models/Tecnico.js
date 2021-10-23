@@ -1,13 +1,14 @@
 import { Schema, model } from 'mongoose'
 
-const tasadorSchema = new Schema({
+const tecnicoSchema = new Schema({
     name: { type: String },
     document: { type: String },
+    email: { type: String },
     sucursal: { type: String },
-    status: { type: String },
+    status: { type: Boolean, default: true },
 }, {
     timestamps: true,
     versionKey: false
 });
 
-export default model('Tasador', tasadorSchema);
+export default model('Tecnico', tecnicoSchema);

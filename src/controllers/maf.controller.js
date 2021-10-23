@@ -3,10 +3,11 @@ import Customer from '../models/Customer'
 import Maf from '../models/Maf'
 import Seller from '../models/Seller'
 import Vehicle from '../models/Vehicle'
+import User from '../models/User'
 
 export const getAll = async(req, res) => {
     try {
-        const query = await Maf.find().populate('customer seller car')
+        const query = await Maf.find().populate('customer seller car userCreator userApprove')
             // console.log(query)
         if (query.length > 0) {
             res.json(query)
@@ -23,7 +24,7 @@ export const getOneById = async(req, res) => {
     const { mafId } = req.params;
 
     try {
-        const query = await Maf.findById(mafId).populate('customer seller car')
+        const query = await Maf.findById(mafId).populate('customer seller car userCreator userApprove')
             // console.log(query)
         if (query) {
             res.json(query)
@@ -36,11 +37,42 @@ export const getOneById = async(req, res) => {
     }
 }
 
-export const obtenerRequestbyStatus = async(req, res) => {
-    const { status, pasoaHot } = req.body
+export const getAllByVendedor = async(req, res) => {
+    const { vendedor } = req.body;
     try {
-        const query = await Maf.find({ primer_status_request: status, pasoaHot: pasoaHot }).populate('car seller customer')
-            // console.log(query)
+        const sellerFound = await Seller.find({ name: vendedor });
+        const query = await Maf.find({ seller: sellerFound.map(a => a._id) }).populate('customer seller car userCreator userApprove');
+        if (query.length > 0) {
+            res.json({ nro_request: query.length, requests: query });
+        } else {
+            return res.status(404).json({ message: 'No existen solicitudes' })
+        }
+    } catch (err) {
+        console.log(err)
+        return res.status(503).json({ message: err.message })
+    }
+}
+
+export const getAllBySucursal = async(req, res) => {
+    const { sucursal } = req.body;
+    try {
+        const query = await Maf.find({ sucursal: sucursal }).populate('customer seller car userCreator userApprove');
+        if (query.length > 0) {
+            res.json({ nro_request: query.length, requests: query });
+        } else {
+            return res.status(404).json({ message: 'No existen solicitudes' })
+        }
+    } catch (err) {
+        console.log(err)
+        return res.status(503).json({ message: err.message })
+    }
+}
+
+export const obtenerRequestbyStatus = async(req, res) => {
+    const { status, pasoaHot, sucursal } = req.body
+    try {
+        const query = await Maf.find({ primer_status_request: status, pasoaHot: pasoaHot, sucursal: sucursal })
+            .populate('car seller customer')
         if (query.length > 0) {
             res.json(query)
         } else {
@@ -75,11 +107,10 @@ export const createRequest = async(req, res) => {
         plan,
         tipo_uso,
         primer_status_request,
-        observaciones_ingreso
+        observaciones_ingreso,
+        userCreator
     } = req.body
     const files = req.files;
-
-    // console.log(req);
 
     let filePaths = [];
 
@@ -111,16 +142,19 @@ export const createRequest = async(req, res) => {
             evidencias: filePaths,
             primer_status_request,
             observaciones_ingreso
-        })
+        });
 
-        let clienteEncontrado = await Customer.find({ name: cliente })
-        obj.customer = clienteEncontrado.map(a => a._id)
+        let clienteEncontrado = await Customer.find({ name: cliente });
+        obj.customer = clienteEncontrado.map(a => a._id);
 
-        let vendedorEncontrado = await Seller.find({ name: vendedor })
-        obj.seller = vendedorEncontrado.map(b => b._id)
+        let vendedorEncontrado = await Seller.find({ name: vendedor });
+        obj.seller = vendedorEncontrado.map(b => b._id);
 
-        let vehiculoEncontrado = await Vehicle.find({ cod_tdp: vehiculo })
+        let vehiculoEncontrado = await Vehicle.find({ cod_tdp: vehiculo });
         obj.car = vehiculoEncontrado.map(c => c._id)
+
+        let usuarioCreador = await User.find({ username: userCreator });
+        obj.userCreator = usuarioCreador.map(d => d._id);
 
         const objCreated = await obj.save()
 
@@ -141,15 +175,18 @@ export const actualizarRequest = async(req, res) => {
         fecha_respuesta,
         observacion,
         motivo,
-
+        userApprove
     } = req.body
 
     try {
+
+        const userFound = await User.find({ username: userApprove });
         const obj = await Maf.findByIdAndUpdate(mafId, {
             primer_status_request,
             fecha_respuesta,
             observacion,
-            motivo
+            motivo,
+            userApprove: userFound.map(a => a._id)
         })
         if (obj) {
             res.json({ message: 'Solicitud MAF actualizada con éxito' });
@@ -164,7 +201,7 @@ export const actualizarRequest = async(req, res) => {
 
 export const agregarNewDocuments = async(req, res) => {
     const { mafId } = req.params;
-    const { reingresado } = req.body;
+    const { reingresado, fecha_ingreso, primer_status_request } = req.body;
     const adicionales = req.files;
     // console.log(req)
     let filePaths = [];
@@ -178,6 +215,8 @@ export const agregarNewDocuments = async(req, res) => {
 
         const query = await Maf.findByIdAndUpdate(mafId, {
             isReingresado: reingresado,
+            fecha_ingreso,
+            primer_status_request,
             files_adicionales: filePaths
         });
 

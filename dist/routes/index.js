@@ -67,21 +67,21 @@ var _endoso = _interopRequireDefault(require("./endoso.routes"));
 
 var _aseguradora = _interopRequireDefault(require("./aseguradora.routes"));
 
-var _tasacion = _interopRequireDefault(require("./tasacion.routes"));
-
 var _operacion = _interopRequireDefault(require("./operacion.routes"));
 
 var _goals = _interopRequireDefault(require("./goals.routes"));
 
 var _statusFile = _interopRequireDefault(require("./statusFile.routes"));
 
-var _tasador = _interopRequireDefault(require("./tasador.routes"));
-
 var _maf = _interopRequireDefault(require("./maf.routes"));
 
 var _jefaturaVentas = _interopRequireDefault(require("./jefaturaVentas.routes"));
 
 var _statusMafRequest = _interopRequireDefault(require("./statusMafRequest.routes"));
+
+var _tasacion = _interopRequireDefault(require("./tasacion.routes"));
+
+var _tecnico = _interopRequireDefault(require("./tecnico.routes"));
 
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
@@ -116,14 +116,14 @@ router.use('/marca', _marca.default);
 router.use('/delivery', _delivery.default);
 router.use('/seguro', _seguro.default);
 router.use('/aseguradora', _aseguradora.default);
-router.use('/tasacion', _tasacion.default);
 router.use('/operacion', _operacion.default);
 router.use('/goals', _goals.default);
 router.use('/status-file', _statusFile.default);
-router.use('/tasador', _tasador.default);
 router.use('/maf', _maf.default);
 router.use('/jefatura-ventas', _jefaturaVentas.default);
 router.use('/status-maf-request', _statusMafRequest.default);
+router.use('/tasacion', _tasacion.default);
+router.use('/technical', _tecnico.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

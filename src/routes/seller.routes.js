@@ -16,12 +16,12 @@ router.post('/find', sellerCtrl.getSellerBySucursal);
 router.post('/name', sellerCtrl.getSellerByName);
 
 //Crear Vendedor
-router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller);
+router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller);
 
 //Actualizar Vendedor
-router.patch('/:sellerId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], sellerCtrl.updateSellerById);
+router.patch('/:sellerId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifySignup.checkRolesExist], sellerCtrl.updateSellerById);
 
 //Remover Vendedor
-router.delete('/:sellerId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], sellerCtrl.deleteSellerById);
+router.delete('/:sellerId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifySignup.checkRolesExist], sellerCtrl.deleteSellerById);
 
 export default router;

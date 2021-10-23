@@ -23,11 +23,11 @@ router.post('/find', sellerCtrl.getSellerBySucursal); //Obtener Vendedor por Nom
 
 router.post('/name', sellerCtrl.getSellerByName); //Crear Vendedor
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller); //Actualizar Vendedor
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller); //Actualizar Vendedor
 
-router.patch('/:sellerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], sellerCtrl.updateSellerById); //Remover Vendedor
+router.patch('/:sellerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin, _middlewares.verifySignup.checkRolesExist], sellerCtrl.updateSellerById); //Remover Vendedor
 
-router.delete('/:sellerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], sellerCtrl.deleteSellerById);
+router.delete('/:sellerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin, _middlewares.verifySignup.checkRolesExist], sellerCtrl.deleteSellerById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=seller.routes.js.map
