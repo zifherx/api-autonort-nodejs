@@ -211,6 +211,28 @@ export const deleteSaleById = async(req, res) => {
     }
 }
 
+export const UnidadesLibres = async(req, res) => {
+    const { estado, tramite } = req.body;
+    try {
+        const query = await Sale.find({ estatus_venta: estado, pasoaTramite: tramite })
+            .populate('vendedor')
+            .populate('auto')
+            .populate('cliente')
+            .populate('campanias')
+            .populate('adicional')
+            .populate('accesorios')
+            .populate('empleado')
+        if (query.length > 0) {
+            res.json({ total: query.length, files: query });
+        } else {
+            return res.status(404).json({ message: `No existen Unidades ${estado}` })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(503).json({ message: err.message });
+    }
+}
+
 export const UnidadesByStatus = async(req, res) => {
     const { estado, tramite, sucursal } = req.body;
     try {

@@ -15,6 +15,9 @@ router.post('/sucursal', saleCtrl.UnidadesBySucursal);
 //Conteo por Sucursal, Situación y Fecha
 router.post('/conteo', saleCtrl.conteoUnidadesBySucursalStatusFecha);
 
+//Unidades Libres
+router.post('/free', saleCtrl.UnidadesLibres);
+
 //Conteo de Unidades Entregadas
 router.post('/entregadas', saleCtrl.vistaUnidadesEntregadasByStatus);
 
