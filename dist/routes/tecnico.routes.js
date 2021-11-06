@@ -13,19 +13,25 @@ var _tecnico = _interopRequireDefault(require("../controllers/tecnico.controller
 
 var _middlewares = require("../middlewares");
 
-var router = (0, _express.Router)(); //Obtener Tasador
+var router = (0, _express.Router)(); //Obtener Conteo Tecnicos
 
-router.get('/', _tecnico.default.getAll); //Obtener Tasador Activos
+router.get('/count', _tecnico.default.countAll); //Obtener Tecnico Activos
 
-router.get('/activos', _tecnico.default.getTecnicoByActivo); //Obtener Tasador por ID
+router.get('/activos', _tecnico.default.getTecnicoByActivo); //Obtener Tecnico por ID
 
-router.get('/:tasadorId', _tecnico.default.getTecnicoById); //Crear Tasador
+router.get('/:tecnicoId', _tecnico.default.getTecnicoById); //Obtener Tecnico
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], _tecnico.default.createTecnico); //Actualizar Tasador
+router.get('/', _tecnico.default.getAll); //Obtener Tecnico por ID
 
-router.patch('/:tasadorId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], _tecnico.default.updateTecnico); //Eliminar Tasador
+router.post('/count/status', _tecnico.default.countByStatus); //Obtener Tecnico por Scuursal
 
-router.delete('/:tasadorId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], _tecnico.default.deleteTecnico);
+router.post('/sucursal', _tecnico.default.getBySucursal); //Crear Tecnico
+
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifyDuplicate.checkDuplicateTecnico], _tecnico.default.createTecnico); //Actualizar Tecnico
+
+router.patch('/:tecnicoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _tecnico.default.updateTecnico); //Eliminar Tecnico
+
+router.delete('/:tecnicoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _tecnico.default.deleteTecnico);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=tecnico.routes.js.map

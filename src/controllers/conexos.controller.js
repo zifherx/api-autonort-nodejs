@@ -100,7 +100,8 @@ export const obtenerAsesorxSucursal = async(req, res) => {
     const { sucursal, area } = req.body
 
     try {
-        const query = await Conexos.findOne({ sucursal: sucursal, area: area, status: 'Activo' }).select('name email');
+        const query = await Conexos.findOne({ sucursal: sucursal, area: area, status: 'Activo' })
+            .select('name email');
 
         if (query) {
             res.json({ asesor: query })

@@ -26,6 +26,8 @@ import Conexos from '../models/Conexos'
 import Aseguradora from '../models/Aseguradora'
 import StatusFile from '../models/StatusFile'
 import StatusMafRequest from '../models/StatusMafRequest'
+import Tecnico from '../models/Tecnico'
+import AServicios from '../models/AServicios'
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -282,19 +284,6 @@ export const checkDuplicateExpediente = async(req, res, next) => {
     }
 }
 
-/* export const checkDuplicateMeta = async(req, res, next) => {
-    const { sales } = req.body;
-
-    const expediente = await Sale.find({ nro_comprobante: { $in: sales } });
-    let cod_exp = expediente.map(rs => rs._id)
-
-    const encontrado = await Record.findOne({ sales: cod_exp });
-
-    if (encontrado) return res.status(201).json({ message: 'La Meta ya existe' });
-
-    next();
-} */
-
 export const checkDuplicateStatusFile = async(req, res, next) => {
     const { name } = req.body;
     const query = await StatusFile.findOne({ name: name });
@@ -309,6 +298,24 @@ export const checkDuplicateStatusMafRequest = async(req, res, next) => {
     const query = await StatusMafRequest.findOne({ name: name });
 
     if (query) return res.status(201).json({ message: 'El Estado Maf ya existe' });
+
+    next();
+}
+
+export const checkDuplicateTecnico = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await Tecnico.findOne({ name: name });
+
+    if (query) return res.status(201).json({ message: 'El Técnico Evaluador ya existe' });
+
+    next();
+}
+
+export const checkDuplicateAServicios = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await AServicios.findOne({ name: name });
+
+    if (query) return res.status(201).json({ message: 'El Asesor de Servicios ya existe' });
 
     next();
 }

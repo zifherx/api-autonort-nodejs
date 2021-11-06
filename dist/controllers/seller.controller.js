@@ -159,7 +159,7 @@ var getSellerBySucursal = /*#__PURE__*/function () {
 
           case 9:
             return _context3.abrupt("return", res.status(404).json({
-              message: 'No existen Vendedores en esta Sucursal'
+              message: "No existen Vendedores en ".concat(sucursal)
             }));
 
           case 10:
@@ -249,17 +249,18 @@ exports.getSellerByName = getSellerByName;
 
 var createSeller = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body, name, sucursal, document, telefono, email, estatus, empleado, newSeller, foundEmployee, sellerSaved;
+    var _req$body, name, sucursal, marca, document, telefono, email, estatus, empleado, newSeller, foundEmployee, sellerSaved;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, sucursal = _req$body.sucursal, document = _req$body.document, telefono = _req$body.telefono, email = _req$body.email, estatus = _req$body.estatus, empleado = _req$body.empleado;
+            _req$body = req.body, name = _req$body.name, sucursal = _req$body.sucursal, marca = _req$body.marca, document = _req$body.document, telefono = _req$body.telefono, email = _req$body.email, estatus = _req$body.estatus, empleado = _req$body.empleado;
             _context5.prev = 1;
             newSeller = new _Seller.default({
               name: name,
               sucursal: sucursal,
+              marca: marca,
               document: document,
               telefono: telefono,
               email: email,
@@ -317,19 +318,20 @@ exports.createSeller = createSeller;
 
 var updateSellerById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var sellerId, _req$body2, name, sucursal, document, telefono, email, estatus, empleado, updateSeller;
+    var sellerId, _req$body2, name, sucursal, marca, document, telefono, email, estatus, empleado, updateSeller;
 
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             sellerId = req.params.sellerId;
-            _req$body2 = req.body, name = _req$body2.name, sucursal = _req$body2.sucursal, document = _req$body2.document, telefono = _req$body2.telefono, email = _req$body2.email, estatus = _req$body2.estatus, empleado = _req$body2.empleado;
+            _req$body2 = req.body, name = _req$body2.name, sucursal = _req$body2.sucursal, marca = _req$body2.marca, document = _req$body2.document, telefono = _req$body2.telefono, email = _req$body2.email, estatus = _req$body2.estatus, empleado = _req$body2.empleado;
             _context6.prev = 2;
             _context6.next = 5;
             return _Seller.default.findByIdAndUpdate(sellerId, {
               name: name,
               sucursal: sucursal,
+              marca: marca,
               document: document,
               telefono: telefono,
               email: email,

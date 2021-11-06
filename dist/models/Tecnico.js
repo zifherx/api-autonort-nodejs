@@ -14,6 +14,9 @@ var tecnicoSchema = new _mongoose.Schema({
   document: {
     type: String
   },
+  cellphone: {
+    type: String
+  },
   email: {
     type: String
   },

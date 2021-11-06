@@ -162,6 +162,19 @@ export const isConexosOrADVOrVendedorOrAdmin = async(req, res, next) => {
     return res.status(403).json({ message: 'Requiere permiso del Asistente-Conexos || Jefe ADV || Vendedor || Administrador' })
 }
 
+export const isTasadororChiefEPDP = async(req, res, next) => {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } })
+
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'Tasador' || roles[i].name === 'Jefe-EPDP') {
+            next();
+            return;
+        }
+    }
+    return res.status(403).json({ message: 'Requiere permiso del Tasador ó Jefe-EPDP' })
+}
+
 export const isTasador = async(req, res, next) => {
     const user = await User.findById(req.userId);
     const roles = await Role.find({ _id: { $in: user.roles } })
@@ -175,7 +188,7 @@ export const isTasador = async(req, res, next) => {
     return res.status(403).json({ message: 'Requiere permiso del Tasador' })
 }
 
-export const isChiefTasador = async(req, res, next) => {
+export const isChiefEPDP = async(req, res, next) => {
     const user = await User.findById(req.userId);
     const roles = await Role.find({ _id: { $in: user.roles } })
 
@@ -185,7 +198,20 @@ export const isChiefTasador = async(req, res, next) => {
             return;
         }
     }
-    return res.status(403).json({ message: 'Requiere permiso del Jefe de Tasaciones' })
+    return res.status(403).json({ message: 'Requiere permiso del Jefe-EPDP' })
+}
+
+export const isChiefEPDPorAdmin = async(req, res, next) => {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } })
+
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'Administrador' || roles[i].name === 'Jefe-EPDP') {
+            next();
+            return;
+        }
+    }
+    return res.status(403).json({ message: 'Requiere permiso del Jefe-EPDP' })
 }
 
 export const isVendedor = async(req, res, next) => {

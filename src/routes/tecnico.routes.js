@@ -1,25 +1,34 @@
 import { Router } from "express";
 import tecnicoCtrl from '../controllers/tecnico.controller'
-import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
+import { authJwt, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
-//Obtener Tasador
-router.get('/', tecnicoCtrl.getAll);
+//Obtener Conteo Tecnicos
+router.get('/count', tecnicoCtrl.countAll);
 
-//Obtener Tasador Activos
+//Obtener Tecnico Activos
 router.get('/activos', tecnicoCtrl.getTecnicoByActivo);
 
-//Obtener Tasador por ID
-router.get('/:tasadorId', tecnicoCtrl.getTecnicoById);
+//Obtener Tecnico por ID
+router.get('/:tecnicoId', tecnicoCtrl.getTecnicoById);
 
-//Crear Tasador
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], tecnicoCtrl.createTecnico);
+//Obtener Tecnico
+router.get('/', tecnicoCtrl.getAll);
 
-//Actualizar Tasador
-router.patch('/:tasadorId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], tecnicoCtrl.updateTecnico);
+//Obtener Tecnico por ID
+router.post('/count/status', tecnicoCtrl.countByStatus);
 
-//Eliminar Tasador
-router.delete('/:tasadorId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], tecnicoCtrl.deleteTecnico);
+//Obtener Tecnico por Scuursal
+router.post('/sucursal', tecnicoCtrl.getBySucursal);
+
+//Crear Tecnico
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateTecnico], tecnicoCtrl.createTecnico);
+
+//Actualizar Tecnico
+router.patch('/:tecnicoId', [authJwt.verifyToken, authJwt.isAdmin], tecnicoCtrl.updateTecnico);
+
+//Eliminar Tecnico
+router.delete('/:tecnicoId', [authJwt.verifyToken, authJwt.isAdmin], tecnicoCtrl.deleteTecnico);
 
 export default router;

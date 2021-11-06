@@ -7,42 +7,32 @@ exports.default = void 0;
 
 var _mongoose = require("mongoose");
 
-var sellerSchema = new _mongoose.Schema({
+var aserviciosSchema = new _mongoose.Schema({
   name: {
-    type: String
-  },
-  sucursal: {
-    type: String
-  },
-  marca: {
     type: String
   },
   document: {
     type: String
   },
-  telefono: {
+  cellphone: {
     type: String
   },
   email: {
     type: String
   },
-  avatar: {
+  sucursal: {
     type: String
   },
-  estatus: {
+  status: {
     type: Boolean,
     default: true
-  },
-  empleado: {
-    ref: "User",
-    type: _mongoose.Schema.Types.ObjectId
   }
 }, {
   timestamps: true,
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)("Seller", sellerSchema);
+var _default = (0, _mongoose.model)('AServicios', aserviciosSchema);
 
 exports.default = _default;
-//# sourceMappingURL=Seller.js.map
+//# sourceMappingURL=AServicios.js.map

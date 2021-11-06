@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isExecutiveMaf = exports.isVendedor = exports.isChiefTasador = exports.isTasador = exports.isConexosOrADVOrVendedorOrAdmin = exports.isConexosOrADV = exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdvorAdmin = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
+exports.isExecutiveMaf = exports.isVendedor = exports.isChiefEPDPorAdmin = exports.isChiefEPDP = exports.isTasador = exports.isTasadororChiefEPDP = exports.isConexosOrADVOrVendedorOrAdmin = exports.isConexosOrADV = exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdvorAdmin = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -719,7 +719,7 @@ var isConexosOrADVOrVendedorOrAdmin = /*#__PURE__*/function () {
 
 exports.isConexosOrADVOrVendedorOrAdmin = isConexosOrADVOrVendedorOrAdmin;
 
-var isTasador = /*#__PURE__*/function () {
+var isTasadororChiefEPDP = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee12$(_context12) {
@@ -748,7 +748,7 @@ var isTasador = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Tasador')) {
+            if (!(roles[i].name === 'Tasador' || roles[i].name === 'Jefe-EPDP')) {
               _context12.next = 11;
               break;
             }
@@ -763,7 +763,7 @@ var isTasador = /*#__PURE__*/function () {
 
           case 14:
             return _context12.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Tasador'
+              message: 'Requiere permiso del Tasador ó Jefe-EPDP'
             }));
 
           case 15:
@@ -774,14 +774,14 @@ var isTasador = /*#__PURE__*/function () {
     }, _callee12);
   }));
 
-  return function isTasador(_x34, _x35, _x36) {
+  return function isTasadororChiefEPDP(_x34, _x35, _x36) {
     return _ref12.apply(this, arguments);
   };
 }();
 
-exports.isTasador = isTasador;
+exports.isTasadororChiefEPDP = isTasadororChiefEPDP;
 
-var isChiefTasador = /*#__PURE__*/function () {
+var isTasador = /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee13$(_context13) {
@@ -810,7 +810,7 @@ var isChiefTasador = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Jefe-Tasación')) {
+            if (!(roles[i].name === 'Tasador')) {
               _context13.next = 11;
               break;
             }
@@ -825,7 +825,7 @@ var isChiefTasador = /*#__PURE__*/function () {
 
           case 14:
             return _context13.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Jefe de Tasaciones'
+              message: 'Requiere permiso del Tasador'
             }));
 
           case 15:
@@ -836,14 +836,14 @@ var isChiefTasador = /*#__PURE__*/function () {
     }, _callee13);
   }));
 
-  return function isChiefTasador(_x37, _x38, _x39) {
+  return function isTasador(_x37, _x38, _x39) {
     return _ref13.apply(this, arguments);
   };
 }();
 
-exports.isChiefTasador = isChiefTasador;
+exports.isTasador = isTasador;
 
-var isVendedor = /*#__PURE__*/function () {
+var isChiefEPDP = /*#__PURE__*/function () {
   var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee14$(_context14) {
@@ -872,7 +872,7 @@ var isVendedor = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Vendedor')) {
+            if (!(roles[i].name === 'Jefe-Tasación')) {
               _context14.next = 11;
               break;
             }
@@ -887,7 +887,7 @@ var isVendedor = /*#__PURE__*/function () {
 
           case 14:
             return _context14.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Vendedor'
+              message: 'Requiere permiso del Jefe-EPDP'
             }));
 
           case 15:
@@ -898,14 +898,14 @@ var isVendedor = /*#__PURE__*/function () {
     }, _callee14);
   }));
 
-  return function isVendedor(_x40, _x41, _x42) {
+  return function isChiefEPDP(_x40, _x41, _x42) {
     return _ref14.apply(this, arguments);
   };
 }();
 
-exports.isVendedor = isVendedor;
+exports.isChiefEPDP = isChiefEPDP;
 
-var isExecutiveMaf = /*#__PURE__*/function () {
+var isChiefEPDPorAdmin = /*#__PURE__*/function () {
   var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee15$(_context15) {
@@ -934,7 +934,7 @@ var isExecutiveMaf = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Ejecutivo-MAF')) {
+            if (!(roles[i].name === 'Administrador' || roles[i].name === 'Jefe-EPDP')) {
               _context15.next = 11;
               break;
             }
@@ -949,7 +949,7 @@ var isExecutiveMaf = /*#__PURE__*/function () {
 
           case 14:
             return _context15.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Ejecutivo MAF'
+              message: 'Requiere permiso del Jefe-EPDP'
             }));
 
           case 15:
@@ -960,8 +960,132 @@ var isExecutiveMaf = /*#__PURE__*/function () {
     }, _callee15);
   }));
 
-  return function isExecutiveMaf(_x43, _x44, _x45) {
+  return function isChiefEPDPorAdmin(_x43, _x44, _x45) {
     return _ref15.apply(this, arguments);
+  };
+}();
+
+exports.isChiefEPDPorAdmin = isChiefEPDPorAdmin;
+
+var isVendedor = /*#__PURE__*/function () {
+  var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee16(req, res, next) {
+    var user, roles, i;
+    return _regenerator.default.wrap(function _callee16$(_context16) {
+      while (1) {
+        switch (_context16.prev = _context16.next) {
+          case 0:
+            _context16.next = 2;
+            return _User.default.findById(req.userId);
+
+          case 2:
+            user = _context16.sent;
+            _context16.next = 5;
+            return _Role.default.find({
+              _id: {
+                $in: user.roles
+              }
+            });
+
+          case 5:
+            roles = _context16.sent;
+            i = 0;
+
+          case 7:
+            if (!(i < roles.length)) {
+              _context16.next = 14;
+              break;
+            }
+
+            if (!(roles[i].name === 'Vendedor')) {
+              _context16.next = 11;
+              break;
+            }
+
+            next();
+            return _context16.abrupt("return");
+
+          case 11:
+            i++;
+            _context16.next = 7;
+            break;
+
+          case 14:
+            return _context16.abrupt("return", res.status(403).json({
+              message: 'Requiere permiso del Vendedor'
+            }));
+
+          case 15:
+          case "end":
+            return _context16.stop();
+        }
+      }
+    }, _callee16);
+  }));
+
+  return function isVendedor(_x46, _x47, _x48) {
+    return _ref16.apply(this, arguments);
+  };
+}();
+
+exports.isVendedor = isVendedor;
+
+var isExecutiveMaf = /*#__PURE__*/function () {
+  var _ref17 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee17(req, res, next) {
+    var user, roles, i;
+    return _regenerator.default.wrap(function _callee17$(_context17) {
+      while (1) {
+        switch (_context17.prev = _context17.next) {
+          case 0:
+            _context17.next = 2;
+            return _User.default.findById(req.userId);
+
+          case 2:
+            user = _context17.sent;
+            _context17.next = 5;
+            return _Role.default.find({
+              _id: {
+                $in: user.roles
+              }
+            });
+
+          case 5:
+            roles = _context17.sent;
+            i = 0;
+
+          case 7:
+            if (!(i < roles.length)) {
+              _context17.next = 14;
+              break;
+            }
+
+            if (!(roles[i].name === 'Ejecutivo-MAF')) {
+              _context17.next = 11;
+              break;
+            }
+
+            next();
+            return _context17.abrupt("return");
+
+          case 11:
+            i++;
+            _context17.next = 7;
+            break;
+
+          case 14:
+            return _context17.abrupt("return", res.status(403).json({
+              message: 'Requiere permiso del Ejecutivo MAF'
+            }));
+
+          case 15:
+          case "end":
+            return _context17.stop();
+        }
+      }
+    }, _callee17);
+  }));
+
+  return function isExecutiveMaf(_x49, _x50, _x51) {
+    return _ref17.apply(this, arguments);
   };
 }();
 

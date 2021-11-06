@@ -83,6 +83,8 @@ var _tasacion = _interopRequireDefault(require("./tasacion.routes"));
 
 var _tecnico = _interopRequireDefault(require("./tecnico.routes"));
 
+var _aservicios = _interopRequireDefault(require("./aservicios.routes"));
+
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
   res.send('Api Swagger');
@@ -124,6 +126,7 @@ router.use('/jefatura-ventas', _jefaturaVentas.default);
 router.use('/status-maf-request', _statusMafRequest.default);
 router.use('/tasacion', _tasacion.default);
 router.use('/technical', _tecnico.default);
+router.use('/service-advisor', _aservicios.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

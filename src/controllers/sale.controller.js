@@ -212,9 +212,9 @@ export const deleteSaleById = async(req, res) => {
 }
 
 export const UnidadesByStatus = async(req, res) => {
-    const { estado, tramite } = req.body;
+    const { estado, tramite, sucursal } = req.body;
     try {
-        const query = await Sale.find().where({ estatus_venta: estado })
+        const query = await Sale.find({ estatus_venta: estado, pasoaTramite: tramite, sucursal_venta: sucursal }).sort({ fecha_cancelacion: 'desc' })
             .populate('vendedor')
             .populate('auto')
             .populate('cliente')
@@ -223,7 +223,7 @@ export const UnidadesByStatus = async(req, res) => {
             .populate('accesorios')
             .populate('empleado')
         if (query.length > 0) {
-            res.json(query);
+            res.json({ total: query.length, files: query });
         } else {
             return res.status(404).json({ message: `No existen Unidades ${estado}` })
         }

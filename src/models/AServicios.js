@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-const tecnicoSchema = new Schema({
+const aserviciosSchema = new Schema({
     name: { type: String },
     document: { type: String },
     cellphone: { type: String },
@@ -12,4 +12,4 @@ const tecnicoSchema = new Schema({
     versionKey: false
 });
 
-export default model('Tecnico', tecnicoSchema);
+export default model('AServicios', aserviciosSchema);

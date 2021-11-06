@@ -2,27 +2,33 @@ import { Schema, model } from 'mongoose'
 
 const seguroSchema = new Schema({
     //Cliente
-    cliente: { ref: 'Customer', type: Schema.Types.ObjectId, allowEmpty: true },
+    cliente: { ref: 'Customer', type: Schema.Types.ObjectId, default: null },
     //Venta
-    company: { type: String, default: 'Autonort Nor' },
+    company: { type: String },
     sucursal: { type: String },
-    fecha_registro: { type: Date, default: new Date().toISOString().substr(0, 10) },
+    fecha_registro: { type: Date },
     mes: { type: Number },
     status: { type: String },
+    isIngresado: { type: Boolean, default: true },
+    fechaRegistro: { type: Date, default: new Date() },
+    isProceso: { type: Boolean, default: false },
+    fechaProceso: { type: Date },
+    isEmitido: { type: Boolean, default: false },
+    fechaEmision: { type: Date },
     forma_pago: { type: String },
     cuotas: { type: Number, min: 1, max: 12 },
     fecha_emision: { type: Date },
     tipo_venta: { type: String },
-    area_venta: { type: String, default: 'Vehículo' },
+    area_venta: { type: String },
     poliza: { type: String },
-    vendedor: { type: String },
+    vendedor: { ref: 'Seller', type: Schema.Types.ObjectId },
     //Vehículo
     placa: { type: String },
     chasis: { type: String },
-    serie: { type: String },
     motor: { type: String },
     marca: { type: String },
     modelo: { type: String },
+    version: { type: String },
     anio: { type: String },
     uso: { type: String },
     //Aseguradora
@@ -36,7 +42,7 @@ const seguroSchema = new Schema({
     comision_seguro: { type: Number },
     comision_asesor: { type: Number },
     //Empleado
-    empleado: { ref: 'User', type: Schema.Types.ObjectId }
+    createdBy: { ref: 'User', type: Schema.Types.ObjectId }
 }, {
     timestamps: true,
     versionKey: false

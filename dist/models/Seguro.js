@@ -12,25 +12,45 @@ var seguroSchema = new _mongoose.Schema({
   cliente: {
     ref: 'Customer',
     type: _mongoose.Schema.Types.ObjectId,
-    allowEmpty: true
+    default: null
   },
   //Venta
   company: {
-    type: String,
-    default: 'Autonort Nor'
+    type: String
   },
   sucursal: {
     type: String
   },
   fecha_registro: {
-    type: Date,
-    default: new Date().toISOString().substr(0, 10)
+    type: Date
   },
   mes: {
     type: Number
   },
   status: {
     type: String
+  },
+  isIngresado: {
+    type: Boolean,
+    default: true
+  },
+  fechaRegistro: {
+    type: Date,
+    default: new Date()
+  },
+  isProceso: {
+    type: Boolean,
+    default: false
+  },
+  fechaProceso: {
+    type: Date
+  },
+  isEmitido: {
+    type: Boolean,
+    default: false
+  },
+  fechaEmision: {
+    type: Date
   },
   forma_pago: {
     type: String
@@ -47,23 +67,20 @@ var seguroSchema = new _mongoose.Schema({
     type: String
   },
   area_venta: {
-    type: String,
-    default: 'Vehículo'
+    type: String
   },
   poliza: {
     type: String
   },
   vendedor: {
-    type: String
+    ref: 'Seller',
+    type: _mongoose.Schema.Types.ObjectId
   },
   //Vehículo
   placa: {
     type: String
   },
   chasis: {
-    type: String
-  },
-  serie: {
     type: String
   },
   motor: {
@@ -73,6 +90,9 @@ var seguroSchema = new _mongoose.Schema({
     type: String
   },
   modelo: {
+    type: String
+  },
+  version: {
     type: String
   },
   anio: {
@@ -110,7 +130,7 @@ var seguroSchema = new _mongoose.Schema({
     type: Number
   },
   //Empleado
-  empleado: {
+  createdBy: {
     ref: 'User',
     type: _mongoose.Schema.Types.ObjectId
   }

@@ -39,7 +39,7 @@ export const getSellerBySucursal = async(req, res) => {
         if (query.length > 0) {
             res.json(query);
         } else {
-            return res.status(404).json({ message: 'No existen Vendedores en esta Sucursal' });
+            return res.status(404).json({ message: `No existen Vendedores en ${sucursal}` });
         }
     } catch (err) {
         console.log(err);
@@ -64,11 +64,12 @@ export const getSellerByName = async(req, res) => {
 }
 
 export const createSeller = async(req, res) => {
-    const { name, sucursal, document, telefono, email, estatus, empleado } = req.body;
+    const { name, sucursal, marca, document, telefono, email, estatus, empleado } = req.body;
     try {
         const newSeller = new Seller({
             name,
             sucursal,
+            marca,
             document,
             telefono,
             email,
@@ -88,11 +89,12 @@ export const createSeller = async(req, res) => {
 
 export const updateSellerById = async(req, res) => {
     const { sellerId } = req.params;
-    const { name, sucursal, document, telefono, email, estatus, empleado } = req.body;
+    const { name, sucursal, marca, document, telefono, email, estatus, empleado } = req.body;
     try {
         const updateSeller = await Seller.findByIdAndUpdate(sellerId, {
             name,
             sucursal,
+            marca,
             document,
             telefono,
             email,

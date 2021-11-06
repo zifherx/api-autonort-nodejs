@@ -11,11 +11,11 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _Tecnico = _interopRequireDefault(require("../models/Tecnico"));
+var _AServicios = _interopRequireDefault(require("../models/AServicios"));
 
-var tecnicoCtrl = {};
+var serviciosCtrl = {};
 
-tecnicoCtrl.getAll = /*#__PURE__*/function () {
+serviciosCtrl.getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee$(_context) {
@@ -24,7 +24,7 @@ tecnicoCtrl.getAll = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _Tecnico.default.find().sort({
+            return _AServicios.default.find().sort({
               name: 'asc'
             });
 
@@ -42,7 +42,7 @@ tecnicoCtrl.getAll = /*#__PURE__*/function () {
 
           case 8:
             return _context.abrupt("return", res.status(404).json({
-              message: 'No existen Técnicos'
+              message: 'No existen Asesores de Servicios'
             }));
 
           case 9:
@@ -70,17 +70,17 @@ tecnicoCtrl.getAll = /*#__PURE__*/function () {
   };
 }();
 
-tecnicoCtrl.getTecnicoById = /*#__PURE__*/function () {
+serviciosCtrl.getOneById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var tecnicoId, query;
+    var asesorId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            tecnicoId = req.params.tecnicoId;
+            asesorId = req.params.asesorId;
             _context2.prev = 1;
             _context2.next = 4;
-            return _Tecnico.default.findById(tecnicoId);
+            return _AServicios.default.findById(asesorId);
 
           case 4:
             query = _context2.sent;
@@ -96,7 +96,7 @@ tecnicoCtrl.getTecnicoById = /*#__PURE__*/function () {
 
           case 9:
             return _context2.abrupt("return", res.status(404).json({
-              message: 'No existe el Técnico'
+              message: 'No existe el Asesor de Servicio'
             }));
 
           case 10:
@@ -124,7 +124,7 @@ tecnicoCtrl.getTecnicoById = /*#__PURE__*/function () {
   };
 }();
 
-tecnicoCtrl.getTecnicoByActivo = /*#__PURE__*/function () {
+serviciosCtrl.getAllByActivo = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -133,7 +133,7 @@ tecnicoCtrl.getTecnicoByActivo = /*#__PURE__*/function () {
           case 0:
             _context3.prev = 0;
             _context3.next = 3;
-            return _Tecnico.default.find({
+            return _AServicios.default.find({
               status: true
             }).sort({
               name: 'asc'
@@ -153,7 +153,7 @@ tecnicoCtrl.getTecnicoByActivo = /*#__PURE__*/function () {
 
           case 8:
             return _context3.abrupt("return", res.status(404).json({
-              message: 'No hay Técnicos Activos'
+              message: 'No hay Asesores de Servicios Activos'
             }));
 
           case 9:
@@ -181,7 +181,7 @@ tecnicoCtrl.getTecnicoByActivo = /*#__PURE__*/function () {
   };
 }();
 
-tecnicoCtrl.createTecnico = /*#__PURE__*/function () {
+serviciosCtrl.createOne = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
     var _req$body, name, document, cellphone, email, sucursal, status, objeto, query;
 
@@ -191,7 +191,7 @@ tecnicoCtrl.createTecnico = /*#__PURE__*/function () {
           case 0:
             _req$body = req.body, name = _req$body.name, document = _req$body.document, cellphone = _req$body.cellphone, email = _req$body.email, sucursal = _req$body.sucursal, status = _req$body.status;
             _context4.prev = 1;
-            objeto = new _Tecnico.default({
+            objeto = new _AServicios.default({
               name: name,
               document: document,
               cellphone: cellphone,
@@ -207,7 +207,7 @@ tecnicoCtrl.createTecnico = /*#__PURE__*/function () {
 
             if (query) {
               res.json({
-                message: 'Técnico creado con éxito'
+                message: 'Asesor de Servicio creado con éxito'
               });
             }
 
@@ -235,19 +235,19 @@ tecnicoCtrl.createTecnico = /*#__PURE__*/function () {
   };
 }();
 
-tecnicoCtrl.updateTecnico = /*#__PURE__*/function () {
+serviciosCtrl.updatedOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, document, cellphone, email, sucursal, status, tecnicoId, query;
+    var _req$body2, name, document, cellphone, email, sucursal, status, asesorId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _req$body2 = req.body, name = _req$body2.name, document = _req$body2.document, cellphone = _req$body2.cellphone, email = _req$body2.email, sucursal = _req$body2.sucursal, status = _req$body2.status;
-            tecnicoId = req.params.tecnicoId;
+            asesorId = req.params.asesorId;
             _context5.prev = 2;
             _context5.next = 5;
-            return _Tecnico.default.findByIdAndUpdate(tecnicoId, {
+            return _AServicios.default.findByIdAndUpdate(asesorId, {
               name: name,
               document: document,
               cellphone: cellphone,
@@ -261,11 +261,11 @@ tecnicoCtrl.updateTecnico = /*#__PURE__*/function () {
 
             if (query) {
               res.json({
-                message: 'Técnico actualizado con éxito'
+                message: 'Asesor de Servicio actualizado con éxito'
               });
             } else {
               res.status(404).json({
-                message: 'No existe el Técnico a actualizar'
+                message: 'No existe el Asesor de Servicio a actualizar'
               });
             }
 
@@ -293,28 +293,28 @@ tecnicoCtrl.updateTecnico = /*#__PURE__*/function () {
   };
 }();
 
-tecnicoCtrl.deleteTecnico = /*#__PURE__*/function () {
+serviciosCtrl.deleteOneById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var tecnicoId, query;
+    var asesorId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            tecnicoId = req.params.tecnicoId;
+            asesorId = req.params.asesorId;
             _context6.prev = 1;
             _context6.next = 4;
-            return _Tecnico.default.findByIdAndDelete(tecnicoId);
+            return _AServicios.default.findByIdAndDelete(asesorId);
 
           case 4:
             query = _context6.sent;
 
             if (query) {
               res.json({
-                message: 'Técnico eliminado con éxito'
+                message: 'Asesor de Servicio eliminado con éxito'
               });
             } else {
               res.status(404).json({
-                message: 'No existe el Técnico a eliminar'
+                message: 'No existe el Asesor de Servicio a eliminar'
               });
             }
 
@@ -342,7 +342,7 @@ tecnicoCtrl.deleteTecnico = /*#__PURE__*/function () {
   };
 }();
 
-tecnicoCtrl.countAll = /*#__PURE__*/function () {
+serviciosCtrl.countAll = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee7$(_context7) {
@@ -351,7 +351,7 @@ tecnicoCtrl.countAll = /*#__PURE__*/function () {
           case 0:
             _context7.prev = 0;
             _context7.next = 3;
-            return _Tecnico.default.countDocuments();
+            return _AServicios.default.countDocuments();
 
           case 3:
             query = _context7.sent;
@@ -390,7 +390,7 @@ tecnicoCtrl.countAll = /*#__PURE__*/function () {
   };
 }();
 
-tecnicoCtrl.countByStatus = /*#__PURE__*/function () {
+serviciosCtrl.countByStatus = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
     var estado, query;
     return _regenerator.default.wrap(function _callee8$(_context8) {
@@ -400,7 +400,7 @@ tecnicoCtrl.countByStatus = /*#__PURE__*/function () {
             estado = req.body.estado;
             _context8.prev = 1;
             _context8.next = 4;
-            return _Tecnico.default.find({
+            return _AServicios.default.find({
               status: estado
             }).countDocuments();
 
@@ -441,7 +441,7 @@ tecnicoCtrl.countByStatus = /*#__PURE__*/function () {
   };
 }();
 
-tecnicoCtrl.getBySucursal = /*#__PURE__*/function () {
+serviciosCtrl.getBySucursal = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res) {
     var sucursal, query;
     return _regenerator.default.wrap(function _callee9$(_context9) {
@@ -451,7 +451,7 @@ tecnicoCtrl.getBySucursal = /*#__PURE__*/function () {
             sucursal = req.body.sucursal;
             _context9.prev = 1;
             _context9.next = 4;
-            return _Tecnico.default.find({
+            return _AServicios.default.find({
               sucursal: sucursal,
               status: true
             }).sort({
@@ -468,14 +468,14 @@ tecnicoCtrl.getBySucursal = /*#__PURE__*/function () {
 
             res.json({
               count: query.length,
-              tecnicos: query
+              asesores: query
             });
             _context9.next = 10;
             break;
 
           case 9:
             return _context9.abrupt("return", res.status(404).json({
-              message: "No Existen T\xE9cnicos en ".concat(sucursal)
+              message: "No Existen Asesores de Servicios en ".concat(sucursal)
             }));
 
           case 10:
@@ -503,6 +503,6 @@ tecnicoCtrl.getBySucursal = /*#__PURE__*/function () {
   };
 }();
 
-var _default = tecnicoCtrl;
+var _default = serviciosCtrl;
 exports.default = _default;
-//# sourceMappingURL=tecnico.controller.js.map
+//# sourceMappingURL=aservicios.controller.js.map

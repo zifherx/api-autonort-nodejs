@@ -66,7 +66,7 @@ var createVehicle = /*#__PURE__*/function () {
             _context.prev = 13;
             _context.t0 = _context["catch"](1);
             console.log(_context.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context.t0.message
             });
 
@@ -123,7 +123,7 @@ var getVehicles = /*#__PURE__*/function () {
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context2.t0.message
             });
 
@@ -179,7 +179,7 @@ var getVehicleById = /*#__PURE__*/function () {
             _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context3.t0.message
             });
 
@@ -237,7 +237,7 @@ var getVehicleByCodigo = /*#__PURE__*/function () {
             _context4.prev = 12;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context4.t0.message
             });
 
@@ -284,7 +284,7 @@ var getVehiculeByMarca = /*#__PURE__*/function () {
 
           case 9:
             return _context5.abrupt("return", res.status(404).json({
-              message: 'No existen Vehículos en esa Marca'
+              message: 'No existen Modelos en esa Marca'
             }));
 
           case 10:
@@ -295,7 +295,7 @@ var getVehiculeByMarca = /*#__PURE__*/function () {
             _context5.prev = 12;
             _context5.t0 = _context5["catch"](1);
             console.log(_context5.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context5.t0.message
             });
 
@@ -353,7 +353,7 @@ var getVehiculeByModelo = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context6.t0.message
             });
 
@@ -432,7 +432,7 @@ var updateVehicleById = /*#__PURE__*/function () {
             _context7.prev = 16;
             _context7.t0 = _context7["catch"](2);
             console.log(_context7.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context7.t0.message
             });
 
@@ -490,7 +490,7 @@ var deleteVehicleById = /*#__PURE__*/function () {
             _context8.prev = 12;
             _context8.t0 = _context8["catch"](1);
             console.log(_context8.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context8.t0.message
             });
 

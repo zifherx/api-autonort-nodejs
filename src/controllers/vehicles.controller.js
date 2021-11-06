@@ -20,7 +20,7 @@ export const createVehicle = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 
 }
@@ -36,7 +36,7 @@ export const getVehicles = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -51,7 +51,7 @@ export const getVehicleById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -66,22 +66,22 @@ export const getVehicleByCodigo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
 export const getVehiculeByMarca = async(req, res) => {
     const { marca } = req.body;
     try {
-        const query = await Vehicle.find({ marca });
+        const query = await Vehicle.find({ marca: marca });
         if (query.length > 0) {
             res.json(query);
         } else {
-            return res.status(404).json({ message: 'No existen Vehículos en esa Marca' })
+            return res.status(404).json({ message: 'No existen Modelos en esa Marca' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -96,7 +96,7 @@ export const getVehiculeByModelo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -114,7 +114,7 @@ export const updateVehicleById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -129,6 +129,6 @@ export const deleteVehicleById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }

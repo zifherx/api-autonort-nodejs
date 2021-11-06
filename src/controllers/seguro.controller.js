@@ -1,29 +1,32 @@
 import Customer from "../models/Customer";
 import Seguro from "../models/Seguro";
 import User from "../models/User";
+import Seller from "../models/Seller";
 
 export const getAll = async(req, res) => {
     try {
-        const query = await Seguro.find().populate("cliente").populate("empleado");
+        const query = await Seguro.find()
+            .populate({ path: 'cliente', select: 'name document' })
+            .populate({ path: 'vendedor', select: 'name document sucursal' })
+            .populate({ path: 'createdBy', select: 'name' })
         if (query.length > 0) {
-            res.json(query);
+            res.json({ total: query.length, seguros: query });
         } else {
             return res.status(404).json({ message: "No existen Seguros" });
         }
     } catch (err) {
         console.error(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 };
-
-export const getSeguroByActivo = async(req, res) => {};
 
 export const getSeguroById = async(req, res) => {
     const { seguroId } = req.params;
     try {
         const query = await Seguro.findById(seguroId)
-            .populate("cliente")
-            .populate("empleado");
+            .populate({ path: 'cliente', select: 'name document cellphone email' })
+            .populate({ path: 'vendedor', select: 'name document sucursal' })
+            .populate({ path: 'createdBy', select: 'name' })
         if (query) {
             res.json(query);
         } else {
@@ -31,7 +34,7 @@ export const getSeguroById = async(req, res) => {
         }
     } catch (err) {
         console.error(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 };
 
@@ -51,10 +54,10 @@ export const createSeguro = async(req, res) => {
         vendedor,
         placa,
         chasis,
-        serie,
         motor,
         marca,
         modelo,
+        version,
         anio,
         uso,
         asesor,
@@ -66,7 +69,7 @@ export const createSeguro = async(req, res) => {
         aseguradora,
         comision_seguro,
         comision_asesor,
-        empleado,
+        createdBy,
     } = req.body;
 
     try {
@@ -84,10 +87,10 @@ export const createSeguro = async(req, res) => {
             vendedor,
             placa,
             chasis,
-            serie,
             motor,
             marca,
             modelo,
+            version,
             anio,
             uso,
             asesor,
@@ -108,8 +111,15 @@ export const createSeguro = async(req, res) => {
             return res.status(404).json({ message: "No existe este cliente" });
         }
 
-        const foundEmployee = await User.find({ username: { $in: empleado } });
-        newObj.empleado = foundEmployee.map((b) => b._id);
+        const foundSeller = await Seller.find({ name: { $in: vendedor } });
+        newObj.vendedor = foundSeller.map(b => b._id);
+
+        if (!foundCliente.length > 0) {
+            return res.status(404).json({ message: "No existe este Vendedor" });
+        }
+
+        const foundEmployee = await User.find({ username: { $in: createdBy } });
+        newObj.createdBy = foundEmployee.map((c) => c._id);
 
         const objSaved = await newObj.save();
 
@@ -118,82 +128,27 @@ export const createSeguro = async(req, res) => {
         }
     } catch (err) {
         console.error(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 };
 
 export const updateSeguro = async(req, res) => {
     const { seguroId } = req.params;
     const {
-        cliente,
-        company,
-        sucursal,
-        mes,
         status,
-        forma_pago,
-        cuotas,
-        fecha_emision,
-        tipo_venta,
-        area_venta,
-        poliza,
-        vendedor,
-        placa,
-        chasis,
-        serie,
-        motor,
-        marca,
-        modelo,
-        anio,
-        uso,
-        asesor,
-        endoso,
-        entidad,
-        inicio_vigencia,
-        fin_vigencia,
-        suma_asegurada,
-        aseguradora,
-        comision_seguro,
-        comision_asesor,
-        empleado,
+        isProceso,
+        fechaProceso,
+        isEmitido,
+        fechaEmision
     } = req.body;
 
     try {
-        //Cliente
-        const foundCliente = await Customer.find({ name: { $in: cliente } });
-        //Empleado
-        const foundEmployee = await User.find({ username: { $in: empleado } });
-
         const updateObj = await Seguro.findByIdAndUpdate(seguroId, {
-            cliente: foundCliente.map((a) => a._id),
-            company,
-            sucursal,
-            mes,
             status,
-            forma_pago,
-            cuotas,
-            fecha_emision,
-            tipo_venta,
-            area_venta,
-            poliza,
-            vendedor,
-            placa,
-            chasis,
-            serie,
-            motor,
-            marca,
-            modelo,
-            anio,
-            uso,
-            asesor,
-            endoso,
-            entidad,
-            inicio_vigencia,
-            fin_vigencia,
-            suma_asegurada,
-            aseguradora,
-            comision_seguro,
-            comision_asesor,
-            empleado: foundEmployee.map((b) => b._id),
+            isProceso,
+            fechaProceso,
+            isEmitido,
+            fechaEmision
         });
 
         if (updateObj) {
@@ -203,7 +158,7 @@ export const updateSeguro = async(req, res) => {
         }
     } catch (err) {
         console.error(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 };
 
@@ -220,6 +175,29 @@ export const deleteSeguro = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 };
+
+export const countAll = async(req, res) => {
+    try {
+        const query = await Seguro.countDocuments();
+        if (query >= 0) {
+            res.json({ count: query });
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const countByStatus = async(req, res) => {
+    const { estado, start, end } = req.body;
+    try {
+        const query = await Seguro.find({ status: estado, fechaRegistro: { $gte: new Date(start), $lte: new Date(end) } }).countDocuments();
+        if (query >= 0) {
+            res.json({ count: query });
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}

@@ -565,17 +565,21 @@ exports.deleteSaleById = deleteSaleById;
 
 var UnidadesByStatus = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var _req$body3, estado, tramite, query;
+    var _req$body3, estado, tramite, sucursal, query;
 
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            _req$body3 = req.body, estado = _req$body3.estado, tramite = _req$body3.tramite;
+            _req$body3 = req.body, estado = _req$body3.estado, tramite = _req$body3.tramite, sucursal = _req$body3.sucursal;
             _context6.prev = 1;
             _context6.next = 4;
-            return _Sale.default.find().where({
-              estatus_venta: estado
+            return _Sale.default.find({
+              estatus_venta: estado,
+              pasoaTramite: tramite,
+              sucursal_venta: sucursal
+            }).sort({
+              fecha_cancelacion: 'desc'
             }).populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
 
           case 4:
@@ -586,7 +590,10 @@ var UnidadesByStatus = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total: query.length,
+              files: query
+            });
             _context6.next = 10;
             break;
 
