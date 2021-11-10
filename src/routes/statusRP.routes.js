@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as statusRP from '../controllers/StatusRP.controller'
+import * as statusRP from '../controllers/statusRP.controller'
 import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 
 const router = Router();

@@ -9,7 +9,7 @@ exports.default = void 0;
 
 var _express = require("express");
 
-var statusRP = _interopRequireWildcard(require("../controllers/StatusRP.controller"));
+var statusRP = _interopRequireWildcard(require("../controllers/statusRP.controller"));
 
 var _middlewares = require("../middlewares");
 
