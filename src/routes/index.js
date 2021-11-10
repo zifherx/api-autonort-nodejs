@@ -33,6 +33,8 @@ import aseguradoraRoutes from './aseguradora.routes'
 import operacionRoutes from './operacion.routes'
 import goalsRoutes from './goals.routes'
 import statusFileRoutes from './statusFile.routes'
+import statusRPRoutes from './statusRP.routes'
+import statusAAPRoutes from './statusAAP.routes'
 import mafRoutes from './maf.routes'
 import jefaturaVentasRoutes from './jefaturaVentas.routes'
 import statusMafRequestRoutes from './statusMafRequest.routes'
@@ -76,6 +78,8 @@ router.use('/aseguradora', aseguradoraRoutes);
 router.use('/operacion', operacionRoutes);
 router.use('/goals', goalsRoutes);
 router.use('/status-file', statusFileRoutes);
+router.use('/status-rp', statusRPRoutes);
+router.use('/status-aap', statusAAPRoutes);
 router.use('/maf', mafRoutes)
 router.use('/jefatura-ventas', jefaturaVentasRoutes);
 router.use('/status-maf-request', statusMafRequestRoutes);

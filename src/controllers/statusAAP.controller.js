@@ -1,10 +1,10 @@
-import StatusFile from '../models/StatusFile'
+import StatusAAP from '../models/StatusAAP'
 
 export const getAll = async(req, res) => {
     try {
-        const objeto = await StatusFile.find().sort({ value: 'asc' });
-        if (objeto.length > 0) {
-            res.json(objeto);
+        const query = await StatusAAP.find().sort({ value: 'asc' });
+        if (query.length > 0) {
+            res.json(query);
         } else {
             return res.status(404).json({ message: 'No existen Estados' });
         }
@@ -14,12 +14,12 @@ export const getAll = async(req, res) => {
     }
 }
 
-export const getStatusFileById = async(req, res) => {
-    const { statusFileId } = req.params
+export const getStatusAAPById = async(req, res) => {
+    const { statusAAPId } = req.params
     try {
-        const objeto = await StatusFile.findById(statusFileId);
-        if (objeto) {
-            res.json(objeto);
+        const query = await StatusAAP.findById(statusAAPId);
+        if (query) {
+            res.json(query);
         } else {
             return res.status(404).json({ message: 'No existe el Estado' });
         }
@@ -29,11 +29,11 @@ export const getStatusFileById = async(req, res) => {
     }
 }
 
-export const getStatusFileByActivo = async(req, res) => {
+export const getStatusAAPByActivo = async(req, res) => {
     try {
-        const objeto = await StatusFile.find({ status: true }).sort({ value: 'asc' });
-        if (objeto.length > 0) {
-            res.json(objeto);
+        const query = await StatusAAP.find({ status: true }).sort({ value: 'asc' });
+        if (query.length > 0) {
+            res.json(query);
         } else {
             return res.status(404).json({ message: 'No existen Estados activos' });
         }
@@ -43,12 +43,12 @@ export const getStatusFileByActivo = async(req, res) => {
     }
 }
 
-export const createStatusFile = async(req, res) => {
+export const createStatusAAP = async(req, res) => {
     const { name, value, status } = req.body;
     try {
-        const nuevo = new StatusFile({ name, value, status });
-        const objeto = await nuevo.save()
-        if (objeto) {
+        const nuevo = new StatusAAP({ name, value, status });
+        const query = await nuevo.save()
+        if (query) {
             res.json({ message: 'Estado creado con éxito' });
         }
     } catch (err) {
@@ -57,12 +57,12 @@ export const createStatusFile = async(req, res) => {
     }
 }
 
-export const updateStatusFile = async(req, res) => {
+export const updateStatusAAP = async(req, res) => {
     const { name, value, status } = req.body;
-    const { statusFileId } = req.params;
+    const { statusAAPId } = req.params;
     try {
-        const objeto = await StatusFile.findByIdAndUpdate(statusFileId, { name, value, status });
-        if (objeto) {
+        const query = await StatusAAP.findByIdAndUpdate(statusAAPId, { name, value, status });
+        if (query) {
             res.json({ message: 'Estado actualizado con éxito' });
         } else {
             res.status(404).json({ message: 'No existe Estado a actualizar' });
@@ -73,11 +73,11 @@ export const updateStatusFile = async(req, res) => {
     }
 }
 
-export const deleteStatusFile = async(req, res) => {
-    const { statusFileId } = req.params;
+export const deleteStatusAAP = async(req, res) => {
+    const { statusAAPId } = req.params;
     try {
-        const objeto = await StatusFile.findByIdAndDelete(statusFileId);
-        if (objeto) {
+        const query = await StatusAAP.findByIdAndDelete(statusAAPId);
+        if (query) {
             res.json({ message: 'Estado eliminado con éxito' });
         } else {
             return res.status(404).json({ message: 'No existe Estado a eliminar' });

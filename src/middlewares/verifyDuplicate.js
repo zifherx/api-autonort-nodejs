@@ -28,6 +28,8 @@ import StatusFile from '../models/StatusFile'
 import StatusMafRequest from '../models/StatusMafRequest'
 import Tecnico from '../models/Tecnico'
 import AServicios from '../models/AServicios'
+import StatusAAP from '../models/StatusAAP'
+import StatusRP from '../models/StatusRP'
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -289,6 +291,24 @@ export const checkDuplicateStatusFile = async(req, res, next) => {
     const query = await StatusFile.findOne({ name: name });
 
     if (query) return res.status(201).json({ message: 'El Status File ya existe' });
+
+    next();
+}
+
+export const checkDuplicateStatusAAP = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await StatusAAP.findOne({ name: name });
+
+    if (query) return res.status(201).json({ message: 'El Status AAP ya existe' });
+
+    next();
+}
+
+export const checkDuplicateStatusRP = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await StatusRP.findOne({ name: name });
+
+    if (query) return res.status(201).json({ message: 'El Status RP ya existe' });
 
     next();
 }

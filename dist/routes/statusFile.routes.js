@@ -21,11 +21,11 @@ router.get('/activos', statusFileCtrl.getStatusFileByActivo); //Obtener Status F
 
 router.get('/:statusFileId', statusFileCtrl.getStatusFileById); //Crear Status File
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateStatusFile], statusFileCtrl.createStatusFile); //Actualizar Status File
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifyDuplicate.checkDuplicateStatusFile], statusFileCtrl.createStatusFile); //Actualizar Status File
 
-router.patch('/:statusFileId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], statusFileCtrl.updateStatusFile); //Eliminar Status File
+router.patch('/:statusFileId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], statusFileCtrl.updateStatusFile); //Eliminar Status File
 
-router.delete('/:statusFileId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], statusFileCtrl.deleteStatusFile);
+router.delete('/:statusFileId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], statusFileCtrl.deleteStatusFile);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=statusFile.routes.js.map

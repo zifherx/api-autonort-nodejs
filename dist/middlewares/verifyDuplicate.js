@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.checkDuplicateAServicios = exports.checkDuplicateTecnico = exports.checkDuplicateStatusMafRequest = exports.checkDuplicateStatusFile = exports.checkDuplicateExpediente = exports.checkDuplicateTramite = exports.checkDuplicateAccesorio = exports.checkDuplicateVehiculo = exports.checkDuplicateAdicional = exports.checkDuplicateCampania = exports.checkDuplicateCliente = exports.checkDuplicateVendedor = exports.checkDuplicateEndoso = exports.checkDuplicateConexo = exports.checkDuplicateAnio = exports.checkDuplicateChasis = exports.checkDuplicateUbicacion = exports.checkDuplicateFinanciamiento = exports.checkDuplicateSustento = exports.checkDuplicateSucursal = exports.checkDuplicateSituacion = exports.checkDuplicateCondicion = exports.checkDuplicateMarca = exports.checkDuplicateSectorista = exports.checkDuplicateAseguradora = exports.checkDuplicateBanco = exports.checkDuplicateColor = exports.checkDuplicateModelo = exports.checkDuplicateUser = exports.checkDuplicateRole = void 0;
+exports.checkDuplicateAServicios = exports.checkDuplicateTecnico = exports.checkDuplicateStatusMafRequest = exports.checkDuplicateStatusRP = exports.checkDuplicateStatusAAP = exports.checkDuplicateStatusFile = exports.checkDuplicateExpediente = exports.checkDuplicateTramite = exports.checkDuplicateAccesorio = exports.checkDuplicateVehiculo = exports.checkDuplicateAdicional = exports.checkDuplicateCampania = exports.checkDuplicateCliente = exports.checkDuplicateVendedor = exports.checkDuplicateEndoso = exports.checkDuplicateConexo = exports.checkDuplicateAnio = exports.checkDuplicateChasis = exports.checkDuplicateUbicacion = exports.checkDuplicateFinanciamiento = exports.checkDuplicateSustento = exports.checkDuplicateSucursal = exports.checkDuplicateSituacion = exports.checkDuplicateCondicion = exports.checkDuplicateMarca = exports.checkDuplicateSectorista = exports.checkDuplicateAseguradora = exports.checkDuplicateBanco = exports.checkDuplicateColor = exports.checkDuplicateModelo = exports.checkDuplicateUser = exports.checkDuplicateRole = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -70,6 +70,10 @@ var _StatusMafRequest = _interopRequireDefault(require("../models/StatusMafReque
 var _Tecnico = _interopRequireDefault(require("../models/Tecnico"));
 
 var _AServicios = _interopRequireDefault(require("../models/AServicios"));
+
+var _StatusAAP = _interopRequireDefault(require("../models/StatusAAP"));
+
+var _StatusRP = _interopRequireDefault(require("../models/StatusRP"));
 
 var checkDuplicateRole = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res, next) {
@@ -1309,7 +1313,7 @@ var checkDuplicateStatusFile = /*#__PURE__*/function () {
 
 exports.checkDuplicateStatusFile = checkDuplicateStatusFile;
 
-var checkDuplicateStatusMafRequest = /*#__PURE__*/function () {
+var checkDuplicateStatusAAP = /*#__PURE__*/function () {
   var _ref28 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee28(req, res, next) {
     var name, query;
     return _regenerator.default.wrap(function _callee28$(_context28) {
@@ -1318,7 +1322,7 @@ var checkDuplicateStatusMafRequest = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context28.next = 3;
-            return _StatusMafRequest.default.findOne({
+            return _StatusAAP.default.findOne({
               name: name
             });
 
@@ -1331,7 +1335,7 @@ var checkDuplicateStatusMafRequest = /*#__PURE__*/function () {
             }
 
             return _context28.abrupt("return", res.status(201).json({
-              message: 'El Estado Maf ya existe'
+              message: 'El Status AAP ya existe'
             }));
 
           case 6:
@@ -1345,14 +1349,14 @@ var checkDuplicateStatusMafRequest = /*#__PURE__*/function () {
     }, _callee28);
   }));
 
-  return function checkDuplicateStatusMafRequest(_x82, _x83, _x84) {
+  return function checkDuplicateStatusAAP(_x82, _x83, _x84) {
     return _ref28.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateStatusMafRequest = checkDuplicateStatusMafRequest;
+exports.checkDuplicateStatusAAP = checkDuplicateStatusAAP;
 
-var checkDuplicateTecnico = /*#__PURE__*/function () {
+var checkDuplicateStatusRP = /*#__PURE__*/function () {
   var _ref29 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee29(req, res, next) {
     var name, query;
     return _regenerator.default.wrap(function _callee29$(_context29) {
@@ -1361,7 +1365,7 @@ var checkDuplicateTecnico = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context29.next = 3;
-            return _Tecnico.default.findOne({
+            return _StatusRP.default.findOne({
               name: name
             });
 
@@ -1374,7 +1378,7 @@ var checkDuplicateTecnico = /*#__PURE__*/function () {
             }
 
             return _context29.abrupt("return", res.status(201).json({
-              message: 'El Técnico Evaluador ya existe'
+              message: 'El Status RP ya existe'
             }));
 
           case 6:
@@ -1388,14 +1392,14 @@ var checkDuplicateTecnico = /*#__PURE__*/function () {
     }, _callee29);
   }));
 
-  return function checkDuplicateTecnico(_x85, _x86, _x87) {
+  return function checkDuplicateStatusRP(_x85, _x86, _x87) {
     return _ref29.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateTecnico = checkDuplicateTecnico;
+exports.checkDuplicateStatusRP = checkDuplicateStatusRP;
 
-var checkDuplicateAServicios = /*#__PURE__*/function () {
+var checkDuplicateStatusMafRequest = /*#__PURE__*/function () {
   var _ref30 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee30(req, res, next) {
     var name, query;
     return _regenerator.default.wrap(function _callee30$(_context30) {
@@ -1404,7 +1408,7 @@ var checkDuplicateAServicios = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context30.next = 3;
-            return _AServicios.default.findOne({
+            return _StatusMafRequest.default.findOne({
               name: name
             });
 
@@ -1417,7 +1421,7 @@ var checkDuplicateAServicios = /*#__PURE__*/function () {
             }
 
             return _context30.abrupt("return", res.status(201).json({
-              message: 'El Asesor de Servicios ya existe'
+              message: 'El Estado Maf ya existe'
             }));
 
           case 6:
@@ -1431,8 +1435,94 @@ var checkDuplicateAServicios = /*#__PURE__*/function () {
     }, _callee30);
   }));
 
-  return function checkDuplicateAServicios(_x88, _x89, _x90) {
+  return function checkDuplicateStatusMafRequest(_x88, _x89, _x90) {
     return _ref30.apply(this, arguments);
+  };
+}();
+
+exports.checkDuplicateStatusMafRequest = checkDuplicateStatusMafRequest;
+
+var checkDuplicateTecnico = /*#__PURE__*/function () {
+  var _ref31 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee31(req, res, next) {
+    var name, query;
+    return _regenerator.default.wrap(function _callee31$(_context31) {
+      while (1) {
+        switch (_context31.prev = _context31.next) {
+          case 0:
+            name = req.body.name;
+            _context31.next = 3;
+            return _Tecnico.default.findOne({
+              name: name
+            });
+
+          case 3:
+            query = _context31.sent;
+
+            if (!query) {
+              _context31.next = 6;
+              break;
+            }
+
+            return _context31.abrupt("return", res.status(201).json({
+              message: 'El Técnico Evaluador ya existe'
+            }));
+
+          case 6:
+            next();
+
+          case 7:
+          case "end":
+            return _context31.stop();
+        }
+      }
+    }, _callee31);
+  }));
+
+  return function checkDuplicateTecnico(_x91, _x92, _x93) {
+    return _ref31.apply(this, arguments);
+  };
+}();
+
+exports.checkDuplicateTecnico = checkDuplicateTecnico;
+
+var checkDuplicateAServicios = /*#__PURE__*/function () {
+  var _ref32 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee32(req, res, next) {
+    var name, query;
+    return _regenerator.default.wrap(function _callee32$(_context32) {
+      while (1) {
+        switch (_context32.prev = _context32.next) {
+          case 0:
+            name = req.body.name;
+            _context32.next = 3;
+            return _AServicios.default.findOne({
+              name: name
+            });
+
+          case 3:
+            query = _context32.sent;
+
+            if (!query) {
+              _context32.next = 6;
+              break;
+            }
+
+            return _context32.abrupt("return", res.status(201).json({
+              message: 'El Asesor de Servicios ya existe'
+            }));
+
+          case 6:
+            next();
+
+          case 7:
+          case "end":
+            return _context32.stop();
+        }
+      }
+    }, _callee32);
+  }));
+
+  return function checkDuplicateAServicios(_x94, _x95, _x96) {
+    return _ref32.apply(this, arguments);
   };
 }();
 

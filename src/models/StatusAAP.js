@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-const statusFileSchema = new Schema({
+const statusAAP = new Schema({
     name: { type: String },
     value: { type: Number },
     status: { type: Boolean },
@@ -9,4 +9,4 @@ const statusFileSchema = new Schema({
     versionKey: false
 });
 
-export default model('StatusFile', statusFileSchema);
+export default model('StatusAAP', statusAAP);

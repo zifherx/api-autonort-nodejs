@@ -14,12 +14,12 @@ router.get('/activos', statusFileCtrl.getStatusFileByActivo);
 router.get('/:statusFileId', statusFileCtrl.getStatusFileById);
 
 //Crear Status File
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateStatusFile], statusFileCtrl.createStatusFile);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateStatusFile], statusFileCtrl.createStatusFile);
 
 //Actualizar Status File
-router.patch('/:statusFileId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], statusFileCtrl.updateStatusFile);
+router.patch('/:statusFileId', [authJwt.verifyToken, authJwt.isAdmin], statusFileCtrl.updateStatusFile);
 
 //Eliminar Status File
-router.delete('/:statusFileId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], statusFileCtrl.deleteStatusFile);
+router.delete('/:statusFileId', [authJwt.verifyToken, authJwt.isAdmin], statusFileCtrl.deleteStatusFile);
 
 export default router;

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isExecutiveMaf = exports.isVendedor = exports.isChiefEPDPorAdmin = exports.isChiefEPDP = exports.isTasador = exports.isTasadororChiefEPDP = exports.isConexosOrADVOrVendedorOrAdmin = exports.isConexosOrADV = exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdvorAdmin = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
+exports.isExecutiveMaf = exports.isVendedor = exports.isChiefEPDPorAdmin = exports.isChiefEPDP = exports.isTasador = exports.isTasadororChiefEPDP = exports.isConexosOrADVOrVendedorOrEPDPOrAdmin = exports.isConexosOrADV = exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdvorAdmin = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -657,7 +657,7 @@ var isConexosOrADV = /*#__PURE__*/function () {
 
 exports.isConexosOrADV = isConexosOrADV;
 
-var isConexosOrADVOrVendedorOrAdmin = /*#__PURE__*/function () {
+var isConexosOrADVOrVendedorOrEPDPOrAdmin = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res, next) {
     var user, roles, i;
     return _regenerator.default.wrap(function _callee11$(_context11) {
@@ -686,7 +686,7 @@ var isConexosOrADVOrVendedorOrAdmin = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Vendedor' || roles[i].name === 'Administrador')) {
+            if (!(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Vendedor' || roles[i].name === 'Administrador' || roles[i].name === 'Jefe-EPDP' || roles[i].name === 'Tasador')) {
               _context11.next = 11;
               break;
             }
@@ -701,7 +701,7 @@ var isConexosOrADVOrVendedorOrAdmin = /*#__PURE__*/function () {
 
           case 14:
             return _context11.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Asistente-Conexos || Jefe ADV || Vendedor || Administrador'
+              message: 'Requiere permiso del Asistente-Conexos || Jefe-ADV || Vendedor || Administrador || Jefe-EPDP || Tasador'
             }));
 
           case 15:
@@ -712,12 +712,12 @@ var isConexosOrADVOrVendedorOrAdmin = /*#__PURE__*/function () {
     }, _callee11);
   }));
 
-  return function isConexosOrADVOrVendedorOrAdmin(_x31, _x32, _x33) {
+  return function isConexosOrADVOrVendedorOrEPDPOrAdmin(_x31, _x32, _x33) {
     return _ref11.apply(this, arguments);
   };
 }();
 
-exports.isConexosOrADVOrVendedorOrAdmin = isConexosOrADVOrVendedorOrAdmin;
+exports.isConexosOrADVOrVendedorOrEPDPOrAdmin = isConexosOrADVOrVendedorOrEPDPOrAdmin;
 
 var isTasadororChiefEPDP = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res, next) {

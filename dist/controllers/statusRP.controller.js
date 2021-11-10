@@ -5,36 +5,36 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteStatusFile = exports.updateStatusFile = exports.createStatusFile = exports.getStatusFileByActivo = exports.getStatusFileById = exports.getAll = void 0;
+exports.deleteStatusRP = exports.updateStatusRP = exports.createStatusRP = exports.getStatusRPByActivo = exports.getStatusRPById = exports.getAll = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _StatusFile = _interopRequireDefault(require("../models/StatusFile"));
+var _StatusRP = _interopRequireDefault(require("../models/StatusRP"));
 
 var getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var objeto;
+    var query;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _StatusFile.default.find().sort({
+            return _StatusRP.default.find().sort({
               value: 'asc'
             });
 
           case 3:
-            objeto = _context.sent;
+            query = _context.sent;
 
-            if (!(objeto.length > 0)) {
+            if (!(query.length > 0)) {
               _context.next = 8;
               break;
             }
 
-            res.json(objeto);
+            res.json(query);
             _context.next = 9;
             break;
 
@@ -70,27 +70,27 @@ var getAll = /*#__PURE__*/function () {
 
 exports.getAll = getAll;
 
-var getStatusFileById = /*#__PURE__*/function () {
+var getStatusRPById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var statusFileId, objeto;
+    var statusRPId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            statusFileId = req.params.statusFileId;
+            statusRPId = req.params.statusRPId;
             _context2.prev = 1;
             _context2.next = 4;
-            return _StatusFile.default.findById(statusFileId);
+            return _StatusRP.default.findById(statusRPId);
 
           case 4:
-            objeto = _context2.sent;
+            query = _context2.sent;
 
-            if (!objeto) {
+            if (!query) {
               _context2.next = 9;
               break;
             }
 
-            res.json(objeto);
+            res.json(query);
             _context2.next = 10;
             break;
 
@@ -119,37 +119,37 @@ var getStatusFileById = /*#__PURE__*/function () {
     }, _callee2, null, [[1, 12]]);
   }));
 
-  return function getStatusFileById(_x3, _x4) {
+  return function getStatusRPById(_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getStatusFileById = getStatusFileById;
+exports.getStatusRPById = getStatusRPById;
 
-var getStatusFileByActivo = /*#__PURE__*/function () {
+var getStatusRPByActivo = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var objeto;
+    var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.prev = 0;
             _context3.next = 3;
-            return _StatusFile.default.find({
+            return _StatusRP.default.find({
               status: true
             }).sort({
               value: 'asc'
             });
 
           case 3:
-            objeto = _context3.sent;
+            query = _context3.sent;
 
-            if (!(objeto.length > 0)) {
+            if (!(query.length > 0)) {
               _context3.next = 8;
               break;
             }
 
-            res.json(objeto);
+            res.json(query);
             _context3.next = 9;
             break;
 
@@ -178,16 +178,16 @@ var getStatusFileByActivo = /*#__PURE__*/function () {
     }, _callee3, null, [[0, 11]]);
   }));
 
-  return function getStatusFileByActivo(_x5, _x6) {
+  return function getStatusRPByActivo(_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-exports.getStatusFileByActivo = getStatusFileByActivo;
+exports.getStatusRPByActivo = getStatusRPByActivo;
 
-var createStatusFile = /*#__PURE__*/function () {
+var createStatusRP = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, value, status, nuevo, objeto;
+    var _req$body, name, value, status, nuevo, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
@@ -195,7 +195,7 @@ var createStatusFile = /*#__PURE__*/function () {
           case 0:
             _req$body = req.body, name = _req$body.name, value = _req$body.value, status = _req$body.status;
             _context4.prev = 1;
-            nuevo = new _StatusFile.default({
+            nuevo = new _StatusRP.default({
               name: name,
               value: value,
               status: status
@@ -204,9 +204,9 @@ var createStatusFile = /*#__PURE__*/function () {
             return nuevo.save();
 
           case 5:
-            objeto = _context4.sent;
+            query = _context4.sent;
 
-            if (objeto) {
+            if (query) {
               res.json({
                 message: 'Estado creado con éxito'
               });
@@ -231,35 +231,35 @@ var createStatusFile = /*#__PURE__*/function () {
     }, _callee4, null, [[1, 9]]);
   }));
 
-  return function createStatusFile(_x7, _x8) {
+  return function createStatusRP(_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-exports.createStatusFile = createStatusFile;
+exports.createStatusRP = createStatusRP;
 
-var updateStatusFile = /*#__PURE__*/function () {
+var updateStatusRP = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, value, status, statusFileId, objeto;
+    var _req$body2, name, value, status, statusRPId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _req$body2 = req.body, name = _req$body2.name, value = _req$body2.value, status = _req$body2.status;
-            statusFileId = req.params.statusFileId;
+            statusRPId = req.params.statusRPId;
             _context5.prev = 2;
             _context5.next = 5;
-            return _StatusFile.default.findByIdAndUpdate(statusFileId, {
+            return _StatusRP.default.findByIdAndUpdate(statusRPId, {
               name: name,
               value: value,
               status: status
             });
 
           case 5:
-            objeto = _context5.sent;
+            query = _context5.sent;
 
-            if (objeto) {
+            if (query) {
               res.json({
                 message: 'Estado actualizado con éxito'
               });
@@ -288,29 +288,29 @@ var updateStatusFile = /*#__PURE__*/function () {
     }, _callee5, null, [[2, 9]]);
   }));
 
-  return function updateStatusFile(_x9, _x10) {
+  return function updateStatusRP(_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.updateStatusFile = updateStatusFile;
+exports.updateStatusRP = updateStatusRP;
 
-var deleteStatusFile = /*#__PURE__*/function () {
+var deleteStatusRP = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var statusFileId, objeto;
+    var statusRPId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            statusFileId = req.params.statusFileId;
+            statusRPId = req.params.statusRPId;
             _context6.prev = 1;
             _context6.next = 4;
-            return _StatusFile.default.findByIdAndDelete(statusFileId);
+            return _StatusRP.default.findByIdAndDelete(statusRPId);
 
           case 4:
-            objeto = _context6.sent;
+            query = _context6.sent;
 
-            if (!objeto) {
+            if (!query) {
               _context6.next = 9;
               break;
             }
@@ -346,10 +346,10 @@ var deleteStatusFile = /*#__PURE__*/function () {
     }, _callee6, null, [[1, 12]]);
   }));
 
-  return function deleteStatusFile(_x11, _x12) {
+  return function deleteStatusRP(_x11, _x12) {
     return _ref6.apply(this, arguments);
   };
 }();
 
-exports.deleteStatusFile = deleteStatusFile;
-//# sourceMappingURL=statusFile.controller.js.map
+exports.deleteStatusRP = deleteStatusRP;
+//# sourceMappingURL=statusRP.controller.js.map

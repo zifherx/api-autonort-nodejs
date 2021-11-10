@@ -9,6 +9,9 @@ var _mongoose = require("mongoose");
 
 var recordSchema = new _mongoose.Schema({
   //Inmatriculados
+  sucursal_tramite: {
+    type: String
+  },
   fecha_recepcion: {
     type: Date
   },
@@ -18,11 +21,37 @@ var recordSchema = new _mongoose.Schema({
   statusFile: {
     type: String
   },
-  fecha_devolucion_vendedor: {
+  isIngresado: {
+    type: Boolean,
+    default: true
+  },
+  isPendienteFirma: {
+    type: Boolean,
+    default: false
+  },
+  fechaPendienteFirma: {
     type: Date
   },
-  hora_devolucion_vendedor: {
-    type: String
+  isFirmado: {
+    type: Boolean,
+    default: false
+  },
+  fechaFirmado: {
+    type: Date
+  },
+  isLegalizado: {
+    type: Boolean,
+    default: false
+  },
+  fechaLegalizado: {
+    type: Date
+  },
+  isFinalizado: {
+    type: Boolean,
+    default: false
+  },
+  fechaFinalizado: {
+    type: Date
   },
   observaciones_file: {
     type: String
@@ -51,6 +80,9 @@ var recordSchema = new _mongoose.Schema({
   observaciones_registros: {
     type: String
   },
+  motivo_observacion: {
+    type: String
+  },
   num_placa: {
     type: String
   },
@@ -65,10 +97,6 @@ var recordSchema = new _mongoose.Schema({
     type: String
   },
   fecha_entrega_placa_recepcion: {
-    type: Date
-  },
-  //Cliente
-  fecha_entrega_cliente: {
     type: Date
   },
   //Empleado

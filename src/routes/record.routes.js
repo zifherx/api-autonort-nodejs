@@ -10,16 +10,19 @@ router.get('/', recordCtrl.getRecords);
 //Obtener Inmatriculado por Id
 router.get('/:recordId', recordCtrl.getRecordById);
 
+//Get Tramites by Sucursal
+router.post('/sucursal', recordCtrl.getRecordBySucursal);
+
 //Obtener Inmatriculado por Status
-router.post('/estado', recordCtrl.getRecordByStatus);
+router.post('/estado', recordCtrl.getRecordByTarjetayPlaca);
 
 //Crear Inmatriculado
-router.post('/', [authJwt.verifyToken, authJwt.isInmatriculadosAsistant, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateTramite], recordCtrl.createRecord);
+router.post('/', [authJwt.verifyToken, authJwt.isInmatriculadosAsistant, verifyDuplicate.checkDuplicateTramite], recordCtrl.createRecord);
 
 //Actualizar Inmatriculado
-router.patch('/:recordId', [authJwt.verifyToken, authJwt.isInmatriculadosAsistant, verifySignup.checkRolesExist], recordCtrl.updateRecordById);
+router.patch('/:recordId', [authJwt.verifyToken, authJwt.isInmatriculadosAsistant], recordCtrl.updateRecordById);
 
 //Remover Inmatriculado
-router.delete('/:recordId', [authJwt.verifyToken, authJwt.isInmatriculadosAsistant, verifySignup.checkRolesExist], recordCtrl.deleteRecordById);
+router.delete('/:recordId', [authJwt.verifyToken, authJwt.isInmatriculadosAsistant], recordCtrl.deleteRecordById);
 
 export default router;

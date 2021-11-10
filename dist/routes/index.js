@@ -73,6 +73,10 @@ var _goals = _interopRequireDefault(require("./goals.routes"));
 
 var _statusFile = _interopRequireDefault(require("./statusFile.routes"));
 
+var _statusRP = _interopRequireDefault(require("./statusRP.routes"));
+
+var _statusAAP = _interopRequireDefault(require("./statusAAP.routes"));
+
 var _maf = _interopRequireDefault(require("./maf.routes"));
 
 var _jefaturaVentas = _interopRequireDefault(require("./jefaturaVentas.routes"));
@@ -121,6 +125,8 @@ router.use('/aseguradora', _aseguradora.default);
 router.use('/operacion', _operacion.default);
 router.use('/goals', _goals.default);
 router.use('/status-file', _statusFile.default);
+router.use('/status-rp', _statusRP.default);
+router.use('/status-aap', _statusAAP.default);
 router.use('/maf', _maf.default);
 router.use('/jefatura-ventas', _jefaturaVentas.default);
 router.use('/status-maf-request', _statusMafRequest.default);

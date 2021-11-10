@@ -4,11 +4,10 @@ import User from "../models/User";
 
 export const createRecord = async(req, res) => {
     const {
+        sucursal_tramite,
         fecha_recepcion,
         hora_recepcion,
         statusFile,
-        fecha_devolucion_vendedor,
-        hora_devolucion_vendedor,
         observaciones_file,
         sales,
         fecha_ingreso_file,
@@ -22,17 +21,15 @@ export const createRecord = async(req, res) => {
         fecha_tramite_placa,
         status_placa,
         fecha_entrega_placa_recepcion,
-        fecha_entrega_cliente,
         empleado,
     } = req.body;
 
     try {
         const nuevoInmatriculado = new Record({
+            sucursal_tramite,
             fecha_recepcion,
             hora_recepcion,
             statusFile,
-            fecha_devolucion_vendedor,
-            hora_devolucion_vendedor,
             observaciones_file,
             fecha_ingreso_file,
             hora_ingreso_file,
@@ -45,7 +42,6 @@ export const createRecord = async(req, res) => {
             fecha_tramite_placa,
             status_placa,
             fecha_entrega_placa_recepcion,
-            fecha_entrega_cliente,
         });
 
         //Sales
@@ -56,17 +52,17 @@ export const createRecord = async(req, res) => {
         nuevoInmatriculado.sales = expediente.map((sales) => sales._id);
 
         //Empleado
-        const foundEmployee = await User.find({ name: { $in: empleado } });
+        const foundEmployee = await User.find({ username: { $in: empleado } });
         nuevoInmatriculado.empleado = foundEmployee.map((em) => em._id);
 
         const recordSaved = await nuevoInmatriculado.save();
 
         if (recordSaved) {
-            res.json({ message: "Inmatriculado creado con éxito" });
+            res.json({ message: "Inmatriculación creada con éxito" });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 };
 
@@ -77,16 +73,16 @@ export const getRecords = async(req, res) => {
     };
 
     try {
-        const expedientes = await Record.find().populate(filtro1).populate("empleado");
+        const expedientes = await Record.find().populate(filtro1).populate("empleado").sort({ fecha_recepcion: 'desc' });
 
         if (expedientes.length > 0) {
             res.json(expedientes);
         } else {
-            return res.status(404).json({ message: "No existen Inmatriculados" });
+            return res.status(404).json({ message: "No existen Trámites" });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 };
 
@@ -104,15 +100,35 @@ export const getRecordById = async(req, res) => {
         if (expediente) {
             res.json(expediente);
         } else {
-            return res.status(404).json({ message: "No existe el Inmatriculado" });
+            return res.status(404).json({ message: "No existe el Trámite" });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 };
 
-export const getRecordByStatus = async(req, res) => {
+export const getRecordBySucursal = async(req, res) => {
+    const { sucursal } = req.body;
+
+    try {
+        const query = await Record.find({ sucursal_tramite: sucursal })
+            .populate({ path: 'sales' })
+            .populate({ path: 'empleado', select: 'name username roles' });
+
+        if (query.length > 0) {
+            res.json({ total: query.length, files: query });
+        } else {
+            return res.status(404).json({ message: "No existen Trámites" });
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(503).json({ message: err.message });
+    }
+}
+
+export const getRecordByTarjetayPlaca = async(req, res) => {
     const { tarjeta, placa, entrega } = req.body;
 
     const filtro = { path: "sales", populate: { path: "auto vendedor cliente" } };
@@ -130,7 +146,7 @@ export const getRecordByStatus = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 };
 
@@ -138,63 +154,65 @@ export const updateRecordById = async(req, res) => {
     const { recordId } = req.params;
 
     const {
-        fecha_recepcion,
-        hora_recepcion,
         statusFile,
-        fecha_devolucion_vendedor,
-        hora_devolucion_vendedor,
         observaciones_file,
-        sales,
+        isPendienteFirma,
+        fechaPendienteFirma,
+        isFirmado,
+        fechaFirmado,
+        isLegalizado,
+        fechaLegalizado,
+        isFinalizado,
+        fechaFinalizado,
         fecha_ingreso_file,
         hora_ingreso_file,
         num_titulo,
         codigo_verificacion,
         observaciones_registros,
+        motivo_observacion,
         status_tarjeta,
         num_placa,
         fecha_entrega_file_recepcion,
         fecha_tramite_placa,
         status_placa,
         fecha_entrega_placa_recepcion,
-        fecha_entrega_cliente,
     } = req.body;
 
     try {
-        //Expediente
-        const foundExpediente = await Sale.find({
-            nro_comprobante: { $in: sales },
-        });
 
         const objetoActualizado = await Record.findByIdAndUpdate(recordId, {
-            fecha_recepcion,
-            hora_recepcion,
             statusFile,
-            fecha_devolucion_vendedor,
-            hora_devolucion_vendedor,
             observaciones_file,
-            sales: foundExpediente.map((expediente) => expediente._id),
+            isPendienteFirma,
+            fechaPendienteFirma,
+            isFirmado,
+            fechaFirmado,
+            isLegalizado,
+            fechaLegalizado,
+            isFinalizado,
+            fechaFinalizado,
             fecha_ingreso_file,
             hora_ingreso_file,
             num_titulo,
             codigo_verificacion,
             observaciones_registros,
+            motivo_observacion,
             status_tarjeta,
             num_placa,
             fecha_entrega_file_recepcion,
             fecha_tramite_placa,
             status_placa,
             fecha_entrega_placa_recepcion,
-            fecha_entrega_cliente,
         });
 
         if (objetoActualizado) {
-            res.json({ message: "Inmatriculado actualizado con éxito" });
+            res.json({ message: "Inmatriculación actualizado con éxito" });
         } else {
-            return res.status(404).json({ message: "No existe Inmatriculado a actualizar" });
+            return res.status(404).json({ message: "No existe Inmatriculación a actualizar" });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 };
 
@@ -205,12 +223,12 @@ export const deleteRecordById = async(req, res) => {
         const deleteRecord = await Record.findByIdAndDelete(recordId);
 
         if (deleteRecord) {
-            res.json({ message: "Inmatriculado eliminado con éxito" });
+            res.json({ message: "Inmatriculación eliminada con éxito" });
         } else {
-            return res.status(404).json({ message: "No existe Inmatriculado a eliminar" });
+            return res.status(404).json({ message: "No existe Inmatriculación a eliminar" });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 };

@@ -7,7 +7,7 @@ exports.default = void 0;
 
 var _mongoose = require("mongoose");
 
-var statusFileSchema = new _mongoose.Schema({
+var statusAAP = new _mongoose.Schema({
   name: {
     type: String
   },
@@ -22,7 +22,7 @@ var statusFileSchema = new _mongoose.Schema({
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('StatusFile', statusFileSchema);
+var _default = (0, _mongoose.model)('StatusAAP', statusAAP);
 
 exports.default = _default;
-//# sourceMappingURL=StatusFile.js.map
+//# sourceMappingURL=StatusAAP.js.map
