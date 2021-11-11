@@ -75,7 +75,7 @@ router.use('/marca', marcaRoutes);
 router.use('/delivery', deliveryRoutes);
 router.use('/seguro', seguroRoutes);
 router.use('/aseguradora', aseguradoraRoutes);
-router.use('/operacion', operacionRoutes);
+router.use('/tipo-operacion', operacionRoutes);
 router.use('/goals', goalsRoutes);
 router.use('/status-file', statusFileRoutes);
 router.use('/status-rp', statusRPRoutes);

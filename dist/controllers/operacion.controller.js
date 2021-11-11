@@ -40,7 +40,7 @@ var getAll = /*#__PURE__*/function () {
 
           case 8:
             return _context.abrupt("return", res.status(404).json({
-              message: 'No existen Orígenes'
+              message: 'No existen Tipos de operaciónes'
             }));
 
           case 9:
@@ -51,7 +51,7 @@ var getAll = /*#__PURE__*/function () {
             _context.prev = 11;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context.t0.message
             });
 
@@ -96,7 +96,7 @@ var getOperacionById = /*#__PURE__*/function () {
 
           case 9:
             return _context2.abrupt("return", res.status(404).json({
-              message: 'No existe Origen'
+              message: 'No existe Tipo de operación'
             }));
 
           case 10:
@@ -107,7 +107,7 @@ var getOperacionById = /*#__PURE__*/function () {
             _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
             console.log(_context2.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context2.t0.message
             });
 
@@ -136,7 +136,7 @@ var getOperacionActivos = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _Operacion.default.find({
-              status: "Activo"
+              status: true
             }).sort({
               name: 'asc'
             });
@@ -148,7 +148,7 @@ var getOperacionActivos = /*#__PURE__*/function () {
               res.json(query);
             } else {
               res.status(404).json({
-                message: 'No existen Orígenes Activos'
+                message: 'No existen Tipos de operación'
               });
             }
 
@@ -159,7 +159,7 @@ var getOperacionActivos = /*#__PURE__*/function () {
             _context3.prev = 7;
             _context3.t0 = _context3["catch"](0);
             console.log(_context3.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context3.t0.message
             });
 
@@ -200,7 +200,7 @@ var createOperacion = /*#__PURE__*/function () {
 
             if (newObj) {
               res.json({
-                message: 'Origen creado con éxito'
+                message: 'Tipo de operación creado con éxito'
               });
             }
 
@@ -211,7 +211,7 @@ var createOperacion = /*#__PURE__*/function () {
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context4.t0.message
             });
 
@@ -252,11 +252,11 @@ var updateOperacion = /*#__PURE__*/function () {
 
             if (query) {
               res.json({
-                message: 'Origen actualizado con éxito'
+                message: 'Tipo de operación actualizada con éxito'
               });
             } else {
               res.status(404).json({
-                message: 'No existe Origen a actualizar'
+                message: 'No existe Tipo de operación a actualizar'
               });
             }
 
@@ -267,7 +267,7 @@ var updateOperacion = /*#__PURE__*/function () {
             _context5.prev = 9;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context5.t0.message
             });
 
@@ -288,12 +288,12 @@ exports.updateOperacion = updateOperacion;
 
 var deleteOperacion = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var aniooperacionIdId, query;
+    var operacionId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            aniooperacionIdId = req.params.aniooperacionIdId;
+            operacionId = req.params.operacionId;
             _context6.prev = 1;
             _context6.next = 4;
             return _Operacion.default.findByIdAndDelete(operacionId);
@@ -307,14 +307,14 @@ var deleteOperacion = /*#__PURE__*/function () {
             }
 
             res.json({
-              message: 'Origen eliminado con éxito'
+              message: 'Tipo de operación eliminada con éxito'
             });
             _context6.next = 10;
             break;
 
           case 9:
             return _context6.abrupt("return", res.status(404).json({
-              message: 'No existe Origen a eliminar'
+              message: 'No existe Tipo de operación a eliminar'
             }));
 
           case 10:
@@ -325,7 +325,7 @@ var deleteOperacion = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context6.t0.message
             });
 

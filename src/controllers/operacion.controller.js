@@ -6,11 +6,11 @@ export const getAll = async(req, res) => {
         if (query.length > 0) {
             res.json(query);
         } else {
-            return res.status(404).json({ message: 'No existen Orígenes' })
+            return res.status(404).json({ message: 'No existen Tipos de operaciónes' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -21,25 +21,25 @@ export const getOperacionById = async(req, res) => {
         if (query) {
             res.json(query);
         } else {
-            return res.status(404).json({ message: 'No existe Origen' })
+            return res.status(404).json({ message: 'No existe Tipo de operación' })
         }
     } catch (err) {
         console.log(err)
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
 export const getOperacionActivos = async(req, res) => {
     try {
-        const query = await Operacion.find({ status: "Activo" }).sort({ name: 'asc' });
+        const query = await Operacion.find({ status: true }).sort({ name: 'asc' });
         if (query.length > 0) {
             res.json(query);
         } else {
-            res.status(404).json({ message: 'No existen Orígenes Activos' })
+            res.status(404).json({ message: 'No existen Tipos de operación' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        res.status(503).json({ message: err.message });
     }
 }
 
@@ -51,11 +51,11 @@ export const createOperacion = async(req, res) => {
         const newObj = await query.save();
 
         if (newObj) {
-            res.json({ message: 'Origen creado con éxito' })
+            res.json({ message: 'Tipo de operación creado con éxito' })
         }
     } catch (err) {
         console.log(err)
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -66,27 +66,27 @@ export const updateOperacion = async(req, res) => {
         const query = await Operacion.findByIdAndUpdate(operacionId, { name, status });
 
         if (query) {
-            res.json({ message: 'Origen actualizado con éxito' });
+            res.json({ message: 'Tipo de operación actualizada con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Origen a actualizar' });
+            res.status(404).json({ message: 'No existe Tipo de operación a actualizar' });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
 export const deleteOperacion = async(req, res) => {
-    const { aniooperacionIdId } = req.params;
+    const { operacionId } = req.params;
     try {
         const query = await Operacion.findByIdAndDelete(operacionId);
         if (query) {
-            res.json({ message: 'Origen eliminado con éxito' });
+            res.json({ message: 'Tipo de operación eliminada con éxito' });
         } else {
-            return res.status(404).json({ message: 'No existe Origen a eliminar' });
+            return res.status(404).json({ message: 'No existe Tipo de operación a eliminar' });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }

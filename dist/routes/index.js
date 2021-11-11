@@ -122,7 +122,7 @@ router.use('/marca', _marca.default);
 router.use('/delivery', _delivery.default);
 router.use('/seguro', _seguro.default);
 router.use('/aseguradora', _aseguradora.default);
-router.use('/operacion', _operacion.default);
+router.use('/tipo-operacion', _operacion.default);
 router.use('/goals', _goals.default);
 router.use('/status-file', _statusFile.default);
 router.use('/status-rp', _statusRP.default);

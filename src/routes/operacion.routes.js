@@ -14,12 +14,12 @@ router.get('/activos', operacionCtrl.getOperacionActivos);
 router.get('/:operacionId', operacionCtrl.getOperacionById);
 
 //Crear Operacion
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], operacionCtrl.createOperacion);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin], operacionCtrl.createOperacion);
 
 //Actualizar Operacion
-router.patch('/:operacionId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], operacionCtrl.updateOperacion);
+router.patch('/:operacionId', [authJwt.verifyToken, authJwt.isAdmin], operacionCtrl.updateOperacion);
 
 //Eliminar Operacion
-router.delete('/:operacionId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], operacionCtrl.deleteOperacion);
+router.delete('/:operacionId', [authJwt.verifyToken, authJwt.isAdmin], operacionCtrl.deleteOperacion);
 
 export default router;

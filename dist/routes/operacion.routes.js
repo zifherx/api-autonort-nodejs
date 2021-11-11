@@ -21,11 +21,11 @@ router.get('/activos', operacionCtrl.getOperacionActivos); //Obtener Operacion p
 
 router.get('/:operacionId', operacionCtrl.getOperacionById); //Crear Operacion
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], operacionCtrl.createOperacion); //Actualizar Operacion
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], operacionCtrl.createOperacion); //Actualizar Operacion
 
-router.patch('/:operacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], operacionCtrl.updateOperacion); //Eliminar Operacion
+router.patch('/:operacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], operacionCtrl.updateOperacion); //Eliminar Operacion
 
-router.delete('/:operacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], operacionCtrl.deleteOperacion);
+router.delete('/:operacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], operacionCtrl.deleteOperacion);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=operacion.routes.js.map
