@@ -49,12 +49,12 @@ app.use((0, _cors.default)());
 app.use(_express.default.json());
 app.use(_express.default.urlencoded({
   extended: true
-})); //Routes
-
-app.use('/api', _routes.default); //Static Files
+})); //Static Files
 
 app.use('/public', _express.default.static(_path.default.join(__dirname, 'public')));
-app.use('/uploads', _express.default.static(_path.default.join(__dirname, 'uploads')));
+app.use('/uploads', _express.default.static(_path.default.join(__dirname, 'uploads'))); //Routes
+
+app.use('/api', _routes.default);
 var _default = app;
 exports.default = _default;
 //# sourceMappingURL=app.js.map
