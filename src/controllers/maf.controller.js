@@ -370,6 +370,8 @@ export const downloadAndZipeo = async(req, res) => {
         var dir = path.resolve('src/uploads');
         var uploadDir = fs.readdirSync(dir);
 
+        console.log(dir);
+
         const zip = new AdmZip();
 
         for (var i = 0; i < uploadDir.length; i++) {
@@ -384,7 +386,7 @@ export const downloadAndZipeo = async(req, res) => {
 
         res.json({ url: downloadName });
 
-        delFiles();
+        // delFiles();
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });

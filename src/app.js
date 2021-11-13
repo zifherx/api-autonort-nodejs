@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', routes);
 
 //Static Files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 export default app;

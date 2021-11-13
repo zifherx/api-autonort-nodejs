@@ -967,6 +967,7 @@ var downloadAndZipeo = /*#__PURE__*/function () {
             console.log('Download completed!');
             dir = _path.default.resolve('src/uploads');
             uploadDir = _fs.default.readdirSync(dir);
+            console.log(dir);
             zip = new _admZip.default();
 
             for (i = 0; i < uploadDir.length; i++) {
@@ -978,8 +979,8 @@ var downloadAndZipeo = /*#__PURE__*/function () {
             zip.writeZip(dir + '/' + downloadName);
             res.json({
               url: downloadName
-            });
-            (0, _deleteFiles.delFiles)();
+            }); // delFiles();
+
             _context14.next = 20;
             break;
 
