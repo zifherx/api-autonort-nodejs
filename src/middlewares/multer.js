@@ -20,6 +20,7 @@ const storage = multerS3({
         cb(null, { fieldName: file.fieldname });
     },
     key: (req, file, cb) => {
+        console.log(file);
         let campo = nanoid() + path.extname(file.originalname);
         cb(null, campo);
     }

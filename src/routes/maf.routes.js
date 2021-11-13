@@ -5,30 +5,32 @@ import { authJwt } from '../middlewares';
 
 const router = Router();
 
-router.get('/', mafCtrl.getAll)
+router.get('/:mafId', mafCtrl.getOneById);
 
-router.get('/:mafId', mafCtrl.getOneById)
+router.get('/', mafCtrl.getAll);
 
-router.post('/by-status', mafCtrl.obtenerRequestbyStatus)
+router.post('/by-status', mafCtrl.obtenerRequestbyStatus);
 
 router.post('/by-seller', mafCtrl.getAllByVendedor);
 
 router.post('/by-sucursal', mafCtrl.getAllBySucursal);
 
-router.post('/send-request', [authJwt.verifyToken, authJwt.isVendedor], mafCtrl.enviarCorreoSolicitud)
+router.post('/send-request', [authJwt.verifyToken, authJwt.isVendedor], mafCtrl.enviarCorreoSolicitud);
 
-router.post('/', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 50), mafCtrl.createRequest)
+router.post('/zip', mafCtrl.downloadAndZipeo);
 
-router.patch('/evidences/:mafId', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 20), mafCtrl.agregarNewDocuments)
+router.post('/', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 50), mafCtrl.createRequest);
 
-router.patch('/hot/:mafId', [authJwt.verifyToken, authJwt.isChiefSales], mafCtrl.requestaHot)
+router.patch('/evidences/:mafId', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 20), mafCtrl.agregarNewDocuments);
 
-router.patch('/approve/:mafId', [authJwt.verifyToken, authJwt.isExecutiveMaf], multer.single('carta'), mafCtrl.actualizarReqAprobada)
+router.patch('/hot/:mafId', [authJwt.verifyToken, authJwt.isChiefSales], mafCtrl.requestaHot);
 
-router.patch('/executive/:mafId', [authJwt.verifyToken, authJwt.isExecutiveMaf], mafCtrl.cambioStatusByMaf)
+router.patch('/approve/:mafId', [authJwt.verifyToken, authJwt.isExecutiveMaf], multer.single('carta'), mafCtrl.actualizarReqAprobada);
 
-router.patch('/:mafId', [authJwt.verifyToken, authJwt.isExecutiveMaf], mafCtrl.actualizarRequest)
+router.patch('/executive/:mafId', [authJwt.verifyToken, authJwt.isExecutiveMaf], mafCtrl.cambioStatusByMaf);
 
-router.delete('/:mafId', [authJwt.verifyToken, authJwt.isAdmin], mafCtrl.deleteRequest)
+router.patch('/:mafId', [authJwt.verifyToken, authJwt.isExecutiveMaf], mafCtrl.actualizarRequest);
+
+router.delete('/:mafId', [authJwt.verifyToken, authJwt.isAdmin], mafCtrl.deleteRequest);
 
 export default router

@@ -4,6 +4,12 @@ import Maf from '../models/Maf'
 import Seller from '../models/Seller'
 import Vehicle from '../models/Vehicle'
 import User from '../models/User'
+import fs from 'fs';
+import path from 'path';
+import download from 'download';
+import AdmZip from 'adm-zip';
+import { delFiles } from '../middlewares/deleteFiles'
+import 'dotenv/config';
 
 export const getAll = async(req, res) => {
     try {
@@ -348,5 +354,39 @@ export const enviarCorreoSolicitud = async(req, res) => {
     } catch (err) {
         console.log(err.message)
         return res.status(503).json({ message: err.message })
+    }
+}
+
+export const downloadAndZipeo = async(req, res) => {
+
+    const { files } = req.body;
+
+    try {
+        await Promise.all(files
+            .map(url => download(url, path.resolve('src/uploads'))));
+
+        console.log('Download completed!')
+
+        var dir = path.resolve('src/uploads');
+        var uploadDir = fs.readdirSync(dir);
+
+        const zip = new AdmZip();
+
+        for (var i = 0; i < uploadDir.length; i++) {
+            zip.addLocalFile(dir + '/' + uploadDir[i]);
+        }
+
+        const downloadName = `${Date.now()}.zip`;
+
+        const data = zip.toBuffer();
+
+        zip.writeZip(dir + '/' + downloadName);
+
+        res.json({ url: downloadName });
+
+        delFiles();
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
     }
 }

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.enviarCorreoSolicitud = exports.deleteRequest = exports.cambioStatusByMaf = exports.requestaHot = exports.actualizarReqAprobada = exports.agregarNewDocuments = exports.actualizarRequest = exports.createRequest = exports.obtenerRequestbyStatus = exports.getAllBySucursal = exports.getAllByVendedor = exports.getOneById = exports.getAll = void 0;
+exports.downloadAndZipeo = exports.enviarCorreoSolicitud = exports.deleteRequest = exports.cambioStatusByMaf = exports.requestaHot = exports.actualizarReqAprobada = exports.agregarNewDocuments = exports.actualizarRequest = exports.createRequest = exports.obtenerRequestbyStatus = exports.getAllBySucursal = exports.getAllByVendedor = exports.getOneById = exports.getAll = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -22,6 +22,18 @@ var _Seller = _interopRequireDefault(require("../models/Seller"));
 var _Vehicle = _interopRequireDefault(require("../models/Vehicle"));
 
 var _User = _interopRequireDefault(require("../models/User"));
+
+var _fs = _interopRequireDefault(require("fs"));
+
+var _path = _interopRequireDefault(require("path"));
+
+var _download = _interopRequireDefault(require("download"));
+
+var _admZip = _interopRequireDefault(require("adm-zip"));
+
+var _deleteFiles = require("../middlewares/deleteFiles");
+
+require("dotenv/config");
 
 var getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
@@ -936,4 +948,61 @@ var enviarCorreoSolicitud = /*#__PURE__*/function () {
 }();
 
 exports.enviarCorreoSolicitud = enviarCorreoSolicitud;
+
+var downloadAndZipeo = /*#__PURE__*/function () {
+  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
+    var files, dir, uploadDir, zip, i, downloadName, data;
+    return _regenerator.default.wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            files = req.body.files;
+            _context14.prev = 1;
+            _context14.next = 4;
+            return Promise.all(files.map(function (url) {
+              return (0, _download.default)(url, _path.default.resolve('src/uploads'));
+            }));
+
+          case 4:
+            console.log('Download completed!');
+            dir = _path.default.resolve('src/uploads');
+            uploadDir = _fs.default.readdirSync(dir);
+            zip = new _admZip.default();
+
+            for (i = 0; i < uploadDir.length; i++) {
+              zip.addLocalFile(dir + '/' + uploadDir[i]);
+            }
+
+            downloadName = "".concat(Date.now(), ".zip");
+            data = zip.toBuffer();
+            zip.writeZip(dir + '/' + downloadName);
+            res.json({
+              url: downloadName
+            });
+            (0, _deleteFiles.delFiles)();
+            _context14.next = 20;
+            break;
+
+          case 16:
+            _context14.prev = 16;
+            _context14.t0 = _context14["catch"](1);
+            console.log(_context14.t0);
+            return _context14.abrupt("return", res.status(503).json({
+              message: _context14.t0.message
+            }));
+
+          case 20:
+          case "end":
+            return _context14.stop();
+        }
+      }
+    }, _callee14, null, [[1, 16]]);
+  }));
+
+  return function downloadAndZipeo(_x27, _x28) {
+    return _ref14.apply(this, arguments);
+  };
+}();
+
+exports.downloadAndZipeo = downloadAndZipeo;
 //# sourceMappingURL=maf.controller.js.map

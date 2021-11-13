@@ -33,7 +33,7 @@ var sellerSchema = new _mongoose.Schema({
     type: Boolean,
     default: true
   },
-  empleado: {
+  createdBy: {
     ref: "User",
     type: _mongoose.Schema.Types.ObjectId
   }

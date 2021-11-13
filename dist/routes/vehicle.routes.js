@@ -23,7 +23,7 @@ router.post('/marca', vehicleCtrl.getVehiculeByMarca); //Obtener Vehiculo por Mo
 
 router.post('/modelo', vehicleCtrl.getVehiculeByModelo); //Crear Vehiculo
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateVehiculo], vehicleCtrl.createVehicle); //Obtener Vehiculo por COD-TDP
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateVehiculo], vehicleCtrl.createVehicle); //Obtener Vehiculo por COD-TDP
 
 router.post('/find', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], vehicleCtrl.getVehicleByCodigo); //Actualizar Vehiculo
 

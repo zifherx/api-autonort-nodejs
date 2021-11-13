@@ -17,7 +17,7 @@ router.post('/marca', vehicleCtrl.getVehiculeByMarca);
 router.post('/modelo', vehicleCtrl.getVehiculeByModelo);
 
 //Crear Vehiculo
-router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateVehiculo], vehicleCtrl.createVehicle);
+router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateVehiculo], vehicleCtrl.createVehicle);
 
 //Obtener Vehiculo por COD-TDP
 router.post('/find', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], vehicleCtrl.getVehicleByCodigo);

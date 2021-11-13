@@ -34,6 +34,8 @@ var storage = (0, _multerS.default)({
     });
   },
   key: function key(req, file, cb) {
+    console.log(file);
+
     var campo = (0, _nanoid.nanoid)() + _path.default.extname(file.originalname);
 
     cb(null, campo);

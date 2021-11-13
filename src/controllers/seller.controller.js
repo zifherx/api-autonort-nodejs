@@ -3,30 +3,30 @@ import User from '../models/User'
 
 export const getSellers = async(req, res) => {
     try {
-        const seller = await Seller.find().sort({ name: 'asc' });
-        if (seller.length > 0) {
-            res.json(seller);
+        const query = await Seller.find().sort({ name: 'asc' });
+        if (query.length > 0) {
+            res.json(query);
         } else {
             return res.status(404).json({ message: 'No existen Vendedores' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
 export const getSellerById = async(req, res) => {
     const { sellerId } = req.params;
     try {
-        const seller = await Seller.findById(sellerId);
-        if (seller) {
-            res.json(seller);
+        const query = await Seller.findById(sellerId);
+        if (query) {
+            res.json(query);
         } else {
             return res.status(404).json({ message: 'No existe Vendedor' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 
 }
@@ -43,7 +43,22 @@ export const getSellerBySucursal = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        return res.status(404).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getSellerByMarcaAndSucursal = async(req, res) => {
+    const { sucursal, marca } = req.body;
+    try {
+        const query = await Seller.find({ sucursal: sucursal, marca: marca, estatus: true }).sort({ name: 'asc' });
+        if (query.length > 0) {
+            res.json(query);
+        } else {
+            return res.status(404).json({ message: `No existen vendedores en ${sucursal}` });
+        }
+    } catch (err) {
+        console.error(err);
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -59,7 +74,7 @@ export const getSellerByName = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        return res.status(404).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -75,15 +90,37 @@ export const createSeller = async(req, res) => {
             email,
             estatus
         });
+
         const foundEmployee = await User.find({ username: { $in: empleado } });
-        newSeller.empleado = foundEmployee.map(em => em._id);
+        newSeller.createdBy = foundEmployee.map(em => em._id);
+
         const sellerSaved = await newSeller.save();
         if (sellerSaved) {
             res.json({ message: 'Vendedor creado con éxito' });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
+    }
+}
+
+export const uploadAvatar = async(req, res) => {
+    const { sellerId } = req.params;
+    const photo = req.file;
+
+    try {
+        const query = await User.findByIdAndUpdate(sellerId, {
+            avatar: photo.location
+        });
+
+        if (query) {
+            res.json({ message: 'Avatar subido con éxito' });
+        } else {
+            return res.status(404).json({ message: 'No existe el vendedor' });
+        }
+    } catch (err) {
+        console.error(err);
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -107,7 +144,7 @@ export const updateSellerById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -122,6 +159,6 @@ export const deleteSellerById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }

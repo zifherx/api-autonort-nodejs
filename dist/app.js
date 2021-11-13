@@ -54,6 +54,7 @@ app.use(_express.default.urlencoded({
 app.use('/api', _routes.default); //Static Files
 
 app.use(_express.default.static(_path.default.join(__dirname, 'public')));
+app.use('/uploads', _express.default.static(_path.default.join(__dirname, 'uploads')));
 var _default = app;
 exports.default = _default;
 //# sourceMappingURL=app.js.map

@@ -112,6 +112,37 @@ var mafSchema = new _mongoose.Schema({
   primer_status_request: {
     type: String
   },
+  isIngresada: {
+    type: Boolean,
+    default: true
+  },
+  fechaIngresoSolicitud: {
+    type: Date
+  },
+  isEvaluacion: {
+    type: Boolean
+  },
+  fechaEvaluacion: {
+    type: Date
+  },
+  isObservado: {
+    type: Boolean
+  },
+  fechaObservado: {
+    type: Date
+  },
+  isRechazado: {
+    type: Boolean
+  },
+  fechaRechazado: {
+    type: Date
+  },
+  isAprobado: {
+    type: Boolean
+  },
+  fechaProbado: {
+    type: Date
+  },
   //Solitud Aprobada por Jefatura
   pasoaHot: {
     type: Number,

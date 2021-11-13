@@ -97,7 +97,14 @@ export const updateProfile = async(req, res) => {
     const { userId } = req.params;
 
     try {
-        const objeto = await User.findByIdAndUpdate(userId, { email, phone, direccion, pais, codigo_postal, about });
+        const objeto = await User.findByIdAndUpdate(userId, {
+            email,
+            phone,
+            direccion,
+            pais,
+            codigo_postal,
+            about
+        });
         if (objeto) {
             res.json({ message: 'Actualización de Perfil con éxito' })
         } else {

@@ -9,7 +9,7 @@ const sellerSchema = new Schema({
     email: { type: String },
     avatar: { type: String },
     estatus: { type: Boolean, default: true },
-    empleado: { ref: "User", type: Schema.Types.ObjectId },
+    createdBy: { ref: "User", type: Schema.Types.ObjectId },
 }, {
     timestamps: true,
     versionKey: false,

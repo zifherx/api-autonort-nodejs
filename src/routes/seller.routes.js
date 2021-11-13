@@ -1,6 +1,8 @@
-import { Router } from 'express'
-import * as sellerCtrl from '../controllers/seller.controller'
-import { authJwt, verifySignup, verifyDuplicate } from '../middlewares'
+import { Router } from 'express';
+import * as sellerCtrl from '../controllers/seller.controller';
+import { authJwt, verifySignup, verifyDuplicate } from '../middlewares';
+import multer from '../middlewares/multer';
+
 const router = Router();
 
 //Obtener Vendedores
@@ -12,11 +14,15 @@ router.get('/:sellerId', sellerCtrl.getSellerById);
 //Obtener Vendedor por Sucursal
 router.post('/find', sellerCtrl.getSellerBySucursal);
 
+router.post('/brand', sellerCtrl.getSellerByMarcaAndSucursal);
+
 //Obtener Vendedor por Nombre
 router.post('/name', sellerCtrl.getSellerByName);
 
 //Crear Vendedor
 router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller);
+
+router.patch('/upload/:sellerId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('photo'), sellerCtrl.uploadAvatar);
 
 //Actualizar Vendedor
 router.patch('/:sellerId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifySignup.checkRolesExist], sellerCtrl.updateSellerById);

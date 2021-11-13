@@ -37,6 +37,16 @@ const mafSchema = new Schema({
     motivo: { type: String },
     //Estado de Solicitud para el crédito
     primer_status_request: { type: String },
+    isIngresada: { type: Boolean, default: true },
+    fechaIngresoSolicitud: { type: Date },
+    isEvaluacion: { type: Boolean },
+    fechaEvaluacion: { type: Date },
+    isObservado: { type: Boolean },
+    fechaObservado: { type: Date },
+    isRechazado: { type: Boolean },
+    fechaRechazado: { type: Date },
+    isAprobado: { type: Boolean },
+    fechaProbado: { type: Date },
     //Solitud Aprobada por Jefatura
     pasoaHot: { type: Number, min: 0, max: 3, default: 0 },
     //Estatus que cambia por asesor MAF
