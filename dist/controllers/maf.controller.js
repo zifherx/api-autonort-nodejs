@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.downloadAndZipeo = exports.enviarCorreoSolicitud = exports.deleteRequest = exports.cambioStatusByMaf = exports.requestaHot = exports.actualizarReqAprobada = exports.agregarNewDocuments = exports.actualizarRequest = exports.createRequest = exports.obtenerRequestbyStatus = exports.getAllBySucursal = exports.getAllByVendedor = exports.getOneById = exports.getAll = void 0;
+exports.descargaYZip = exports.downloadAndZipeo = exports.enviarCorreoSolicitud = exports.deleteRequest = exports.cambioStatusByMaf = exports.requestaHot = exports.actualizarReqAprobada = exports.agregarNewDocuments = exports.actualizarRequest = exports.createRequest = exports.obtenerRequestbyStatus = exports.getAllBySucursal = exports.getAllByVendedor = exports.getOneById = exports.getAll = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -967,7 +967,6 @@ var downloadAndZipeo = /*#__PURE__*/function () {
             console.log('Download completed!');
             dir = _path.default.resolve('src/uploads');
             uploadDir = _fs.default.readdirSync(dir);
-            console.log(dir);
             zip = new _admZip.default();
 
             for (i = 0; i < uploadDir.length; i++) {
@@ -981,23 +980,23 @@ var downloadAndZipeo = /*#__PURE__*/function () {
               url: downloadName
             }); // delFiles();
 
-            _context14.next = 20;
+            _context14.next = 19;
             break;
 
-          case 16:
-            _context14.prev = 16;
+          case 15:
+            _context14.prev = 15;
             _context14.t0 = _context14["catch"](1);
             console.log(_context14.t0);
             return _context14.abrupt("return", res.status(503).json({
               message: _context14.t0.message
             }));
 
-          case 20:
+          case 19:
           case "end":
             return _context14.stop();
         }
       }
-    }, _callee14, null, [[1, 16]]);
+    }, _callee14, null, [[1, 15]]);
   }));
 
   return function downloadAndZipeo(_x27, _x28) {
@@ -1006,4 +1005,34 @@ var downloadAndZipeo = /*#__PURE__*/function () {
 }();
 
 exports.downloadAndZipeo = downloadAndZipeo;
+
+var descargaYZip = /*#__PURE__*/function () {
+  var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res) {
+    var links, fileZip;
+    return _regenerator.default.wrap(function _callee15$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            links = req.body.links;
+            fileZip = req.file;
+            /* await Promise.all(links
+                .map(url => download(url, path.resolve('src/uploads'))));
+              console.log('Download completed!'); */
+
+            console.log(fileZip);
+
+          case 3:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee15);
+  }));
+
+  return function descargaYZip(_x29, _x30) {
+    return _ref15.apply(this, arguments);
+  };
+}();
+
+exports.descargaYZip = descargaYZip;
 //# sourceMappingURL=maf.controller.js.map

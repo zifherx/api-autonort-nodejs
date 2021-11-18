@@ -18,9 +18,11 @@ var jefaturaSchema = new _mongoose.Schema({
     type: String,
     uppercase: true
   },
+  marca: {
+    type: String
+  },
   sucursal: {
-    type: String,
-    uppercase: true
+    type: String
   },
   status: {
     type: Boolean,

@@ -20,8 +20,12 @@ var conexoSchema = new _mongoose.Schema({
   sucursal: {
     type: String
   },
-  status: {
+  encargadoDe: [{
     type: String
+  }],
+  status: {
+    type: Boolean,
+    default: true
   },
   createdBy: {
     ref: 'User',

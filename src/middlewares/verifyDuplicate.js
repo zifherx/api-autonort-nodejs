@@ -30,6 +30,8 @@ import Tecnico from '../models/Tecnico'
 import AServicios from '../models/AServicios'
 import StatusAAP from '../models/StatusAAP'
 import StatusRP from '../models/StatusRP'
+import MarcaTasaciones from '../models/MarcaTasaciones'
+import ModeloTasaciones from "../models/ModeloTasaciones";
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -336,6 +338,24 @@ export const checkDuplicateAServicios = async(req, res, next) => {
     const query = await AServicios.findOne({ name: name });
 
     if (query) return res.status(201).json({ message: 'El Asesor de Servicios ya existe' });
+
+    next();
+}
+
+export const checkDuplicateMarcaT = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await MarcaTasaciones.findOne({ name: name });
+
+    if (query) return res.status(201).json({ message: 'La marca ya existe' });
+
+    next();
+}
+
+export const checkDuplicateModeloT = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await ModeloTasaciones.findOne({ name: name });
+
+    if (query) return res.status(201).json({ message: 'El modelo ya existe' });
 
     next();
 }

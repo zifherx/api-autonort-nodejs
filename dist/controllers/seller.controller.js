@@ -262,7 +262,7 @@ var getSellerByName = /*#__PURE__*/function () {
             name = req.body.name;
             _context5.prev = 1;
             _context5.next = 4;
-            return _Seller.default.findOne().where({
+            return _Seller.default.findOne({
               name: name
             });
 

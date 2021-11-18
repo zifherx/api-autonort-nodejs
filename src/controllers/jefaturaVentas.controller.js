@@ -20,11 +20,11 @@ jefaturaCtrl.getAll = async(req, res) => {
 
 jefaturaCtrl.createOne = async(req, res) => {
 
-    const { name, email, area, sucursal, createdBy } = req.body;
+    const { name, email, area, marca, sucursal, createdBy } = req.body;
 
     try {
 
-        const newObj = new JefaturaVentas({ name, email, area, sucursal });
+        const newObj = new JefaturaVentas({ name, email, area, marca, sucursal });
 
         const userFound = await User.find({ username: { $in: createdBy } })
         newObj.createdBy = userFound.map(a => a._id)
@@ -41,13 +41,14 @@ jefaturaCtrl.createOne = async(req, res) => {
 
 jefaturaCtrl.updateById = async(req, res) => {
     const { jefaturaId } = req.params;
-    const { name, email, area, sucursal } = req.body;
+    const { name, email, area, marca, sucursal } = req.body;
 
     try {
         const query = await JefaturaVentas.findByIdAndUpdate(jefaturaId, {
             name,
             email,
             area,
+            marca,
             sucursal
         });
         if (query) {
@@ -76,10 +77,10 @@ jefaturaCtrl.deleteById = async(req, res) => {
 }
 
 jefaturaCtrl.obtenerJefexSucursal = async(req, res) => {
-    const { sucursal, area } = req.body
+    const { sucursal, area, marca } = req.body
 
     try {
-        const query = await JefaturaVentas.findOne({ sucursal: sucursal, area: area, status: true }).select('name email');
+        const query = await JefaturaVentas.findOne({ sucursal: sucursal, area: area, marca: marca, status: true }).select('name email');
 
         if (query) {
             res.json({ asesor: query })

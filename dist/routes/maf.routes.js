@@ -24,7 +24,7 @@ router.post('/by-status', mafCtrl.obtenerRequestbyStatus);
 router.post('/by-seller', mafCtrl.getAllByVendedor);
 router.post('/by-sucursal', mafCtrl.getAllBySucursal);
 router.post('/send-request', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isVendedor], mafCtrl.enviarCorreoSolicitud);
-router.post('/zip', mafCtrl.downloadAndZipeo);
+router.post('/zip', _multer.default.single('fileZip'), mafCtrl.descargaYZip);
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isVendedor], _multer.default.array('files', 50), mafCtrl.createRequest);
 router.patch('/evidences/:mafId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isVendedor], _multer.default.array('files', 20), mafCtrl.agregarNewDocuments);
 router.patch('/hot/:mafId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefSales], mafCtrl.requestaHot);

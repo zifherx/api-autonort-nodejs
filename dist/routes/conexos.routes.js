@@ -23,7 +23,8 @@ router.get('/:conexoId', conexoCtrl.getConexoById); //Crear Conexo
 
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateConexo], conexoCtrl.createConexo); //Obtener Asesor x Sucursal
 
-router.post('/sucursal', conexoCtrl.obtenerAsesorxSucursal); //Actualizar Conexo
+router.post('/sucursal', conexoCtrl.obtenerAsesorxSucursal);
+router.post('/by-name', conexoCtrl.obtenerAsesorByName); //Actualizar Conexo
 
 router.patch('/:conexoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], conexoCtrl.updateConexo); //Eliminar Conexo
 

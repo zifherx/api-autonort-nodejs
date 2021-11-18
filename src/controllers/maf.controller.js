@@ -370,8 +370,6 @@ export const downloadAndZipeo = async(req, res) => {
         var dir = path.resolve('src/uploads');
         var uploadDir = fs.readdirSync(dir);
 
-        console.log(dir);
-
         const zip = new AdmZip();
 
         for (var i = 0; i < uploadDir.length; i++) {
@@ -391,4 +389,15 @@ export const downloadAndZipeo = async(req, res) => {
         console.log(err);
         return res.status(503).json({ message: err.message });
     }
+}
+
+export const descargaYZip = async(req, res) => {
+    const { links } = req.body;
+    const fileZip = req.file;
+
+    /* await Promise.all(links
+        .map(url => download(url, path.resolve('src/uploads'))));
+
+    console.log('Download completed!'); */
+    console.log(fileZip);
 }

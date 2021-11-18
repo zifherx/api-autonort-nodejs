@@ -18,6 +18,7 @@ router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesE
 
 //Obtener Asesor x Sucursal
 router.post('/sucursal', conexoCtrl.obtenerAsesorxSucursal)
+router.post('/by-name', conexoCtrl.obtenerAsesorByName)
 
 //Actualizar Conexo
 router.patch('/:conexoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], conexoCtrl.updateConexo);

@@ -41,7 +41,7 @@ initData.createConfigSustento();
 initData.createConfigUbicacion();
 initData.createConfigStatusFile(); //Settings
 
-app.set('port', Number(process.env.PORT) || 4000); //Middlewares
+app.set('port', Number(process.env.PORT) || Number(4000)); //Middlewares
 
 app.use((0, _morgan.default)('dev'));
 app.use((0, _helmet.default)());
@@ -49,12 +49,12 @@ app.use((0, _cors.default)());
 app.use(_express.default.json());
 app.use(_express.default.urlencoded({
   extended: true
-})); //Static Files
+})); //Routes
+
+app.use('/api', _routes.default); //Static Files
 
 app.use('/public', _express.default.static(_path.default.join(__dirname, 'public')));
-app.use('/uploads', _express.default.static(_path.default.join(__dirname, 'uploads'))); //Routes
-
-app.use('/api', _routes.default);
+app.use('/uploads', _express.default.static(_path.default.join(__dirname, 'uploads')));
 var _default = app;
 exports.default = _default;
 //# sourceMappingURL=app.js.map

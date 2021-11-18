@@ -65,8 +65,7 @@ export const getSellerByMarcaAndSucursal = async(req, res) => {
 export const getSellerByName = async(req, res) => {
     const { name } = req.body;
     try {
-        const query = await Seller.findOne().where({ name });
-
+        const query = await Seller.findOne({ name: name });
         if (query) {
             res.json(query);
         } else {

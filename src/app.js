@@ -26,7 +26,7 @@ initData.createConfigUbicacion();
 initData.createConfigStatusFile();
 
 //Settings
-app.set('port', Number(process.env.PORT) || 4000);
+app.set('port', Number(process.env.PORT) || Number(4000));
 
 //Middlewares
 app.use(morgan('dev'));
@@ -35,11 +35,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//Routes
+app.use('/api', routes);
+
 //Static Files
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-//Routes
-app.use('/api', routes);
 
 export default app;

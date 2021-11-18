@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.obtenerAsesorxSucursal = exports.deleteConexo = exports.updateConexo = exports.createConexo = exports.getConexoById = exports.getConexoByActivo = exports.getConexos = void 0;
+exports.obtenerAsesorByName = exports.obtenerAsesorxSucursal = exports.deleteConexo = exports.updateConexo = exports.createConexo = exports.getConexoById = exports.getConexoByActivo = exports.getConexos = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -82,7 +82,7 @@ var getConexoByActivo = /*#__PURE__*/function () {
             _context2.prev = 0;
             _context2.next = 3;
             return _Conexos.default.find({
-              status: 'Activo'
+              status: true
             }).sort({
               name: 'asc'
             });
@@ -189,19 +189,20 @@ exports.getConexoById = getConexoById;
 
 var createConexo = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, email, area, sucursal, status, createdBy, newObj, userFound, query;
+    var _req$body, name, email, area, sucursal, encargadoDe, status, createdBy, newObj, userFound, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, email = _req$body.email, area = _req$body.area, sucursal = _req$body.sucursal, status = _req$body.status, createdBy = _req$body.createdBy;
+            _req$body = req.body, name = _req$body.name, email = _req$body.email, area = _req$body.area, sucursal = _req$body.sucursal, encargadoDe = _req$body.encargadoDe, status = _req$body.status, createdBy = _req$body.createdBy;
             _context4.prev = 1;
             newObj = new _Conexos.default({
               name: name,
               email: email,
               area: area,
               sucursal: sucursal,
+              encargadoDe: encargadoDe,
               status: status
             });
             _context4.next = 5;
@@ -256,13 +257,13 @@ exports.createConexo = createConexo;
 
 var updateConexo = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, email, area, sucursal, status, conexoId, newObj;
+    var _req$body2, name, email, area, sucursal, encargadoDe, status, conexoId, newObj;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, email = _req$body2.email, area = _req$body2.area, sucursal = _req$body2.sucursal, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, email = _req$body2.email, area = _req$body2.area, sucursal = _req$body2.sucursal, encargadoDe = _req$body2.encargadoDe, status = _req$body2.status;
             conexoId = req.params.conexoId;
             _context5.prev = 2;
             _context5.next = 5;
@@ -271,6 +272,7 @@ var updateConexo = /*#__PURE__*/function () {
               email: email,
               area: area,
               sucursal: sucursal,
+              encargadoDe: encargadoDe,
               status: status
             });
 
@@ -390,10 +392,12 @@ var obtenerAsesorxSucursal = /*#__PURE__*/function () {
             _context7.prev = 1;
             _context7.next = 4;
             return _Conexos.default.findOne({
-              sucursal: sucursal,
               area: area,
-              status: 'Activo'
-            }).select('name email');
+              encargadoDe: {
+                $in: sucursal
+              },
+              status: true
+            });
 
           case 4:
             query = _context7.sent;
@@ -440,4 +444,64 @@ var obtenerAsesorxSucursal = /*#__PURE__*/function () {
 }();
 
 exports.obtenerAsesorxSucursal = obtenerAsesorxSucursal;
+
+var obtenerAsesorByName = /*#__PURE__*/function () {
+  var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
+    var name, query;
+    return _regenerator.default.wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            name = req.body.name;
+            _context8.prev = 1;
+            _context8.next = 4;
+            return _Conexos.default.findOne({
+              name: name
+            }).select('name email area sucursal encargadoDe');
+
+          case 4:
+            query = _context8.sent;
+
+            if (!query) {
+              _context8.next = 9;
+              break;
+            }
+
+            res.json({
+              asesor: query
+            });
+            _context8.next = 10;
+            break;
+
+          case 9:
+            return _context8.abrupt("return", res.status(404).json({
+              message: 'No se encontraron asesores'
+            }));
+
+          case 10:
+            _context8.next = 16;
+            break;
+
+          case 12:
+            _context8.prev = 12;
+            _context8.t0 = _context8["catch"](1);
+            console.log(_context8.t0);
+            res.status(503).json({
+              message: _context8.t0.message
+            });
+
+          case 16:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8, null, [[1, 12]]);
+  }));
+
+  return function obtenerAsesorByName(_x15, _x16) {
+    return _ref8.apply(this, arguments);
+  };
+}();
+
+exports.obtenerAsesorByName = obtenerAsesorByName;
 //# sourceMappingURL=conexos.controller.js.map

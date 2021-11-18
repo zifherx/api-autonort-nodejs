@@ -17,7 +17,7 @@ router.post('/by-sucursal', mafCtrl.getAllBySucursal);
 
 router.post('/send-request', [authJwt.verifyToken, authJwt.isVendedor], mafCtrl.enviarCorreoSolicitud);
 
-router.post('/zip', mafCtrl.downloadAndZipeo);
+router.post('/zip', multer.single('fileZip'), mafCtrl.descargaYZip);
 
 router.post('/', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 50), mafCtrl.createRequest);
 

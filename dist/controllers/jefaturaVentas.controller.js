@@ -72,18 +72,19 @@ jefaturaCtrl.getAll = /*#__PURE__*/function () {
 
 jefaturaCtrl.createOne = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var _req$body, name, email, area, sucursal, createdBy, newObj, userFound, query;
+    var _req$body, name, email, area, marca, sucursal, createdBy, newObj, userFound, query;
 
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, email = _req$body.email, area = _req$body.area, sucursal = _req$body.sucursal, createdBy = _req$body.createdBy;
+            _req$body = req.body, name = _req$body.name, email = _req$body.email, area = _req$body.area, marca = _req$body.marca, sucursal = _req$body.sucursal, createdBy = _req$body.createdBy;
             _context2.prev = 1;
             newObj = new _JefaturaVentas.default({
               name: name,
               email: email,
               area: area,
+              marca: marca,
               sucursal: sucursal
             });
             _context2.next = 5;
@@ -136,20 +137,21 @@ jefaturaCtrl.createOne = /*#__PURE__*/function () {
 
 jefaturaCtrl.updateById = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var jefaturaId, _req$body2, name, email, area, sucursal, query;
+    var jefaturaId, _req$body2, name, email, area, marca, sucursal, query;
 
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             jefaturaId = req.params.jefaturaId;
-            _req$body2 = req.body, name = _req$body2.name, email = _req$body2.email, area = _req$body2.area, sucursal = _req$body2.sucursal;
+            _req$body2 = req.body, name = _req$body2.name, email = _req$body2.email, area = _req$body2.area, marca = _req$body2.marca, sucursal = _req$body2.sucursal;
             _context3.prev = 2;
             _context3.next = 5;
             return _JefaturaVentas.default.findByIdAndUpdate(jefaturaId, {
               name: name,
               email: email,
               area: area,
+              marca: marca,
               sucursal: sucursal
             });
 
@@ -246,18 +248,19 @@ jefaturaCtrl.deleteById = /*#__PURE__*/function () {
 
 jefaturaCtrl.obtenerJefexSucursal = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body3, sucursal, area, query;
+    var _req$body3, sucursal, area, marca, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body3 = req.body, sucursal = _req$body3.sucursal, area = _req$body3.area;
+            _req$body3 = req.body, sucursal = _req$body3.sucursal, area = _req$body3.area, marca = _req$body3.marca;
             _context5.prev = 1;
             _context5.next = 4;
             return _JefaturaVentas.default.findOne({
               sucursal: sucursal,
               area: area,
+              marca: marca,
               status: true
             }).select('name email');
 
