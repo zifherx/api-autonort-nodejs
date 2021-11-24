@@ -45,8 +45,22 @@ export const getMarcaActiva = async(req, res) => {
 
 export const createMarca = async(req, res) => {
     const { name, status } = req.body;
+    const avatar = req.file;
+
     try {
-        const obj = new MarcaTasaciones({ name, status });
+        let obj = null;
+        if (avatar == undefined || avatar == null) {
+            obj = new MarcaTasaciones({
+                name,
+                status
+            });
+        } else {
+            obj = new MarcaTasaciones({
+                avatar: avatar.location,
+                name,
+                status
+            });
+        }
 
         const query = await obj.save();
 
@@ -62,8 +76,21 @@ export const createMarca = async(req, res) => {
 export const updateMarcaById = async(req, res) => {
     const { name, status } = req.body;
     const { marcaId } = req.params;
+    const avatar = req.file;
     try {
-        const query = await MarcaTasaciones.findByIdAndUpdate(marcaId, { name, status });
+        let query = null;
+        if (avatar == undefined || avatar == null) {
+            query = await MarcaTasaciones.findByIdAndUpdate(marcaId, {
+                name,
+                status
+            });
+        } else {
+            query = await MarcaTasaciones.findByIdAndUpdate(marcaId, {
+                avatar: avatar.location,
+                name,
+                status
+            });
+        }
 
         if (query) {
             res.json({ message: 'Marca actualizada con éxito' });

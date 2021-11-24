@@ -222,6 +222,8 @@ var getModelosByMarca = /*#__PURE__*/function () {
             _context4.next = 9;
             return _ModeloTasaciones.default.find({
               marca: marcaFound._id
+            }).sort({
+              name: 'asc'
             });
 
           case 9:
@@ -273,28 +275,40 @@ exports.getModelosByMarca = getModelosByMarca;
 
 var createModelo = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body, marca, name, status, obj, marcaFound, query;
+    var _req$body, marca, name, status, avatar, obj, marcaFound, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _req$body = req.body, marca = _req$body.marca, name = _req$body.name, status = _req$body.status;
-            _context5.prev = 1;
-            obj = new _ModeloTasaciones.default({
-              name: name,
-              status: status
-            });
-            _context5.next = 5;
+            avatar = req.file;
+            _context5.prev = 2;
+            obj = null;
+
+            if (avatar == undefined || avatar == null) {
+              obj = new _ModeloTasaciones.default({
+                name: name,
+                status: status
+              });
+            } else {
+              obj = new _ModeloTasaciones.default({
+                avatar: avatar.location,
+                name: name,
+                status: status
+              });
+            }
+
+            _context5.next = 7;
             return _MarcaTasaciones.default.findOne({
               name: marca
             });
 
-          case 5:
+          case 7:
             marcaFound = _context5.sent;
 
             if (marcaFound) {
-              _context5.next = 8;
+              _context5.next = 10;
               break;
             }
 
@@ -302,12 +316,12 @@ var createModelo = /*#__PURE__*/function () {
               message: "No existe la Marca ".concat(marca)
             }));
 
-          case 8:
+          case 10:
             obj.marca = marcaFound._id;
-            _context5.next = 11;
+            _context5.next = 13;
             return obj.save();
 
-          case 11:
+          case 13:
             query = _context5.sent;
 
             if (query) {
@@ -316,23 +330,23 @@ var createModelo = /*#__PURE__*/function () {
               });
             }
 
-            _context5.next = 19;
+            _context5.next = 21;
             break;
 
-          case 15:
-            _context5.prev = 15;
-            _context5.t0 = _context5["catch"](1);
+          case 17:
+            _context5.prev = 17;
+            _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 19:
+          case 21:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[1, 15]]);
+    }, _callee5, null, [[2, 17]]);
   }));
 
   return function createModelo(_x9, _x10) {
@@ -344,24 +358,55 @@ exports.createModelo = createModelo;
 
 var updateModeloById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var _req$body2, name, status, modeloId, query;
+    var _req$body2, marca, name, status, modeloId, avatar, marcaFound, query;
 
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, marca = _req$body2.marca, name = _req$body2.name, status = _req$body2.status;
             modeloId = req.params.modeloId;
-            _context6.prev = 2;
-            _context6.next = 5;
+            avatar = req.file;
+            _context6.prev = 3;
+            _context6.next = 6;
+            return _MarcaTasaciones.default.findOne({
+              name: marca
+            });
+
+          case 6:
+            marcaFound = _context6.sent;
+            query = null;
+
+            if (!(avatar == undefined || avatar == null)) {
+              _context6.next = 14;
+              break;
+            }
+
+            _context6.next = 11;
             return _ModeloTasaciones.default.findByIdAndUpdate(modeloId, {
+              marca: marcaFound._id,
               name: name,
               status: status
             });
 
-          case 5:
+          case 11:
+            query = _context6.sent;
+            _context6.next = 17;
+            break;
+
+          case 14:
+            _context6.next = 16;
+            return _ModeloTasaciones.default.findByIdAndUpdate(modeloId, {
+              marca: marcaFound._id,
+              avatar: avatar.location,
+              name: name,
+              status: status
+            });
+
+          case 16:
             query = _context6.sent;
 
+          case 17:
             if (query) {
               res.json({
                 message: 'Modelo actualizado con éxito'
@@ -372,23 +417,23 @@ var updateModeloById = /*#__PURE__*/function () {
               });
             }
 
-            _context6.next = 13;
+            _context6.next = 24;
             break;
 
-          case 9:
-            _context6.prev = 9;
-            _context6.t0 = _context6["catch"](2);
+          case 20:
+            _context6.prev = 20;
+            _context6.t0 = _context6["catch"](3);
             console.log(_context6.t0);
             return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
             }));
 
-          case 13:
+          case 24:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[2, 9]]);
+    }, _callee6, null, [[3, 20]]);
   }));
 
   return function updateModeloById(_x11, _x12) {

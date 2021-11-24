@@ -183,22 +183,34 @@ exports.getMarcaActiva = getMarcaActiva;
 
 var createMarca = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, obj, query;
+    var _req$body, name, status, avatar, obj, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _req$body = req.body, name = _req$body.name, status = _req$body.status;
-            _context4.prev = 1;
-            obj = new _MarcaTasaciones.default({
-              name: name,
-              status: status
-            });
-            _context4.next = 5;
+            avatar = req.file;
+            _context4.prev = 2;
+            obj = null;
+
+            if (avatar == undefined || avatar == null) {
+              obj = new _MarcaTasaciones.default({
+                name: name,
+                status: status
+              });
+            } else {
+              obj = new _MarcaTasaciones.default({
+                avatar: avatar.location,
+                name: name,
+                status: status
+              });
+            }
+
+            _context4.next = 7;
             return obj.save();
 
-          case 5:
+          case 7:
             query = _context4.sent;
 
             if (query) {
@@ -207,23 +219,23 @@ var createMarca = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 13;
+            _context4.next = 15;
             break;
 
-          case 9:
-            _context4.prev = 9;
-            _context4.t0 = _context4["catch"](1);
+          case 11:
+            _context4.prev = 11;
+            _context4.t0 = _context4["catch"](2);
             console.log(_context4.t0);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
             }));
 
-          case 13:
+          case 15:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[1, 9]]);
+    }, _callee4, null, [[2, 11]]);
   }));
 
   return function createMarca(_x7, _x8) {
@@ -235,7 +247,7 @@ exports.createMarca = createMarca;
 
 var updateMarcaById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, marcaId, query;
+    var _req$body2, name, status, marcaId, avatar, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
@@ -243,16 +255,38 @@ var updateMarcaById = /*#__PURE__*/function () {
           case 0:
             _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
             marcaId = req.params.marcaId;
-            _context5.prev = 2;
-            _context5.next = 5;
+            avatar = req.file;
+            _context5.prev = 3;
+            query = null;
+
+            if (!(avatar == undefined || avatar == null)) {
+              _context5.next = 11;
+              break;
+            }
+
+            _context5.next = 8;
             return _MarcaTasaciones.default.findByIdAndUpdate(marcaId, {
               name: name,
               status: status
             });
 
-          case 5:
+          case 8:
+            query = _context5.sent;
+            _context5.next = 14;
+            break;
+
+          case 11:
+            _context5.next = 13;
+            return _MarcaTasaciones.default.findByIdAndUpdate(marcaId, {
+              avatar: avatar.location,
+              name: name,
+              status: status
+            });
+
+          case 13:
             query = _context5.sent;
 
+          case 14:
             if (query) {
               res.json({
                 message: 'Marca actualizada con éxito'
@@ -263,23 +297,23 @@ var updateMarcaById = /*#__PURE__*/function () {
               });
             }
 
-            _context5.next = 13;
+            _context5.next = 21;
             break;
 
-          case 9:
-            _context5.prev = 9;
-            _context5.t0 = _context5["catch"](2);
+          case 17:
+            _context5.prev = 17;
+            _context5.t0 = _context5["catch"](3);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 13:
+          case 21:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 9]]);
+    }, _callee5, null, [[3, 17]]);
   }));
 
   return function updateMarcaById(_x9, _x10) {

@@ -17,9 +17,9 @@ router.get('/:chasisId', chasisCtrl.getChasisById);
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateChasis], chasisCtrl.createChasis);
 
 //Actualizar Chasis
-router.patch('/:chasisId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], chasisCtrl.updateChasis);
+router.patch('/:chasisId', [authJwt.verifyToken, authJwt.isAdmin], chasisCtrl.updateChasis);
 
 //Eliminar Chasis
-router.delete('/:chasisId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], chasisCtrl.deleteChasis);
+router.delete('/:chasisId', [authJwt.verifyToken, authJwt.isAdmin], chasisCtrl.deleteChasis);
 
 export default router;

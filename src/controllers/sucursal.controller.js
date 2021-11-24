@@ -10,7 +10,7 @@ export const getSucursales = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -25,13 +25,13 @@ export const getSucursalById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
 export const getSucursalByActivo = async(req, res) => {
     try {
-        const query = await Sucursal.find({ status: "Activo" });
+        const query = await Sucursal.find({ estado: true });
         if (query.length > 0) {
             res.json(query);
         } else {
@@ -39,14 +39,14 @@ export const getSucursalByActivo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
 export const createSucursal = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     try {
-        const objeto = new Sucursal({ name, status });
+        const objeto = new Sucursal({ name, estado });
 
         const query = await objeto.save();
 
@@ -55,16 +55,16 @@ export const createSucursal = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
 export const updateSucursal = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     const { sucursalId } = req.params;
     try {
 
-        const query = await Sucursal.findByIdAndUpdate(sucursalId, { name, status }, { new: true });
+        const query = await Sucursal.findByIdAndUpdate(sucursalId, { name, estado });
 
         if (query) {
             res.json({ message: 'Sucursal actualizada con éxito' });
@@ -73,7 +73,7 @@ export const updateSucursal = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -89,6 +89,6 @@ export const deleteSucursal = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }

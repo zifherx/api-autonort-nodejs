@@ -55,7 +55,7 @@ export const getModelosByMarca = async(req, res) => {
         const marcaFound = await MarcaTasaciones.findOne({ name: marca });
         if (!marcaFound) return res.status(404).json({ message: `La marca ${marca} no existe` });
 
-        const query = await ModeloTasaciones.find({ marca: marcaFound._id });
+        const query = await ModeloTasaciones.find({ marca: marcaFound._id }).sort({ name: 'asc' });
 
         if (query.length > 0) {
             res.json({ count: query.length, models: query });
@@ -70,8 +70,22 @@ export const getModelosByMarca = async(req, res) => {
 
 export const createModelo = async(req, res) => {
     const { marca, name, status } = req.body;
+    const avatar = req.file;
     try {
-        const obj = new ModeloTasaciones({ name, status });
+        let obj = null;
+        if (avatar == undefined || avatar == null) {
+            obj = new ModeloTasaciones({
+                name,
+                status
+            });
+        } else {
+            obj = new ModeloTasaciones({
+                avatar: avatar.location,
+                name,
+                status
+            });
+
+        }
 
         const marcaFound = await MarcaTasaciones.findOne({ name: marca });
         if (!marcaFound) return res.status(404).json({ message: `No existe la Marca ${marca}` })
@@ -89,13 +103,26 @@ export const createModelo = async(req, res) => {
 }
 
 export const updateModeloById = async(req, res) => {
-    const { name, status } = req.body;
+    const { marca, name, status } = req.body;
     const { modeloId } = req.params;
+    const avatar = req.file;
     try {
-        const query = await ModeloTasaciones.findByIdAndUpdate(modeloId, {
-            name,
-            status
-        });
+        const marcaFound = await MarcaTasaciones.findOne({ name: marca });
+        let query = null;
+        if (avatar == undefined || avatar == null) {
+            query = await ModeloTasaciones.findByIdAndUpdate(modeloId, {
+                marca: marcaFound._id,
+                name,
+                status
+            });
+        } else {
+            query = await ModeloTasaciones.findByIdAndUpdate(modeloId, {
+                marca: marcaFound._id,
+                avatar: avatar.location,
+                name,
+                status
+            });
+        }
 
         if (query) {
             res.json({ message: 'Modelo actualizado con éxito' });

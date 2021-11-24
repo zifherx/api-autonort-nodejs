@@ -27,6 +27,9 @@ router.get('/conteo/canceladas', saleCtrl.conteoUnidadesCanceladas);
 //Conteo de Libres
 router.get('/conteo/libres', saleCtrl.conteoUnidadesLibres);
 
+//Obtener Venta por Id
+router.get('/:salesId', saleCtrl.getSaleById);
+
 //Conteo de Ventas By Vendedor
 router.post('/conteo/ventas', saleCtrl.conteoVentasByVendedor);
 
@@ -36,16 +39,13 @@ router.post('/conteo/autos', saleCtrl.conteoVentasByModelo);
 //Vista de Expedientes Toyota Value
 router.post('/toyota-value', saleCtrl.obtenerToyotaValues)
 
-//Obtener Venta por Id
-router.get('/:salesId', saleCtrl.getSaleById);
-
 //Crear Venta
-router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateExpediente], saleCtrl.createSale);
+router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifyDuplicate.checkDuplicateExpediente], saleCtrl.createSale);
 
 //Actualizar Venta
-router.patch('/:salesId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], saleCtrl.updateSaleById);
+router.patch('/:salesId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin], saleCtrl.updateSaleById);
 
 //Remover Venta
-router.delete('/:salesId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], saleCtrl.deleteSaleById);
+router.delete('/:salesId', [authJwt.verifyToken, authJwt.isAdmin], saleCtrl.deleteSaleById);
 
 export default router;

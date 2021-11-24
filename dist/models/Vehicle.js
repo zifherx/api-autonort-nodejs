@@ -8,18 +8,17 @@ exports.default = void 0;
 var _mongoose = require("mongoose");
 
 var vehicleSchema = new _mongoose.Schema({
-  marca: {
-    type: String
+  chasis: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Chasis'
+  },
+  model: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'ModeloT'
   },
   cod_tdp: {
     type: String,
     unique: true
-  },
-  categoria: {
-    type: String
-  },
-  modelo: {
-    type: String
   },
   version: {
     type: String

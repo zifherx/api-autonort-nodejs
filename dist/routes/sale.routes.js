@@ -29,21 +29,21 @@ router.post('/entregadas', saleCtrl.vistaUnidadesEntregadasByStatus); //Conteo d
 
 router.get('/conteo/canceladas', saleCtrl.conteoUnidadesCanceladas); //Conteo de Libres
 
-router.get('/conteo/libres', saleCtrl.conteoUnidadesLibres); //Conteo de Ventas By Vendedor
+router.get('/conteo/libres', saleCtrl.conteoUnidadesLibres); //Obtener Venta por Id
+
+router.get('/:salesId', saleCtrl.getSaleById); //Conteo de Ventas By Vendedor
 
 router.post('/conteo/ventas', saleCtrl.conteoVentasByVendedor); //Conteo de Ventas By Modelo Vehicular
 
 router.post('/conteo/autos', saleCtrl.conteoVentasByModelo); //Vista de Expedientes Toyota Value
 
-router.post('/toyota-value', saleCtrl.obtenerToyotaValues); //Obtener Venta por Id
+router.post('/toyota-value', saleCtrl.obtenerToyotaValues); //Crear Venta
 
-router.get('/:salesId', saleCtrl.getSaleById); //Crear Venta
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin, _middlewares.verifyDuplicate.checkDuplicateExpediente], saleCtrl.createSale); //Actualizar Venta
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateExpediente], saleCtrl.createSale); //Actualizar Venta
+router.patch('/:salesId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin], saleCtrl.updateSaleById); //Remover Venta
 
-router.patch('/:salesId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], saleCtrl.updateSaleById); //Remover Venta
-
-router.delete('/:salesId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], saleCtrl.deleteSaleById);
+router.delete('/:salesId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], saleCtrl.deleteSaleById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=sale.routes.js.map

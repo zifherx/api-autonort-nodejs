@@ -23,9 +23,9 @@ router.get('/:chasisId', chasisCtrl.getChasisById); //Crear Chasis
 
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateChasis], chasisCtrl.createChasis); //Actualizar Chasis
 
-router.patch('/:chasisId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], chasisCtrl.updateChasis); //Eliminar Chasis
+router.patch('/:chasisId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], chasisCtrl.updateChasis); //Eliminar Chasis
 
-router.delete('/:chasisId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], chasisCtrl.deleteChasis);
+router.delete('/:chasisId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], chasisCtrl.deleteChasis);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=chasis.routes.js.map

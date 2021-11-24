@@ -1,10 +1,9 @@
 import { Schema, model } from 'mongoose'
 
 const vehicleSchema = new Schema({
-    marca: { type: String },
+    chasis: { type: Schema.Types.ObjectId, ref: 'Chasis' },
+    model: { type: Schema.Types.ObjectId, ref: 'ModeloT' },
     cod_tdp: { type: String, unique: true },
-    categoria: { type: String },
-    modelo: { type: String },
     version: { type: String },
     sucursal: { type: String },
     empleado: { ref: 'User', type: Schema.Types.ObjectId }

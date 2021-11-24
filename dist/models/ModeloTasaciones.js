@@ -12,6 +12,10 @@ var modeloTSchema = new _mongoose.Schema({
     type: _mongoose.Schema.Types.ObjectId,
     ref: 'MarcaT'
   },
+  avatar: {
+    type: String,
+    default: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+  },
   name: {
     type: String
   },

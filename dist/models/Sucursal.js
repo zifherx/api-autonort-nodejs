@@ -13,6 +13,10 @@ var sucursalSchema = new _mongoose.Schema({
   },
   status: {
     type: String
+  },
+  estado: {
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true,

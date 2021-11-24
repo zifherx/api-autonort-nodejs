@@ -44,7 +44,7 @@ var getSucursales = /*#__PURE__*/function () {
             _context.prev = 7;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context.t0.message
             });
 
@@ -93,7 +93,7 @@ var getSucursalById = /*#__PURE__*/function () {
             _context2.prev = 8;
             _context2.t0 = _context2["catch"](1);
             console.log(_context2.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context2.t0.message
             });
 
@@ -122,7 +122,7 @@ var getSucursalByActivo = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _Sucursal.default.find({
-              status: "Activo"
+              estado: true
             });
 
           case 3:
@@ -143,7 +143,7 @@ var getSucursalByActivo = /*#__PURE__*/function () {
             _context3.prev = 7;
             _context3.t0 = _context3["catch"](0);
             console.log(_context3.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context3.t0.message
             });
 
@@ -164,17 +164,17 @@ exports.getSucursalByActivo = getSucursalByActivo;
 
 var createSucursal = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, objeto, query;
+    var _req$body, name, estado, objeto, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
             _context4.prev = 1;
             objeto = new _Sucursal.default({
               name: name,
-              status: status
+              estado: estado
             });
             _context4.next = 5;
             return objeto.save();
@@ -195,7 +195,7 @@ var createSucursal = /*#__PURE__*/function () {
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context4.t0.message
             });
 
@@ -216,21 +216,19 @@ exports.createSucursal = createSucursal;
 
 var updateSucursal = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, sucursalId, query;
+    var _req$body2, name, estado, sucursalId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
             sucursalId = req.params.sucursalId;
             _context5.prev = 2;
             _context5.next = 5;
             return _Sucursal.default.findByIdAndUpdate(sucursalId, {
               name: name,
-              status: status
-            }, {
-              new: true
+              estado: estado
             });
 
           case 5:
@@ -253,7 +251,7 @@ var updateSucursal = /*#__PURE__*/function () {
             _context5.prev = 9;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context5.t0.message
             });
 
@@ -304,7 +302,7 @@ var deleteSucursal = /*#__PURE__*/function () {
             _context6.prev = 8;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context6.t0.message
             });
 

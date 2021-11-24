@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteVehicleById = exports.updateVehicleById = exports.getVehiculeByModelo = exports.getVehiculeByMarca = exports.getVehicleByCodigo = exports.getVehicleById = exports.getVehicles = exports.createVehicle = void 0;
+exports.deleteVehicleById = exports.updateVehicleById = exports.getVehiculeByModelo = exports.getVehiculeByMarca = exports.getVehicleByCodigo = exports.getVehicleById = exports.getAll = exports.createVehicle = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -15,21 +15,22 @@ var _Vehicle = _interopRequireDefault(require("../models/Vehicle"));
 
 var _User = _interopRequireDefault(require("../models/User"));
 
+var _ModeloTasaciones = _interopRequireDefault(require("../models/ModeloTasaciones"));
+
+var _Chasis = _interopRequireDefault(require("../models/Chasis"));
+
 var createVehicle = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, marca, cod_tdp, categoria, modelo, version, sucursal, empleado, newVehicle, foundEmployee, vehicleSaved;
+    var _req$body, chasis, model, cod_tdp, version, sucursal, empleado, obj, foundEmployee, foundChasis, foundModel, query;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$body = req.body, marca = _req$body.marca, cod_tdp = _req$body.cod_tdp, categoria = _req$body.categoria, modelo = _req$body.modelo, version = _req$body.version, sucursal = _req$body.sucursal, empleado = _req$body.empleado;
+            _req$body = req.body, chasis = _req$body.chasis, model = _req$body.model, cod_tdp = _req$body.cod_tdp, version = _req$body.version, sucursal = _req$body.sucursal, empleado = _req$body.empleado;
             _context.prev = 1;
-            newVehicle = new _Vehicle.default({
-              marca: marca,
+            obj = new _Vehicle.default({
               cod_tdp: cod_tdp,
-              categoria: categoria,
-              modelo: modelo,
               version: version,
               sucursal: sucursal
             });
@@ -42,40 +43,62 @@ var createVehicle = /*#__PURE__*/function () {
 
           case 5:
             foundEmployee = _context.sent;
-            newVehicle.empleado = foundEmployee.map(function (em) {
-              return em._id;
-            }); //const foundCampaign = await Campaign.find({ name: { $in: campaign } });
-            //newVehicle.campaign = foundCampaign.map(campaign => campaign._id);
-
+            obj.empleado = foundEmployee.map(function (a) {
+              return a._id;
+            });
             _context.next = 9;
-            return newVehicle.save();
+            return _Chasis.default.find({
+              name: {
+                $in: chasis
+              }
+            });
 
           case 9:
-            vehicleSaved = _context.sent;
+            foundChasis = _context.sent;
+            obj.chasis = foundChasis.map(function (b) {
+              return b._id;
+            });
+            _context.next = 13;
+            return _ModeloTasaciones.default.find({
+              name: {
+                $in: model
+              }
+            });
 
-            if (vehicleSaved) {
+          case 13:
+            foundModel = _context.sent;
+            obj.model = foundModel.map(function (c) {
+              return c._id;
+            });
+            _context.next = 17;
+            return obj.save();
+
+          case 17:
+            query = _context.sent;
+
+            if (query) {
               res.json({
                 message: 'Vehículo creado con éxito'
               });
             }
 
-            _context.next = 17;
+            _context.next = 25;
             break;
 
-          case 13:
-            _context.prev = 13;
+          case 21:
+            _context.prev = 21;
             _context.t0 = _context["catch"](1);
             console.log(_context.t0);
-            res.status(503).json({
+            return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
-            });
+            }));
 
-          case 17:
+          case 25:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 13]]);
+    }, _callee, null, [[1, 21]]);
   }));
 
   return function createVehicle(_x, _x2) {
@@ -85,9 +108,9 @@ var createVehicle = /*#__PURE__*/function () {
 
 exports.createVehicle = createVehicle;
 
-var getVehicles = /*#__PURE__*/function () {
+var getAll = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var vehicles;
+    var query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -96,17 +119,37 @@ var getVehicles = /*#__PURE__*/function () {
             _context2.next = 3;
             return _Vehicle.default.find().sort({
               cod_tdp: 'asc'
+            }).populate({
+              path: 'chasis',
+              select: 'name'
+            }).populate({
+              path: 'model',
+              select: 'name avatar marca',
+              populate: {
+                path: 'marca',
+                select: 'avatar name'
+              }
+            }).populate({
+              path: 'empleado',
+              select: 'name roles',
+              populate: {
+                path: 'roles',
+                select: 'name'
+              }
             });
 
           case 3:
-            vehicles = _context2.sent;
+            query = _context2.sent;
 
-            if (!(vehicles.length > 0)) {
+            if (!(query.length > 0)) {
               _context2.next = 8;
               break;
             }
 
-            res.json(vehicles);
+            res.json({
+              total: query.length,
+              vehicles: query
+            });
             _context2.next = 9;
             break;
 
@@ -123,9 +166,9 @@ var getVehicles = /*#__PURE__*/function () {
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(503).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -135,12 +178,12 @@ var getVehicles = /*#__PURE__*/function () {
     }, _callee2, null, [[0, 11]]);
   }));
 
-  return function getVehicles(_x3, _x4) {
+  return function getAll(_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getVehicles = getVehicles;
+exports.getAll = getAll;
 
 var getVehicleById = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
@@ -152,7 +195,24 @@ var getVehicleById = /*#__PURE__*/function () {
             vehicleId = req.params.vehicleId;
             _context3.prev = 1;
             _context3.next = 4;
-            return _Vehicle.default.findById(vehicleId);
+            return _Vehicle.default.findById(vehicleId).populate({
+              path: 'chasis',
+              select: 'name'
+            }).populate({
+              path: 'model',
+              select: 'name avatar marca',
+              populate: {
+                path: 'marca',
+                select: 'avatar name'
+              }
+            }).populate({
+              path: 'empleado',
+              select: 'name roles',
+              populate: {
+                path: 'roles',
+                select: 'name'
+              }
+            });
 
           case 4:
             vehicle = _context3.sent;
@@ -179,9 +239,9 @@ var getVehicleById = /*#__PURE__*/function () {
             _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
-            res.status(503).json({
+            return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -200,7 +260,7 @@ exports.getVehicleById = getVehicleById;
 
 var getVehicleByCodigo = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var codigoAuto, carro;
+    var codigoAuto, query;
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
@@ -210,17 +270,34 @@ var getVehicleByCodigo = /*#__PURE__*/function () {
             _context4.next = 4;
             return _Vehicle.default.findOne({
               cod_tdp: codigoAuto
+            }).populate({
+              path: 'chasis',
+              select: 'name'
+            }).populate({
+              path: 'model',
+              select: 'name avatar marca',
+              populate: {
+                path: 'marca',
+                select: 'avatar name'
+              }
+            }).populate({
+              path: 'empleado',
+              select: 'name roles',
+              populate: {
+                path: 'roles',
+                select: 'name'
+              }
             });
 
           case 4:
-            carro = _context4.sent;
+            query = _context4.sent;
 
-            if (!carro) {
+            if (!query) {
               _context4.next = 9;
               break;
             }
 
-            res.json(carro);
+            res.json(query);
             _context4.next = 10;
             break;
 
@@ -237,9 +314,9 @@ var getVehicleByCodigo = /*#__PURE__*/function () {
             _context4.prev = 12;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(503).json({
+            return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -258,7 +335,7 @@ exports.getVehicleByCodigo = getVehicleByCodigo;
 
 var getVehiculeByMarca = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var marca, query;
+    var marca, query, obj;
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
@@ -266,45 +343,69 @@ var getVehiculeByMarca = /*#__PURE__*/function () {
             marca = req.body.marca;
             _context5.prev = 1;
             _context5.next = 4;
-            return _Vehicle.default.find({
-              marca: marca
+            return _Vehicle.default.find().populate({
+              path: 'chasis',
+              select: 'name'
+            }).populate({
+              path: 'model',
+              select: 'name avatar marca',
+              populate: {
+                path: 'marca',
+                select: 'name avatar',
+                match: {
+                  name: marca
+                }
+              }
+            }).populate({
+              path: 'empleado',
+              select: 'name roles',
+              populate: {
+                path: 'roles',
+                select: 'name'
+              }
             });
 
           case 4:
             query = _context5.sent;
+            obj = query.filter(function (b) {
+              return b.model.marca;
+            });
 
-            if (!(query.length > 0)) {
-              _context5.next = 9;
+            if (!(obj.length > 0)) {
+              _context5.next = 10;
               break;
             }
 
-            res.json(query);
-            _context5.next = 10;
+            res.json({
+              total: obj.length,
+              vehicles: obj
+            });
+            _context5.next = 11;
             break;
 
-          case 9:
+          case 10:
             return _context5.abrupt("return", res.status(404).json({
               message: 'No existen Modelos en esa Marca'
             }));
 
-          case 10:
-            _context5.next = 16;
+          case 11:
+            _context5.next = 17;
             break;
 
-          case 12:
-            _context5.prev = 12;
+          case 13:
+            _context5.prev = 13;
             _context5.t0 = _context5["catch"](1);
             console.log(_context5.t0);
-            res.status(503).json({
+            return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
-            });
+            }));
 
-          case 16:
+          case 17:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[1, 12]]);
+    }, _callee5, null, [[1, 13]]);
   }));
 
   return function getVehiculeByMarca(_x9, _x10) {
@@ -316,7 +417,7 @@ exports.getVehiculeByMarca = getVehiculeByMarca;
 
 var getVehiculeByModelo = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var modelo, query;
+    var modelo, query, obj;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -324,45 +425,57 @@ var getVehiculeByModelo = /*#__PURE__*/function () {
             modelo = req.body.modelo;
             _context6.prev = 1;
             _context6.next = 4;
-            return _Vehicle.default.find({
-              modelo: modelo
+            return _Vehicle.default.find().populate({
+              path: 'model',
+              match: {
+                name: {
+                  $in: modelo
+                }
+              },
+              select: 'avatar name marca'
             });
 
           case 4:
             query = _context6.sent;
+            obj = query.filter(function (a) {
+              return a.model;
+            });
 
-            if (!(query.length > 0)) {
-              _context6.next = 9;
+            if (!(obj.length > 0)) {
+              _context6.next = 10;
               break;
             }
 
-            res.json(query);
-            _context6.next = 10;
+            res.json({
+              total: obj.length,
+              vehicles: obj
+            });
+            _context6.next = 11;
             break;
 
-          case 9:
+          case 10:
             return _context6.abrupt("return", res.status(404).json({
               message: 'No existen Vehículos en ese Modelo'
             }));
 
-          case 10:
-            _context6.next = 16;
+          case 11:
+            _context6.next = 17;
             break;
 
-          case 12:
-            _context6.prev = 12;
+          case 13:
+            _context6.prev = 13;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(503).json({
+            return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
-            });
+            }));
 
-          case 16:
+          case 17:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[1, 12]]);
+    }, _callee6, null, [[1, 13]]);
   }));
 
   return function getVehiculeByModelo(_x11, _x12) {
@@ -374,74 +487,100 @@ exports.getVehiculeByModelo = getVehiculeByModelo;
 
 var updateVehicleById = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var vehicleId, _req$body2, marca, cod_tdp, categoria, modelo, version, sucursal, empleado, foundEmployee, updatedVehicle;
+    var vehicleId, _req$body2, chasis, model, cod_tdp, version, foundChasis, foundModel, updatedVehicle;
 
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
             vehicleId = req.params.vehicleId;
-            _req$body2 = req.body, marca = _req$body2.marca, cod_tdp = _req$body2.cod_tdp, categoria = _req$body2.categoria, modelo = _req$body2.modelo, version = _req$body2.version, sucursal = _req$body2.sucursal, empleado = _req$body2.empleado;
+            _req$body2 = req.body, chasis = _req$body2.chasis, model = _req$body2.model, cod_tdp = _req$body2.cod_tdp, version = _req$body2.version;
             _context7.prev = 2;
             _context7.next = 5;
-            return _User.default.find({
-              username: {
-                $in: empleado
+            return _Chasis.default.findOne({
+              name: {
+                $in: chasis
               }
             });
 
           case 5:
-            foundEmployee = _context7.sent;
-            _context7.next = 8;
-            return _Vehicle.default.findByIdAndUpdate(vehicleId, {
-              marca: marca,
-              cod_tdp: cod_tdp,
-              categoria: categoria,
-              modelo: modelo,
-              version: version,
-              sucursal: sucursal,
-              empleado: foundEmployee.map(function (b) {
-                return b._id;
-              })
-            });
+            foundChasis = _context7.sent;
+
+            if (foundChasis) {
+              _context7.next = 8;
+              break;
+            }
+
+            return _context7.abrupt("return", res.status(404).json({
+              message: 'No existe el chasis'
+            }));
 
           case 8:
+            _context7.next = 10;
+            return _ModeloTasaciones.default.findOne({
+              name: {
+                $in: model
+              }
+            });
+
+          case 10:
+            foundModel = _context7.sent;
+
+            if (foundModel) {
+              _context7.next = 13;
+              break;
+            }
+
+            return _context7.abrupt("return", res.status(404).json({
+              message: 'No existe el modelo'
+            }));
+
+          case 13:
+            _context7.next = 15;
+            return _Vehicle.default.findByIdAndUpdate(vehicleId, {
+              chasis: foundChasis._id,
+              cod_tdp: cod_tdp,
+              model: foundModel._id,
+              version: version
+            });
+
+          case 15:
             updatedVehicle = _context7.sent;
 
             if (!updatedVehicle) {
-              _context7.next = 13;
+              _context7.next = 20;
               break;
             }
 
             res.json({
               message: 'Vehículo actualizado con éxito'
             });
-            _context7.next = 14;
+            _context7.next = 21;
             break;
 
-          case 13:
+          case 20:
             return _context7.abrupt("return", res.status(404).json({
               message: 'No existe Vehículo a actualizar'
             }));
 
-          case 14:
-            _context7.next = 20;
+          case 21:
+            _context7.next = 27;
             break;
 
-          case 16:
-            _context7.prev = 16;
+          case 23:
+            _context7.prev = 23;
             _context7.t0 = _context7["catch"](2);
             console.log(_context7.t0);
-            res.status(503).json({
+            return _context7.abrupt("return", res.status(503).json({
               message: _context7.t0.message
-            });
+            }));
 
-          case 20:
+          case 27:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[2, 16]]);
+    }, _callee7, null, [[2, 23]]);
   }));
 
   return function updateVehicleById(_x13, _x14) {
@@ -490,9 +629,9 @@ var deleteVehicleById = /*#__PURE__*/function () {
             _context8.prev = 12;
             _context8.t0 = _context8["catch"](1);
             console.log(_context8.t0);
-            res.status(503).json({
+            return _context8.abrupt("return", res.status(503).json({
               message: _context8.t0.message
-            });
+            }));
 
           case 16:
           case "end":
