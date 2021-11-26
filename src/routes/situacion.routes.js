@@ -5,7 +5,7 @@ import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 const router = Router();
 
 //Obtener Situacion
-router.get('/', situacionCtrl.getSituaciones);
+router.get('/', situacionCtrl.getAll);
 
 //Obtener Situacion Activos
 router.get('/activos', situacionCtrl.getSituacionByActivo);

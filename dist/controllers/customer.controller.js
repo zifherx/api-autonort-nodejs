@@ -66,9 +66,9 @@ var createCustomer = /*#__PURE__*/function () {
             _context.prev = 13;
             _context.t0 = _context["catch"](1);
             console.log(_context.t0);
-            res.status(409).json({
+            return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
-            });
+            }));
 
           case 17:
           case "end":
@@ -123,9 +123,9 @@ var getCustomers = /*#__PURE__*/function () {
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(409).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -179,9 +179,9 @@ var getCustomerById = /*#__PURE__*/function () {
             _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
-            res.status(409).json({
+            return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -237,9 +237,9 @@ var getCustomerByDni = /*#__PURE__*/function () {
             _context4.prev = 12;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -299,9 +299,9 @@ var updateCustomerById = /*#__PURE__*/function () {
             _context5.prev = 9;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
-            res.status(409).json({
+            return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
-            });
+            }));
 
           case 13:
           case "end":
@@ -357,9 +357,9 @@ var deleteCustomerById = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
-            });
+            }));
 
           case 16:
           case "end":

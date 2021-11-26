@@ -703,13 +703,30 @@ var UnidadesBySucursal = /*#__PURE__*/function () {
             _req$body5 = req.body, sucursal = _req$body5.sucursal, start = _req$body5.start, end = _req$body5.end;
             _context8.prev = 1;
             _context8.next = 4;
-            return _Sale.default.where({
+            return _Sale.default.find({
               sucursal_venta: sucursal,
               fecha_cancelacion: {
                 $gte: new Date(start),
                 $lte: new Date(end)
               }
-            }).find().populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
+            }).populate({
+              path: 'vendedor',
+              select: 'name sucursal'
+            }).populate({
+              path: 'auto'
+            }).populate({
+              path: 'cliente',
+              select: 'name document cellphone'
+            }).populate({
+              path: 'campanias'
+            }).populate({
+              path: 'adicional'
+            }).populate({
+              path: 'accesorios'
+            }).populate({
+              path: 'empleado',
+              select: 'username name'
+            });
 
           case 4:
             query = _context8.sent;
@@ -719,7 +736,10 @@ var UnidadesBySucursal = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total: query.length,
+              files: query
+            });
             _context8.next = 10;
             break;
 
@@ -968,7 +988,7 @@ var conteoVentasByVendedor = /*#__PURE__*/function () {
             break;
 
           case 10:
-            return _context12.abrupt("return", res.status(404).json({
+            return _context12.abrupt("return", res.status(201).json({
               message: 'No existen Ventas aún'
             }));
 
@@ -1068,24 +1088,21 @@ exports.conteoVentasByModelo = conteoVentasByModelo;
 
 var vistaUnidadesEntregadasByStatus = /*#__PURE__*/function () {
   var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
-    var _req$body9, sucursal, statusVenta, start, end, statusVehiculo, consulta;
+    var _req$body9, sucursal, start, end, consulta;
 
     return _regenerator.default.wrap(function _callee14$(_context14) {
       while (1) {
         switch (_context14.prev = _context14.next) {
           case 0:
-            _req$body9 = req.body, sucursal = _req$body9.sucursal, statusVenta = _req$body9.statusVenta, start = _req$body9.start, end = _req$body9.end, statusVehiculo = _req$body9.statusVehiculo; //console.log(start, end);
-
+            _req$body9 = req.body, sucursal = _req$body9.sucursal, start = _req$body9.start, end = _req$body9.end;
             _context14.prev = 1;
             _context14.next = 4;
             return _Sale.default.where({
               sucursal_venta: sucursal,
-              estatus_venta: statusVenta,
-              fecha_cancelacion: {
+              fecha_entrega: {
                 $gte: new Date(start),
                 $lte: new Date(end)
-              },
-              ubicacion_vehiculo: statusVehiculo
+              }
             }).find().countDocuments();
 
           case 4:
@@ -1102,7 +1119,7 @@ var vistaUnidadesEntregadasByStatus = /*#__PURE__*/function () {
 
           case 9:
             return _context14.abrupt("return", res.status(404).json({
-              message: "No existen Unidades ".concat(statusVenta, " y ").concat(statusVehiculo, " en ").concat(sucursal)
+              message: "No existen Unidades entregadas en ".concat(sucursal)
             }));
 
           case 10:

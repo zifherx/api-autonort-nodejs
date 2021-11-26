@@ -15,7 +15,7 @@ var _middlewares = require("../middlewares");
 
 var router = (0, _express.Router)(); //Obtener Situacion
 
-router.get('/', situacionCtrl.getSituaciones); //Obtener Situacion Activos
+router.get('/', situacionCtrl.getAll); //Obtener Situacion Activos
 
 router.get('/activos', situacionCtrl.getSituacionByActivo); //Obtener Situacion por ID
 

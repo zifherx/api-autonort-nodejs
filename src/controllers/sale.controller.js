@@ -258,15 +258,16 @@ export const UnidadesByStatus = async(req, res) => {
 export const UnidadesBySucursal = async(req, res) => {
     const { sucursal, start, end } = req.body;
     try {
-        const query = await Sale.where({ sucursal_venta: sucursal, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } }).find().populate('vendedor')
-            .populate('auto')
-            .populate('cliente')
-            .populate('campanias')
-            .populate('adicional')
-            .populate('accesorios')
-            .populate('empleado')
+        const query = await Sale.find({ sucursal_venta: sucursal, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } })
+            .populate({ path: 'vendedor', select: 'name sucursal' })
+            .populate({ path: 'auto' })
+            .populate({ path: 'cliente', select: 'name document cellphone' })
+            .populate({ path: 'campanias' })
+            .populate({ path: 'adicional' })
+            .populate({ path: 'accesorios' })
+            .populate({ path: 'empleado', select: 'username name' })
         if (query.length > 0) {
-            res.json(query);
+            res.json({ total: query.length, files: query });
         } else {
             return res.status(404).json({ message: 'No Existen Unidades' })
         }
@@ -336,7 +337,7 @@ export const conteoVentasByVendedor = async(req, res) => {
         if (consulta.length > 0) {
             res.json(consulta);
         } else {
-            return res.status(404).json({ message: 'No existen Ventas aún' })
+            return res.status(201).json({ message: 'No existen Ventas aún' })
         }
     } catch (err) {
         console.log(err);
@@ -368,15 +369,13 @@ export const conteoVentasByModelo = async(req, res) => {
 }
 
 export const vistaUnidadesEntregadasByStatus = async(req, res) => {
-    const { sucursal, statusVenta, start, end, statusVehiculo } = req.body;
-    //console.log(start, end);
+    const { sucursal, start, end } = req.body;
     try {
-        const consulta = await Sale.where({ sucursal_venta: sucursal, estatus_venta: statusVenta, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) }, ubicacion_vehiculo: statusVehiculo }).find().countDocuments();
-        // console.log('Query: ', consulta);
+        const consulta = await Sale.where({ sucursal_venta: sucursal, fecha_entrega: { $gte: new Date(start), $lte: new Date(end) } }).find().countDocuments();
         if (consulta >= 0) {
             res.json(consulta);
         } else {
-            return res.status(404).json({ message: `No existen Unidades ${statusVenta} y ${statusVehiculo} en ${sucursal}` })
+            return res.status(404).json({ message: `No existen Unidades entregadas en ${sucursal}` })
         }
     } catch (err) {
         console.log(err);
