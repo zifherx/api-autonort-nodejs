@@ -10,7 +10,7 @@ export const getSectoristas = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -25,21 +25,21 @@ export const getSectoristaById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const getSectoristaByActivo = async(req, res) => {
     try {
-        const sectorista = await Sectorista.find({ estado: true }).sort({ name: 'asc' });
-        if (sectorista.length > 0) {
-            res.json(sectorista);
+        const query = await Sectorista.find({ estado: true }).sort({ name: 'asc' });
+        if (query.length > 0) {
+            res.json(query);
         } else {
             return res.status(404).json({ message: 'No existen Sectoristas Activos' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -55,7 +55,7 @@ export const createSectorista = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -73,7 +73,7 @@ export const updateSectorista = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -88,6 +88,6 @@ export const deleteSectorista = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
