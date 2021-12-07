@@ -51,9 +51,9 @@ var getColors = /*#__PURE__*/function () {
             _context.prev = 11;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            res.status(409).json({
+            return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -80,7 +80,7 @@ var getColorByActivo = /*#__PURE__*/function () {
             _context2.prev = 0;
             _context2.next = 3;
             return _Colores.default.find({
-              status: "Activo"
+              estado: true
             }).sort({
               name: 'asc'
             });
@@ -110,7 +110,7 @@ var getColorByActivo = /*#__PURE__*/function () {
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(409).json({
+            res.status(503).json({
               message: _context2.t0.message
             });
 
@@ -144,31 +144,38 @@ var getColorById = /*#__PURE__*/function () {
           case 4:
             color = _context3.sent;
 
-            if (color) {
-              res.send(color);
-            } else {
-              res.status(404).json({
-                message: 'No existe Color'
-              });
+            if (!color) {
+              _context3.next = 9;
+              break;
             }
 
-            _context3.next = 12;
+            res.send(color);
+            _context3.next = 10;
             break;
 
-          case 8:
-            _context3.prev = 8;
-            _context3.t0 = _context3["catch"](1);
-            console.log(_context3.t0);
-            res.status(409).json({
-              message: _context3.t0.message
-            });
+          case 9:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existe Color'
+            }));
+
+          case 10:
+            _context3.next = 16;
+            break;
 
           case 12:
+            _context3.prev = 12;
+            _context3.t0 = _context3["catch"](1);
+            console.log(_context3.t0);
+            return _context3.abrupt("return", res.status(503).json({
+              message: _context3.t0.message
+            }));
+
+          case 16:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 8]]);
+    }, _callee3, null, [[1, 12]]);
   }));
 
   return function getColorById(_x5, _x6) {
@@ -180,17 +187,17 @@ exports.getColorById = getColorById;
 
 var createColor = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, newColor, colorCreado;
+    var _req$body, name, estado, newColor, colorCreado;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
             _context4.prev = 1;
             newColor = new _Colores.default({
               name: name,
-              status: status
+              estado: estado
             });
             _context4.next = 5;
             return newColor.save();
@@ -211,9 +218,9 @@ var createColor = /*#__PURE__*/function () {
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
-            });
+            }));
 
           case 13:
           case "end":
@@ -232,19 +239,19 @@ exports.createColor = createColor;
 
 var updateColor = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, colorId, _updateColor;
+    var _req$body2, name, estado, colorId, _updateColor;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
             colorId = req.params.colorId;
             _context5.prev = 2;
             _context5.next = 5;
             return _Colores.default.findByIdAndUpdate(colorId, {
               name: name,
-              status: status
+              estado: estado
             });
 
           case 5:
@@ -267,9 +274,9 @@ var updateColor = /*#__PURE__*/function () {
             _context5.prev = 9;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
-            res.status(409).json({
+            return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
-            });
+            }));
 
           case 13:
           case "end":
@@ -302,33 +309,40 @@ var deleteColor = /*#__PURE__*/function () {
           case 4:
             _deleteColor = _context6.sent;
 
-            if (_deleteColor) {
-              res.json({
-                message: 'Color eliminado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Color'
-              });
+            if (!_deleteColor) {
+              _context6.next = 9;
+              break;
             }
 
-            _context6.next = 12;
+            res.json({
+              message: 'Color eliminado con éxito'
+            });
+            _context6.next = 10;
             break;
 
-          case 8:
-            _context6.prev = 8;
-            _context6.t0 = _context6["catch"](1);
-            console.log(_context6.t0);
-            res.status(409).json({
-              message: _context6.t0.message
-            });
+          case 9:
+            return _context6.abrupt("return", res.status(404).json({
+              message: 'No existe Color'
+            }));
+
+          case 10:
+            _context6.next = 16;
+            break;
 
           case 12:
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](1);
+            console.log(_context6.t0);
+            return _context6.abrupt("return", res.status(503).json({
+              message: _context6.t0.message
+            }));
+
+          case 16:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[1, 8]]);
+    }, _callee6, null, [[1, 12]]);
   }));
 
   return function deleteColor(_x11, _x12) {

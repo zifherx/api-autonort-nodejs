@@ -19,6 +19,8 @@ router.post('/send-request', [authJwt.verifyToken, authJwt.isVendedor], mafCtrl.
 
 router.post('/zip', multer.single('fileZip'), mafCtrl.descargaYZip);
 
+router.post('/send-message', mafCtrl.sendMessageWsp);
+
 router.post('/', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 50), mafCtrl.createRequest);
 
 router.patch('/evidences/:mafId', [authJwt.verifyToken, authJwt.isVendedor], multer.array('files', 20), mafCtrl.agregarNewDocuments);

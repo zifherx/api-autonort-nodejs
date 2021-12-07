@@ -28,12 +28,12 @@ router.post('/brand', sellerCtrl.getSellerByMarcaAndSucursal); //Obtener Vendedo
 
 router.post('/name', sellerCtrl.getSellerByName); //Crear Vendedor
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller);
-router.patch('/upload/:sellerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _multer.default.single('photo'), sellerCtrl.uploadAvatar); //Actualizar Vendedor
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin, _middlewares.verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller);
+router.patch('/upload/:sellerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin], _multer.default.single('photo'), sellerCtrl.uploadAvatar); //Actualizar Vendedor
 
-router.patch('/:sellerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin, _middlewares.verifySignup.checkRolesExist], sellerCtrl.updateSellerById); //Remover Vendedor
+router.patch('/:sellerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin], sellerCtrl.updateSellerById); //Remover Vendedor
 
-router.delete('/:sellerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin, _middlewares.verifySignup.checkRolesExist], sellerCtrl.deleteSellerById);
+router.delete('/:sellerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin], sellerCtrl.deleteSellerById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=seller.routes.js.map

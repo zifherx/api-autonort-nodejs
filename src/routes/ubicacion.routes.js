@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as ubicacionCtrl from '../controllers/ubicacion.controller'
-import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
+import { authJwt, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
@@ -14,12 +14,12 @@ router.get('/activos', ubicacionCtrl.getUbicacionByActivo);
 router.get('/:ubicacionId', ubicacionCtrl.getUbicacionById);
 
 //Crear Ubicacion
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateUbicacion], ubicacionCtrl.createUbicacion);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateUbicacion], ubicacionCtrl.createUbicacion);
 
 //Actualizar Ubicacion
-router.patch('/:ubicacionId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], ubicacionCtrl.updateUbicacion);
+router.patch('/:ubicacionId', [authJwt.verifyToken, authJwt.isAdmin], ubicacionCtrl.updateUbicacion);
 
 //Eliminar Ubicacion
-router.delete('/:ubicacionId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], ubicacionCtrl.deleteUbicacion);
+router.delete('/:ubicacionId', [authJwt.verifyToken, authJwt.isAdmin], ubicacionCtrl.deleteUbicacion);
 
 export default router;

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.obtenerToyotaValues = exports.vistaUnidadesEntregadasByStatus = exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.UnidadesLibres = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
+exports.obtenerToyotaValues = exports.vistaUnidadesEntregadasByStatus = exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteonidadesBySucursalFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.UnidadesLibres = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -26,6 +26,8 @@ var _Adicional = _interopRequireDefault(require("../models/Adicional"));
 var _Props = _interopRequireDefault(require("../models/Props"));
 
 var _User = _interopRequireDefault(require("../models/User"));
+
+var _nodemon = require("nodemon");
 
 var createSale = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
@@ -196,9 +198,9 @@ var createSale = /*#__PURE__*/function () {
             _context.prev = 37;
             _context.t0 = _context["catch"](1);
             console.log(_context.t0);
-            res.status(503).json({
+            return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
-            });
+            }));
 
           case 41:
           case "end":
@@ -251,9 +253,9 @@ var getSales = /*#__PURE__*/function () {
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(503).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -272,7 +274,7 @@ exports.getSales = getSales;
 
 var getSaleById = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var salesId, venta;
+    var salesId, query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -280,17 +282,39 @@ var getSaleById = /*#__PURE__*/function () {
             salesId = req.params.salesId;
             _context3.prev = 1;
             _context3.next = 4;
-            return _Sale.default.findById(salesId).populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
+            return _Sale.default.findById(salesId).populate({
+              path: 'vendedor',
+              select: 'name sucursal'
+            }).populate({
+              path: 'auto',
+              select: 'model version cod_tdp',
+              populate: {
+                path: 'model',
+                select: 'marca name avatar',
+                populate: {
+                  path: 'marca',
+                  select: 'name avatar'
+                }
+              }
+            }).populate({
+              path: 'cliente',
+              select: 'name document'
+            }).populate('campanias').populate('adicional').populate('accesorios').populate({
+              path: 'empleado',
+              select: 'name username'
+            });
 
           case 4:
-            venta = _context3.sent;
+            query = _context3.sent;
 
-            if (!venta) {
+            if (!query) {
               _context3.next = 9;
               break;
             }
 
-            res.json(venta);
+            res.json({
+              expediente: query
+            });
             _context3.next = 10;
             break;
 
@@ -307,9 +331,9 @@ var getSaleById = /*#__PURE__*/function () {
             _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
-            res.status(503).json({
+            return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -328,14 +352,14 @@ exports.getSaleById = getSaleById;
 
 var updateSaleById = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var salesId, _req$body2, vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_ciguena, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion, foundSeller, foundVehicle, foundCustomer, foundCampaign, foundAdicional, foundProps, ventaActualizada;
+    var salesId, _req$body2, vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_ciguena, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, monto_facturado, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion, foundSeller, foundVehicle, foundCustomer, foundCampaign, foundAdicional, foundProps, ventaActualizada;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             salesId = req.params.salesId;
-            _req$body2 = req.body, vendedor = _req$body2.vendedor, cliente = _req$body2.cliente, auto = _req$body2.auto, serie_tdp = _req$body2.serie_tdp, color = _req$body2.color, precio = _req$body2.precio, anio_fabricacion = _req$body2.anio_fabricacion, anio_modelo = _req$body2.anio_modelo, ubicacion_vehiculo = _req$body2.ubicacion_vehiculo, fecha_ciguena = _req$body2.fecha_ciguena, fecha_entrega = _req$body2.fecha_entrega, estatus_vehiculo = _req$body2.estatus_vehiculo, tipo_financiamiento = _req$body2.tipo_financiamiento, entidad_bancaria = _req$body2.entidad_bancaria, sustento = _req$body2.sustento, fecha_sustento = _req$body2.fecha_sustento, monto_aprobado = _req$body2.monto_aprobado, oficina = _req$body2.oficina, ejecutivo = _req$body2.ejecutivo, montoAdelanto1 = _req$body2.montoAdelanto1, fechaAdelanto1 = _req$body2.fechaAdelanto1, montoAdelanto2 = _req$body2.montoAdelanto2, fechaAdelanto2 = _req$body2.fechaAdelanto2, montoAdelanto3 = _req$body2.montoAdelanto3, fechaAdelanto3 = _req$body2.fechaAdelanto3, montoAdelanto4 = _req$body2.montoAdelanto4, fechaAdelanto4 = _req$body2.fechaAdelanto4, montoAdelanto5 = _req$body2.montoAdelanto5, fechaAdelanto5 = _req$body2.fechaAdelanto5, montoAdelanto6 = _req$body2.montoAdelanto6, fechaAdelanto6 = _req$body2.fechaAdelanto6, montoAdelanto7 = _req$body2.montoAdelanto7, fechaAdelanto7 = _req$body2.fechaAdelanto7, montoAdelanto8 = _req$body2.montoAdelanto8, fechaAdelanto8 = _req$body2.fechaAdelanto8, campanias = _req$body2.campanias, adicional = _req$body2.adicional, descuento_autonort = _req$body2.descuento_autonort, observacion_adv = _req$body2.observacion_adv, accesorios = _req$body2.accesorios, condicion_accesorios = _req$body2.condicion_accesorios, fecha_facturacion_tdp = _req$body2.fecha_facturacion_tdp, estatus_facturacion = _req$body2.estatus_facturacion, tipo_operacion = _req$body2.tipo_operacion, fecha_inicio_reserva = _req$body2.fecha_inicio_reserva, fecha_fin_reserva = _req$body2.fecha_fin_reserva, tipo_comprobante = _req$body2.tipo_comprobante, nro_comprobante = _req$body2.nro_comprobante, fecha_comprobante = _req$body2.fecha_comprobante, estatus_venta = _req$body2.estatus_venta, sucursal_venta = _req$body2.sucursal_venta, fecha_cancelacion = _req$body2.fecha_cancelacion;
+            _req$body2 = req.body, vendedor = _req$body2.vendedor, cliente = _req$body2.cliente, auto = _req$body2.auto, serie_tdp = _req$body2.serie_tdp, color = _req$body2.color, precio = _req$body2.precio, anio_fabricacion = _req$body2.anio_fabricacion, anio_modelo = _req$body2.anio_modelo, ubicacion_vehiculo = _req$body2.ubicacion_vehiculo, fecha_ciguena = _req$body2.fecha_ciguena, fecha_entrega = _req$body2.fecha_entrega, estatus_vehiculo = _req$body2.estatus_vehiculo, tipo_financiamiento = _req$body2.tipo_financiamiento, entidad_bancaria = _req$body2.entidad_bancaria, sustento = _req$body2.sustento, fecha_sustento = _req$body2.fecha_sustento, monto_aprobado = _req$body2.monto_aprobado, oficina = _req$body2.oficina, ejecutivo = _req$body2.ejecutivo, montoAdelanto1 = _req$body2.montoAdelanto1, fechaAdelanto1 = _req$body2.fechaAdelanto1, montoAdelanto2 = _req$body2.montoAdelanto2, fechaAdelanto2 = _req$body2.fechaAdelanto2, montoAdelanto3 = _req$body2.montoAdelanto3, fechaAdelanto3 = _req$body2.fechaAdelanto3, montoAdelanto4 = _req$body2.montoAdelanto4, fechaAdelanto4 = _req$body2.fechaAdelanto4, montoAdelanto5 = _req$body2.montoAdelanto5, fechaAdelanto5 = _req$body2.fechaAdelanto5, montoAdelanto6 = _req$body2.montoAdelanto6, fechaAdelanto6 = _req$body2.fechaAdelanto6, montoAdelanto7 = _req$body2.montoAdelanto7, fechaAdelanto7 = _req$body2.fechaAdelanto7, montoAdelanto8 = _req$body2.montoAdelanto8, fechaAdelanto8 = _req$body2.fechaAdelanto8, campanias = _req$body2.campanias, adicional = _req$body2.adicional, descuento_autonort = _req$body2.descuento_autonort, observacion_adv = _req$body2.observacion_adv, accesorios = _req$body2.accesorios, condicion_accesorios = _req$body2.condicion_accesorios, fecha_facturacion_tdp = _req$body2.fecha_facturacion_tdp, estatus_facturacion = _req$body2.estatus_facturacion, monto_facturado = _req$body2.monto_facturado, tipo_operacion = _req$body2.tipo_operacion, fecha_inicio_reserva = _req$body2.fecha_inicio_reserva, fecha_fin_reserva = _req$body2.fecha_fin_reserva, tipo_comprobante = _req$body2.tipo_comprobante, nro_comprobante = _req$body2.nro_comprobante, fecha_comprobante = _req$body2.fecha_comprobante, estatus_venta = _req$body2.estatus_venta, sucursal_venta = _req$body2.sucursal_venta, fecha_cancelacion = _req$body2.fecha_cancelacion;
             _context4.prev = 2;
             _context4.next = 5;
             return _Seller.default.find({
@@ -448,6 +472,7 @@ var updateSaleById = /*#__PURE__*/function () {
               condicion_accesorios: condicion_accesorios,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               estatus_facturacion: estatus_facturacion,
+              monto_facturado: monto_facturado,
               tipo_operacion: tipo_operacion,
               fecha_inicio_reserva: fecha_inicio_reserva,
               fecha_fin_reserva: fecha_fin_reserva,
@@ -486,9 +511,9 @@ var updateSaleById = /*#__PURE__*/function () {
             _context4.prev = 31;
             _context4.t0 = _context4["catch"](2);
             console.log(_context4.t0);
-            res.status(503).json({
+            return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
-            });
+            }));
 
           case 35:
           case "end":
@@ -544,9 +569,9 @@ var deleteSaleById = /*#__PURE__*/function () {
             _context5.prev = 12;
             _context5.t0 = _context5["catch"](1);
             console.log(_context5.t0);
-            res.status(503).json({
+            return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -607,9 +632,9 @@ var UnidadesLibres = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(503).json({
+            return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -673,9 +698,9 @@ var UnidadesByStatus = /*#__PURE__*/function () {
             _context7.prev = 12;
             _context7.t0 = _context7["catch"](1);
             console.log(_context7.t0);
-            res.status(503).json({
+            return _context7.abrupt("return", res.status(503).json({
               message: _context7.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -709,11 +734,22 @@ var UnidadesBySucursal = /*#__PURE__*/function () {
                 $gte: new Date(start),
                 $lte: new Date(end)
               }
+            }).sort({
+              fecha_cancelacion: 'desc'
             }).populate({
               path: 'vendedor',
               select: 'name sucursal'
             }).populate({
-              path: 'auto'
+              path: 'auto',
+              select: 'cod_tdp model version',
+              populate: {
+                path: 'model',
+                select: 'avatar name marca',
+                populate: {
+                  path: 'marca',
+                  select: 'avatar name'
+                }
+              }
             }).populate({
               path: 'cliente',
               select: 'name document cellphone'
@@ -756,9 +792,9 @@ var UnidadesBySucursal = /*#__PURE__*/function () {
             _context8.prev = 12;
             _context8.t0 = _context8["catch"](1);
             console.log(_context8.t0);
-            res.status(503).json({
+            return _context8.abrupt("return", res.status(503).json({
               message: _context8.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -803,9 +839,9 @@ var conteoUnidadesCanceladas = /*#__PURE__*/function () {
             _context9.prev = 7;
             _context9.t0 = _context9["catch"](0);
             console.log(_context9.t0);
-            res.status(503).json({
+            return _context9.abrupt("return", res.status(503).json({
               message: _context9.t0.message
-            });
+            }));
 
           case 11:
           case "end":
@@ -879,21 +915,19 @@ var conteoUnidadesLibres = /*#__PURE__*/function () {
 
 exports.conteoUnidadesLibres = conteoUnidadesLibres;
 
-var conteoUnidadesBySucursalStatusFecha = /*#__PURE__*/function () {
+var conteonidadesBySucursalFecha = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res) {
-    var _req$body6, sucursal, status, start, end, consulta;
+    var _req$body6, sucursal, start, end, query;
 
     return _regenerator.default.wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
-            _req$body6 = req.body, sucursal = _req$body6.sucursal, status = _req$body6.status, start = _req$body6.start, end = _req$body6.end; //console.log(start, end);
-
+            _req$body6 = req.body, sucursal = _req$body6.sucursal, start = _req$body6.start, end = _req$body6.end;
             _context11.prev = 1;
             _context11.next = 4;
             return _Sale.default.find({
               sucursal_venta: sucursal,
-              estatus_venta: status,
               fecha_cancelacion: {
                 $gte: new Date(start),
                 $lte: new Date(end)
@@ -901,20 +935,22 @@ var conteoUnidadesBySucursalStatusFecha = /*#__PURE__*/function () {
             }).countDocuments();
 
           case 4:
-            consulta = _context11.sent;
+            query = _context11.sent;
 
-            if (!(consulta >= 0)) {
+            if (!(query >= 0)) {
               _context11.next = 9;
               break;
             }
 
-            res.json(consulta);
+            res.json({
+              count: query
+            });
             _context11.next = 10;
             break;
 
           case 9:
             return _context11.abrupt("return", res.status(404).json({
-              message: "No existen Unidades ".concat(status, " en ").concat(sucursal)
+              message: 'No existen unidades'
             }));
 
           case 10:
@@ -925,9 +961,9 @@ var conteoUnidadesBySucursalStatusFecha = /*#__PURE__*/function () {
             _context11.prev = 12;
             _context11.t0 = _context11["catch"](1);
             console.log(_context11.t0);
-            res.status(503).json({
+            return _context11.abrupt("return", res.status(503).json({
               message: _context11.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -937,89 +973,81 @@ var conteoUnidadesBySucursalStatusFecha = /*#__PURE__*/function () {
     }, _callee11, null, [[1, 12]]);
   }));
 
-  return function conteoUnidadesBySucursalStatusFecha(_x21, _x22) {
+  return function conteonidadesBySucursalFecha(_x21, _x22) {
     return _ref11.apply(this, arguments);
   };
 }();
 
-exports.conteoUnidadesBySucursalStatusFecha = conteoUnidadesBySucursalStatusFecha;
+exports.conteonidadesBySucursalFecha = conteonidadesBySucursalFecha;
 
-var conteoVentasByVendedor = /*#__PURE__*/function () {
+var conteoUnidadesBySucursalStatusFecha = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res) {
-    var _req$body7, sucursal, estatus, start, end, filter, consulta;
+    var _req$body7, sucursal, status, start, end, query;
 
     return _regenerator.default.wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
-            _req$body7 = req.body, sucursal = _req$body7.sucursal, estatus = _req$body7.estatus, start = _req$body7.start, end = _req$body7.end; // console.log(req.body)
+            _req$body7 = req.body, sucursal = _req$body7.sucursal, status = _req$body7.status, start = _req$body7.start, end = _req$body7.end; //console.log(start, end);
 
             _context12.prev = 1;
-            filter = {
+            _context12.next = 4;
+            return _Sale.default.find({
               sucursal_venta: sucursal,
-              estatus_venta: estatus,
+              estatus_venta: status,
               fecha_cancelacion: {
                 $gte: new Date(start),
                 $lte: new Date(end)
               }
-            };
-            _context12.next = 5;
-            return _Sale.default.aggregate([{
-              $match: filter
-            }, {
-              $group: {
-                _id: "$vendedor",
-                num_ventas: {
-                  $sum: 1
-                }
-              }
-            }]);
+            }).countDocuments();
 
-          case 5:
-            consulta = _context12.sent;
+          case 4:
+            query = _context12.sent;
 
-            if (!(consulta.length > 0)) {
-              _context12.next = 10;
+            if (!(query >= 0)) {
+              _context12.next = 9;
               break;
             }
 
-            res.json(consulta);
-            _context12.next = 11;
+            res.json({
+              count: query
+            });
+            _context12.next = 10;
             break;
 
-          case 10:
-            return _context12.abrupt("return", res.status(201).json({
-              message: 'No existen Ventas aún'
+          case 9:
+            return _context12.abrupt("return", res.status(404).json({
+              message: "No existen Unidades ".concat(status, " en ").concat(sucursal)
             }));
 
-          case 11:
-            _context12.next = 17;
+          case 10:
+            _context12.next = 16;
             break;
 
-          case 13:
-            _context12.prev = 13;
+          case 12:
+            _context12.prev = 12;
             _context12.t0 = _context12["catch"](1);
             console.log(_context12.t0);
             return _context12.abrupt("return", res.status(503).json({
               message: _context12.t0.message
             }));
 
-          case 17:
+          case 16:
           case "end":
             return _context12.stop();
         }
       }
-    }, _callee12, null, [[1, 13]]);
+    }, _callee12, null, [[1, 12]]);
   }));
 
-  return function conteoVentasByVendedor(_x23, _x24) {
+  return function conteoUnidadesBySucursalStatusFecha(_x23, _x24) {
     return _ref12.apply(this, arguments);
   };
 }();
 
-exports.conteoVentasByVendedor = conteoVentasByVendedor;
+exports.conteoUnidadesBySucursalStatusFecha = conteoUnidadesBySucursalStatusFecha;
 
-var conteoVentasByModelo = /*#__PURE__*/function () {
+var conteoVentasByVendedor = /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res) {
     var _req$body8, sucursal, estatus, start, end, filter, consulta;
 
@@ -1027,7 +1055,8 @@ var conteoVentasByModelo = /*#__PURE__*/function () {
       while (1) {
         switch (_context13.prev = _context13.next) {
           case 0:
-            _req$body8 = req.body, sucursal = _req$body8.sucursal, estatus = _req$body8.estatus, start = _req$body8.start, end = _req$body8.end;
+            _req$body8 = req.body, sucursal = _req$body8.sucursal, estatus = _req$body8.estatus, start = _req$body8.start, end = _req$body8.end; // console.log(req.body)
+
             _context13.prev = 1;
             filter = {
               sucursal_venta: sucursal,
@@ -1042,7 +1071,7 @@ var conteoVentasByModelo = /*#__PURE__*/function () {
               $match: filter
             }, {
               $group: {
-                _id: "$auto",
+                _id: "$vendedor",
                 num_ventas: {
                   $sum: 1
                 }
@@ -1052,6 +1081,80 @@ var conteoVentasByModelo = /*#__PURE__*/function () {
           case 5:
             consulta = _context13.sent;
 
+            if (!(consulta.length > 0)) {
+              _context13.next = 10;
+              break;
+            }
+
+            res.json(consulta);
+            _context13.next = 11;
+            break;
+
+          case 10:
+            return _context13.abrupt("return", res.status(201).json({
+              message: 'No existen Ventas aún'
+            }));
+
+          case 11:
+            _context13.next = 17;
+            break;
+
+          case 13:
+            _context13.prev = 13;
+            _context13.t0 = _context13["catch"](1);
+            console.log(_context13.t0);
+            return _context13.abrupt("return", res.status(503).json({
+              message: _context13.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context13.stop();
+        }
+      }
+    }, _callee13, null, [[1, 13]]);
+  }));
+
+  return function conteoVentasByVendedor(_x25, _x26) {
+    return _ref13.apply(this, arguments);
+  };
+}();
+
+exports.conteoVentasByVendedor = conteoVentasByVendedor;
+
+var conteoVentasByModelo = /*#__PURE__*/function () {
+  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
+    var _req$body9, sucursal, estatus, start, end, filter, consulta;
+
+    return _regenerator.default.wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            _req$body9 = req.body, sucursal = _req$body9.sucursal, estatus = _req$body9.estatus, start = _req$body9.start, end = _req$body9.end;
+            _context14.prev = 1;
+            filter = {
+              sucursal_venta: sucursal,
+              estatus_venta: estatus,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context14.next = 5;
+            return _Sale.default.aggregate([{
+              $match: filter
+            }, {
+              $group: {
+                _id: "$auto",
+                num_ventas: {
+                  $sum: 1
+                }
+              }
+            }]);
+
+          case 5:
+            consulta = _context14.sent;
+
             if (consulta.length > 0) {
               res.json(consulta);
             } else {
@@ -1060,43 +1163,43 @@ var conteoVentasByModelo = /*#__PURE__*/function () {
               });
             }
 
-            _context13.next = 13;
+            _context14.next = 13;
             break;
 
           case 9:
-            _context13.prev = 9;
-            _context13.t0 = _context13["catch"](1);
-            console.log(_context13.t0);
-            res.status(503).json({
-              message: _context13.t0.message
-            });
+            _context14.prev = 9;
+            _context14.t0 = _context14["catch"](1);
+            console.log(_context14.t0);
+            return _context14.abrupt("return", res.status(503).json({
+              message: _context14.t0.message
+            }));
 
           case 13:
           case "end":
-            return _context13.stop();
+            return _context14.stop();
         }
       }
-    }, _callee13, null, [[1, 9]]);
+    }, _callee14, null, [[1, 9]]);
   }));
 
-  return function conteoVentasByModelo(_x25, _x26) {
-    return _ref13.apply(this, arguments);
+  return function conteoVentasByModelo(_x27, _x28) {
+    return _ref14.apply(this, arguments);
   };
 }();
 
 exports.conteoVentasByModelo = conteoVentasByModelo;
 
 var vistaUnidadesEntregadasByStatus = /*#__PURE__*/function () {
-  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
-    var _req$body9, sucursal, start, end, consulta;
+  var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res) {
+    var _req$body10, sucursal, start, end, query;
 
-    return _regenerator.default.wrap(function _callee14$(_context14) {
+    return _regenerator.default.wrap(function _callee15$(_context15) {
       while (1) {
-        switch (_context14.prev = _context14.next) {
+        switch (_context15.prev = _context15.next) {
           case 0:
-            _req$body9 = req.body, sucursal = _req$body9.sucursal, start = _req$body9.start, end = _req$body9.end;
-            _context14.prev = 1;
-            _context14.next = 4;
+            _req$body10 = req.body, sucursal = _req$body10.sucursal, start = _req$body10.start, end = _req$body10.end;
+            _context15.prev = 1;
+            _context15.next = 4;
             return _Sale.default.where({
               sucursal_venta: sucursal,
               fecha_entrega: {
@@ -1106,61 +1209,63 @@ var vistaUnidadesEntregadasByStatus = /*#__PURE__*/function () {
             }).find().countDocuments();
 
           case 4:
-            consulta = _context14.sent;
+            query = _context15.sent;
 
-            if (!(consulta >= 0)) {
-              _context14.next = 9;
+            if (!(query >= 0)) {
+              _context15.next = 9;
               break;
             }
 
-            res.json(consulta);
-            _context14.next = 10;
+            res.json({
+              total: query
+            });
+            _context15.next = 10;
             break;
 
           case 9:
-            return _context14.abrupt("return", res.status(404).json({
+            return _context15.abrupt("return", res.status(404).json({
               message: "No existen Unidades entregadas en ".concat(sucursal)
             }));
 
           case 10:
-            _context14.next = 16;
+            _context15.next = 16;
             break;
 
           case 12:
-            _context14.prev = 12;
-            _context14.t0 = _context14["catch"](1);
-            console.log(_context14.t0);
-            res.status(503).json({
-              message: _context14.t0.message
-            });
+            _context15.prev = 12;
+            _context15.t0 = _context15["catch"](1);
+            console.log(_context15.t0);
+            return _context15.abrupt("return", res.status(503).json({
+              message: _context15.t0.message
+            }));
 
           case 16:
           case "end":
-            return _context14.stop();
+            return _context15.stop();
         }
       }
-    }, _callee14, null, [[1, 12]]);
+    }, _callee15, null, [[1, 12]]);
   }));
 
-  return function vistaUnidadesEntregadasByStatus(_x27, _x28) {
-    return _ref14.apply(this, arguments);
+  return function vistaUnidadesEntregadasByStatus(_x29, _x30) {
+    return _ref15.apply(this, arguments);
   };
 }();
 
 exports.vistaUnidadesEntregadasByStatus = vistaUnidadesEntregadasByStatus;
 
 var obtenerToyotaValues = /*#__PURE__*/function () {
-  var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res) {
-    var _req$body10, sucursal, statusVenta, start, end, objetos, query;
+  var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee16(req, res) {
+    var _req$body11, sucursal, statusVenta, start, end, objetos, query;
 
-    return _regenerator.default.wrap(function _callee15$(_context15) {
+    return _regenerator.default.wrap(function _callee16$(_context16) {
       while (1) {
-        switch (_context15.prev = _context15.next) {
+        switch (_context16.prev = _context16.next) {
           case 0:
-            _req$body10 = req.body, sucursal = _req$body10.sucursal, statusVenta = _req$body10.statusVenta, start = _req$body10.start, end = _req$body10.end;
+            _req$body11 = req.body, sucursal = _req$body11.sucursal, statusVenta = _req$body11.statusVenta, start = _req$body11.start, end = _req$body11.end;
             objetos = [];
-            _context15.prev = 2;
-            _context15.next = 5;
+            _context16.prev = 2;
+            _context16.next = 5;
             return _Sale.default.where({
               sucursal_venta: sucursal,
               estatus_venta: statusVenta,
@@ -1171,7 +1276,7 @@ var obtenerToyotaValues = /*#__PURE__*/function () {
             }).find().populate('adicional vendedor auto');
 
           case 5:
-            query = _context15.sent;
+            query = _context16.sent;
             // const values = await query.adicional
             // console.log(query)
             query.forEach(function (element) {
@@ -1189,7 +1294,7 @@ var obtenerToyotaValues = /*#__PURE__*/function () {
             });
 
             if (!(query >= 0)) {
-              _context15.next = 11;
+              _context16.next = 11;
               break;
             }
 
@@ -1197,36 +1302,36 @@ var obtenerToyotaValues = /*#__PURE__*/function () {
               nro_adicionales: objetos.length,
               toyota_values: objetos
             });
-            _context15.next = 12;
+            _context16.next = 12;
             break;
 
           case 11:
-            return _context15.abrupt("return", res.status(404).json({
+            return _context16.abrupt("return", res.status(404).json({
               message: "No existen Unidades ".concat(statusVenta, " en ").concat(sucursal, " con Toyota Value en ese rango de fechas")
             }));
 
           case 12:
-            _context15.next = 18;
+            _context16.next = 18;
             break;
 
           case 14:
-            _context15.prev = 14;
-            _context15.t0 = _context15["catch"](2);
-            console.log(_context15.t0.message);
-            res.status(503).json({
-              message: _context15.t0.message
-            });
+            _context16.prev = 14;
+            _context16.t0 = _context16["catch"](2);
+            console.log(_context16.t0.message);
+            return _context16.abrupt("return", res.status(503).json({
+              message: _context16.t0.message
+            }));
 
           case 18:
           case "end":
-            return _context15.stop();
+            return _context16.stop();
         }
       }
-    }, _callee15, null, [[2, 14]]);
+    }, _callee16, null, [[2, 14]]);
   }));
 
-  return function obtenerToyotaValues(_x29, _x30) {
-    return _ref15.apply(this, arguments);
+  return function obtenerToyotaValues(_x31, _x32) {
+    return _ref16.apply(this, arguments);
   };
 }();
 

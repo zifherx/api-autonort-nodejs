@@ -1,6 +1,7 @@
 import { Router } from "express";
-import * as bancoCtrl from '../controllers/banco.controller'
+import * as bancoCtrl from '../controllers/banco.controller';
 import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
+import multer from '../middlewares/multer'
 
 const router = Router();
 
@@ -14,12 +15,12 @@ router.get('/activos', bancoCtrl.getBancoByActivo);
 router.get('/:bancoId', bancoCtrl.getBancoById);
 
 //Crear Banco
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateBanco], bancoCtrl.createBanco);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateBanco], multer.single('avatar'), bancoCtrl.createBanco);
 
 //Actualizar Banco
-router.patch('/:bancoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], bancoCtrl.updateBanco);
+router.patch('/:bancoId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('avatar'), bancoCtrl.updateBanco);
 
 //Eliminar Banco
-router.delete('/:bancoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], bancoCtrl.deleteBanco);
+router.delete('/:bancoId', [authJwt.verifyToken, authJwt.isAdmin], bancoCtrl.deleteBanco);
 
 export default router;

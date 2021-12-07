@@ -86,7 +86,7 @@ var signIn = /*#__PURE__*/function () {
             token = _jsonwebtoken.default.sign({
               id: userFound._id
             }, _config.default.SECRET, {
-              expiresIn: '24h'
+              expiresIn: '36h'
             }); //Cambio de estado a online
 
             _context.next = 18;

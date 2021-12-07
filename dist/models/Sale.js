@@ -153,6 +153,9 @@ var saleSchema = new _mongoose.Schema({
   estatus_facturacion: {
     type: String
   },
+  monto_facturado: {
+    type: Number
+  },
   //Venta
   tipo_operacion: {
     type: String
@@ -184,6 +187,16 @@ var saleSchema = new _mongoose.Schema({
   pasoaTramite: {
     type: Number,
     default: 0
+  },
+  isReportado: {
+    type: Boolean,
+    default: false
+  },
+  fechaReporte: {
+    type: Date
+  },
+  mesReportado: {
+    type: Number
   }
 }, {
   timestamps: true,

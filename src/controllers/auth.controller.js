@@ -18,7 +18,7 @@ export const signIn = async(req, res) => {
 
     if (!matchPassword) return res.status(403).json({ token: null, message: 'Contraseña Errónea' });
 
-    const token = jwt.sign({ id: userFound._id }, config.SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ id: userFound._id }, config.SECRET, { expiresIn: '36h' });
 
     //Cambio de estado a online
     await User.findByIdAndUpdate(userFound._id, { online: true });

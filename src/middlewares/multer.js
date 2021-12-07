@@ -22,6 +22,7 @@ const storage = multerS3({
     key: (req, file, cb) => {
         let name = file.originalname.split('.')[0];
         let campo = name + path.extname(file.originalname);
+        // let alternativo = new Date().getTime() + path.extname(file.originalname);
         // let campo = nanoid() + path.extname(file.originalname);
         cb(null, campo);
     }

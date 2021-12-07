@@ -6,6 +6,7 @@ import Campaign from '../models/Campaign'
 import Adicional from '../models/Adicional'
 import Props from '../models/Props'
 import User from '../models/User'
+import { restart } from 'nodemon'
 
 export const createSale = async(req, res) => {
     const {
@@ -103,7 +104,7 @@ export const createSale = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -126,7 +127,7 @@ export const getSales = async(req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -135,30 +136,38 @@ export const getSaleById = async(req, res) => {
 
     try {
 
-        const venta = await Sale.findById(salesId)
-            .populate('vendedor')
-            .populate('auto')
-            .populate('cliente')
+        const query = await Sale.findById(salesId)
+            .populate({ path: 'vendedor', select: 'name sucursal' })
+            .populate({
+                path: 'auto',
+                select: 'model version cod_tdp',
+                populate: {
+                    path: 'model',
+                    select: 'marca name avatar',
+                    populate: { path: 'marca', select: 'name avatar' }
+                },
+            })
+            .populate({ path: 'cliente', select: 'name document' })
             .populate('campanias')
             .populate('adicional')
             .populate('accesorios')
-            .populate('empleado');
+            .populate({ path: 'empleado', select: 'name username' });
 
-        if (venta) {
-            res.json(venta);
+        if (query) {
+            res.json({ expediente: query });
         } else {
             return res.status(404).json({ message: 'No existe el Expediente' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const updateSaleById = async(req, res) => {
     const { salesId } = req.params;
 
-    const { vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_ciguena, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion } = req.body;
+    const { vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_ciguena, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, monto_facturado, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion } = req.body;
 
     try {
 
@@ -180,7 +189,61 @@ export const updateSaleById = async(req, res) => {
         //Props
         const foundProps = await Props.find({ name: { $in: accesorios } });
 
-        const ventaActualizada = await Sale.findByIdAndUpdate(salesId, { vendedor: foundSeller.map(seller => seller._id), cliente: foundCustomer.map(customer => customer._id), auto: foundVehicle.map(vehicle => vehicle._id), serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_ciguena, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias: foundCampaign.map(campaign => campaign._id), adicional: foundAdicional.map(adicional => adicional._id), descuento_autonort, observacion_adv, accesorios: foundProps.map(props => props._id), condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion });
+        const ventaActualizada = await Sale.findByIdAndUpdate(salesId, {
+            vendedor: foundSeller.map(seller => seller._id),
+            cliente: foundCustomer.map(customer => customer._id),
+            auto: foundVehicle.map(vehicle => vehicle._id),
+            serie_tdp,
+            color,
+            precio,
+            anio_fabricacion,
+            anio_modelo,
+            ubicacion_vehiculo,
+            fecha_ciguena,
+            fecha_entrega,
+            estatus_vehiculo,
+            tipo_financiamiento,
+            entidad_bancaria,
+            sustento,
+            fecha_sustento,
+            monto_aprobado,
+            oficina,
+            ejecutivo,
+            montoAdelanto1,
+            fechaAdelanto1,
+            montoAdelanto2,
+            fechaAdelanto2,
+            montoAdelanto3,
+            fechaAdelanto3,
+            montoAdelanto4,
+            fechaAdelanto4,
+            montoAdelanto5,
+            fechaAdelanto5,
+            montoAdelanto6,
+            fechaAdelanto6,
+            montoAdelanto7,
+            fechaAdelanto7,
+            montoAdelanto8,
+            fechaAdelanto8,
+            campanias: foundCampaign.map(campaign => campaign._id),
+            adicional: foundAdicional.map(adicional => adicional._id),
+            descuento_autonort,
+            observacion_adv,
+            accesorios: foundProps.map(props => props._id),
+            condicion_accesorios,
+            fecha_facturacion_tdp,
+            estatus_facturacion,
+            monto_facturado,
+            tipo_operacion,
+            fecha_inicio_reserva,
+            fecha_fin_reserva,
+            tipo_comprobante,
+            nro_comprobante,
+            fecha_comprobante,
+            estatus_venta,
+            sucursal_venta,
+            fecha_cancelacion
+        });
 
         if (ventaActualizada) {
             res.json({ message: 'Expediente actualizado con éxito' });
@@ -190,7 +253,7 @@ export const updateSaleById = async(req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -207,7 +270,7 @@ export const deleteSaleById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -229,7 +292,7 @@ export const UnidadesLibres = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -251,7 +314,7 @@ export const UnidadesByStatus = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -259,8 +322,20 @@ export const UnidadesBySucursal = async(req, res) => {
     const { sucursal, start, end } = req.body;
     try {
         const query = await Sale.find({ sucursal_venta: sucursal, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } })
+            .sort({ fecha_cancelacion: 'desc' })
             .populate({ path: 'vendedor', select: 'name sucursal' })
-            .populate({ path: 'auto' })
+            .populate({
+                path: 'auto',
+                select: 'cod_tdp model version',
+                populate: {
+                    path: 'model',
+                    select: 'avatar name marca',
+                    populate: {
+                        path: 'marca',
+                        select: 'avatar name'
+                    }
+                }
+            })
             .populate({ path: 'cliente', select: 'name document cellphone' })
             .populate({ path: 'campanias' })
             .populate({ path: 'adicional' })
@@ -273,7 +348,7 @@ export const UnidadesBySucursal = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -286,7 +361,7 @@ export const conteoUnidadesCanceladas = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -304,20 +379,35 @@ export const conteoUnidadesLibres = async(req, res) => {
     }
 }
 
+export const conteonidadesBySucursalFecha = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+    try {
+        const query = await Sale.find({ sucursal_venta: sucursal, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } }).countDocuments();
+        if (query >= 0) {
+            res.json({ count: query });
+        } else {
+            return res.status(404).json({ message: 'No existen unidades' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
 export const conteoUnidadesBySucursalStatusFecha = async(req, res) => {
     const { sucursal, status, start, end } = req.body;
     //console.log(start, end);
     try {
-        const consulta = await Sale.find({ sucursal_venta: sucursal, estatus_venta: status, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } }).countDocuments();
-        //console.log('Query: ', consulta);
-        if (consulta >= 0) {
-            res.json(consulta);
+        const query = await Sale.find({ sucursal_venta: sucursal, estatus_venta: status, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } }).countDocuments();
+        //console.log('Query: ', query);
+        if (query >= 0) {
+            res.json({ count: query });
         } else {
             return res.status(404).json({ message: `No existen Unidades ${status} en ${sucursal}` })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -364,22 +454,22 @@ export const conteoVentasByModelo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 }
 
 export const vistaUnidadesEntregadasByStatus = async(req, res) => {
     const { sucursal, start, end } = req.body;
     try {
-        const consulta = await Sale.where({ sucursal_venta: sucursal, fecha_entrega: { $gte: new Date(start), $lte: new Date(end) } }).find().countDocuments();
-        if (consulta >= 0) {
-            res.json(consulta);
+        const query = await Sale.where({ sucursal_venta: sucursal, fecha_entrega: { $gte: new Date(start), $lte: new Date(end) } }).find().countDocuments();
+        if (query >= 0) {
+            res.json({ total: query });
         } else {
             return res.status(404).json({ message: `No existen Unidades entregadas en ${sucursal}` })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -412,6 +502,6 @@ export const obtenerToyotaValues = async(req, res) => {
 
     } catch (err) {
         console.log(err.message)
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }

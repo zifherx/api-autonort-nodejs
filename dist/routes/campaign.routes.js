@@ -25,11 +25,11 @@ router.post('/find', campaignCtrl.getCampaignByVehicle); //Obtener Campaña por 
 
 router.post('/group', campaignCtrl.getCampaignByGrupo); //Crear Campaña
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateCampania], campaignCtrl.createCampaign); //Actualizar Campaña
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin, _middlewares.verifyDuplicate.checkDuplicateCampania], campaignCtrl.createCampaign); //Actualizar Campaña
 
-router.patch('/:campaignId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], campaignCtrl.updateCampaignById); //Remover Campaña
+router.patch('/:campaignId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin], campaignCtrl.updateCampaignById); //Remover Campaña
 
-router.delete('/:campaignId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist], campaignCtrl.deleteCampaignById);
+router.delete('/:campaignId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin], campaignCtrl.deleteCampaignById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=campaign.routes.js.map

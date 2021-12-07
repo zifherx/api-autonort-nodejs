@@ -10,7 +10,7 @@ export const getAll = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -25,13 +25,13 @@ export const getAseguradoraById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const getAseguradoraByActivo = async(req, res) => {
     try {
-        const objeto = await Aseguradora.find({ status: "Activo" }).sort({ name: 'asc' })
+        const objeto = await Aseguradora.find({ status: true }).sort({ name: 'asc' })
         if (objeto.length > 0) {
             res.json(objeto);
         } else {
@@ -39,7 +39,7 @@ export const getAseguradoraByActivo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -53,7 +53,7 @@ export const createAseguradora = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -65,11 +65,11 @@ export const updateAseguradora = async(req, res) => {
         if (objeto) {
             res.json({ message: 'Aseguradora actualizado con éxito' })
         } else {
-            res.status(404).json({ message: 'No existe Aseguradora a actualizar' })
+            return res.status(404).json({ message: 'No existe Aseguradora a actualizar' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -84,6 +84,6 @@ export const deleteAseguradora = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }

@@ -21,11 +21,11 @@ router.get('/activos', colorCtrl.getColorByActivo); //Obtener Color por ID
 
 router.get('/:colorId', colorCtrl.getColorById); //Crear Color
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateColor], colorCtrl.createColor); //Actualizar Color
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifyDuplicate.checkDuplicateColor], colorCtrl.createColor); //Actualizar Color
 
-router.patch('/:colorId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], colorCtrl.updateColor); //Eliminar Color
+router.patch('/:colorId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], colorCtrl.updateColor); //Eliminar Color
 
-router.delete('/:colorId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], colorCtrl.deleteColor);
+router.delete('/:colorId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], colorCtrl.deleteColor);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=colores.routes.js.map

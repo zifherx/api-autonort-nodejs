@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.descargaYZip = exports.downloadAndZipeo = exports.enviarCorreoSolicitud = exports.deleteRequest = exports.cambioStatusByMaf = exports.requestaHot = exports.actualizarReqAprobada = exports.agregarNewDocuments = exports.actualizarRequest = exports.createRequest = exports.obtenerRequestbyStatus = exports.getAllBySucursal = exports.getAllByVendedor = exports.getOneById = exports.getAll = void 0;
+exports.sendMessageWsp = exports.descargaYZip = exports.downloadAndZipeo = exports.enviarCorreoSolicitud = exports.deleteRequest = exports.cambioStatusByMaf = exports.requestaHot = exports.actualizarReqAprobada = exports.agregarNewDocuments = exports.actualizarRequest = exports.createRequest = exports.obtenerRequestbyStatus = exports.getAllBySucursal = exports.getAllByVendedor = exports.getOneById = exports.getAll = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -31,9 +31,9 @@ var _download = _interopRequireDefault(require("download"));
 
 var _admZip = _interopRequireDefault(require("adm-zip"));
 
-var _deleteFiles = require("../middlewares/deleteFiles");
-
 require("dotenv/config");
+
+var _twilio = _interopRequireDefault(require("twilio"));
 
 var getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
@@ -1035,4 +1035,53 @@ var descargaYZip = /*#__PURE__*/function () {
 }();
 
 exports.descargaYZip = descargaYZip;
+
+var sendMessageWsp = /*#__PURE__*/function () {
+  var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee16(req, res) {
+    var _req$body7, placa, sucursal, servicio, mejora, calificacion, destino, accountSid, authToken, client;
+
+    return _regenerator.default.wrap(function _callee16$(_context16) {
+      while (1) {
+        switch (_context16.prev = _context16.next) {
+          case 0:
+            _req$body7 = req.body, placa = _req$body7.placa, sucursal = _req$body7.sucursal, servicio = _req$body7.servicio, mejora = _req$body7.mejora, calificacion = _req$body7.calificacion, destino = _req$body7.destino;
+            accountSid = 'AC5145f2cf5442844fa805e987f09751c6';
+            authToken = '42d0808b60a3917dddcf06879e56ff4e';
+            client = new _twilio.default(accountSid, authToken);
+            client.messages.create({
+              /* body: 'Se registró una calificación en la siguiente encuesta.
+              Cliente con placa: {{1}} perteneciente a la sucursal: {{2}} que realizó el servicio de: {{3}}, sugiere mejorar en: {{4}}.
+              Su calificación es: {{5}}' */
+              body: "Se registr\xF3 una calificaci\xF3n en la siguiente encuesta.\nCliente con placa: *".concat(placa, "* perteneciente a la sucursal *").concat(sucursal, "* que realiz\xF3 el servicio de: *").concat(servicio, "*, sugiere mejorar en: *").concat(mejora, "*.\nSu calificaci\xF3n es: *").concat(calificacion, "*"),
+              // to: 'whatsapp:+51924063422', // Fernando Rojas
+              to: 'whatsapp:+51' + destino,
+              // Paul holguin
+              // to: '+51989927794', // Paul holguin
+              // to: '+51924063422',
+              from: 'whatsapp:+18482856322' // From a valid Twilio number
+              // from: '+18482856322',
+
+            }).then(function (message) {
+              // console.log(message)
+              res.json({
+                ok: 'Message sent',
+                sid: message.sid,
+                status: message.status
+              });
+            });
+
+          case 5:
+          case "end":
+            return _context16.stop();
+        }
+      }
+    }, _callee16);
+  }));
+
+  return function sendMessageWsp(_x31, _x32) {
+    return _ref16.apply(this, arguments);
+  };
+}();
+
+exports.sendMessageWsp = sendMessageWsp;
 //# sourceMappingURL=maf.controller.js.map

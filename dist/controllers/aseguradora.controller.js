@@ -51,9 +51,9 @@ var getAll = /*#__PURE__*/function () {
             _context.prev = 11;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            res.status(409).json({
+            return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -107,9 +107,9 @@ var getAseguradoraById = /*#__PURE__*/function () {
             _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
             console.log(_context2.t0);
-            res.status(409).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -136,7 +136,7 @@ var getAseguradoraByActivo = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _Aseguradora.default.find({
-              status: "Activo"
+              status: true
             }).sort({
               name: 'asc'
             });
@@ -166,9 +166,9 @@ var getAseguradoraByActivo = /*#__PURE__*/function () {
             _context3.prev = 11;
             _context3.t0 = _context3["catch"](0);
             console.log(_context3.t0);
-            res.status(409).json({
+            return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -218,9 +218,9 @@ var createAseguradora = /*#__PURE__*/function () {
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
-            });
+            }));
 
           case 13:
           case "end":
@@ -257,33 +257,40 @@ var updateAseguradora = /*#__PURE__*/function () {
           case 5:
             objeto = _context5.sent;
 
-            if (objeto) {
-              res.json({
-                message: 'Aseguradora actualizado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Aseguradora a actualizar'
-              });
+            if (!objeto) {
+              _context5.next = 10;
+              break;
             }
 
-            _context5.next = 13;
+            res.json({
+              message: 'Aseguradora actualizado con éxito'
+            });
+            _context5.next = 11;
             break;
 
-          case 9:
-            _context5.prev = 9;
-            _context5.t0 = _context5["catch"](2);
-            console.log(_context5.t0);
-            res.status(409).json({
-              message: _context5.t0.message
-            });
+          case 10:
+            return _context5.abrupt("return", res.status(404).json({
+              message: 'No existe Aseguradora a actualizar'
+            }));
+
+          case 11:
+            _context5.next = 17;
+            break;
 
           case 13:
+            _context5.prev = 13;
+            _context5.t0 = _context5["catch"](2);
+            console.log(_context5.t0);
+            return _context5.abrupt("return", res.status(503).json({
+              message: _context5.t0.message
+            }));
+
+          case 17:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 9]]);
+    }, _callee5, null, [[2, 13]]);
   }));
 
   return function updateAseguradora(_x9, _x10) {
@@ -332,9 +339,9 @@ var deleteAseguradora = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
-            });
+            }));
 
           case 16:
           case "end":

@@ -10,7 +10,7 @@ export const getBancos = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -25,68 +25,94 @@ export const getBancoById = async(req, res) => {
         }
     } catch (err) {
         console.log(err)
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const getBancoByActivo = async(req, res) => {
     try {
-        const bancos = await Banco.find({ status: "Activo" }).sort({ name: 'asc' });
+        const bancos = await Banco.find({ status: true }).sort({ name: 'asc' });
         if (bancos.length > 0) {
             res.json(bancos);
         } else {
-            res.status(404).json({ message: 'No existen Bancos Activos' })
+            return res.status(404).json({ message: 'No existen Bancos Activos' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 }
 
 export const createBanco = async(req, res) => {
     const { name, status } = req.body;
+    const avatar = req.file;
+
     try {
-        const newBanco = new Banco({ name, status });
+        let obj = null;
+        if (avatar == undefined || avatar == null) {
+            obj = new Banco({ name, status });
+        } else {
+            obj = new Banco({
+                avatar: avatar.location,
+                name,
+                status
+            });
+        }
 
-        const bancoCreado = await newBanco.save();
+        const query = await newBanco.save();
 
-        if (bancoCreado) {
+        if (query) {
             res.json({ message: 'Banco creado con éxito' })
         }
     } catch (err) {
         console.log(err)
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const updateBanco = async(req, res) => {
     const { name, status } = req.body;
     const { bancoId } = req.params;
-    try {
-        const updateBanco = await Banco.findByIdAndUpdate(bancoId, { name, status });
+    const avatar = req.file;
 
-        if (updateBanco) {
+    try {
+        let query = null;
+
+        if (avatar == undefined || avatar == null) {
+            query = await Banco.findByIdAndUpdate(bancoId, {
+                name,
+                status
+            });
+        } else {
+            query = await Banco.findByIdAndUpdate(bancoId, {
+                avatar: avatar.location,
+                name,
+                status
+            });
+        }
+
+        if (query) {
             res.json({ message: 'Banco actualizado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Banco a eliminar' });
+            return res.status(404).json({ message: 'No existe Banco a eliminar' });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const deleteBanco = async(req, res) => {
     const { bancoId } = req.params;
     try {
-        const deleteBanco = await Banco.findByIdAndDelete(bancoId);
-        if (deleteBanco) {
+        const query = await Banco.findByIdAndDelete(bancoId);
+        if (query) {
             res.json({ message: 'Banco eliminado con éxito' });
         } else {
             return res.status(404).json({ message: 'No existe Banco a eliminar' });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }

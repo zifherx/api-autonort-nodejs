@@ -51,9 +51,9 @@ var getAll = /*#__PURE__*/function () {
             _context.prev = 11;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            res.status(503).json({
+            return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -107,9 +107,9 @@ var getOperacionById = /*#__PURE__*/function () {
             _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
             console.log(_context2.t0);
-            res.status(503).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -144,31 +144,38 @@ var getOperacionActivos = /*#__PURE__*/function () {
           case 3:
             query = _context3.sent;
 
-            if (query.length > 0) {
-              res.json(query);
-            } else {
-              res.status(404).json({
-                message: 'No existen Tipos de operación'
-              });
+            if (!(query.length > 0)) {
+              _context3.next = 8;
+              break;
             }
 
-            _context3.next = 11;
+            res.json(query);
+            _context3.next = 9;
             break;
 
-          case 7:
-            _context3.prev = 7;
-            _context3.t0 = _context3["catch"](0);
-            console.log(_context3.t0);
-            res.status(503).json({
-              message: _context3.t0.message
-            });
+          case 8:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existen Tipos Activos'
+            }));
+
+          case 9:
+            _context3.next = 15;
+            break;
 
           case 11:
+            _context3.prev = 11;
+            _context3.t0 = _context3["catch"](0);
+            console.log(_context3.t0);
+            return _context3.abrupt("return", res.status(503).json({
+              message: _context3.t0.message
+            }));
+
+          case 15:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 7]]);
+    }, _callee3, null, [[0, 11]]);
   }));
 
   return function getOperacionActivos(_x5, _x6) {
@@ -211,9 +218,9 @@ var createOperacion = /*#__PURE__*/function () {
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(503).json({
+            return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
-            });
+            }));
 
           case 13:
           case "end":
@@ -267,9 +274,9 @@ var updateOperacion = /*#__PURE__*/function () {
             _context5.prev = 9;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
-            res.status(503).json({
+            return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
-            });
+            }));
 
           case 13:
           case "end":
@@ -325,9 +332,9 @@ var deleteOperacion = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(503).json({
+            return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
-            });
+            }));
 
           case 16:
           case "end":

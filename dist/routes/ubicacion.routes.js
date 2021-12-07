@@ -21,11 +21,11 @@ router.get('/activos', ubicacionCtrl.getUbicacionByActivo); //Obtener Ubicacion 
 
 router.get('/:ubicacionId', ubicacionCtrl.getUbicacionById); //Crear Ubicacion
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateUbicacion], ubicacionCtrl.createUbicacion); //Actualizar Ubicacion
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifyDuplicate.checkDuplicateUbicacion], ubicacionCtrl.createUbicacion); //Actualizar Ubicacion
 
-router.patch('/:ubicacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], ubicacionCtrl.updateUbicacion); //Eliminar Ubicacion
+router.patch('/:ubicacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], ubicacionCtrl.updateUbicacion); //Eliminar Ubicacion
 
-router.delete('/:ubicacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], ubicacionCtrl.deleteUbicacion);
+router.delete('/:ubicacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], ubicacionCtrl.deleteUbicacion);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=ubicacion.routes.js.map

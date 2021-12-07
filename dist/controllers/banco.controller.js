@@ -51,9 +51,9 @@ var getBancos = /*#__PURE__*/function () {
             _context.prev = 11;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            res.status(409).json({
+            return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -107,9 +107,9 @@ var getBancoById = /*#__PURE__*/function () {
             _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
             console.log(_context2.t0);
-            res.status(409).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -136,7 +136,7 @@ var getBancoByActivo = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _Banco.default.find({
-              status: "Activo"
+              status: true
             }).sort({
               name: 'asc'
             });
@@ -144,31 +144,38 @@ var getBancoByActivo = /*#__PURE__*/function () {
           case 3:
             bancos = _context3.sent;
 
-            if (bancos.length > 0) {
-              res.json(bancos);
-            } else {
-              res.status(404).json({
-                message: 'No existen Bancos Activos'
-              });
+            if (!(bancos.length > 0)) {
+              _context3.next = 8;
+              break;
             }
 
-            _context3.next = 11;
+            res.json(bancos);
+            _context3.next = 9;
             break;
 
-          case 7:
-            _context3.prev = 7;
-            _context3.t0 = _context3["catch"](0);
-            console.log(_context3.t0);
-            res.status(409).json({
-              message: _context3.t0.message
-            });
+          case 8:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existen Bancos Activos'
+            }));
+
+          case 9:
+            _context3.next = 15;
+            break;
 
           case 11:
+            _context3.prev = 11;
+            _context3.t0 = _context3["catch"](0);
+            console.log(_context3.t0);
+            return _context3.abrupt("return", res.status(503).json({
+              message: _context3.t0.message
+            }));
+
+          case 15:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 7]]);
+    }, _callee3, null, [[0, 11]]);
   }));
 
   return function getBancoByActivo(_x5, _x6) {
@@ -180,47 +187,59 @@ exports.getBancoByActivo = getBancoByActivo;
 
 var createBanco = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, newBanco, bancoCreado;
+    var _req$body, name, status, avatar, obj, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _req$body = req.body, name = _req$body.name, status = _req$body.status;
-            _context4.prev = 1;
-            newBanco = new _Banco.default({
-              name: name,
-              status: status
-            });
-            _context4.next = 5;
+            avatar = req.file;
+            _context4.prev = 2;
+            obj = null;
+
+            if (avatar == undefined || avatar == null) {
+              obj = new _Banco.default({
+                name: name,
+                status: status
+              });
+            } else {
+              obj = new _Banco.default({
+                avatar: avatar.location,
+                name: name,
+                status: status
+              });
+            }
+
+            _context4.next = 7;
             return newBanco.save();
 
-          case 5:
-            bancoCreado = _context4.sent;
+          case 7:
+            query = _context4.sent;
 
-            if (bancoCreado) {
+            if (query) {
               res.json({
                 message: 'Banco creado con éxito'
               });
             }
 
-            _context4.next = 13;
+            _context4.next = 15;
             break;
 
-          case 9:
-            _context4.prev = 9;
-            _context4.t0 = _context4["catch"](1);
+          case 11:
+            _context4.prev = 11;
+            _context4.t0 = _context4["catch"](2);
             console.log(_context4.t0);
-            res.status(409).json({
+            return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
-            });
+            }));
 
-          case 13:
+          case 15:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[1, 9]]);
+    }, _callee4, null, [[2, 11]]);
   }));
 
   return function createBanco(_x7, _x8) {
@@ -232,7 +251,7 @@ exports.createBanco = createBanco;
 
 var updateBanco = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, bancoId, _updateBanco;
+    var _req$body2, name, status, bancoId, avatar, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
@@ -240,43 +259,72 @@ var updateBanco = /*#__PURE__*/function () {
           case 0:
             _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
             bancoId = req.params.bancoId;
-            _context5.prev = 2;
-            _context5.next = 5;
+            avatar = req.file;
+            _context5.prev = 3;
+            query = null;
+
+            if (!(avatar == undefined || avatar == null)) {
+              _context5.next = 11;
+              break;
+            }
+
+            _context5.next = 8;
             return _Banco.default.findByIdAndUpdate(bancoId, {
               name: name,
               status: status
             });
 
-          case 5:
-            _updateBanco = _context5.sent;
-
-            if (_updateBanco) {
-              res.json({
-                message: 'Banco actualizado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Banco a eliminar'
-              });
-            }
-
-            _context5.next = 13;
+          case 8:
+            query = _context5.sent;
+            _context5.next = 14;
             break;
 
-          case 9:
-            _context5.prev = 9;
-            _context5.t0 = _context5["catch"](2);
-            console.log(_context5.t0);
-            res.status(409).json({
-              message: _context5.t0.message
+          case 11:
+            _context5.next = 13;
+            return _Banco.default.findByIdAndUpdate(bancoId, {
+              avatar: avatar.location,
+              name: name,
+              status: status
             });
 
           case 13:
+            query = _context5.sent;
+
+          case 14:
+            if (!query) {
+              _context5.next = 18;
+              break;
+            }
+
+            res.json({
+              message: 'Banco actualizado con éxito'
+            });
+            _context5.next = 19;
+            break;
+
+          case 18:
+            return _context5.abrupt("return", res.status(404).json({
+              message: 'No existe Banco a eliminar'
+            }));
+
+          case 19:
+            _context5.next = 25;
+            break;
+
+          case 21:
+            _context5.prev = 21;
+            _context5.t0 = _context5["catch"](3);
+            console.log(_context5.t0);
+            return _context5.abrupt("return", res.status(503).json({
+              message: _context5.t0.message
+            }));
+
+          case 25:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 9]]);
+    }, _callee5, null, [[3, 21]]);
   }));
 
   return function updateBanco(_x9, _x10) {
@@ -288,8 +336,7 @@ exports.updateBanco = updateBanco;
 
 var deleteBanco = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var bancoId, _deleteBanco;
-
+    var bancoId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -300,9 +347,9 @@ var deleteBanco = /*#__PURE__*/function () {
             return _Banco.default.findByIdAndDelete(bancoId);
 
           case 4:
-            _deleteBanco = _context6.sent;
+            query = _context6.sent;
 
-            if (!_deleteBanco) {
+            if (!query) {
               _context6.next = 9;
               break;
             }
@@ -326,9 +373,9 @@ var deleteBanco = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
-            });
+            }));
 
           case 16:
           case "end":

@@ -390,7 +390,7 @@ var uploadAvatar = /*#__PURE__*/function () {
             photo = req.file;
             _context7.prev = 2;
             _context7.next = 5;
-            return _User.default.findByIdAndUpdate(sellerId, {
+            return _Seller.default.findByIdAndUpdate(sellerId, {
               avatar: photo.location
             });
 
@@ -442,14 +442,14 @@ exports.uploadAvatar = uploadAvatar;
 
 var updateSellerById = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
-    var sellerId, _req$body3, name, sucursal, marca, document, telefono, email, estatus, empleado, updateSeller;
+    var sellerId, _req$body3, name, sucursal, marca, document, telefono, email, estatus, updateSeller;
 
     return _regenerator.default.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
             sellerId = req.params.sellerId;
-            _req$body3 = req.body, name = _req$body3.name, sucursal = _req$body3.sucursal, marca = _req$body3.marca, document = _req$body3.document, telefono = _req$body3.telefono, email = _req$body3.email, estatus = _req$body3.estatus, empleado = _req$body3.empleado;
+            _req$body3 = req.body, name = _req$body3.name, sucursal = _req$body3.sucursal, marca = _req$body3.marca, document = _req$body3.document, telefono = _req$body3.telefono, email = _req$body3.email, estatus = _req$body3.estatus;
             _context8.prev = 2;
             _context8.next = 5;
             return _Seller.default.findByIdAndUpdate(sellerId, {

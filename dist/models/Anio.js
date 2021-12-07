@@ -13,6 +13,10 @@ var anioSchema = new _mongoose.Schema({
   },
   status: {
     type: String
+  },
+  estado: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true,

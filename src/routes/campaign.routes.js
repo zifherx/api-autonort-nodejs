@@ -19,12 +19,12 @@ router.post('/find', campaignCtrl.getCampaignByVehicle);
 router.post('/group', campaignCtrl.getCampaignByGrupo);
 
 //Crear Campaña
-router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateCampania], campaignCtrl.createCampaign);
+router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifyDuplicate.checkDuplicateCampania], campaignCtrl.createCampaign);
 
 //Actualizar Campaña
-router.patch('/:campaignId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], campaignCtrl.updateCampaignById);
+router.patch('/:campaignId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin], campaignCtrl.updateCampaignById);
 
 //Remover Campaña
-router.delete('/:campaignId', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist], campaignCtrl.deleteCampaignById);
+router.delete('/:campaignId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin], campaignCtrl.deleteCampaignById);
 
 export default router;

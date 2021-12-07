@@ -10,13 +10,13 @@ export const getColors = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const getColorByActivo = async(req, res) => {
     try {
-        const colores = await Colores.find({ status: "Activo" }).sort({ name: 'asc' });
+        const colores = await Colores.find({ estado: true }).sort({ name: 'asc' });
         if (colores.length > 0) {
             res.json(colores);
         } else {
@@ -24,7 +24,7 @@ export const getColorByActivo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        res.status(503).json({ message: err.message })
     }
 }
 
@@ -35,33 +35,33 @@ export const getColorById = async(req, res) => {
         if (color) {
             res.send(color);
         } else {
-            res.status(404).json({ message: 'No existe Color' })
+            return res.status(404).json({ message: 'No existe Color' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const createColor = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     try {
-        const newColor = new Colores({ name, status });
+        const newColor = new Colores({ name, estado });
         const colorCreado = await newColor.save();
         if (colorCreado) {
             res.json({ message: 'Color creado con éxito' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const updateColor = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     const { colorId } = req.params;
     try {
-        const updateColor = await Colores.findByIdAndUpdate(colorId, { name, status });
+        const updateColor = await Colores.findByIdAndUpdate(colorId, { name, estado });
         if (updateColor) {
             res.json({ message: 'Color actualizado con éxito' });
         } else {
@@ -69,7 +69,7 @@ export const updateColor = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -80,10 +80,10 @@ export const deleteColor = async(req, res) => {
         if (deleteColor) {
             res.json({ message: 'Color eliminado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Color' });
+            return res.status(404).json({ message: 'No existe Color' });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }

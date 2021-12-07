@@ -108,7 +108,7 @@ export const uploadAvatar = async(req, res) => {
     const photo = req.file;
 
     try {
-        const query = await User.findByIdAndUpdate(sellerId, {
+        const query = await Seller.findByIdAndUpdate(sellerId, {
             avatar: photo.location
         });
 
@@ -125,7 +125,7 @@ export const uploadAvatar = async(req, res) => {
 
 export const updateSellerById = async(req, res) => {
     const { sellerId } = req.params;
-    const { name, sucursal, marca, document, telefono, email, estatus, empleado } = req.body;
+    const { name, sucursal, marca, document, telefono, email, estatus } = req.body;
     try {
         const updateSeller = await Seller.findByIdAndUpdate(sellerId, {
             name,

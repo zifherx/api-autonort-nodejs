@@ -51,9 +51,9 @@ var getAnios = /*#__PURE__*/function () {
             _context.prev = 11;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            res.status(409).json({
+            return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -107,9 +107,9 @@ var getAnioById = /*#__PURE__*/function () {
             _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
             console.log(_context2.t0);
-            res.status(409).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -136,7 +136,7 @@ var getAnioByActivo = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _Anio.default.find({
-              status: "Activo"
+              estado: true
             }).sort({
               name: 'asc'
             });
@@ -159,9 +159,9 @@ var getAnioByActivo = /*#__PURE__*/function () {
             _context3.prev = 7;
             _context3.t0 = _context3["catch"](0);
             console.log(_context3.t0);
-            res.status(409).json({
+            return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
-            });
+            }));
 
           case 11:
           case "end":
@@ -180,17 +180,17 @@ exports.getAnioByActivo = getAnioByActivo;
 
 var createAnio = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, newAnio, anioCreado;
+    var _req$body, name, estado, newAnio, anioCreado;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
             _context4.prev = 1;
             newAnio = new _Anio.default({
               name: name,
-              status: status
+              estado: estado
             });
             _context4.next = 5;
             return newAnio.save();
@@ -211,9 +211,9 @@ var createAnio = /*#__PURE__*/function () {
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
-            });
+            }));
 
           case 13:
           case "end":
@@ -232,51 +232,58 @@ exports.createAnio = createAnio;
 
 var updateAnio = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, anioId, _updateAnio;
+    var _req$body2, name, estado, anioId, _updateAnio;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
             anioId = req.params.anioId;
             _context5.prev = 2;
             _context5.next = 5;
             return _Anio.default.findByIdAndUpdate(anioId, {
               name: name,
-              status: status
+              estado: estado
             });
 
           case 5:
             _updateAnio = _context5.sent;
 
-            if (_updateAnio) {
-              res.json({
-                message: 'Año actualizado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Anio a eliminar'
-              });
+            if (!_updateAnio) {
+              _context5.next = 10;
+              break;
             }
 
-            _context5.next = 13;
+            res.json({
+              message: 'Año actualizado con éxito'
+            });
+            _context5.next = 11;
             break;
 
-          case 9:
-            _context5.prev = 9;
-            _context5.t0 = _context5["catch"](2);
-            console.log(_context5.t0);
-            res.status(409).json({
-              message: _context5.t0.message
-            });
+          case 10:
+            return _context5.abrupt("return", res.status(404).json({
+              message: 'No existe Anio a eliminar'
+            }));
+
+          case 11:
+            _context5.next = 17;
+            break;
 
           case 13:
+            _context5.prev = 13;
+            _context5.t0 = _context5["catch"](2);
+            console.log(_context5.t0);
+            return _context5.abrupt("return", res.status(503).json({
+              message: _context5.t0.message
+            }));
+
+          case 17:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 9]]);
+    }, _callee5, null, [[2, 13]]);
   }));
 
   return function updateAnio(_x9, _x10) {
@@ -326,9 +333,9 @@ var deleteAnio = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
-            });
+            }));
 
           case 16:
           case "end":

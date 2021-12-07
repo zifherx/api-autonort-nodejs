@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.obtenerAsesorByName = exports.obtenerAsesorxSucursal = exports.deleteConexo = exports.updateConexo = exports.createConexo = exports.getConexoById = exports.getConexoByActivo = exports.getConexos = void 0;
+exports.obtenerAsesorByName = exports.obtenerAsesorxArea = exports.obtenerAsesorxSucursal = exports.deleteConexo = exports.updateConexo = exports.createConexo = exports.getConexoById = exports.getConexoByActivo = exports.getConexos = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -53,9 +53,9 @@ var getConexos = /*#__PURE__*/function () {
             _context.prev = 11;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            res.status(503).json({
+            return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -112,9 +112,9 @@ var getConexoByActivo = /*#__PURE__*/function () {
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(503).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -168,9 +168,9 @@ var getConexoById = /*#__PURE__*/function () {
             _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
-            res.status(503).json({
+            return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -236,9 +236,9 @@ var createConexo = /*#__PURE__*/function () {
             _context4.prev = 13;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(503).json({
+            return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
-            });
+            }));
 
           case 17:
           case "end":
@@ -303,9 +303,9 @@ var updateConexo = /*#__PURE__*/function () {
             _context5.prev = 13;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
-            res.status(503).json({
+            return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
-            });
+            }));
 
           case 17:
           case "end":
@@ -361,9 +361,9 @@ var deleteConexo = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(503).json({
+            return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -426,9 +426,9 @@ var obtenerAsesorxSucursal = /*#__PURE__*/function () {
             _context7.prev = 12;
             _context7.t0 = _context7["catch"](1);
             console.log(_context7.t0);
-            res.status(503).json({
+            return _context7.abrupt("return", res.status(503).json({
               message: _context7.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -445,19 +445,20 @@ var obtenerAsesorxSucursal = /*#__PURE__*/function () {
 
 exports.obtenerAsesorxSucursal = obtenerAsesorxSucursal;
 
-var obtenerAsesorByName = /*#__PURE__*/function () {
+var obtenerAsesorxArea = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
-    var name, query;
+    var area, query;
     return _regenerator.default.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
-            name = req.body.name;
+            area = req.body.area;
             _context8.prev = 1;
             _context8.next = 4;
-            return _Conexos.default.findOne({
-              name: name
-            }).select('name email area sucursal encargadoDe');
+            return _Conexos.default.find({
+              area: area,
+              status: true
+            });
 
           case 4:
             query = _context8.sent;
@@ -468,7 +469,7 @@ var obtenerAsesorByName = /*#__PURE__*/function () {
             }
 
             res.json({
-              asesor: query
+              asesores: query
             });
             _context8.next = 10;
             break;
@@ -486,9 +487,9 @@ var obtenerAsesorByName = /*#__PURE__*/function () {
             _context8.prev = 12;
             _context8.t0 = _context8["catch"](1);
             console.log(_context8.t0);
-            res.status(503).json({
+            return _context8.abrupt("return", res.status(503).json({
               message: _context8.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -498,8 +499,68 @@ var obtenerAsesorByName = /*#__PURE__*/function () {
     }, _callee8, null, [[1, 12]]);
   }));
 
-  return function obtenerAsesorByName(_x15, _x16) {
+  return function obtenerAsesorxArea(_x15, _x16) {
     return _ref8.apply(this, arguments);
+  };
+}();
+
+exports.obtenerAsesorxArea = obtenerAsesorxArea;
+
+var obtenerAsesorByName = /*#__PURE__*/function () {
+  var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res) {
+    var name, query;
+    return _regenerator.default.wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            name = req.body.name;
+            _context9.prev = 1;
+            _context9.next = 4;
+            return _Conexos.default.findOne({
+              name: name
+            }).select('name email area sucursal encargadoDe');
+
+          case 4:
+            query = _context9.sent;
+
+            if (!query) {
+              _context9.next = 9;
+              break;
+            }
+
+            res.json({
+              asesor: query
+            });
+            _context9.next = 10;
+            break;
+
+          case 9:
+            return _context9.abrupt("return", res.status(404).json({
+              message: 'No se encontraron asesores'
+            }));
+
+          case 10:
+            _context9.next = 16;
+            break;
+
+          case 12:
+            _context9.prev = 12;
+            _context9.t0 = _context9["catch"](1);
+            console.log(_context9.t0);
+            return _context9.abrupt("return", res.status(503).json({
+              message: _context9.t0.message
+            }));
+
+          case 16:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9, null, [[1, 12]]);
+  }));
+
+  return function obtenerAsesorByName(_x17, _x18) {
+    return _ref9.apply(this, arguments);
   };
 }();
 

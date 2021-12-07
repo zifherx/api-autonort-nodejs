@@ -10,7 +10,7 @@ export const getUbicaciones = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -25,13 +25,13 @@ export const getUbicacionById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const getUbicacionByActivo = async(req, res) => {
     try {
-        const query = await Ubicacion.find({ status: "Activo" }).sort({ name: 'asc' });
+        const query = await Ubicacion.find({ estado: true }).sort({ name: 'asc' });
         if (query.length > 0) {
             res.json(query);
         } else {
@@ -39,37 +39,37 @@ export const getUbicacionByActivo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const createUbicacion = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     try {
-        const objeto = new Ubicacion({ name, status });
+        const objeto = new Ubicacion({ name, estado });
         const query = await objeto.save();
         if (query) {
             res.json({ message: 'Ubicación creada con éxito' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const updateUbicacion = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     const { ubicacionId } = req.params;
     try {
-        const query = await Ubicacion.findByIdAndUpdate(ubicacionId, { name, status });
+        const query = await Ubicacion.findByIdAndUpdate(ubicacionId, { name, estado });
         if (query) {
             res.json({ message: 'Ubicación actualizada con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Ubicación a actualizar' });
+            return res.status(404).json({ message: 'No existe Ubicación a actualizar' });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -84,6 +84,6 @@ export const deleteUbicacion = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }

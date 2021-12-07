@@ -15,11 +15,14 @@ router.post('/sucursal', saleCtrl.UnidadesBySucursal);
 //Conteo por Sucursal, Situación y Fecha
 router.post('/conteo', saleCtrl.conteoUnidadesBySucursalStatusFecha);
 
+//Conteo por Sucursal, Situación y Fecha
+router.post('/count-all', saleCtrl.conteonidadesBySucursalFecha);
+
 //Unidades Libres
 router.post('/free', saleCtrl.UnidadesLibres);
 
 //Conteo de Unidades Entregadas
-router.post('/entregadas', saleCtrl.vistaUnidadesEntregadasByStatus);
+router.post('/conteo/entregadas', saleCtrl.vistaUnidadesEntregadasByStatus);
 
 //Conteo de Canceladas
 router.get('/conteo/canceladas', saleCtrl.conteoUnidadesCanceladas);

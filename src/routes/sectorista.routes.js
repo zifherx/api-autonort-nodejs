@@ -14,12 +14,12 @@ router.get('/activos', sectoristaCtrl.getSectoristaByActivo);
 router.get('/:sectoristaId', sectoristaCtrl.getSectoristaById);
 
 //Crear Sectorista
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateSectorista], sectoristaCtrl.createSectorista);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateSectorista], sectoristaCtrl.createSectorista);
 
 //Actualizar Sectorista
-router.patch('/:sectoristaId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], sectoristaCtrl.updateSectorista);
+router.patch('/:sectoristaId', [authJwt.verifyToken, authJwt.isAdmin], sectoristaCtrl.updateSectorista);
 
 //Eliminar Sectorista
-router.delete('/:sectoristaId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], sectoristaCtrl.deleteSectorista);
+router.delete('/:sectoristaId', [authJwt.verifyToken, authJwt.isAdmin], sectoristaCtrl.deleteSectorista);
 
 export default router;

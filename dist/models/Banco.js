@@ -8,10 +8,18 @@ exports.default = void 0;
 var _mongoose = require("mongoose");
 
 var bancoSchema = new _mongoose.Schema({
+  avatar: {
+    type: String,
+    default: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+  },
   name: {
     type: String
   },
   status: {
+    type: Boolean,
+    default: false
+  },
+  estado: {
     type: String
   }
 }, {

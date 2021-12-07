@@ -12,7 +12,8 @@ var aseguradoraSchema = new _mongoose.Schema({
     type: String
   },
   status: {
-    type: String
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true,

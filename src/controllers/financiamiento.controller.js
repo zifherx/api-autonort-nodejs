@@ -10,7 +10,7 @@ export const getFinanciamientos = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -25,13 +25,13 @@ export const getFinanciamientoById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        returnres.status(503).json({ message: err.message })
     }
 }
 
 export const getFinanciamientoByActivo = async(req, res) => {
     try {
-        const query = await Financiamiento.find({ status: "Activo" }).sort({ name: "asc" });
+        const query = await Financiamiento.find({ estado: true }).sort({ name: "asc" });
         if (query.length > 0) {
             res.json(query);
         } else {
@@ -39,29 +39,29 @@ export const getFinanciamientoByActivo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const createFinanciamiento = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     try {
-        const objeto = new Financiamiento({ name, status });
+        const objeto = new Financiamiento({ name, estado });
         const query = await objeto.save();
         if (query) {
             res.json({ message: 'Financiamiento creado con éxito' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const updateFinanciamiento = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     const { financiamientoId } = req.params;
     try {
-        const query = await Financiamiento.findByIdAndUpdate(financiamientoId, { name, status });
+        const query = await Financiamiento.findByIdAndUpdate(financiamientoId, { name, estado });
         if (query) {
             res.json({ message: 'Financiamiento actualizado con éxito' });
         } else {
@@ -69,7 +69,7 @@ export const updateFinanciamiento = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -85,6 +85,6 @@ export const deleteFinanciamiento = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }

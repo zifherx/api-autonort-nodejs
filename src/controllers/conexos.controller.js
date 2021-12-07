@@ -11,7 +11,7 @@ export const getConexos = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -25,7 +25,7 @@ export const getConexoByActivo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -40,7 +40,7 @@ export const getConexoById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -60,7 +60,7 @@ export const createConexo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -76,7 +76,7 @@ export const updateConexo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 
 }
@@ -92,7 +92,7 @@ export const deleteConexo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -109,7 +109,24 @@ export const obtenerAsesorxSucursal = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
+    }
+}
+
+export const obtenerAsesorxArea = async(req, res) => {
+    const { area } = req.body
+
+    try {
+        const query = await Conexos.find({ area: area, status: true });
+
+        if (query) {
+            res.json({ asesores: query })
+        } else {
+            return res.status(404).json({ message: 'No se encontraron asesores' })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -127,6 +144,6 @@ export const obtenerAsesorByName = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }

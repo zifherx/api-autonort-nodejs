@@ -21,11 +21,11 @@ router.get('/activos', sectoristaCtrl.getSectoristaByActivo); //Obtener Sectoris
 
 router.get('/:sectoristaId', sectoristaCtrl.getSectoristaById); //Crear Sectorista
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateSectorista], sectoristaCtrl.createSectorista); //Actualizar Sectorista
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifyDuplicate.checkDuplicateSectorista], sectoristaCtrl.createSectorista); //Actualizar Sectorista
 
-router.patch('/:sectoristaId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], sectoristaCtrl.updateSectorista); //Eliminar Sectorista
+router.patch('/:sectoristaId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], sectoristaCtrl.updateSectorista); //Eliminar Sectorista
 
-router.delete('/:sectoristaId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], sectoristaCtrl.deleteSectorista);
+router.delete('/:sectoristaId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], sectoristaCtrl.deleteSectorista);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=sectorista.routes.js.map

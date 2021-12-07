@@ -29,7 +29,8 @@
         "multer-s3": "^2.10.0",
         "nanoid": "^3.1.28",
         "nodemailer": "^6.6.3",
-        "s3-zip": "^3.2.0"
+        "s3-zip": "^3.2.0",
+        "twilio": "^3.71.3"
     },
     "devDependencies": {
         "@babel/cli": "^7.15.7",

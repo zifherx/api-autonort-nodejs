@@ -136,7 +136,7 @@ var getSectoristaByActivo = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _Sectorista.default.find({
-              status: "Activo"
+              estado: true
             }).sort({
               name: 'asc'
             });
@@ -187,17 +187,17 @@ exports.getSectoristaByActivo = getSectoristaByActivo;
 
 var createSectorista = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, newSectorista, sectoristaCreado;
+    var _req$body, name, estado, newSectorista, sectoristaCreado;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
             _context4.prev = 1;
             newSectorista = new _Sectorista.default({
               name: name,
-              status: status
+              estado: estado
             });
             _context4.next = 5;
             return newSectorista.save();
@@ -239,19 +239,19 @@ exports.createSectorista = createSectorista;
 
 var updateSectorista = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, sectoristaId, _updateSectorista;
+    var _req$body2, name, estado, sectoristaId, _updateSectorista;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
             sectoristaId = req.params.sectoristaId;
             _context5.prev = 2;
             _context5.next = 5;
             return _Sectorista.default.findByIdAndUpdate(sectoristaId, {
               name: name,
-              status: status
+              estado: estado
             });
 
           case 5:

@@ -51,6 +51,7 @@ const saleSchema = new Schema({
     //Facturacion TDP
     fecha_facturacion_tdp: { type: Date },
     estatus_facturacion: { type: String },
+    monto_facturado: { type: Number },
     //Venta
     tipo_operacion: { type: String },
     tipo_comprobante: { type: String },
@@ -62,7 +63,10 @@ const saleSchema = new Schema({
     //Empleado
     empleado: { ref: 'User', type: Schema.Types.ObjectId },
     //Está en Tramite
-    pasoaTramite: {type: Number, default: 0}
+    pasoaTramite: { type: Number, default: 0 },
+    isReportado: { type: Boolean, default: false },
+    fechaReporte: { type: Date },
+    mesReportado: { type: Number }
 }, {
     timestamps: true,
     versionKey: false

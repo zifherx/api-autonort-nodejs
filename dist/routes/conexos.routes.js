@@ -19,16 +19,17 @@ router.get('/', conexoCtrl.getConexos); //Obtener Conexo Activos
 
 router.get('/activos', conexoCtrl.getConexoByActivo); //Obtener Conexo por ID
 
-router.get('/:conexoId', conexoCtrl.getConexoById); //Crear Conexo
-
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateConexo], conexoCtrl.createConexo); //Obtener Asesor x Sucursal
+router.get('/:conexoId', conexoCtrl.getConexoById); //Obtener Asesor x Sucursal
 
 router.post('/sucursal', conexoCtrl.obtenerAsesorxSucursal);
-router.post('/by-name', conexoCtrl.obtenerAsesorByName); //Actualizar Conexo
+router.post('/area', conexoCtrl.obtenerAsesorxArea);
+router.post('/by-name', conexoCtrl.obtenerAsesorByName); //Crear Conexo
 
-router.patch('/:conexoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], conexoCtrl.updateConexo); //Eliminar Conexo
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifyDuplicate.checkDuplicateConexo], conexoCtrl.createConexo); //Actualizar Conexo
 
-router.delete('/:conexoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], conexoCtrl.deleteConexo);
+router.patch('/:conexoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], conexoCtrl.updateConexo); //Eliminar Conexo
+
+router.delete('/:conexoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], conexoCtrl.deleteConexo);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=conexos.routes.js.map

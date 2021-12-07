@@ -14,12 +14,12 @@ router.get('/activos', anioCtrl.getAnioByActivo);
 router.get('/:anioId', anioCtrl.getAnioById);
 
 //Crear Anio
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateAnio], anioCtrl.createAnio);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateAnio], anioCtrl.createAnio);
 
 //Actualizar Anio
-router.patch('/:anioId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], anioCtrl.updateAnio);
+router.patch('/:anioId', [authJwt.verifyToken, authJwt.isAdmin], anioCtrl.updateAnio);
 
 //Eliminar Anio
-router.delete('/:anioId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], anioCtrl.deleteAnio);
+router.delete('/:anioId', [authJwt.verifyToken, authJwt.isAdmin], anioCtrl.deleteAnio);
 
 export default router;

@@ -8,8 +8,8 @@ import fs from 'fs';
 import path from 'path';
 import download from 'download';
 import AdmZip from 'adm-zip';
-import { delFiles } from '../middlewares/deleteFiles'
 import 'dotenv/config';
+import twilio from 'twilio';
 
 export const getAll = async(req, res) => {
     try {
@@ -400,4 +400,30 @@ export const descargaYZip = async(req, res) => {
 
     console.log('Download completed!'); */
     console.log(fileZip);
+}
+
+export const sendMessageWsp = async(req, res) => {
+    const { placa, sucursal, servicio, mejora, calificacion, destino } = req.body;
+    const accountSid = 'AC5145f2cf5442844fa805e987f09751c6';
+    const authToken = '42d0808b60a3917dddcf06879e56ff4e';
+
+    const client = new twilio(accountSid, authToken);
+
+    client.messages
+        .create({
+            /* body: 'Se registró una calificación en la siguiente encuesta.
+            Cliente con placa: {{1}} perteneciente a la sucursal: {{2}} que realizó el servicio de: {{3}}, sugiere mejorar en: {{4}}.
+            Su calificación es: {{5}}' */
+            body: `Se registró una calificación en la siguiente encuesta.\nCliente con placa: *${placa}* perteneciente a la sucursal *${sucursal}* que realizó el servicio de: *${servicio}*, sugiere mejorar en: *${mejora}*.\nSu calificación es: *${calificacion}*`,
+            // to: 'whatsapp:+51924063422', // Fernando Rojas
+            to: 'whatsapp:+51' + destino, // Paul holguin
+            // to: '+51989927794', // Paul holguin
+            // to: '+51924063422',
+            from: 'whatsapp:+18482856322', // From a valid Twilio number
+            // from: '+18482856322',
+        })
+        .then((message) => {
+            // console.log(message)
+            res.json({ ok: 'Message sent', sid: message.sid, status: message.status });
+        });
 }

@@ -8,16 +8,20 @@ exports.default = void 0;
 var _mongoose = require("mongoose");
 
 var campaignSchema = new _mongoose.Schema({
-  name: {
+  codigo: {
     type: String,
-    required: true
+    max: 11
   },
-  descripcion: {
+  name: {
     type: String
   },
-  forCar: {
-    type: String
+  modelo: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'ModeloT'
   },
+  version: [{
+    type: String
+  }],
   type: {
     type: String
   },
@@ -30,13 +34,26 @@ var campaignSchema = new _mongoose.Schema({
   endDate: {
     type: Date
   },
-  status: {
-    type: String
+  estado: {
+    type: Boolean,
+    default: false
   },
-  empleado: {
+  createdBy: {
     ref: 'User',
     type: _mongoose.Schema.Types.ObjectId
-  }
+  },
+  descripcion: {
+    type: String
+  },
+  //No usar
+  forCar: {
+    type: String
+  },
+  //No usar
+  status: {
+    type: String
+  } //No usar
+
 }, {
   timestamps: true,
   versionKey: false

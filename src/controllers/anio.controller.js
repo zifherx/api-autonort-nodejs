@@ -10,7 +10,7 @@ export const getAnios = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -25,13 +25,13 @@ export const getAnioById = async(req, res) => {
         }
     } catch (err) {
         console.log(err)
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const getAnioByActivo = async(req, res) => {
     try {
-        const anios = await Anio.find({ status: "Activo" }).sort({ name: 'asc' });
+        const anios = await Anio.find({ estado: true }).sort({ name: 'asc' });
         if (anios.length > 0) {
             res.json(anios);
         } else {
@@ -39,14 +39,14 @@ export const getAnioByActivo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 }
 
 export const createAnio = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     try {
-        const newAnio = new Anio({ name, status });
+        const newAnio = new Anio({ name, estado });
 
         const anioCreado = await newAnio.save();
 
@@ -55,24 +55,24 @@ export const createAnio = async(req, res) => {
         }
     } catch (err) {
         console.log(err)
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const updateAnio = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     const { anioId } = req.params;
     try {
-        const updateAnio = await Anio.findByIdAndUpdate(anioId, { name, status });
+        const updateAnio = await Anio.findByIdAndUpdate(anioId, { name, estado });
 
         if (updateAnio) {
             res.json({ message: 'Año actualizado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Anio a eliminar' });
+            return res.status(404).json({ message: 'No existe Anio a eliminar' });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -87,6 +87,6 @@ export const deleteAnio = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }

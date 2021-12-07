@@ -35,7 +35,7 @@ export const getMarcaActiva = async(req, res) => {
         if (query.length > 0) {
             res.json({ count: query.length, brands: query });
         } else {
-            res.status(404).json({ message: 'No existen Marcas activas' })
+            return res.status(404).json({ message: 'No existen Marcas activas' })
         }
     } catch (err) {
         console.log(err);

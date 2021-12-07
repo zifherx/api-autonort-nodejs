@@ -31,7 +31,7 @@ export const getSectoristaById = async(req, res) => {
 
 export const getSectoristaByActivo = async(req, res) => {
     try {
-        const sectorista = await Sectorista.find({ status: "Activo" }).sort({ name: 'asc' });
+        const sectorista = await Sectorista.find({ estado: true }).sort({ name: 'asc' });
         if (sectorista.length > 0) {
             res.json(sectorista);
         } else {
@@ -44,10 +44,10 @@ export const getSectoristaByActivo = async(req, res) => {
 }
 
 export const createSectorista = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     try {
 
-        const newSectorista = new Sectorista({ name, status });
+        const newSectorista = new Sectorista({ name, estado });
 
         const sectoristaCreado = await newSectorista.save();
         if (sectoristaCreado) {
@@ -60,11 +60,11 @@ export const createSectorista = async(req, res) => {
 }
 
 export const updateSectorista = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     const { sectoristaId } = req.params;
     try {
 
-        const updateSectorista = await Sectorista.findByIdAndUpdate(sectoristaId, { name, status });
+        const updateSectorista = await Sectorista.findByIdAndUpdate(sectoristaId, { name, estado });
 
         if (updateSectorista) {
             res.json({ message: 'Sectorista actualizado con éxito' });

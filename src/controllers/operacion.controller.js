@@ -10,7 +10,7 @@ export const getAll = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -25,7 +25,7 @@ export const getOperacionById = async(req, res) => {
         }
     } catch (err) {
         console.log(err)
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -35,11 +35,11 @@ export const getOperacionActivos = async(req, res) => {
         if (query.length > 0) {
             res.json(query);
         } else {
-            res.status(404).json({ message: 'No existen Tipos de operación' })
+            return res.status(404).json({ message: 'No existen Tipos Activos' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -55,7 +55,7 @@ export const createOperacion = async(req, res) => {
         }
     } catch (err) {
         console.log(err)
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -72,7 +72,7 @@ export const updateOperacion = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -87,6 +87,6 @@ export const deleteOperacion = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
