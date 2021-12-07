@@ -6,7 +6,6 @@ import Campaign from '../models/Campaign'
 import Adicional from '../models/Adicional'
 import Props from '../models/Props'
 import User from '../models/User'
-import { restart } from 'nodemon'
 
 export const createSale = async(req, res) => {
     const {
