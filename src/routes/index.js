@@ -43,6 +43,7 @@ import tecnicoRoutes from './tecnico.routes'
 import aserviciosRoutes from './aservicios.routes'
 import marcaTRoutes from './marcaT.routes'
 import modeloTRoutes from './modeloT.routes'
+import metaRoutes from './meta.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -90,5 +91,6 @@ router.use('/technical', tecnicoRoutes);
 router.use('/service-advisor', aserviciosRoutes);
 router.use('/brand', marcaTRoutes);
 router.use('/models', modeloTRoutes);
+router.use('/metas', metaRoutes);
 
 export default router;

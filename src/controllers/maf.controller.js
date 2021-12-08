@@ -414,7 +414,7 @@ export const sendMessageWsp = async(req, res) => {
             /* body: 'Se registró una calificación en la siguiente encuesta.
             Cliente con placa: {{1}} perteneciente a la sucursal: {{2}} que realizó el servicio de: {{3}}, sugiere mejorar en: {{4}}.
             Su calificación es: {{5}}' */
-            body: `Se registró una calificación en la siguiente encuesta.\nCliente con placa: *${placa}* perteneciente a la sucursal *${sucursal}* que realizó el servicio de: *${servicio}*, sugiere mejorar en: *${mejora}*.\nSu calificación es: *${calificacion}*`,
+            body: `Se registró una calificación en la siguiente encuesta. \nCliente con placa: *${placa}* perteneciente a la sucursal: *${sucursal}* que realizó el servicio de: *${servicio}*, sugiere mejorar en: *${mejora}*. \nSu calificación es: *${calificacion}*`,
             // to: 'whatsapp:+51924063422', // Fernando Rojas
             to: 'whatsapp:+51' + destino, // Paul holguin
             // to: '+51989927794', // Paul holguin

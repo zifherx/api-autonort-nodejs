@@ -10,13 +10,13 @@ router.get('/', saleCtrl.getSales);
 router.post('/estado', saleCtrl.UnidadesByStatus);
 
 //Reporte de Sucursal
-router.post('/sucursal', saleCtrl.UnidadesBySucursal);
+router.post('/sucursal', saleCtrl.UnidadesBySucursalyFecha);
 
 //Conteo por Sucursal, Situación y Fecha
 router.post('/conteo', saleCtrl.conteoUnidadesBySucursalStatusFecha);
 
 //Conteo por Sucursal, Situación y Fecha
-router.post('/count-all', saleCtrl.conteonidadesBySucursalFecha);
+router.post('/count-all', saleCtrl.conteoUnidadesBySucursalFecha);
 
 //Unidades Libres
 router.post('/free', saleCtrl.UnidadesLibres);
@@ -43,10 +43,10 @@ router.post('/conteo/autos', saleCtrl.conteoVentasByModelo);
 router.post('/toyota-value', saleCtrl.obtenerToyotaValues)
 
 //Crear Venta
-router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifyDuplicate.checkDuplicateExpediente], saleCtrl.createSale);
+router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdminorAsistantADV, verifyDuplicate.checkDuplicateExpediente], saleCtrl.createSale);
 
 //Actualizar Venta
-router.patch('/:salesId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin], saleCtrl.updateSaleById);
+router.patch('/:salesId', [authJwt.verifyToken, authJwt.isChiefAdvorAdminorAsistantADV], saleCtrl.updateSaleById);
 
 //Remover Venta
 router.delete('/:salesId', [authJwt.verifyToken, authJwt.isAdmin], saleCtrl.deleteSaleById);

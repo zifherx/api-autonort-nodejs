@@ -93,6 +93,8 @@ var _marcaT = _interopRequireDefault(require("./marcaT.routes"));
 
 var _modeloT = _interopRequireDefault(require("./modeloT.routes"));
 
+var _meta = _interopRequireDefault(require("./meta.routes"));
+
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
   res.send('Api Swagger');
@@ -139,6 +141,7 @@ router.use('/technical', _tecnico.default);
 router.use('/service-advisor', _aservicios.default);
 router.use('/brand', _marcaT.default);
 router.use('/models', _modeloT.default);
+router.use('/metas', _meta.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

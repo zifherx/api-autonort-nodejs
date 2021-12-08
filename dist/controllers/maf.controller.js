@@ -1052,7 +1052,7 @@ var sendMessageWsp = /*#__PURE__*/function () {
               /* body: 'Se registró una calificación en la siguiente encuesta.
               Cliente con placa: {{1}} perteneciente a la sucursal: {{2}} que realizó el servicio de: {{3}}, sugiere mejorar en: {{4}}.
               Su calificación es: {{5}}' */
-              body: "Se registr\xF3 una calificaci\xF3n en la siguiente encuesta.\nCliente con placa: *".concat(placa, "* perteneciente a la sucursal *").concat(sucursal, "* que realiz\xF3 el servicio de: *").concat(servicio, "*, sugiere mejorar en: *").concat(mejora, "*.\nSu calificaci\xF3n es: *").concat(calificacion, "*"),
+              body: "Se registr\xF3 una calificaci\xF3n en la siguiente encuesta. \nCliente con placa: *".concat(placa, "* perteneciente a la sucursal: *").concat(sucursal, "* que realiz\xF3 el servicio de: *").concat(servicio, "*, sugiere mejorar en: *").concat(mejora, "*. \nSu calificaci\xF3n es: *").concat(calificacion, "*"),
               // to: 'whatsapp:+51924063422', // Fernando Rojas
               to: 'whatsapp:+51' + destino,
               // Paul holguin

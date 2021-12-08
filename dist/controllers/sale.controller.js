@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.obtenerToyotaValues = exports.vistaUnidadesEntregadasByStatus = exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteonidadesBySucursalFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursal = exports.UnidadesByStatus = exports.UnidadesLibres = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
+exports.obtenerToyotaValues = exports.vistaUnidadesEntregadasByStatus = exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesBySucursalFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursalyFecha = exports.UnidadesByStatus = exports.UnidadesLibres = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -217,24 +217,55 @@ exports.createSale = createSale;
 
 var getSales = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var ventasfull;
+    var query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _Sale.default.find().populate('vendedor').populate('auto').populate('cliente').populate('campanias').populate('adicional').populate('accesorios').populate('empleado');
+            return _Sale.default.find().sort({
+              fecha_cancelacion: 'desc'
+            }).populate({
+              path: 'vendedor',
+              select: 'name sucursal'
+            }).populate({
+              path: 'auto',
+              select: 'cod_tdp model version',
+              populate: {
+                path: 'model',
+                select: 'avatar name marca',
+                populate: {
+                  path: 'marca',
+                  select: 'avatar name'
+                }
+              }
+            }).populate({
+              path: 'cliente',
+              select: 'name document cellphone'
+            }).populate({
+              path: 'campanias'
+            }).populate({
+              path: 'adicional'
+            }).populate({
+              path: 'accesorios'
+            }).populate({
+              path: 'empleado',
+              select: 'username name'
+            });
 
           case 3:
-            ventasfull = _context2.sent;
+            query = _context2.sent;
 
-            if (!(ventasfull.length > 0)) {
+            if (!(query.length > 0)) {
               _context2.next = 8;
               break;
             }
 
-            res.json(ventasfull);
+            res.json({
+              total: query.length,
+              files: query
+            });
             _context2.next = 9;
             break;
 
@@ -715,7 +746,7 @@ var UnidadesByStatus = /*#__PURE__*/function () {
 
 exports.UnidadesByStatus = UnidadesByStatus;
 
-var UnidadesBySucursal = /*#__PURE__*/function () {
+var UnidadesBySucursalyFecha = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
     var _req$body5, sucursal, start, end, query;
 
@@ -802,12 +833,12 @@ var UnidadesBySucursal = /*#__PURE__*/function () {
     }, _callee8, null, [[1, 12]]);
   }));
 
-  return function UnidadesBySucursal(_x15, _x16) {
+  return function UnidadesBySucursalyFecha(_x15, _x16) {
     return _ref8.apply(this, arguments);
   };
 }();
 
-exports.UnidadesBySucursal = UnidadesBySucursal;
+exports.UnidadesBySucursalyFecha = UnidadesBySucursalyFecha;
 
 var conteoUnidadesCanceladas = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res) {
@@ -913,7 +944,7 @@ var conteoUnidadesLibres = /*#__PURE__*/function () {
 
 exports.conteoUnidadesLibres = conteoUnidadesLibres;
 
-var conteonidadesBySucursalFecha = /*#__PURE__*/function () {
+var conteoUnidadesBySucursalFecha = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res) {
     var _req$body6, sucursal, start, end, query;
 
@@ -971,12 +1002,12 @@ var conteonidadesBySucursalFecha = /*#__PURE__*/function () {
     }, _callee11, null, [[1, 12]]);
   }));
 
-  return function conteonidadesBySucursalFecha(_x21, _x22) {
+  return function conteoUnidadesBySucursalFecha(_x21, _x22) {
     return _ref11.apply(this, arguments);
   };
 }();
 
-exports.conteonidadesBySucursalFecha = conteonidadesBySucursalFecha;
+exports.conteoUnidadesBySucursalFecha = conteoUnidadesBySucursalFecha;
 
 var conteoUnidadesBySucursalStatusFecha = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res) {

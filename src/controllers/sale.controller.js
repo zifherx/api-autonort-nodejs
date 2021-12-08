@@ -109,17 +109,29 @@ export const createSale = async(req, res) => {
 
 export const getSales = async(req, res) => {
     try {
-        const ventasfull = await Sale.find()
-            .populate('vendedor')
-            .populate('auto')
-            .populate('cliente')
-            .populate('campanias')
-            .populate('adicional')
-            .populate('accesorios')
-            .populate('empleado');
+        const query = await Sale.find()
+            .sort({ fecha_cancelacion: 'desc' })
+            .populate({ path: 'vendedor', select: 'name sucursal' })
+            .populate({
+                path: 'auto',
+                select: 'cod_tdp model version',
+                populate: {
+                    path: 'model',
+                    select: 'avatar name marca',
+                    populate: {
+                        path: 'marca',
+                        select: 'avatar name'
+                    }
+                }
+            })
+            .populate({ path: 'cliente', select: 'name document cellphone' })
+            .populate({ path: 'campanias' })
+            .populate({ path: 'adicional' })
+            .populate({ path: 'accesorios' })
+            .populate({ path: 'empleado', select: 'username name' })
 
-        if (ventasfull.length > 0) {
-            res.json(ventasfull);
+        if (query.length > 0) {
+            res.json({ total: query.length, files: query });
         } else {
             return res.status(404).json({ message: 'No Existen Expedientes' })
         }
@@ -317,7 +329,7 @@ export const UnidadesByStatus = async(req, res) => {
     }
 }
 
-export const UnidadesBySucursal = async(req, res) => {
+export const UnidadesBySucursalyFecha = async(req, res) => {
     const { sucursal, start, end } = req.body;
     try {
         const query = await Sale.find({ sucursal_venta: sucursal, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } })
@@ -378,7 +390,7 @@ export const conteoUnidadesLibres = async(req, res) => {
     }
 }
 
-export const conteonidadesBySucursalFecha = async(req, res) => {
+export const conteoUnidadesBySucursalFecha = async(req, res) => {
     const { sucursal, start, end } = req.body;
     try {
         const query = await Sale.find({ sucursal_venta: sucursal, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } }).countDocuments();
