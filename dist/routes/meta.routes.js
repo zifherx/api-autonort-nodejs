@@ -15,7 +15,10 @@ var _middlewares = require("../middlewares");
 
 var router = (0, _express.Router)();
 router.get('/', _meta.default.getAll);
+router.get('/:metaId', _meta.default.getOneById);
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _meta.default.createOne);
+router.patch('/:metaId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _meta.default.updateOneById);
+router.delete('/:metaId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _meta.default.deleteOneById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=meta.routes.js.map

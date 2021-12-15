@@ -31,6 +31,10 @@ var metaSchema = new _mongoose.Schema({
     type: Number,
     default: 0
   },
+  status: {
+    type: Boolean,
+    default: false
+  },
   createdBy: {
     ref: 'User',
     type: _mongoose.Schema.Types.ObjectId

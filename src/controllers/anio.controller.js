@@ -35,7 +35,7 @@ export const getAnioByActivo = async(req, res) => {
         if (anios.length > 0) {
             res.json(anios);
         } else {
-            res.status(404).json({ message: 'No existen Años Activos' })
+            return res.status(404).json({ message: 'No existen Años Activos' })
         }
     } catch (err) {
         console.log(err);

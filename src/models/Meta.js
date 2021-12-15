@@ -8,6 +8,7 @@ const metaSchema = new Schema({
     fecha: { type: Date, default: new Date },
     mes: { type: Number },
     valor: { type: Number, default: 0 },
+    status: { type: Boolean, default: false },
     createdBy: { ref: 'User', type: Schema.Types.ObjectId }
 }, {
     timestamps: true,

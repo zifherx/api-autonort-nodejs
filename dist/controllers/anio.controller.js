@@ -144,31 +144,38 @@ var getAnioByActivo = /*#__PURE__*/function () {
           case 3:
             anios = _context3.sent;
 
-            if (anios.length > 0) {
-              res.json(anios);
-            } else {
-              res.status(404).json({
-                message: 'No existen Años Activos'
-              });
+            if (!(anios.length > 0)) {
+              _context3.next = 8;
+              break;
             }
 
-            _context3.next = 11;
+            res.json(anios);
+            _context3.next = 9;
             break;
 
-          case 7:
-            _context3.prev = 7;
+          case 8:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existen Años Activos'
+            }));
+
+          case 9:
+            _context3.next = 15;
+            break;
+
+          case 11:
+            _context3.prev = 11;
             _context3.t0 = _context3["catch"](0);
             console.log(_context3.t0);
             return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
             }));
 
-          case 11:
+          case 15:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 7]]);
+    }, _callee3, null, [[0, 11]]);
   }));
 
   return function getAnioByActivo(_x5, _x6) {

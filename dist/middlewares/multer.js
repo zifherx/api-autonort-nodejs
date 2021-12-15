@@ -34,13 +34,13 @@ var storage = (0, _multerS.default)({
     });
   },
   key: function key(req, file, cb) {
-    var name = file.originalname.split('.')[0];
+    // let name = file.originalname.split('.')[0];
+    // let campo = name + path.extname(file.originalname);
+    var alternativo = new Date().getTime() + _path.default.extname(file.originalname); // let campo = nanoid() + path.extname(file.originalname);
+    // cb(null, campo);
 
-    var campo = name + _path.default.extname(file.originalname); // let alternativo = new Date().getTime() + path.extname(file.originalname);
-    // let campo = nanoid() + path.extname(file.originalname);
 
-
-    cb(null, campo);
+    cb(null, alternativo);
   }
 });
 var upload = (0, _multer.default)({

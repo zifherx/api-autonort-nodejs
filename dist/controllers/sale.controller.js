@@ -27,6 +27,8 @@ var _Props = _interopRequireDefault(require("../models/Props"));
 
 var _User = _interopRequireDefault(require("../models/User"));
 
+var _mongoose = require("mongoose");
+
 var createSale = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
     var _req$body, vendedor, cliente, auto, serie_tdp, color, precio, anio_fabricacion, anio_modelo, ubicacion_vehiculo, fecha_ciguena, fecha_entrega, estatus_vehiculo, tipo_financiamiento, entidad_bancaria, sustento, fecha_sustento, monto_aprobado, oficina, ejecutivo, montoAdelanto1, fechaAdelanto1, montoAdelanto2, fechaAdelanto2, montoAdelanto3, fechaAdelanto3, montoAdelanto4, fechaAdelanto4, montoAdelanto5, fechaAdelanto5, montoAdelanto6, fechaAdelanto6, montoAdelanto7, fechaAdelanto7, montoAdelanto8, fechaAdelanto8, campanias, adicional, descuento_autonort, observacion_adv, accesorios, condicion_accesorios, fecha_facturacion_tdp, estatus_facturacion, tipo_operacion, fecha_inicio_reserva, fecha_fin_reserva, tipo_comprobante, nro_comprobante, fecha_comprobante, estatus_venta, sucursal_venta, fecha_cancelacion, empleado, newSale, foundSeller, foundVehicle, foundCustomer, foundCampaign, foundAdicional, foundProps, foundEmployee, saleSaved;
@@ -1105,6 +1107,10 @@ var conteoVentasByVendedor = /*#__PURE__*/function () {
                   $sum: 1
                 }
               }
+            }, {
+              $sort: {
+                num_ventas: -1
+              }
             }]);
 
           case 5:
@@ -1153,14 +1159,15 @@ exports.conteoVentasByVendedor = conteoVentasByVendedor;
 
 var conteoVentasByModelo = /*#__PURE__*/function () {
   var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
-    var _req$body9, sucursal, estatus, start, end, filter, consulta;
+    var _req$body9, sucursal, estatus, start, end, arr, filter, query;
 
     return _regenerator.default.wrap(function _callee14$(_context14) {
       while (1) {
         switch (_context14.prev = _context14.next) {
           case 0:
             _req$body9 = req.body, sucursal = _req$body9.sucursal, estatus = _req$body9.estatus, start = _req$body9.start, end = _req$body9.end;
-            _context14.prev = 1;
+            arr = [];
+            _context14.prev = 2;
             filter = {
               sucursal_venta: sucursal,
               estatus_venta: estatus,
@@ -1169,7 +1176,7 @@ var conteoVentasByModelo = /*#__PURE__*/function () {
                 $lte: new Date(end)
               }
             };
-            _context14.next = 5;
+            _context14.next = 6;
             return _Sale.default.aggregate([{
               $match: filter
             }, {
@@ -1181,34 +1188,43 @@ var conteoVentasByModelo = /*#__PURE__*/function () {
               }
             }]);
 
-          case 5:
-            consulta = _context14.sent;
+          case 6:
+            query = _context14.sent;
 
-            if (consulta.length > 0) {
-              res.json(consulta);
-            } else {
-              res.status(404).json({
-                message: 'No existen Ventas aún'
-              });
+            if (!(query.length > 0)) {
+              _context14.next = 11;
+              break;
             }
 
-            _context14.next = 13;
+            res.json({
+              ranking: query
+            });
+            _context14.next = 12;
             break;
 
-          case 9:
-            _context14.prev = 9;
-            _context14.t0 = _context14["catch"](1);
+          case 11:
+            return _context14.abrupt("return", res.status(404).json({
+              message: 'No existen Ventas aún'
+            }));
+
+          case 12:
+            _context14.next = 18;
+            break;
+
+          case 14:
+            _context14.prev = 14;
+            _context14.t0 = _context14["catch"](2);
             console.log(_context14.t0);
             return _context14.abrupt("return", res.status(503).json({
               message: _context14.t0.message
             }));
 
-          case 13:
+          case 18:
           case "end":
             return _context14.stop();
         }
       }
-    }, _callee14, null, [[1, 9]]);
+    }, _callee14, null, [[2, 14]]);
   }));
 
   return function conteoVentasByModelo(_x27, _x28) {

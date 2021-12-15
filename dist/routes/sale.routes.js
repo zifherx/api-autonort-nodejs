@@ -37,7 +37,7 @@ router.get('/:salesId', saleCtrl.getSaleById); //Conteo de Ventas By Vendedor
 
 router.post('/conteo/ventas', saleCtrl.conteoVentasByVendedor); //Conteo de Ventas By Modelo Vehicular
 
-router.post('/conteo/autos', saleCtrl.conteoVentasByModelo); //Vista de Expedientes Toyota Value
+router.post('/ranking/vehicles', saleCtrl.conteoVentasByModelo); //Vista de Expedientes Toyota Value
 
 router.post('/toyota-value', saleCtrl.obtenerToyotaValues); //Crear Venta
 

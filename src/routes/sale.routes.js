@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as saleCtrl from '../controllers/sale.controller'
-import { authJwt, verifySignup, verifyDuplicate } from '../middlewares'
+import { authJwt, verifyDuplicate } from '../middlewares'
 const router = Router();
 
 //Obtener Venta
@@ -37,7 +37,7 @@ router.get('/:salesId', saleCtrl.getSaleById);
 router.post('/conteo/ventas', saleCtrl.conteoVentasByVendedor);
 
 //Conteo de Ventas By Modelo Vehicular
-router.post('/conteo/autos', saleCtrl.conteoVentasByModelo);
+router.post('/ranking/vehicles', saleCtrl.conteoVentasByModelo);
 
 //Vista de Expedientes Toyota Value
 router.post('/toyota-value', saleCtrl.obtenerToyotaValues)

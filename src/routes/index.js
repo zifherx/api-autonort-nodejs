@@ -31,7 +31,6 @@ import conexoRoutes from './conexos.routes'
 import endosoRoutes from './endoso.routes'
 import aseguradoraRoutes from './aseguradora.routes'
 import operacionRoutes from './operacion.routes'
-import goalsRoutes from './goals.routes'
 import statusFileRoutes from './statusFile.routes'
 import statusRPRoutes from './statusRP.routes'
 import statusAAPRoutes from './statusAAP.routes'
@@ -79,7 +78,6 @@ router.use('/delivery', deliveryRoutes);
 router.use('/seguro', seguroRoutes);
 router.use('/aseguradora', aseguradoraRoutes);
 router.use('/tipo-operacion', operacionRoutes);
-router.use('/goals', goalsRoutes);
 router.use('/status-file', statusFileRoutes);
 router.use('/status-rp', statusRPRoutes);
 router.use('/status-aap', statusAAPRoutes);

@@ -69,8 +69,6 @@ var _aseguradora = _interopRequireDefault(require("./aseguradora.routes"));
 
 var _operacion = _interopRequireDefault(require("./operacion.routes"));
 
-var _goals = _interopRequireDefault(require("./goals.routes"));
-
 var _statusFile = _interopRequireDefault(require("./statusFile.routes"));
 
 var _statusRP = _interopRequireDefault(require("./statusRP.routes"));
@@ -129,7 +127,6 @@ router.use('/delivery', _delivery.default);
 router.use('/seguro', _seguro.default);
 router.use('/aseguradora', _aseguradora.default);
 router.use('/tipo-operacion', _operacion.default);
-router.use('/goals', _goals.default);
 router.use('/status-file', _statusFile.default);
 router.use('/status-rp', _statusRP.default);
 router.use('/status-aap', _statusAAP.default);

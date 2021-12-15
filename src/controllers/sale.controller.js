@@ -6,6 +6,7 @@ import Campaign from '../models/Campaign'
 import Adicional from '../models/Adicional'
 import Props from '../models/Props'
 import User from '../models/User'
+import { ObjectId } from 'mongoose'
 
 export const createSale = async(req, res) => {
     const {
@@ -434,6 +435,8 @@ export const conteoVentasByVendedor = async(req, res) => {
                 _id: "$vendedor",
                 num_ventas: { $sum: 1 }
             }
+        }, {
+            $sort: { num_ventas: -1 }
         }]);
         if (consulta.length > 0) {
             res.json(consulta);
@@ -448,9 +451,11 @@ export const conteoVentasByVendedor = async(req, res) => {
 
 export const conteoVentasByModelo = async(req, res) => {
     const { sucursal, estatus, start, end } = req.body;
+
+    const arr = [];
     try {
         const filter = { sucursal_venta: sucursal, estatus_venta: estatus, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } };
-        const consulta = await Sale.aggregate([{
+        const query = await Sale.aggregate([{
             $match: filter
         }, {
             $group: {
@@ -458,10 +463,10 @@ export const conteoVentasByModelo = async(req, res) => {
                 num_ventas: { $sum: 1 }
             }
         }]);
-        if (consulta.length > 0) {
-            res.json(consulta);
+        if (query.length > 0) {
+            res.json({ ranking: query });
         } else {
-            res.status(404).json({ message: 'No existen Ventas aún' })
+            return res.status(404).json({ message: 'No existen Ventas aún' })
         }
     } catch (err) {
         console.log(err);
