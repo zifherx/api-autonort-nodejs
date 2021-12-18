@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.obtenerToyotaValues = exports.vistaUnidadesEntregadasByStatus = exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesBySucursalFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursalyFecha = exports.UnidadesByStatus = exports.UnidadesLibres = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
+exports.getSalesBySeller = exports.obtenerToyotaValues = exports.vistaUnidadesEntregadasByStatus = exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesBySucursalFecha = exports.conteoUnidadesLibres = exports.conteoUnidadesCanceladas = exports.UnidadesBySucursalyFecha = exports.UnidadesByStatus = exports.UnidadesLibres = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -26,8 +26,6 @@ var _Adicional = _interopRequireDefault(require("../models/Adicional"));
 var _Props = _interopRequireDefault(require("../models/Props"));
 
 var _User = _interopRequireDefault(require("../models/User"));
-
-var _mongoose = require("mongoose");
 
 var createSale = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
@@ -1381,4 +1379,59 @@ var obtenerToyotaValues = /*#__PURE__*/function () {
 }();
 
 exports.obtenerToyotaValues = obtenerToyotaValues;
+
+var getSalesBySeller = /*#__PURE__*/function () {
+  var _ref17 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee17(req, res) {
+    var vendedor, query, obj;
+    return _regenerator.default.wrap(function _callee17$(_context17) {
+      while (1) {
+        switch (_context17.prev = _context17.next) {
+          case 0:
+            vendedor = req.body.vendedor;
+            _context17.prev = 1;
+            _context17.next = 4;
+            return _Sale.default.find().populate({
+              path: 'vendedor',
+              select: 'name',
+              match: {
+                name: {
+                  $in: vendedor
+                }
+              }
+            });
+
+          case 4:
+            query = _context17.sent;
+            obj = query.filter(function (a) {
+              return a.vendedor;
+            });
+            console.log(obj.length);
+            res.json({
+              expedientes: obj
+            });
+            _context17.next = 14;
+            break;
+
+          case 10:
+            _context17.prev = 10;
+            _context17.t0 = _context17["catch"](1);
+            console.log(_context17.t0.message);
+            return _context17.abrupt("return", res.status(503).json({
+              message: _context17.t0.message
+            }));
+
+          case 14:
+          case "end":
+            return _context17.stop();
+        }
+      }
+    }, _callee17, null, [[1, 10]]);
+  }));
+
+  return function getSalesBySeller(_x33, _x34) {
+    return _ref17.apply(this, arguments);
+  };
+}();
+
+exports.getSalesBySeller = getSalesBySeller;
 //# sourceMappingURL=sale.controller.js.map

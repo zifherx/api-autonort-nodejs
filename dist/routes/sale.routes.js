@@ -33,7 +33,9 @@ router.get('/conteo/canceladas', saleCtrl.conteoUnidadesCanceladas); //Conteo de
 
 router.get('/conteo/libres', saleCtrl.conteoUnidadesLibres); //Obtener Venta por Id
 
-router.get('/:salesId', saleCtrl.getSaleById); //Conteo de Ventas By Vendedor
+router.get('/:salesId', saleCtrl.getSaleById); //Sales by Vendedor
+
+router.post('/by-seller', saleCtrl.getSalesBySeller); //Conteo de Ventas By Vendedor
 
 router.post('/conteo/ventas', saleCtrl.conteoVentasByVendedor); //Conteo de Ventas By Modelo Vehicular
 

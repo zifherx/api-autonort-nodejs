@@ -6,7 +6,6 @@ import Campaign from '../models/Campaign'
 import Adicional from '../models/Adicional'
 import Props from '../models/Props'
 import User from '../models/User'
-import { ObjectId } from 'mongoose'
 
 export const createSale = async(req, res) => {
     const {
@@ -519,5 +518,29 @@ export const obtenerToyotaValues = async(req, res) => {
     } catch (err) {
         console.log(err.message)
         return res.status(503).json({ message: err.message })
+    }
+}
+
+export const getSalesBySeller = async(req, res) => {
+    const { vendedor } = req.body;
+
+    try {
+        // const sellerFound = await Seller.findOne({ name: { $in: vendedor } });
+
+        const query = await Sale.find()
+            .populate({
+                path: 'vendedor',
+                select: 'name',
+                match: { name: { $in: vendedor } },
+            });
+
+        let obj = query.filter(a => a.vendedor);
+        console.log(obj.length);
+        res.json({ expedientes: obj });
+
+
+    } catch (err) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
     }
 }
