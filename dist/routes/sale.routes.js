@@ -35,11 +35,15 @@ router.get('/conteo/libres', saleCtrl.conteoUnidadesLibres); //Obtener Venta por
 
 router.get('/:salesId', saleCtrl.getSaleById); //Sales by Vendedor
 
-router.post('/by-seller', saleCtrl.getSalesBySeller); //Conteo de Ventas By Vendedor
+router.post('/vehicles-by-seller', saleCtrl.getVehiclesySeller); //Ranking By Vendedor
+
+router.post('/status-by-seller', saleCtrl.getSalesBySeller); //Conteo de Ventas By Vendedor
 
 router.post('/conteo/ventas', saleCtrl.conteoVentasByVendedor); //Conteo de Ventas By Modelo Vehicular
 
-router.post('/ranking/vehicles', saleCtrl.conteoVentasByModelo); //Vista de Expedientes Toyota Value
+router.post('/ranking/vehicles', saleCtrl.conteoVentasByModelo); //Ranking de Ventas By Estado
+
+router.post('/ranking/sales', saleCtrl.getRankingByStatusyFecha); //Vista de Expedientes Toyota Value
 
 router.post('/toyota-value', saleCtrl.obtenerToyotaValues); //Crear Venta
 

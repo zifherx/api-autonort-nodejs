@@ -122,9 +122,12 @@ var getUsers = /*#__PURE__*/function () {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _User.default.find().sort({
+            return _User.default.find().select('-password').sort({
               name: 'asc'
-            }).populate('roles', 'name');
+            }).populate({
+              path: 'roles',
+              select: 'name'
+            });
 
           case 3:
             lista = _context2.sent;

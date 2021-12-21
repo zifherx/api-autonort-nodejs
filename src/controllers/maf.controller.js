@@ -427,3 +427,197 @@ export const sendMessageWsp = async(req, res) => {
             res.json({ ok: 'Message sent', sid: message.sid, status: message.status });
         });
 }
+
+export const getCountAll = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    try {
+        const query = await Maf.find({
+            sucursal: sucursal,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) }
+        }).countDocuments();
+
+        if (query >= 0) {
+            res.json({ count: query });
+        } else {
+            return res.status(404).json({ message: 'No existen solicitudes' });
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getCountByStatus = async(req, res) => {
+    const { sucursal, estado, start, end } = req.body;
+
+    try {
+        const query = await Maf.find({
+            sucursal: sucursal,
+            primer_status_request: estado,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) }
+        }).countDocuments();
+
+        if (query >= 0) {
+            res.json({ count: query });
+        } else {
+            return res.status(404).json({ message: 'No existen solicitudes' });
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getRankingByStatus = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    try {
+        const filtro = {
+            sucursal: sucursal,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) }
+        };
+
+        const query = await Maf.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: "$primer_status_request",
+                num_solicitudes: { $sum: 1 }
+            }
+        }, {
+            $sort: { num_solicitudes: -1 }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query });
+        } else {
+            return res.status(201).json({ message: 'No existen Solicitudes aún' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getRankingByVendedor = async(req, res) => {
+    const { sucursal, estado, start, end } = req.body;
+
+    try {
+        const filtro = {
+            sucursal: sucursal,
+            primer_status_request: estado,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) }
+        };
+
+        const query = await Maf.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: "$seller",
+                num_solicitudes: { $sum: 1 }
+            }
+        }, {
+            $sort: { num_solicitudes: -1 }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query });
+        } else {
+            return res.status(201).json({ message: 'No existen Solicitudes aún' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getRankingByVehicle = async(req, res) => {
+    const { sucursal, estado, start, end } = req.body;
+
+    try {
+        const filtro = {
+            sucursal: sucursal,
+            primer_status_request: estado,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) }
+        };
+
+        const query = await Maf.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: "$car",
+                num_solicitudes: { $sum: 1 }
+            }
+        }, {
+            $sort: { num_solicitudes: -1 }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query });
+        } else {
+            return res.status(201).json({ message: 'No existen Solicitudes aún' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getSolicitudesBySeller = async(req, res) => {
+    const { vendedor, start, end } = req.body;
+
+    try {
+        const sellerFound = await Seller.findOne({ name: vendedor });
+
+        if (!sellerFound) return res.status(404).json({ message: 'No existe el vendedor' });
+
+        const filtro = { seller: sellerFound._id, fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) } };
+
+        const query = await Maf.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: "$primer_status_request",
+                qty: { $sum: 1 }
+            }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'Vendedor no ingresó ninguna solicitud' })
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getVehiclesBySeller = async(req, res) => {
+    const { vendedor, start, end } = req.body;
+
+    try {
+        const sellerFound = await Seller.findOne({ name: vendedor });
+
+        if (!sellerFound) return res.status(404).json({ message: 'No existe el vendedor' });
+
+        const filtro = { seller: sellerFound._id, fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) } };
+
+        const query = await Maf.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: '$car',
+                qty: { $sum: 1 }
+            }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'Vendedor no ingresó ninguna solicitud' })
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+}

@@ -6,6 +6,7 @@ import Campaign from '../models/Campaign'
 import Adicional from '../models/Adicional'
 import Props from '../models/Props'
 import User from '../models/User'
+import { Schema } from 'mongoose'
 
 export const createSale = async(req, res) => {
     const {
@@ -451,7 +452,6 @@ export const conteoVentasByVendedor = async(req, res) => {
 export const conteoVentasByModelo = async(req, res) => {
     const { sucursal, estatus, start, end } = req.body;
 
-    const arr = [];
     try {
         const filter = { sucursal_venta: sucursal, estatus_venta: estatus, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } };
         const query = await Sale.aggregate([{
@@ -521,26 +521,83 @@ export const obtenerToyotaValues = async(req, res) => {
     }
 }
 
-export const getSalesBySeller = async(req, res) => {
-    const { vendedor } = req.body;
+export const getVehiclesySeller = async(req, res) => {
+    const { vendedor, start, end } = req.body;
 
     try {
-        // const sellerFound = await Seller.findOne({ name: { $in: vendedor } });
+        const sellerFound = await Seller.findOne({ name: vendedor });
 
-        const query = await Sale.find()
-            .populate({
-                path: 'vendedor',
-                select: 'name',
-                match: { name: { $in: vendedor } },
-            });
+        const filtro = { vendedor: sellerFound._id, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } };
+        const query = await Sale.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: "$auto",
+                qty: { $sum: 1 }
+            }
+        }]);
 
-        let obj = query.filter(a => a.vendedor);
-        console.log(obj.length);
-        res.json({ expedientes: obj });
-
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.staus(201).json({ message: 'No existen Ventas en este Vendedor' })
+        }
 
     } catch (err) {
         console.log(err.message);
         return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getSalesBySeller = async(req, res) => {
+    const { vendedor, start, end } = req.body;
+
+    try {
+        const sellerFound = await Seller.findOne({ name: vendedor });
+
+        const filtro = { vendedor: sellerFound._id, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } };
+        const query = await Sale.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: "$estatus_venta",
+                qty: { $sum: 1 }
+            }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.staus(201).json({ message: 'No existen Ventas en este Vendedor' })
+        }
+
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getRankingByStatusyFecha = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+    try {
+        const filter = { sucursal_venta: sucursal, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } };
+        const consulta = await Sale.aggregate([{
+            $match: filter
+        }, {
+            $group: {
+                _id: "$estatus_venta",
+                num_ventas: { $sum: 1 }
+            }
+        }, {
+            $sort: { num_ventas: -1 }
+        }]);
+        if (consulta.length > 0) {
+            res.json({ total: consulta.length, ranking: consulta });
+        } else {
+            return res.status(201).json({ message: 'No existen Ventas aún' })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message })
     }
 }

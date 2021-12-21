@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.sendMessageWsp = exports.descargaYZip = exports.downloadAndZipeo = exports.enviarCorreoSolicitud = exports.deleteRequest = exports.cambioStatusByMaf = exports.requestaHot = exports.actualizarReqAprobada = exports.agregarNewDocuments = exports.actualizarRequest = exports.createRequest = exports.obtenerRequestbyStatus = exports.getAllBySucursal = exports.getAllByVendedor = exports.getOneById = exports.getAll = void 0;
+exports.getVehiclesBySeller = exports.getSolicitudesBySeller = exports.getRankingByVehicle = exports.getRankingByVendedor = exports.getRankingByStatus = exports.getCountByStatus = exports.getCountAll = exports.sendMessageWsp = exports.descargaYZip = exports.downloadAndZipeo = exports.enviarCorreoSolicitud = exports.deleteRequest = exports.cambioStatusByMaf = exports.requestaHot = exports.actualizarReqAprobada = exports.agregarNewDocuments = exports.actualizarRequest = exports.createRequest = exports.obtenerRequestbyStatus = exports.getAllBySucursal = exports.getAllByVendedor = exports.getOneById = exports.getAll = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -1084,4 +1084,563 @@ var sendMessageWsp = /*#__PURE__*/function () {
 }();
 
 exports.sendMessageWsp = sendMessageWsp;
+
+var getCountAll = /*#__PURE__*/function () {
+  var _ref17 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee17(req, res) {
+    var _req$body8, sucursal, start, end, query;
+
+    return _regenerator.default.wrap(function _callee17$(_context17) {
+      while (1) {
+        switch (_context17.prev = _context17.next) {
+          case 0:
+            _req$body8 = req.body, sucursal = _req$body8.sucursal, start = _req$body8.start, end = _req$body8.end;
+            _context17.prev = 1;
+            _context17.next = 4;
+            return _Maf.default.find({
+              sucursal: sucursal,
+              fecha_ingreso: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            }).countDocuments();
+
+          case 4:
+            query = _context17.sent;
+
+            if (!(query >= 0)) {
+              _context17.next = 9;
+              break;
+            }
+
+            res.json({
+              count: query
+            });
+            _context17.next = 10;
+            break;
+
+          case 9:
+            return _context17.abrupt("return", res.status(404).json({
+              message: 'No existen solicitudes'
+            }));
+
+          case 10:
+            _context17.next = 15;
+            break;
+
+          case 12:
+            _context17.prev = 12;
+            _context17.t0 = _context17["catch"](1);
+            return _context17.abrupt("return", res.status(503).json({
+              message: _context17.t0.message
+            }));
+
+          case 15:
+          case "end":
+            return _context17.stop();
+        }
+      }
+    }, _callee17, null, [[1, 12]]);
+  }));
+
+  return function getCountAll(_x33, _x34) {
+    return _ref17.apply(this, arguments);
+  };
+}();
+
+exports.getCountAll = getCountAll;
+
+var getCountByStatus = /*#__PURE__*/function () {
+  var _ref18 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee18(req, res) {
+    var _req$body9, sucursal, estado, start, end, query;
+
+    return _regenerator.default.wrap(function _callee18$(_context18) {
+      while (1) {
+        switch (_context18.prev = _context18.next) {
+          case 0:
+            _req$body9 = req.body, sucursal = _req$body9.sucursal, estado = _req$body9.estado, start = _req$body9.start, end = _req$body9.end;
+            _context18.prev = 1;
+            _context18.next = 4;
+            return _Maf.default.find({
+              sucursal: sucursal,
+              primer_status_request: estado,
+              fecha_ingreso: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            }).countDocuments();
+
+          case 4:
+            query = _context18.sent;
+
+            if (!(query >= 0)) {
+              _context18.next = 9;
+              break;
+            }
+
+            res.json({
+              count: query
+            });
+            _context18.next = 10;
+            break;
+
+          case 9:
+            return _context18.abrupt("return", res.status(404).json({
+              message: 'No existen solicitudes'
+            }));
+
+          case 10:
+            _context18.next = 15;
+            break;
+
+          case 12:
+            _context18.prev = 12;
+            _context18.t0 = _context18["catch"](1);
+            return _context18.abrupt("return", res.status(503).json({
+              message: _context18.t0.message
+            }));
+
+          case 15:
+          case "end":
+            return _context18.stop();
+        }
+      }
+    }, _callee18, null, [[1, 12]]);
+  }));
+
+  return function getCountByStatus(_x35, _x36) {
+    return _ref18.apply(this, arguments);
+  };
+}();
+
+exports.getCountByStatus = getCountByStatus;
+
+var getRankingByStatus = /*#__PURE__*/function () {
+  var _ref19 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee19(req, res) {
+    var _req$body10, sucursal, start, end, filtro, query;
+
+    return _regenerator.default.wrap(function _callee19$(_context19) {
+      while (1) {
+        switch (_context19.prev = _context19.next) {
+          case 0:
+            _req$body10 = req.body, sucursal = _req$body10.sucursal, start = _req$body10.start, end = _req$body10.end;
+            _context19.prev = 1;
+            filtro = {
+              sucursal: sucursal,
+              fecha_ingreso: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context19.next = 5;
+            return _Maf.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: "$primer_status_request",
+                num_solicitudes: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                num_solicitudes: -1
+              }
+            }]);
+
+          case 5:
+            query = _context19.sent;
+
+            if (!(query.length > 0)) {
+              _context19.next = 10;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              ranking: query
+            });
+            _context19.next = 11;
+            break;
+
+          case 10:
+            return _context19.abrupt("return", res.status(201).json({
+              message: 'No existen Solicitudes aún'
+            }));
+
+          case 11:
+            _context19.next = 17;
+            break;
+
+          case 13:
+            _context19.prev = 13;
+            _context19.t0 = _context19["catch"](1);
+            console.log(_context19.t0);
+            return _context19.abrupt("return", res.status(503).json({
+              message: _context19.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context19.stop();
+        }
+      }
+    }, _callee19, null, [[1, 13]]);
+  }));
+
+  return function getRankingByStatus(_x37, _x38) {
+    return _ref19.apply(this, arguments);
+  };
+}();
+
+exports.getRankingByStatus = getRankingByStatus;
+
+var getRankingByVendedor = /*#__PURE__*/function () {
+  var _ref20 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee20(req, res) {
+    var _req$body11, sucursal, estado, start, end, filtro, query;
+
+    return _regenerator.default.wrap(function _callee20$(_context20) {
+      while (1) {
+        switch (_context20.prev = _context20.next) {
+          case 0:
+            _req$body11 = req.body, sucursal = _req$body11.sucursal, estado = _req$body11.estado, start = _req$body11.start, end = _req$body11.end;
+            _context20.prev = 1;
+            filtro = {
+              sucursal: sucursal,
+              primer_status_request: estado,
+              fecha_ingreso: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context20.next = 5;
+            return _Maf.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: "$seller",
+                num_solicitudes: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                num_solicitudes: -1
+              }
+            }]);
+
+          case 5:
+            query = _context20.sent;
+
+            if (!(query.length > 0)) {
+              _context20.next = 10;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              ranking: query
+            });
+            _context20.next = 11;
+            break;
+
+          case 10:
+            return _context20.abrupt("return", res.status(201).json({
+              message: 'No existen Solicitudes aún'
+            }));
+
+          case 11:
+            _context20.next = 17;
+            break;
+
+          case 13:
+            _context20.prev = 13;
+            _context20.t0 = _context20["catch"](1);
+            console.log(_context20.t0);
+            return _context20.abrupt("return", res.status(503).json({
+              message: _context20.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context20.stop();
+        }
+      }
+    }, _callee20, null, [[1, 13]]);
+  }));
+
+  return function getRankingByVendedor(_x39, _x40) {
+    return _ref20.apply(this, arguments);
+  };
+}();
+
+exports.getRankingByVendedor = getRankingByVendedor;
+
+var getRankingByVehicle = /*#__PURE__*/function () {
+  var _ref21 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee21(req, res) {
+    var _req$body12, sucursal, estado, start, end, filtro, query;
+
+    return _regenerator.default.wrap(function _callee21$(_context21) {
+      while (1) {
+        switch (_context21.prev = _context21.next) {
+          case 0:
+            _req$body12 = req.body, sucursal = _req$body12.sucursal, estado = _req$body12.estado, start = _req$body12.start, end = _req$body12.end;
+            _context21.prev = 1;
+            filtro = {
+              sucursal: sucursal,
+              primer_status_request: estado,
+              fecha_ingreso: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context21.next = 5;
+            return _Maf.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: "$car",
+                num_solicitudes: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                num_solicitudes: -1
+              }
+            }]);
+
+          case 5:
+            query = _context21.sent;
+
+            if (!(query.length > 0)) {
+              _context21.next = 10;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              ranking: query
+            });
+            _context21.next = 11;
+            break;
+
+          case 10:
+            return _context21.abrupt("return", res.status(201).json({
+              message: 'No existen Solicitudes aún'
+            }));
+
+          case 11:
+            _context21.next = 17;
+            break;
+
+          case 13:
+            _context21.prev = 13;
+            _context21.t0 = _context21["catch"](1);
+            console.log(_context21.t0);
+            return _context21.abrupt("return", res.status(503).json({
+              message: _context21.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context21.stop();
+        }
+      }
+    }, _callee21, null, [[1, 13]]);
+  }));
+
+  return function getRankingByVehicle(_x41, _x42) {
+    return _ref21.apply(this, arguments);
+  };
+}();
+
+exports.getRankingByVehicle = getRankingByVehicle;
+
+var getSolicitudesBySeller = /*#__PURE__*/function () {
+  var _ref22 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee22(req, res) {
+    var _req$body13, vendedor, start, end, sellerFound, filtro, query;
+
+    return _regenerator.default.wrap(function _callee22$(_context22) {
+      while (1) {
+        switch (_context22.prev = _context22.next) {
+          case 0:
+            _req$body13 = req.body, vendedor = _req$body13.vendedor, start = _req$body13.start, end = _req$body13.end;
+            _context22.prev = 1;
+            _context22.next = 4;
+            return _Seller.default.findOne({
+              name: vendedor
+            });
+
+          case 4:
+            sellerFound = _context22.sent;
+
+            if (sellerFound) {
+              _context22.next = 7;
+              break;
+            }
+
+            return _context22.abrupt("return", res.status(404).json({
+              message: 'No existe el vendedor'
+            }));
+
+          case 7:
+            filtro = {
+              seller: sellerFound._id,
+              fecha_ingreso: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context22.next = 10;
+            return _Maf.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: "$primer_status_request",
+                qty: {
+                  $sum: 1
+                }
+              }
+            }]);
+
+          case 10:
+            query = _context22.sent;
+
+            if (!(query.length > 0)) {
+              _context22.next = 15;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              deploy: query
+            });
+            _context22.next = 16;
+            break;
+
+          case 15:
+            return _context22.abrupt("return", res.status(201).json({
+              message: 'Vendedor no ingresó ninguna solicitud'
+            }));
+
+          case 16:
+            _context22.next = 22;
+            break;
+
+          case 18:
+            _context22.prev = 18;
+            _context22.t0 = _context22["catch"](1);
+            console.log(_context22.t0.message);
+            return _context22.abrupt("return", res.status(503).json({
+              message: _context22.t0.message
+            }));
+
+          case 22:
+          case "end":
+            return _context22.stop();
+        }
+      }
+    }, _callee22, null, [[1, 18]]);
+  }));
+
+  return function getSolicitudesBySeller(_x43, _x44) {
+    return _ref22.apply(this, arguments);
+  };
+}();
+
+exports.getSolicitudesBySeller = getSolicitudesBySeller;
+
+var getVehiclesBySeller = /*#__PURE__*/function () {
+  var _ref23 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee23(req, res) {
+    var _req$body14, vendedor, start, end, sellerFound, filtro, query;
+
+    return _regenerator.default.wrap(function _callee23$(_context23) {
+      while (1) {
+        switch (_context23.prev = _context23.next) {
+          case 0:
+            _req$body14 = req.body, vendedor = _req$body14.vendedor, start = _req$body14.start, end = _req$body14.end;
+            _context23.prev = 1;
+            _context23.next = 4;
+            return _Seller.default.findOne({
+              name: vendedor
+            });
+
+          case 4:
+            sellerFound = _context23.sent;
+
+            if (sellerFound) {
+              _context23.next = 7;
+              break;
+            }
+
+            return _context23.abrupt("return", res.status(404).json({
+              message: 'No existe el vendedor'
+            }));
+
+          case 7:
+            filtro = {
+              seller: sellerFound._id,
+              fecha_ingreso: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context23.next = 10;
+            return _Maf.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$car',
+                qty: {
+                  $sum: 1
+                }
+              }
+            }]);
+
+          case 10:
+            query = _context23.sent;
+
+            if (!(query.length > 0)) {
+              _context23.next = 15;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              deploy: query
+            });
+            _context23.next = 16;
+            break;
+
+          case 15:
+            return _context23.abrupt("return", res.status(201).json({
+              message: 'Vendedor no ingresó ninguna solicitud'
+            }));
+
+          case 16:
+            _context23.next = 22;
+            break;
+
+          case 18:
+            _context23.prev = 18;
+            _context23.t0 = _context23["catch"](1);
+            console.log(_context23.t0.message);
+            return _context23.abrupt("return", res.status(503).json({
+              message: _context23.t0.message
+            }));
+
+          case 22:
+          case "end":
+            return _context23.stop();
+        }
+      }
+    }, _callee23, null, [[1, 18]]);
+  }));
+
+  return function getVehiclesBySeller(_x45, _x46) {
+    return _ref23.apply(this, arguments);
+  };
+}();
+
+exports.getVehiclesBySeller = getVehiclesBySeller;
 //# sourceMappingURL=maf.controller.js.map

@@ -35,7 +35,14 @@ export const createUser = async(req, res) => {
 
 export const getUsers = async(req, res) => {
     try {
-        const lista = await User.find().sort({ name: 'asc' }).populate('roles', 'name')
+        const lista = await User.find()
+            .select('-password')
+            .sort({ name: 'asc' })
+            .populate({
+                path: 'roles',
+                select: 'name'
+            })
+
         if (lista.length > 0) {
             res.json(lista)
         } else {
