@@ -123,6 +123,8 @@ var getSucursalByActivo = /*#__PURE__*/function () {
             _context3.next = 3;
             return _Sucursal.default.find({
               estado: true
+            }).sort({
+              name: 'asc'
             });
 
           case 3:

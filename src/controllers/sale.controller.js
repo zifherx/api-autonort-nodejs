@@ -6,7 +6,6 @@ import Campaign from '../models/Campaign'
 import Adicional from '../models/Adicional'
 import Props from '../models/Props'
 import User from '../models/User'
-import { Schema } from 'mongoose'
 
 export const createSale = async(req, res) => {
     const {
@@ -427,7 +426,11 @@ export const conteoVentasByVendedor = async(req, res) => {
     const { sucursal, estatus, start, end } = req.body;
     // console.log(req.body)
     try {
-        const filter = { sucursal_venta: sucursal, estatus_venta: estatus, fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } };
+        const filter = {
+            sucursal_venta: sucursal,
+            estatus_venta: estatus,
+            fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
         const consulta = await Sale.aggregate([{
             $match: filter
         }, {

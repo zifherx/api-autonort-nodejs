@@ -208,15 +208,196 @@ tasacionCtrl.deleteOneById = async(req, res) => {
     }
 }
 
-tasacionCtrl.countAll = async(req, res) => {
+tasacionCtrl.countBySucursalFecha = async(req, res) => {
+    const { sucursal, start, end } = req.body;
     try {
-        const query = await Tasacion.countDocuments();
+        const query = await Tasacion.where({
+            sucursal: sucursal,
+            fecha_operacion: { $gte: start, $lte: end }
+        }).find().countDocuments();
         if (query >= 0) {
             res.json({ count: query });
         }
     } catch (err) {
         return res.status(503).json({ message: err.message });
     }
+}
+
+tasacionCtrl.getRankingByStatus = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    try {
+        const filtro = {
+            sucursal: sucursal,
+            fecha_operacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
+
+        const query = await Tasacion.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: '$status_tasacion',
+                num_tasaciones: { $sum: 1 }
+            }
+        }, {
+            $sort: { num_tasaciones: -1 }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query })
+        } else {
+            return res.status(201).json({ message: 'No existen Tasaciones aún' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+tasacionCtrl.getCountByMetodo = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    try {
+        const filtro = {
+            sucursal: sucursal,
+            fecha_operacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
+
+        const query = await Tasacion.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: '$metodo',
+                num_tasaciones: { $sum: 1 }
+            }
+        }, {
+            $sort: { num_tasaciones: -1 }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query })
+        } else {
+            return res.status(201).json({ message: 'No existen Tasaciones aún' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+tasacionCtrl.getCountByOrigen = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    try {
+        const filtro = {
+            sucursal: sucursal,
+            fecha_operacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
+
+        const query = await Tasacion.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: '$origen_operacion',
+                num_tasaciones: { $sum: 1 }
+            }
+        }, {
+            $sort: { num_tasaciones: -1 }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query })
+        } else {
+            return res.status(201).json({ message: 'No existen Tasaciones aún' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+tasacionCtrl.getRankingByIngreso = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    try {
+        const filtro = {
+            sucursal: sucursal,
+            fecha_operacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
+
+        const query = await Tasacion.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: '$ingresoPor',
+                num_tasaciones: { $sum: 1 }
+            }
+        }, {
+            $sort: { num_tasaciones: -1 }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query })
+        } else {
+            return res.status(201).json({ message: 'No existen Tasaciones aún' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+tasacionCtrl.getRankingByVendedor = async(req, res) => {
+    const { sucursal, estado, ingreso, start, end } = req.body;
+
+    let query = null;
+
+    try {
+        const filtro = {
+            sucursal: sucursal,
+            ingresoPor: ingreso,
+            status_tasacion: estado,
+            fecha_operacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
+
+        if (filtro.ingresoPor == "VENTAS") {
+            query = await Tasacion.aggregate([{
+                $match: filtro
+            }, {
+                $group: {
+                    _id: '$asesor_venta',
+                    num_tasaciones: { $sum: 1 }
+                }
+            }, {
+                $sort: { num_tasaciones: -1 }
+            }]);
+        } else {
+            query = await Tasacion.aggregate([{
+                $match: filtro
+            }, {
+                $group: {
+                    _id: '$asesor_servicio',
+                    num_tasaciones: { $sum: 1 }
+                }
+            }, {
+                $sort: { num_tasaciones: -1 }
+            }]);
+
+        }
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query })
+        } else {
+            return res.status(201).json({ message: 'No existen Tasaciones aún' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+tasacionCtrl.getTasacionesBySeller = async(req, res) => {
+
 }
 
 export default tasacionCtrl;

@@ -439,8 +439,6 @@ export const getCountAll = async(req, res) => {
 
         if (query >= 0) {
             res.json({ count: query });
-        } else {
-            return res.status(404).json({ message: 'No existen solicitudes' });
         }
     } catch (err) {
         return res.status(503).json({ message: err.message });
@@ -459,8 +457,6 @@ export const getCountByStatus = async(req, res) => {
 
         if (query >= 0) {
             res.json({ count: query });
-        } else {
-            return res.status(404).json({ message: 'No existen solicitudes' });
         }
     } catch (err) {
         return res.status(503).json({ message: err.message });
@@ -593,14 +589,14 @@ export const getSolicitudesBySeller = async(req, res) => {
 }
 
 export const getVehiclesBySeller = async(req, res) => {
-    const { vendedor, start, end } = req.body;
+    const { vendedor, estado, start, end } = req.body;
 
     try {
         const sellerFound = await Seller.findOne({ name: vendedor });
 
         if (!sellerFound) return res.status(404).json({ message: 'No existe el vendedor' });
 
-        const filtro = { seller: sellerFound._id, fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) } };
+        const filtro = { seller: sellerFound._id, primer_status_request: estado, fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) } };
 
         const query = await Maf.aggregate([{
             $match: filtro

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import serviciosCtrl from '../controllers/aservicios.controller'
 import { authJwt, verifyDuplicate } from "../middlewares";
+import multer from '../middlewares/multer';
 
 const router = Router();
 
@@ -24,6 +25,9 @@ router.post('/sucursal', serviciosCtrl.getBySucursal);
 
 //Crear Asesor de Servicios
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateAServicios], serviciosCtrl.createOne);
+
+//Subir Foto
+router.patch('/upload/:asesorId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('photo'), serviciosCtrl.uploadAvatar);
 
 //Actualizar Asesor de Servicios
 router.patch('/:asesorId', [authJwt.verifyToken, authJwt.isAdmin], serviciosCtrl.updatedOneById);

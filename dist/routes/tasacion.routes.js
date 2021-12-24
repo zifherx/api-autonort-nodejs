@@ -14,9 +14,15 @@ var _tasacion = _interopRequireDefault(require("../controllers/tasacion.controll
 var _middlewares = require("../middlewares");
 
 var router = (0, _express.Router)();
-router.get('/count', _tasacion.default.countAll);
 router.get('/:tasacionId', _tasacion.default.getOneById);
 router.get('/', _tasacion.default.getAll);
+router.post('/count', _tasacion.default.countBySucursalFecha);
+router.post('/ranking/status', _tasacion.default.getRankingByStatus);
+router.post('/ranking/metodo', _tasacion.default.getCountByMetodo);
+router.post('/ranking/origin', _tasacion.default.getCountByOrigen);
+router.post('/ranking/ingreso', _tasacion.default.getRankingByIngreso);
+router.post('/ranking/seller', _tasacion.default.getRankingByVendedor);
+router.post('/status-by-seller', _tasacion.default.getTasacionesBySeller);
 router.post('/by-tasador', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isTasadororChiefEPDP], _tasacion.default.getAllByTasador);
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isTasadororChiefEPDP], _tasacion.default.createTasacion);
 router.patch('/:tasacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isTasadororChiefEPDP], _tasacion.default.updatedOneById);

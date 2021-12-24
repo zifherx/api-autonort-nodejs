@@ -503,6 +503,66 @@ serviciosCtrl.getBySucursal = /*#__PURE__*/function () {
   };
 }();
 
+serviciosCtrl.uploadAvatar = /*#__PURE__*/function () {
+  var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee10(req, res) {
+    var asesorId, photo, query;
+    return _regenerator.default.wrap(function _callee10$(_context10) {
+      while (1) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            asesorId = req.params.asesorId;
+            photo = req.file; // console.log(photo)
+
+            _context10.prev = 2;
+            _context10.next = 5;
+            return _AServicios.default.findByIdAndUpdate(asesorId, {
+              avatar: photo.location
+            });
+
+          case 5:
+            query = _context10.sent;
+
+            if (!query) {
+              _context10.next = 10;
+              break;
+            }
+
+            res.json({
+              message: 'Avatar subido con éxito'
+            });
+            _context10.next = 11;
+            break;
+
+          case 10:
+            return _context10.abrupt("return", res.status(404).json({
+              message: 'No existe el asesor'
+            }));
+
+          case 11:
+            _context10.next = 17;
+            break;
+
+          case 13:
+            _context10.prev = 13;
+            _context10.t0 = _context10["catch"](2);
+            console.log(_context10.t0);
+            return _context10.abrupt("return", res.status(503).json({
+              message: _context10.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10, null, [[2, 13]]);
+  }));
+
+  return function (_x19, _x20) {
+    return _ref10.apply(this, arguments);
+  };
+}();
+
 var _default = serviciosCtrl;
 exports.default = _default;
 //# sourceMappingURL=aservicios.controller.js.map

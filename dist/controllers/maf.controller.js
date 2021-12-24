@@ -1107,39 +1107,28 @@ var getCountAll = /*#__PURE__*/function () {
           case 4:
             query = _context17.sent;
 
-            if (!(query >= 0)) {
-              _context17.next = 9;
-              break;
+            if (query >= 0) {
+              res.json({
+                count: query
+              });
             }
 
-            res.json({
-              count: query
-            });
-            _context17.next = 10;
+            _context17.next = 11;
             break;
 
-          case 9:
-            return _context17.abrupt("return", res.status(404).json({
-              message: 'No existen solicitudes'
-            }));
-
-          case 10:
-            _context17.next = 15;
-            break;
-
-          case 12:
-            _context17.prev = 12;
+          case 8:
+            _context17.prev = 8;
             _context17.t0 = _context17["catch"](1);
             return _context17.abrupt("return", res.status(503).json({
               message: _context17.t0.message
             }));
 
-          case 15:
+          case 11:
           case "end":
             return _context17.stop();
         }
       }
-    }, _callee17, null, [[1, 12]]);
+    }, _callee17, null, [[1, 8]]);
   }));
 
   return function getCountAll(_x33, _x34) {
@@ -1172,39 +1161,28 @@ var getCountByStatus = /*#__PURE__*/function () {
           case 4:
             query = _context18.sent;
 
-            if (!(query >= 0)) {
-              _context18.next = 9;
-              break;
+            if (query >= 0) {
+              res.json({
+                count: query
+              });
             }
 
-            res.json({
-              count: query
-            });
-            _context18.next = 10;
+            _context18.next = 11;
             break;
 
-          case 9:
-            return _context18.abrupt("return", res.status(404).json({
-              message: 'No existen solicitudes'
-            }));
-
-          case 10:
-            _context18.next = 15;
-            break;
-
-          case 12:
-            _context18.prev = 12;
+          case 8:
+            _context18.prev = 8;
             _context18.t0 = _context18["catch"](1);
             return _context18.abrupt("return", res.status(503).json({
               message: _context18.t0.message
             }));
 
-          case 15:
+          case 11:
           case "end":
             return _context18.stop();
         }
       }
-    }, _callee18, null, [[1, 12]]);
+    }, _callee18, null, [[1, 8]]);
   }));
 
   return function getCountByStatus(_x35, _x36) {
@@ -1552,13 +1530,13 @@ exports.getSolicitudesBySeller = getSolicitudesBySeller;
 
 var getVehiclesBySeller = /*#__PURE__*/function () {
   var _ref23 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee23(req, res) {
-    var _req$body14, vendedor, start, end, sellerFound, filtro, query;
+    var _req$body14, vendedor, estado, start, end, sellerFound, filtro, query;
 
     return _regenerator.default.wrap(function _callee23$(_context23) {
       while (1) {
         switch (_context23.prev = _context23.next) {
           case 0:
-            _req$body14 = req.body, vendedor = _req$body14.vendedor, start = _req$body14.start, end = _req$body14.end;
+            _req$body14 = req.body, vendedor = _req$body14.vendedor, estado = _req$body14.estado, start = _req$body14.start, end = _req$body14.end;
             _context23.prev = 1;
             _context23.next = 4;
             return _Seller.default.findOne({
@@ -1580,6 +1558,7 @@ var getVehiclesBySeller = /*#__PURE__*/function () {
           case 7:
             filtro = {
               seller: sellerFound._id,
+              primer_status_request: estado,
               fecha_ingreso: {
                 $gte: new Date(start),
                 $lte: new Date(end)

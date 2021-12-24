@@ -5,6 +5,7 @@ const aserviciosSchema = new Schema({
     document: { type: String },
     cellphone: { type: String },
     email: { type: String },
+    avatar: { type: String },
     sucursal: { type: String },
     status: { type: Boolean, default: true },
 }, {

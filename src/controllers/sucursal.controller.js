@@ -31,7 +31,7 @@ export const getSucursalById = async(req, res) => {
 
 export const getSucursalByActivo = async(req, res) => {
     try {
-        const query = await Sucursal.find({ estado: true });
+        const query = await Sucursal.find({ estado: true }).sort({ name: 'asc' });
         if (query.length > 0) {
             res.json(query);
         } else {

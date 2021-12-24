@@ -13,6 +13,8 @@ var _aservicios = _interopRequireDefault(require("../controllers/aservicios.cont
 
 var _middlewares = require("../middlewares");
 
+var _multer = _interopRequireDefault(require("../middlewares/multer"));
+
 var router = (0, _express.Router)(); //Obtener Conteo Tecnicos
 
 router.get('/count', _aservicios.default.countAll); //Obtener Asesor de Servicios Activos
@@ -27,7 +29,9 @@ router.post('/count/status', _aservicios.default.countByStatus); //Obtener Aseso
 
 router.post('/sucursal', _aservicios.default.getBySucursal); //Crear Asesor de Servicios
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifyDuplicate.checkDuplicateAServicios], _aservicios.default.createOne); //Actualizar Asesor de Servicios
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifyDuplicate.checkDuplicateAServicios], _aservicios.default.createOne); //Subir Foto
+
+router.patch('/upload/:asesorId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _multer.default.single('photo'), _aservicios.default.uploadAvatar); //Actualizar Asesor de Servicios
 
 router.patch('/:asesorId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _aservicios.default.updatedOneById); //Eliminar Asesor de Servicios
 

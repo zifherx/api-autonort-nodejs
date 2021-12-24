@@ -516,18 +516,26 @@ tasacionCtrl.deleteOneById = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.countAll = /*#__PURE__*/function () {
+tasacionCtrl.countBySucursalFecha = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var query;
+    var _req$body3, sucursal, start, end, query;
+
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            _context7.prev = 0;
-            _context7.next = 3;
-            return _Tasacion.default.countDocuments();
+            _req$body3 = req.body, sucursal = _req$body3.sucursal, start = _req$body3.start, end = _req$body3.end;
+            _context7.prev = 1;
+            _context7.next = 4;
+            return _Tasacion.default.where({
+              sucursal: sucursal,
+              fecha_operacion: {
+                $gte: start,
+                $lte: end
+              }
+            }).find().countDocuments();
 
-          case 3:
+          case 4:
             query = _context7.sent;
 
             if (query >= 0) {
@@ -536,26 +544,466 @@ tasacionCtrl.countAll = /*#__PURE__*/function () {
               });
             }
 
-            _context7.next = 10;
+            _context7.next = 11;
             break;
 
-          case 7:
-            _context7.prev = 7;
-            _context7.t0 = _context7["catch"](0);
+          case 8:
+            _context7.prev = 8;
+            _context7.t0 = _context7["catch"](1);
             return _context7.abrupt("return", res.status(503).json({
               message: _context7.t0.message
             }));
 
-          case 10:
+          case 11:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[0, 7]]);
+    }, _callee7, null, [[1, 8]]);
   }));
 
   return function (_x13, _x14) {
     return _ref7.apply(this, arguments);
+  };
+}();
+
+tasacionCtrl.getRankingByStatus = /*#__PURE__*/function () {
+  var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
+    var _req$body4, sucursal, start, end, filtro, query;
+
+    return _regenerator.default.wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _req$body4 = req.body, sucursal = _req$body4.sucursal, start = _req$body4.start, end = _req$body4.end;
+            _context8.prev = 1;
+            filtro = {
+              sucursal: sucursal,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context8.next = 5;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$status_tasacion',
+                num_tasaciones: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                num_tasaciones: -1
+              }
+            }]);
+
+          case 5:
+            query = _context8.sent;
+
+            if (!(query.length > 0)) {
+              _context8.next = 10;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              ranking: query
+            });
+            _context8.next = 11;
+            break;
+
+          case 10:
+            return _context8.abrupt("return", res.status(201).json({
+              message: 'No existen Tasaciones aún'
+            }));
+
+          case 11:
+            _context8.next = 17;
+            break;
+
+          case 13:
+            _context8.prev = 13;
+            _context8.t0 = _context8["catch"](1);
+            console.log(_context8.t0);
+            return _context8.abrupt("return", res.status(503).json({
+              message: _context8.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8, null, [[1, 13]]);
+  }));
+
+  return function (_x15, _x16) {
+    return _ref8.apply(this, arguments);
+  };
+}();
+
+tasacionCtrl.getCountByMetodo = /*#__PURE__*/function () {
+  var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res) {
+    var _req$body5, sucursal, start, end, filtro, query;
+
+    return _regenerator.default.wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _req$body5 = req.body, sucursal = _req$body5.sucursal, start = _req$body5.start, end = _req$body5.end;
+            _context9.prev = 1;
+            filtro = {
+              sucursal: sucursal,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context9.next = 5;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$metodo',
+                num_tasaciones: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                num_tasaciones: -1
+              }
+            }]);
+
+          case 5:
+            query = _context9.sent;
+
+            if (!(query.length > 0)) {
+              _context9.next = 10;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              ranking: query
+            });
+            _context9.next = 11;
+            break;
+
+          case 10:
+            return _context9.abrupt("return", res.status(201).json({
+              message: 'No existen Tasaciones aún'
+            }));
+
+          case 11:
+            _context9.next = 17;
+            break;
+
+          case 13:
+            _context9.prev = 13;
+            _context9.t0 = _context9["catch"](1);
+            console.log(_context9.t0);
+            return _context9.abrupt("return", res.status(503).json({
+              message: _context9.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9, null, [[1, 13]]);
+  }));
+
+  return function (_x17, _x18) {
+    return _ref9.apply(this, arguments);
+  };
+}();
+
+tasacionCtrl.getCountByOrigen = /*#__PURE__*/function () {
+  var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee10(req, res) {
+    var _req$body6, sucursal, start, end, filtro, query;
+
+    return _regenerator.default.wrap(function _callee10$(_context10) {
+      while (1) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            _req$body6 = req.body, sucursal = _req$body6.sucursal, start = _req$body6.start, end = _req$body6.end;
+            _context10.prev = 1;
+            filtro = {
+              sucursal: sucursal,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context10.next = 5;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$origen_operacion',
+                num_tasaciones: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                num_tasaciones: -1
+              }
+            }]);
+
+          case 5:
+            query = _context10.sent;
+
+            if (!(query.length > 0)) {
+              _context10.next = 10;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              ranking: query
+            });
+            _context10.next = 11;
+            break;
+
+          case 10:
+            return _context10.abrupt("return", res.status(201).json({
+              message: 'No existen Tasaciones aún'
+            }));
+
+          case 11:
+            _context10.next = 17;
+            break;
+
+          case 13:
+            _context10.prev = 13;
+            _context10.t0 = _context10["catch"](1);
+            console.log(_context10.t0);
+            return _context10.abrupt("return", res.status(503).json({
+              message: _context10.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10, null, [[1, 13]]);
+  }));
+
+  return function (_x19, _x20) {
+    return _ref10.apply(this, arguments);
+  };
+}();
+
+tasacionCtrl.getRankingByIngreso = /*#__PURE__*/function () {
+  var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res) {
+    var _req$body7, sucursal, start, end, filtro, query;
+
+    return _regenerator.default.wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
+          case 0:
+            _req$body7 = req.body, sucursal = _req$body7.sucursal, start = _req$body7.start, end = _req$body7.end;
+            _context11.prev = 1;
+            filtro = {
+              sucursal: sucursal,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context11.next = 5;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$ingresoPor',
+                num_tasaciones: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                num_tasaciones: -1
+              }
+            }]);
+
+          case 5:
+            query = _context11.sent;
+
+            if (!(query.length > 0)) {
+              _context11.next = 10;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              ranking: query
+            });
+            _context11.next = 11;
+            break;
+
+          case 10:
+            return _context11.abrupt("return", res.status(201).json({
+              message: 'No existen Tasaciones aún'
+            }));
+
+          case 11:
+            _context11.next = 17;
+            break;
+
+          case 13:
+            _context11.prev = 13;
+            _context11.t0 = _context11["catch"](1);
+            console.log(_context11.t0);
+            return _context11.abrupt("return", res.status(503).json({
+              message: _context11.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context11.stop();
+        }
+      }
+    }, _callee11, null, [[1, 13]]);
+  }));
+
+  return function (_x21, _x22) {
+    return _ref11.apply(this, arguments);
+  };
+}();
+
+tasacionCtrl.getRankingByVendedor = /*#__PURE__*/function () {
+  var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res) {
+    var _req$body8, sucursal, estado, ingreso, start, end, query, filtro;
+
+    return _regenerator.default.wrap(function _callee12$(_context12) {
+      while (1) {
+        switch (_context12.prev = _context12.next) {
+          case 0:
+            _req$body8 = req.body, sucursal = _req$body8.sucursal, estado = _req$body8.estado, ingreso = _req$body8.ingreso, start = _req$body8.start, end = _req$body8.end;
+            query = null;
+            _context12.prev = 2;
+            filtro = {
+              sucursal: sucursal,
+              ingresoPor: ingreso,
+              status_tasacion: estado,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+
+            if (!(filtro.ingresoPor == "VENTAS")) {
+              _context12.next = 10;
+              break;
+            }
+
+            _context12.next = 7;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$asesor_venta',
+                num_tasaciones: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                num_tasaciones: -1
+              }
+            }]);
+
+          case 7:
+            query = _context12.sent;
+            _context12.next = 13;
+            break;
+
+          case 10:
+            _context12.next = 12;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$asesor_servicio',
+                num_tasaciones: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                num_tasaciones: -1
+              }
+            }]);
+
+          case 12:
+            query = _context12.sent;
+
+          case 13:
+            if (!(query.length > 0)) {
+              _context12.next = 17;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              ranking: query
+            });
+            _context12.next = 18;
+            break;
+
+          case 17:
+            return _context12.abrupt("return", res.status(201).json({
+              message: 'No existen Tasaciones aún'
+            }));
+
+          case 18:
+            _context12.next = 24;
+            break;
+
+          case 20:
+            _context12.prev = 20;
+            _context12.t0 = _context12["catch"](2);
+            console.log(_context12.t0);
+            return _context12.abrupt("return", res.status(503).json({
+              message: _context12.t0.message
+            }));
+
+          case 24:
+          case "end":
+            return _context12.stop();
+        }
+      }
+    }, _callee12, null, [[2, 20]]);
+  }));
+
+  return function (_x23, _x24) {
+    return _ref12.apply(this, arguments);
+  };
+}();
+
+tasacionCtrl.getTasacionesBySeller = /*#__PURE__*/function () {
+  var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res) {
+    return _regenerator.default.wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+          case "end":
+            return _context13.stop();
+        }
+      }
+    }, _callee13);
+  }));
+
+  return function (_x25, _x26) {
+    return _ref13.apply(this, arguments);
   };
 }();
 

@@ -20,6 +20,9 @@ var aserviciosSchema = new _mongoose.Schema({
   email: {
     type: String
   },
+  avatar: {
+    type: String
+  },
   sucursal: {
     type: String
   },

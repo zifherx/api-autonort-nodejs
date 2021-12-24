@@ -141,4 +141,24 @@ serviciosCtrl.getBySucursal = async(req, res) => {
     }
 }
 
+serviciosCtrl.uploadAvatar = async(req, res) => {
+    const { asesorId } = req.params;
+    const photo = req.file;
+    // console.log(photo)
+    try {
+        const query = await AServicios.findByIdAndUpdate(asesorId, {
+            avatar: photo.location
+        });
+
+        if (query) {
+            res.json({ message: 'Avatar subido con éxito' });
+        } else {
+            return res.status(404).json({ message: 'No existe el asesor' });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
 export default serviciosCtrl;
