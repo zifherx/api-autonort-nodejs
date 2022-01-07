@@ -14,7 +14,28 @@ router.get('/', seguroCtrl.getAll);
 router.get('/:seguroId', seguroCtrl.getSeguroById);
 
 //Conteo by Status
-router.post('/count/by-status', seguroCtrl.countByStatus);
+router.post('/count/by-status', seguroCtrl.countByStatusySucursal);
+
+//Conteo by Dates
+router.post('/count/by-dates', seguroCtrl.countByDates);
+
+//Ranking By Status por mes
+router.post('/ranking/by-status', seguroCtrl.getRankingByStatus);
+
+//Ranking By Tipo Seguro por mes
+router.post('/ranking/by-type', seguroCtrl.getRankingByTipo);
+
+//Ranking By Vehículo por mes
+router.post('/ranking/by-vehicle', seguroCtrl.getRankingByVehicle);
+
+//Ranking By Vendedor por mes
+router.post('/ranking/by-seller', seguroCtrl.getRankingBySeller);
+
+//Ranking By Vendedor por mes
+router.post('/ranking/by-aseguradora', seguroCtrl.getRankingByAseguradora);
+
+router.post('/status-by-seller', seguroCtrl.getSegurosByVendedor);
+router.post('/vehicles-by-seller', seguroCtrl.getSegurosByModelo);
 
 //Crear Seguro
 router.post('/', [authJwt.verifyToken, authJwt.isConexosAsistant, verifySignup.checkRolesExist], seguroCtrl.createSeguro);

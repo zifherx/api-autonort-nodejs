@@ -87,26 +87,29 @@ exports.createCustomer = createCustomer;
 
 var getCustomers = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var customers;
+    var query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _Customer.default.find().sort({
+            return _Customer.default.find().populate({
+              path: 'empleado',
+              select: 'name username'
+            }).sort({
               name: 'asc'
             });
 
           case 3:
-            customers = _context2.sent;
+            query = _context2.sent;
 
-            if (!(customers.length > 0)) {
+            if (!(query.length > 0)) {
               _context2.next = 8;
               break;
             }
 
-            res.json(customers);
+            res.json(query);
             _context2.next = 9;
             break;
 

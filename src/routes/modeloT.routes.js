@@ -10,6 +10,7 @@ router.get('/count', modeloTCtrl.countAll);
 router.get('/:modeloId', modeloTCtrl.getModeloById);
 router.get('/', modeloTCtrl.getAll);
 router.post('/by-marca', modeloTCtrl.getModelosByMarca);
+router.post('/by-name', modeloTCtrl.getModelosByName);
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateModeloT], multer.single('avatar'), modeloTCtrl.createModelo);
 router.patch('/:modeloId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('avatar'), modeloTCtrl.updateModeloById);
 router.delete('/:modeloId', [authJwt.verifyToken, authJwt.isAdmin], modeloTCtrl.deleteModeloById);

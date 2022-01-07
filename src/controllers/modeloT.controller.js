@@ -68,6 +68,22 @@ export const getModelosByMarca = async(req, res) => {
     }
 }
 
+export const getModelosByName = async(req, res) => {
+    const { name } = req.body;
+    try {
+        const query = await ModeloTasaciones.findOne({ name: name }).sort({ name: 'asc' });
+
+        if (query) {
+            res.json({ count: query.length, models: query });
+        } else {
+            return res.status(404).json({ message: `El modelo ${name} no existe` })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
 export const createModelo = async(req, res) => {
     const { marca, name, status } = req.body;
     const avatar = req.file;

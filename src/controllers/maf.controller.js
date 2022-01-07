@@ -596,7 +596,11 @@ export const getVehiclesBySeller = async(req, res) => {
 
         if (!sellerFound) return res.status(404).json({ message: 'No existe el vendedor' });
 
-        const filtro = { seller: sellerFound._id, primer_status_request: estado, fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) } };
+        const filtro = {
+            seller: sellerFound._id,
+            primer_status_request: estado,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) }
+        };
 
         const query = await Maf.aggregate([{
             $match: filtro

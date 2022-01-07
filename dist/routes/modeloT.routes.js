@@ -23,6 +23,7 @@ router.get('/count', modeloTCtrl.countAll);
 router.get('/:modeloId', modeloTCtrl.getModeloById);
 router.get('/', modeloTCtrl.getAll);
 router.post('/by-marca', modeloTCtrl.getModelosByMarca);
+router.post('/by-name', modeloTCtrl.getModelosByName);
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifyDuplicate.checkDuplicateModeloT], _multer.default.single('avatar'), modeloTCtrl.createModelo);
 router.patch('/:modeloId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _multer.default.single('avatar'), modeloTCtrl.updateModeloById);
 router.delete('/:modeloId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], modeloTCtrl.deleteModeloById);

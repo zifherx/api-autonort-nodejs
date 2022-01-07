@@ -127,30 +127,37 @@ tasacionCtrl.getOneById = /*#__PURE__*/function () {
           case 4:
             query = _context2.sent;
 
-            if (query) {
-              res.json(query);
-            } else {
-              res.status(404).json({
-                message: 'No existe la Tasación'
-              });
+            if (!query) {
+              _context2.next = 9;
+              break;
             }
 
-            _context2.next = 11;
+            res.json(query);
+            _context2.next = 10;
             break;
 
-          case 8:
-            _context2.prev = 8;
+          case 9:
+            return _context2.abrupt("return", res.status(404).json({
+              message: 'No existe la Tasación'
+            }));
+
+          case 10:
+            _context2.next = 15;
+            break;
+
+          case 12:
+            _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
             return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
             }));
 
-          case 11:
+          case 15:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[1, 8]]);
+    }, _callee2, null, [[1, 12]]);
   }));
 
   return function (_x3, _x4) {
@@ -483,32 +490,39 @@ tasacionCtrl.deleteOneById = /*#__PURE__*/function () {
           case 4:
             query = _context6.sent;
 
-            if (query) {
-              res.json({
-                message: 'Tasación eliminada con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe la Tasación a eliminar'
-              });
+            if (!query) {
+              _context6.next = 9;
+              break;
             }
 
-            _context6.next = 11;
+            res.json({
+              message: 'Tasación eliminada con éxito'
+            });
+            _context6.next = 10;
             break;
 
-          case 8:
-            _context6.prev = 8;
+          case 9:
+            return _context6.abrupt("return", res.status(404).json({
+              message: 'No existe la Tasación a eliminar'
+            }));
+
+          case 10:
+            _context6.next = 15;
+            break;
+
+          case 12:
+            _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
             }));
 
-          case 11:
+          case 15:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[1, 8]]);
+    }, _callee6, null, [[1, 12]]);
   }));
 
   return function (_x11, _x12) {
@@ -991,19 +1005,371 @@ tasacionCtrl.getRankingByVendedor = /*#__PURE__*/function () {
 
 tasacionCtrl.getTasacionesBySeller = /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res) {
+    var _req$body9, vendedor, start, end, sellerFound, filtro, query;
+
     return _regenerator.default.wrap(function _callee13$(_context13) {
       while (1) {
         switch (_context13.prev = _context13.next) {
           case 0:
+            _req$body9 = req.body, vendedor = _req$body9.vendedor, start = _req$body9.start, end = _req$body9.end;
+            _context13.prev = 1;
+            _context13.next = 4;
+            return _Seller.default.findOne({
+              name: vendedor
+            });
+
+          case 4:
+            sellerFound = _context13.sent;
+
+            if (sellerFound) {
+              _context13.next = 7;
+              break;
+            }
+
+            return _context13.abrupt("return", res.status(404).json({
+              message: 'No existe el vendedor'
+            }));
+
+          case 7:
+            filtro = {
+              asesor_venta: sellerFound._id,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context13.next = 10;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$status_tasacion',
+                qty: {
+                  $sum: 1
+                }
+              }
+            }]);
+
+          case 10:
+            query = _context13.sent;
+
+            if (!(query.length > 0)) {
+              _context13.next = 15;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              deploy: query
+            });
+            _context13.next = 16;
+            break;
+
+          case 15:
+            return _context13.abrupt("return", res.status(201).json({
+              message: 'Vendedor no ingresó ninguna tasación'
+            }));
+
+          case 16:
+            _context13.next = 22;
+            break;
+
+          case 18:
+            _context13.prev = 18;
+            _context13.t0 = _context13["catch"](1);
+            console.log(err.message);
+            return _context13.abrupt("return", res.status(503).json({
+              message: err.message
+            }));
+
+          case 22:
           case "end":
             return _context13.stop();
         }
       }
-    }, _callee13);
+    }, _callee13, null, [[1, 18]]);
   }));
 
   return function (_x25, _x26) {
     return _ref13.apply(this, arguments);
+  };
+}();
+
+tasacionCtrl.getTasacionesByAdvisor = /*#__PURE__*/function () {
+  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
+    var _req$body10, servicios, start, end, advisorFound, filtro, query;
+
+    return _regenerator.default.wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            _req$body10 = req.body, servicios = _req$body10.servicios, start = _req$body10.start, end = _req$body10.end;
+            _context14.prev = 1;
+            _context14.next = 4;
+            return _AServicios.default.findOne({
+              name: servicios
+            });
+
+          case 4:
+            advisorFound = _context14.sent;
+
+            if (advisorFound) {
+              _context14.next = 7;
+              break;
+            }
+
+            return _context14.abrupt("return", res.status(404).json({
+              message: 'No existe el asesor de servicios'
+            }));
+
+          case 7:
+            filtro = {
+              asesor_servicio: advisorFound._id,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context14.next = 10;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$status_tasacion',
+                qty: {
+                  $sum: 1
+                }
+              }
+            }]);
+
+          case 10:
+            query = _context14.sent;
+
+            if (!(query.length > 0)) {
+              _context14.next = 15;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              deploy: query
+            });
+            _context14.next = 16;
+            break;
+
+          case 15:
+            return _context14.abrupt("return", res.status(201).json({
+              message: 'Vendedor no ingresó ninguna tasación'
+            }));
+
+          case 16:
+            _context14.next = 22;
+            break;
+
+          case 18:
+            _context14.prev = 18;
+            _context14.t0 = _context14["catch"](1);
+            console.log(err.message);
+            return _context14.abrupt("return", res.status(503).json({
+              message: err.message
+            }));
+
+          case 22:
+          case "end":
+            return _context14.stop();
+        }
+      }
+    }, _callee14, null, [[1, 18]]);
+  }));
+
+  return function (_x27, _x28) {
+    return _ref14.apply(this, arguments);
+  };
+}();
+
+tasacionCtrl.getVehiclesByVentas = /*#__PURE__*/function () {
+  var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res) {
+    var _req$body11, asesor, estado, start, end, sellerFound, filtro, query;
+
+    return _regenerator.default.wrap(function _callee15$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            _req$body11 = req.body, asesor = _req$body11.asesor, estado = _req$body11.estado, start = _req$body11.start, end = _req$body11.end;
+            _context15.prev = 1;
+            _context15.next = 4;
+            return _Seller.default.findOne({
+              name: asesor
+            });
+
+          case 4:
+            sellerFound = _context15.sent;
+
+            if (sellerFound) {
+              _context15.next = 7;
+              break;
+            }
+
+            return _context15.abrupt("return", res.status(404).json({
+              message: 'No existe el vendedor'
+            }));
+
+          case 7:
+            filtro = {
+              asesor_venta: sellerFound._id,
+              status_tasacion: estado,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context15.next = 10;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$modelo',
+                qty: {
+                  $sum: 1
+                }
+              }
+            }]);
+
+          case 10:
+            query = _context15.sent;
+
+            if (!(query.length > 0)) {
+              _context15.next = 15;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              deploy: query
+            });
+            _context15.next = 16;
+            break;
+
+          case 15:
+            return _context15.abrupt("return", res.status(201).json({
+              message: 'Vendedor no ingresó ninguna solicitud'
+            }));
+
+          case 16:
+            _context15.next = 22;
+            break;
+
+          case 18:
+            _context15.prev = 18;
+            _context15.t0 = _context15["catch"](1);
+            console.log(_context15.t0.message);
+            return _context15.abrupt("return", res.status(503).json({
+              message: _context15.t0.message
+            }));
+
+          case 22:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee15, null, [[1, 18]]);
+  }));
+
+  return function (_x29, _x30) {
+    return _ref15.apply(this, arguments);
+  };
+}();
+
+tasacionCtrl.getVehiclesByServicios = /*#__PURE__*/function () {
+  var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee16(req, res) {
+    var _req$body12, asesor, estado, start, end, advisorFound, filtro, query;
+
+    return _regenerator.default.wrap(function _callee16$(_context16) {
+      while (1) {
+        switch (_context16.prev = _context16.next) {
+          case 0:
+            _req$body12 = req.body, asesor = _req$body12.asesor, estado = _req$body12.estado, start = _req$body12.start, end = _req$body12.end;
+            _context16.prev = 1;
+            _context16.next = 4;
+            return _AServicios.default.findOne({
+              name: asesor
+            });
+
+          case 4:
+            advisorFound = _context16.sent;
+
+            if (advisorFound) {
+              _context16.next = 7;
+              break;
+            }
+
+            return _context16.abrupt("return", res.status(404).json({
+              message: 'No existe el asesor de servicios'
+            }));
+
+          case 7:
+            filtro = {
+              asesor_servicio: advisorFound._id,
+              status_tasacion: estado,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context16.next = 10;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$modelo',
+                qty: {
+                  $sum: 1
+                }
+              }
+            }]);
+
+          case 10:
+            query = _context16.sent;
+
+            if (!(query.length > 0)) {
+              _context16.next = 15;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              deploy: query
+            });
+            _context16.next = 16;
+            break;
+
+          case 15:
+            return _context16.abrupt("return", res.status(201).json({
+              message: 'Vendedor no ingresó ninguna solicitud'
+            }));
+
+          case 16:
+            _context16.next = 22;
+            break;
+
+          case 18:
+            _context16.prev = 18;
+            _context16.t0 = _context16["catch"](1);
+            console.log(_context16.t0.message);
+            return _context16.abrupt("return", res.status(503).json({
+              message: _context16.t0.message
+            }));
+
+          case 22:
+          case "end":
+            return _context16.stop();
+        }
+      }
+    }, _callee16, null, [[1, 18]]);
+  }));
+
+  return function (_x31, _x32) {
+    return _ref16.apply(this, arguments);
   };
 }();
 

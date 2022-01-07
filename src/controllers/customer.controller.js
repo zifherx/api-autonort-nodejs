@@ -38,9 +38,11 @@ export const createCustomer = async(req, res) => {
 
 export const getCustomers = async(req, res) => {
     try {
-        const customers = await Customer.find().sort({ name: 'asc' });
-        if (customers.length > 0) {
-            res.json(customers);
+        const query = await Customer.find()
+            .populate({ path: 'empleado', select: 'name username' })
+            .sort({ name: 'asc' });
+        if (query.length > 0) {
+            res.json(query);
         } else {
             return res.status(404).json({ message: 'No existen Clientes' });
         }

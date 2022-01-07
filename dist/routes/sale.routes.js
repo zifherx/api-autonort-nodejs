@@ -27,11 +27,10 @@ router.post('/count-all', saleCtrl.conteoUnidadesBySucursalFecha); //Unidades Li
 
 router.post('/free', saleCtrl.UnidadesLibres); //Conteo de Unidades Entregadas
 
-router.post('/conteo/entregadas', saleCtrl.vistaUnidadesEntregadasByStatus); //Conteo de Canceladas
+router.post('/conteo/entregadas', saleCtrl.conteoUnidadesEntregadasBySucursal);
+router.post('/conteo/entregas', saleCtrl.conteoVehiculosEntregadosByFecha); //Conteo By Status
 
-router.get('/conteo/canceladas', saleCtrl.conteoUnidadesCanceladas); //Conteo de Libres
-
-router.get('/conteo/libres', saleCtrl.conteoUnidadesLibres); //Obtener Venta por Id
+router.post('/conteo/by-status', saleCtrl.conteoUnidadesByStatus); //Obtener Venta por Id
 
 router.get('/:salesId', saleCtrl.getSaleById); //Sales by Vendedor
 
@@ -41,11 +40,13 @@ router.post('/status-by-seller', saleCtrl.getSalesBySeller); //Conteo de Ventas 
 
 router.post('/conteo/ventas', saleCtrl.conteoVentasByVendedor); //Conteo de Ventas By Modelo Vehicular
 
-router.post('/ranking/vehicles', saleCtrl.conteoVentasByModelo); //Ranking de Ventas By Estado
+router.post('/ranking/vehicles', saleCtrl.conteoVentasByModelo);
+router.post('/ranking/models', saleCtrl.rankingVentasByModelo); //Ranking de Ventas By Estado
 
 router.post('/ranking/sales', saleCtrl.getRankingByStatusyFecha); //Vista de Expedientes Toyota Value
 
-router.post('/toyota-value', saleCtrl.obtenerToyotaValues); //Crear Venta
+router.post('/toyota-value', saleCtrl.obtenerToyotaValues);
+router.post('/test-ranking', saleCtrl.probandoRanking); //Crear Venta
 
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdminorAsistantADV, _middlewares.verifyDuplicate.checkDuplicateExpediente], saleCtrl.createSale); //Actualizar Venta
 

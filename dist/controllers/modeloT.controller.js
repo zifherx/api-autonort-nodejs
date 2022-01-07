@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.countAll = exports.deleteModeloById = exports.updateModeloById = exports.createModelo = exports.getModelosByMarca = exports.getModeloActivos = exports.getModeloById = exports.getAll = void 0;
+exports.countAll = exports.deleteModeloById = exports.updateModeloById = exports.createModelo = exports.getModelosByName = exports.getModelosByMarca = exports.getModeloActivos = exports.getModeloById = exports.getAll = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -273,17 +273,80 @@ var getModelosByMarca = /*#__PURE__*/function () {
 
 exports.getModelosByMarca = getModelosByMarca;
 
-var createModelo = /*#__PURE__*/function () {
+var getModelosByName = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body, marca, name, status, avatar, obj, marcaFound, query;
-
+    var name, query;
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
+            name = req.body.name;
+            _context5.prev = 1;
+            _context5.next = 4;
+            return _ModeloTasaciones.default.findOne({
+              name: name
+            }).sort({
+              name: 'asc'
+            });
+
+          case 4:
+            query = _context5.sent;
+
+            if (!query) {
+              _context5.next = 9;
+              break;
+            }
+
+            res.json({
+              count: query.length,
+              models: query
+            });
+            _context5.next = 10;
+            break;
+
+          case 9:
+            return _context5.abrupt("return", res.status(404).json({
+              message: "El modelo ".concat(name, " no existe")
+            }));
+
+          case 10:
+            _context5.next = 16;
+            break;
+
+          case 12:
+            _context5.prev = 12;
+            _context5.t0 = _context5["catch"](1);
+            console.log(_context5.t0);
+            return _context5.abrupt("return", res.status(503).json({
+              message: _context5.t0.message
+            }));
+
+          case 16:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[1, 12]]);
+  }));
+
+  return function getModelosByName(_x9, _x10) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+exports.getModelosByName = getModelosByName;
+
+var createModelo = /*#__PURE__*/function () {
+  var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
+    var _req$body, marca, name, status, avatar, obj, marcaFound, query;
+
+    return _regenerator.default.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
             _req$body = req.body, marca = _req$body.marca, name = _req$body.name, status = _req$body.status;
             avatar = req.file;
-            _context5.prev = 2;
+            _context6.prev = 2;
             obj = null;
 
             if (avatar == undefined || avatar == null) {
@@ -299,30 +362,30 @@ var createModelo = /*#__PURE__*/function () {
               });
             }
 
-            _context5.next = 7;
+            _context6.next = 7;
             return _MarcaTasaciones.default.findOne({
               name: marca
             });
 
           case 7:
-            marcaFound = _context5.sent;
+            marcaFound = _context6.sent;
 
             if (marcaFound) {
-              _context5.next = 10;
+              _context6.next = 10;
               break;
             }
 
-            return _context5.abrupt("return", res.status(404).json({
+            return _context6.abrupt("return", res.status(404).json({
               message: "No existe la Marca ".concat(marca)
             }));
 
           case 10:
             obj.marca = marcaFound._id;
-            _context5.next = 13;
+            _context6.next = 13;
             return obj.save();
 
           case 13:
-            query = _context5.sent;
+            query = _context6.sent;
 
             if (query) {
               res.json({
@@ -330,59 +393,59 @@ var createModelo = /*#__PURE__*/function () {
               });
             }
 
-            _context5.next = 21;
+            _context6.next = 21;
             break;
 
           case 17:
-            _context5.prev = 17;
-            _context5.t0 = _context5["catch"](2);
-            console.log(_context5.t0);
-            return _context5.abrupt("return", res.status(503).json({
-              message: _context5.t0.message
+            _context6.prev = 17;
+            _context6.t0 = _context6["catch"](2);
+            console.log(_context6.t0);
+            return _context6.abrupt("return", res.status(503).json({
+              message: _context6.t0.message
             }));
 
           case 21:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5, null, [[2, 17]]);
+    }, _callee6, null, [[2, 17]]);
   }));
 
-  return function createModelo(_x9, _x10) {
-    return _ref5.apply(this, arguments);
+  return function createModelo(_x11, _x12) {
+    return _ref6.apply(this, arguments);
   };
 }();
 
 exports.createModelo = createModelo;
 
 var updateModeloById = /*#__PURE__*/function () {
-  var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
+  var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
     var _req$body2, marca, name, status, modeloId, avatar, marcaFound, query;
 
-    return _regenerator.default.wrap(function _callee6$(_context6) {
+    return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context7.prev = _context7.next) {
           case 0:
             _req$body2 = req.body, marca = _req$body2.marca, name = _req$body2.name, status = _req$body2.status;
             modeloId = req.params.modeloId;
             avatar = req.file;
-            _context6.prev = 3;
-            _context6.next = 6;
+            _context7.prev = 3;
+            _context7.next = 6;
             return _MarcaTasaciones.default.findOne({
               name: marca
             });
 
           case 6:
-            marcaFound = _context6.sent;
+            marcaFound = _context7.sent;
             query = null;
 
             if (!(avatar == undefined || avatar == null)) {
-              _context6.next = 14;
+              _context7.next = 14;
               break;
             }
 
-            _context6.next = 11;
+            _context7.next = 11;
             return _ModeloTasaciones.default.findByIdAndUpdate(modeloId, {
               marca: marcaFound._id,
               name: name,
@@ -390,12 +453,12 @@ var updateModeloById = /*#__PURE__*/function () {
             });
 
           case 11:
-            query = _context6.sent;
-            _context6.next = 17;
+            query = _context7.sent;
+            _context7.next = 17;
             break;
 
           case 14:
-            _context6.next = 16;
+            _context7.next = 16;
             return _ModeloTasaciones.default.findByIdAndUpdate(modeloId, {
               marca: marcaFound._id,
               avatar: avatar.location,
@@ -404,7 +467,7 @@ var updateModeloById = /*#__PURE__*/function () {
             });
 
           case 16:
-            query = _context6.sent;
+            query = _context7.sent;
 
           case 17:
             if (query) {
@@ -417,103 +480,103 @@ var updateModeloById = /*#__PURE__*/function () {
               });
             }
 
-            _context6.next = 24;
+            _context7.next = 24;
             break;
 
           case 20:
-            _context6.prev = 20;
-            _context6.t0 = _context6["catch"](3);
-            console.log(_context6.t0);
-            return _context6.abrupt("return", res.status(503).json({
-              message: _context6.t0.message
+            _context7.prev = 20;
+            _context7.t0 = _context7["catch"](3);
+            console.log(_context7.t0);
+            return _context7.abrupt("return", res.status(503).json({
+              message: _context7.t0.message
             }));
 
           case 24:
           case "end":
-            return _context6.stop();
+            return _context7.stop();
         }
       }
-    }, _callee6, null, [[3, 20]]);
+    }, _callee7, null, [[3, 20]]);
   }));
 
-  return function updateModeloById(_x11, _x12) {
-    return _ref6.apply(this, arguments);
+  return function updateModeloById(_x13, _x14) {
+    return _ref7.apply(this, arguments);
   };
 }();
 
 exports.updateModeloById = updateModeloById;
 
 var deleteModeloById = /*#__PURE__*/function () {
-  var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
+  var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
     var modeloId, query;
-    return _regenerator.default.wrap(function _callee7$(_context7) {
+    return _regenerator.default.wrap(function _callee8$(_context8) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context8.prev = _context8.next) {
           case 0:
             modeloId = req.params.modeloId;
-            _context7.prev = 1;
-            _context7.next = 4;
+            _context8.prev = 1;
+            _context8.next = 4;
             return _ModeloTasaciones.default.findByIdAndDelete(modeloId);
 
           case 4:
-            query = _context7.sent;
+            query = _context8.sent;
 
             if (!query) {
-              _context7.next = 9;
+              _context8.next = 9;
               break;
             }
 
             res.json({
               message: 'Modelo eliminado con éxito'
             });
-            _context7.next = 10;
+            _context8.next = 10;
             break;
 
           case 9:
-            return _context7.abrupt("return", res.status(404).json({
+            return _context8.abrupt("return", res.status(404).json({
               message: 'No existe Modelo a eliminar'
             }));
 
           case 10:
-            _context7.next = 16;
+            _context8.next = 16;
             break;
 
           case 12:
-            _context7.prev = 12;
-            _context7.t0 = _context7["catch"](1);
-            console.log(_context7.t0);
-            return _context7.abrupt("return", res.status(503).json({
-              message: _context7.t0.message
+            _context8.prev = 12;
+            _context8.t0 = _context8["catch"](1);
+            console.log(_context8.t0);
+            return _context8.abrupt("return", res.status(503).json({
+              message: _context8.t0.message
             }));
 
           case 16:
           case "end":
-            return _context7.stop();
+            return _context8.stop();
         }
       }
-    }, _callee7, null, [[1, 12]]);
+    }, _callee8, null, [[1, 12]]);
   }));
 
-  return function deleteModeloById(_x13, _x14) {
-    return _ref7.apply(this, arguments);
+  return function deleteModeloById(_x15, _x16) {
+    return _ref8.apply(this, arguments);
   };
 }();
 
 exports.deleteModeloById = deleteModeloById;
 
 var countAll = /*#__PURE__*/function () {
-  var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
+  var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res) {
     var query;
-    return _regenerator.default.wrap(function _callee8$(_context8) {
+    return _regenerator.default.wrap(function _callee9$(_context9) {
       while (1) {
-        switch (_context8.prev = _context8.next) {
+        switch (_context9.prev = _context9.next) {
           case 0:
-            _context8.prev = 0;
-            _context8.next = 3;
+            _context9.prev = 0;
+            _context9.next = 3;
             return _ModeloTasaciones.default.countDocuments();
 
           case 3:
-            query = _context8.sent;
+            query = _context9.sent;
 
             if (query >= 0) {
               res.json({
@@ -521,26 +584,26 @@ var countAll = /*#__PURE__*/function () {
               });
             }
 
-            _context8.next = 10;
+            _context9.next = 10;
             break;
 
           case 7:
-            _context8.prev = 7;
-            _context8.t0 = _context8["catch"](0);
-            return _context8.abrupt("return", res.status(503).json({
-              message: _context8.t0.message
+            _context9.prev = 7;
+            _context9.t0 = _context9["catch"](0);
+            return _context9.abrupt("return", res.status(503).json({
+              message: _context9.t0.message
             }));
 
           case 10:
           case "end":
-            return _context8.stop();
+            return _context9.stop();
         }
       }
-    }, _callee8, null, [[0, 7]]);
+    }, _callee9, null, [[0, 7]]);
   }));
 
-  return function countAll(_x15, _x16) {
-    return _ref8.apply(this, arguments);
+  return function countAll(_x17, _x18) {
+    return _ref9.apply(this, arguments);
   };
 }();
 

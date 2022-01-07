@@ -15,6 +15,10 @@ router.post('/ranking/ingreso', tasacionCtrl.getRankingByIngreso);
 router.post('/ranking/seller', tasacionCtrl.getRankingByVendedor);
 
 router.post('/status-by-seller', tasacionCtrl.getTasacionesBySeller);
+router.post('/status-by-advisor', tasacionCtrl.getTasacionesByAdvisor);
+
+router.post('/vehicles-by-seller', tasacionCtrl.getVehiclesByVentas);
+router.post('/vehicles-by-advisor', tasacionCtrl.getVehiclesByServicios);
 
 router.post('/by-tasador', [authJwt.verifyToken, authJwt.isTasadororChiefEPDP], tasacionCtrl.getAllByTasador);
 router.post('/', [authJwt.verifyToken, authJwt.isTasadororChiefEPDP], tasacionCtrl.createTasacion);

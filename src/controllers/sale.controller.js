@@ -363,30 +363,20 @@ export const UnidadesBySucursalyFecha = async(req, res) => {
     }
 }
 
-export const conteoUnidadesCanceladas = async(req, res) => {
+export const conteoUnidadesByStatus = async(req, res) => {
+    const { estado, start, end } = req.body;
     try {
-        const consulta = await Sale.where({ estatus_venta: 'Cancelado' }).countDocuments();
+        const query = await Sale.where({
+            estatus_venta: estado,
+            fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) }
+        }).countDocuments();
         //console.log(consulta)
-        if (consulta >= 0) {
-            res.json(consulta);
+        if (query >= 0) {
+            res.json({ count: query });
         }
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message })
-    }
-}
-
-export const conteoUnidadesLibres = async(req, res) => {
-    try {
-        const consulta = await Sale.where({ estatus_venta: 'Libre' }).countDocuments();
-        if (consulta >= 0) {
-            res.json(consulta);
-        } else {
-            return res.status(404).json({ message: 'No existen Unidades Libres' })
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(503).json({ message: err.message })
     }
 }
 
@@ -476,10 +466,43 @@ export const conteoVentasByModelo = async(req, res) => {
     }
 }
 
-export const vistaUnidadesEntregadasByStatus = async(req, res) => {
+export const rankingVentasByModelo = async(req, res) => {
+    const { estado, start, end } = req.body;
+
+    try {
+        const filter = {
+            estatus_venta: estado,
+            fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
+        const query = await Sale.aggregate([{
+            $match: filter
+        }, {
+            $group: {
+                _id: "$auto",
+                num_ventas: { $sum: 1 }
+            }
+        }, {
+            $sort: { num_ventas: -1 }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query });
+        } else {
+            return res.status(404).json({ message: 'No existen Ventas aún' })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const conteoUnidadesEntregadasBySucursal = async(req, res) => {
     const { sucursal, start, end } = req.body;
     try {
-        const query = await Sale.where({ sucursal_venta: sucursal, fecha_entrega: { $gte: new Date(start), $lte: new Date(end) } }).find().countDocuments();
+        const query = await Sale.where({
+            sucursal_venta: sucursal,
+            fecha_entrega: { $gte: new Date(start), $lte: new Date(end) }
+        }).find().countDocuments();
         if (query >= 0) {
             res.json({ total: query });
         } else {
@@ -487,7 +510,31 @@ export const vistaUnidadesEntregadasByStatus = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const conteoVehiculosEntregadosByFecha = async(req, res) => {
+    const { ubicacion, start, end } = req.body;
+    try {
+        const filtro = {
+            ubicacion_vehiculo: ubicacion,
+            fecha_entrega: { $gte: new Date(start), $lte: new Date(end) }
+        };
+        const query = await Sale.aggregate([
+            { $match: filtro }, {
+                $group: {
+                    _id: '$sucursal_venta',
+                    qty: { $sum: 1 }
+                }
+            }
+        ]);
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -602,5 +649,35 @@ export const getRankingByStatusyFecha = async(req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message })
+    }
+}
+
+export const probandoRanking = async(req, res) => {
+    const { sucursal, estado, start, end } = req.body;
+
+    try {
+        const filter = {
+            sucursal_venta: sucursal,
+            estatus_venta: estado,
+            fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
+        const query = await Sale.aggregate([{
+            $match: filter
+        }, {
+            $group: {
+                _id: { seller: '$vendedor', month: { $month: '$fecha_cancelacion' } },
+                count: { $sum: 1 }
+            },
+        }, {
+            $sort: { _id: 1 }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'No existen Ventas aún' })
+        }
+    } catch (err) {
+        console.log(err);
     }
 }

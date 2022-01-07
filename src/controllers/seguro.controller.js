@@ -16,7 +16,7 @@ export const getAll = async(req, res) => {
         }
     } catch (err) {
         console.error(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 };
 
@@ -34,7 +34,7 @@ export const getSeguroById = async(req, res) => {
         }
     } catch (err) {
         console.error(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 };
 
@@ -128,7 +128,7 @@ export const createSeguro = async(req, res) => {
         }
     } catch (err) {
         console.error(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 };
 
@@ -158,7 +158,7 @@ export const updateSeguro = async(req, res) => {
         }
     } catch (err) {
         console.error(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 };
 
@@ -175,7 +175,7 @@ export const deleteSeguro = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message });
+        return res.status(503).json({ message: err.message });
     }
 };
 
@@ -190,14 +190,245 @@ export const countAll = async(req, res) => {
     }
 }
 
-export const countByStatus = async(req, res) => {
-    const { estado, start, end } = req.body;
+export const countByStatusySucursal = async(req, res) => {
+    const { sucursal, estado, start, end } = req.body;
     try {
-        const query = await Seguro.find({ status: estado, fechaRegistro: { $gte: new Date(start), $lte: new Date(end) } }).countDocuments();
+        const query = await Seguro.find({
+            sucursal: sucursal,
+            status: estado,
+            fechaRegistro: { $gte: new Date(start), $lte: new Date(end) }
+        }).countDocuments();
         if (query >= 0) {
             res.json({ count: query });
         }
     } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const countByDates = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    try {
+        const query = await Seguro.find({
+            sucursal: sucursal,
+            fechaRegistro: { $gte: new Date(start), $lte: new Date(end) }
+        }).countDocuments();
+        if (query >= 0) {
+            res.json({ count: query });
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getRankingByStatus = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    let filtro = {
+        sucursal: sucursal,
+        fechaRegistro: { $gte: new Date(start), $lte: new Date(end) }
+    };
+
+    try {
+        const query = await Seguro.aggregate([
+            { $match: filtro },
+            {
+                $group: {
+                    _id: '$status',
+                    qty: { $sum: 1 }
+                }
+            }
+        ]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'No existen solicitudes' })
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getRankingByTipo = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    let filtro = {
+        sucursal: sucursal,
+        fechaRegistro: { $gte: new Date(start), $lte: new Date(end) }
+    };
+
+    try {
+        const query = await Seguro.aggregate([
+            { $match: filtro },
+            {
+                $group: {
+                    _id: '$tipo_venta',
+                    qty: { $sum: 1 }
+                }
+            }
+        ]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'No existen solicitudes' })
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getRankingByVehicle = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    let filtro = {
+        sucursal: sucursal,
+        fechaRegistro: { $gte: new Date(start), $lte: new Date(end) }
+    };
+
+    try {
+        const query = await Seguro.aggregate([
+            { $match: filtro },
+            {
+                $group: {
+                    _id: '$modelo',
+                    qty: { $sum: 1 }
+                }
+            }
+        ]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'No existen solicitudes' })
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getRankingBySeller = async(req, res) => {
+    const { sucursal, status, start, end } = req.body;
+
+    let filtro = {
+        sucursal: sucursal,
+        status: status,
+        fechaRegistro: { $gte: new Date(start), $lte: new Date(end) }
+    };
+
+    try {
+        const query = await Seguro.aggregate([
+            { $match: filtro },
+            {
+                $group: {
+                    _id: '$vendedor',
+                    qty: { $sum: 1 }
+                }
+            }
+        ]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'No existen solicitudes' })
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getRankingByAseguradora = async(req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    let filtro = {
+        sucursal: sucursal,
+        fechaRegistro: { $gte: new Date(start), $lte: new Date(end) }
+    };
+
+    try {
+        const query = await Seguro.aggregate([
+            { $match: filtro },
+            {
+                $group: {
+                    _id: '$aseguradora',
+                    qty: { $sum: 1 }
+                }
+            }
+        ]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'No existen solicitudes' })
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getSegurosByVendedor = async(req, res) => {
+    const { vendedor, start, end } = req.body;
+
+    try {
+        const sellerFound = await Seller.findOne({ name: vendedor });
+        if (!sellerFound) return res.status(404).json({ message: 'No existe el vendedor' });
+
+        const filtro = {
+            vendedor: sellerFound._id,
+            fechaRegistro: { $gte: new Date(start), $lte: new Date(end) }
+        }
+
+        const query = await Seguro.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: '$status',
+                qty: { $sum: 1 }
+            }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'Vendedor no cuenta con seguros' });
+        }
+    } catch (err) {
+        console.log(err.response);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const getSegurosByModelo = async(req, res) => {
+    const { vendedor, estado, start, end } = req.body;
+
+    try {
+        const sellerFound = await Seller.findOne({ name: vendedor });
+        if (!sellerFound) return res.status(404).json({ message: 'No existe el vendedor' });
+
+        let filtro = {
+            vendedor: sellerFound._id,
+            status: estado,
+            fechaRegistro: { $gte: new Date(start), $lte: new Date(end) }
+        }
+
+        const query = await Seguro.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: '$modelo',
+                qty: { $sum: 1 }
+            }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'Vendedor no cuenta con solicitudes' });
+        }
+    } catch (err) {
+        console.log(err.message);
         return res.status(503).json({ message: err.message });
     }
 }

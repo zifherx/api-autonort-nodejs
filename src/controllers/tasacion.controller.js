@@ -37,7 +37,7 @@ tasacionCtrl.getOneById = async(req, res) => {
         if (query) {
             res.json(query)
         } else {
-            res.status(404).json({ message: 'No existe la Tasación' });
+            return res.status(404).json({ message: 'No existe la Tasación' });
         }
     } catch (err) {
         return res.status(503).json({ message: err.message });
@@ -201,7 +201,7 @@ tasacionCtrl.deleteOneById = async(req, res) => {
         if (query) {
             res.json({ message: 'Tasación eliminada con éxito' })
         } else {
-            res.status(404).json({ message: 'No existe la Tasación a eliminar' });
+            return res.status(404).json({ message: 'No existe la Tasación a eliminar' });
         }
     } catch (err) {
         return res.status(503).json({ message: err.message });
@@ -397,7 +397,133 @@ tasacionCtrl.getRankingByVendedor = async(req, res) => {
 }
 
 tasacionCtrl.getTasacionesBySeller = async(req, res) => {
+    const { vendedor, start, end } = req.body;
 
+    try {
+        const sellerFound = await Seller.findOne({ name: vendedor });
+        if (!sellerFound) return res.status(404).json({ message: 'No existe el vendedor' });
+
+        const filtro = {
+            asesor_venta: sellerFound._id,
+            fecha_operacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
+
+        const query = await Tasacion.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: '$status_tasacion',
+                qty: { $sum: 1 }
+            }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'Vendedor no ingresó ninguna tasación' })
+        }
+    } catch (error) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+tasacionCtrl.getTasacionesByAdvisor = async(req, res) => {
+    const { servicios, start, end } = req.body;
+
+    try {
+        const advisorFound = await AServicios.findOne({ name: servicios });
+        if (!advisorFound) return res.status(404).json({ message: 'No existe el asesor de servicios' });
+
+        const filtro = {
+            asesor_servicio: advisorFound._id,
+            fecha_operacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
+
+        const query = await Tasacion.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: '$status_tasacion',
+                qty: { $sum: 1 }
+            }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'Vendedor no ingresó ninguna tasación' })
+        }
+    } catch (error) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+tasacionCtrl.getVehiclesByVentas = async(req, res) => {
+    const { asesor, estado, start, end } = req.body;
+
+    try {
+        const sellerFound = await Seller.findOne({ name: asesor });
+        if (!sellerFound) return res.status(404).json({ message: 'No existe el vendedor' });
+
+        let filtro = {
+            asesor_venta: sellerFound._id,
+            status_tasacion: estado,
+            fecha_operacion: { $gte: new Date(start), $lte: new Date(end) }
+        }
+
+        const query = await Tasacion.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: '$modelo',
+                qty: { $sum: 1 }
+            }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'Vendedor no ingresó ninguna solicitud' });
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+tasacionCtrl.getVehiclesByServicios = async(req, res) => {
+    const { asesor, estado, start, end } = req.body;
+
+    try {
+        const advisorFound = await AServicios.findOne({ name: asesor });
+        if (!advisorFound) return res.status(404).json({ message: 'No existe el asesor de servicios' });
+
+        let filtro = {
+            asesor_servicio: advisorFound._id,
+            status_tasacion: estado,
+            fecha_operacion: { $gte: new Date(start), $lte: new Date(end) }
+        }
+
+        const query = await Tasacion.aggregate([{
+            $match: filtro
+        }, {
+            $group: {
+                _id: '$modelo',
+                qty: { $sum: 1 }
+            }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: 'Vendedor no ingresó ninguna solicitud' });
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
 }
 
 export default tasacionCtrl;
