@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteColor = exports.updateColor = exports.createColor = exports.getColorById = exports.getColorByActivo = exports.getColors = void 0;
+exports.updateColor = exports.getColors = exports.getColorById = exports.getColorByActivo = exports.deleteColor = exports.createColor = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -110,9 +110,9 @@ var getColorByActivo = /*#__PURE__*/function () {
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(503).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -257,33 +257,40 @@ var updateColor = /*#__PURE__*/function () {
           case 5:
             _updateColor = _context5.sent;
 
-            if (_updateColor) {
-              res.json({
-                message: 'Color actualizado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Color'
-              });
+            if (!_updateColor) {
+              _context5.next = 10;
+              break;
             }
 
-            _context5.next = 13;
+            res.json({
+              message: 'Color actualizado con éxito'
+            });
+            _context5.next = 11;
             break;
 
-          case 9:
-            _context5.prev = 9;
+          case 10:
+            return _context5.abrupt("return", res.status(404).json({
+              message: 'No existe Color'
+            }));
+
+          case 11:
+            _context5.next = 17;
+            break;
+
+          case 13:
+            _context5.prev = 13;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 13:
+          case 17:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 9]]);
+    }, _callee5, null, [[2, 13]]);
   }));
 
   return function updateColor(_x9, _x10) {

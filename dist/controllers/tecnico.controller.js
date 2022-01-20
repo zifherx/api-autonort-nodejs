@@ -259,33 +259,40 @@ tecnicoCtrl.updateTecnico = /*#__PURE__*/function () {
           case 5:
             query = _context5.sent;
 
-            if (query) {
-              res.json({
-                message: 'Técnico actualizado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe el Técnico a actualizar'
-              });
+            if (!query) {
+              _context5.next = 10;
+              break;
             }
 
-            _context5.next = 13;
+            res.json({
+              message: 'Técnico actualizado con éxito'
+            });
+            _context5.next = 11;
             break;
 
-          case 9:
-            _context5.prev = 9;
+          case 10:
+            return _context5.abrupt("return", res.status(404).json({
+              message: 'No existe el Técnico a actualizar'
+            }));
+
+          case 11:
+            _context5.next = 17;
+            break;
+
+          case 13:
+            _context5.prev = 13;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 13:
+          case 17:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 9]]);
+    }, _callee5, null, [[2, 13]]);
   }));
 
   return function (_x9, _x10) {
@@ -308,33 +315,40 @@ tecnicoCtrl.deleteTecnico = /*#__PURE__*/function () {
           case 4:
             query = _context6.sent;
 
-            if (query) {
-              res.json({
-                message: 'Técnico eliminado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe el Técnico a eliminar'
-              });
+            if (!query) {
+              _context6.next = 9;
+              break;
             }
 
-            _context6.next = 12;
+            res.json({
+              message: 'Técnico eliminado con éxito'
+            });
+            _context6.next = 10;
             break;
 
-          case 8:
-            _context6.prev = 8;
+          case 9:
+            return _context6.abrupt("return", res.status(404).json({
+              message: 'No existe el Técnico a eliminar'
+            }));
+
+          case 10:
+            _context6.next = 16;
+            break;
+
+          case 12:
+            _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
             return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
             }));
 
-          case 12:
+          case 16:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[1, 8]]);
+    }, _callee6, null, [[1, 12]]);
   }));
 
   return function (_x11, _x12) {

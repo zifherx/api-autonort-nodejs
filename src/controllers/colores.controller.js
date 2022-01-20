@@ -24,7 +24,7 @@ export const getColorByActivo = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -65,7 +65,7 @@ export const updateColor = async(req, res) => {
         if (updateColor) {
             res.json({ message: 'Color actualizado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Color' });
+            return res.status(404).json({ message: 'No existe Color' });
         }
     } catch (err) {
         console.log(err);

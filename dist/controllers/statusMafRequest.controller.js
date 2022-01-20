@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteStatusMafRequest = exports.updateStatusMafRequest = exports.createStatusMafRequest = exports.getStatusMafRequestByActivo = exports.getStatusMafRequestById = exports.getAll = void 0;
+exports.updateStatusMafRequest = exports.getStatusMafRequestById = exports.getStatusMafRequestByActivo = exports.getAll = exports.deleteStatusMafRequest = exports.createStatusMafRequest = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 

@@ -59,16 +59,21 @@ export const getUserById = async(req, res) => {
 
     try {
 
-        const objeto = await User.findById(userId).populate('roles', 'name')
+        const query = await User.findById(userId)
+        .select('-password')
+        .populate({
+            path: 'roles',
+            select: 'name'
+        })
 
-        if (objeto) {
-            res.json(objeto)
+        if (query) {
+            res.json(query)
         } else {
             return res.status(404).json({ message: 'No existe Usuario' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ error: err })
+        return res.status(503).json({ error: err.message })
     }
 
 }

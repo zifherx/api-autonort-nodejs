@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteUbicacion = exports.updateUbicacion = exports.createUbicacion = exports.getUbicacionByActivo = exports.getUbicacionById = exports.getUbicaciones = void 0;
+exports.updateUbicacion = exports.getUbicaciones = exports.getUbicacionById = exports.getUbicacionByActivo = exports.deleteUbicacion = exports.createUbicacion = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 

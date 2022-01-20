@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.probandoRanking = exports.getRankingByStatusyFecha = exports.getSalesBySeller = exports.getVehiclesySeller = exports.obtenerToyotaValues = exports.conteoVehiculosEntregadosByFecha = exports.conteoUnidadesEntregadasBySucursal = exports.rankingVentasByModelo = exports.conteoVentasByModelo = exports.conteoVentasByVendedor = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesBySucursalFecha = exports.conteoUnidadesByStatus = exports.UnidadesBySucursalyFecha = exports.UnidadesByStatus = exports.UnidadesLibres = exports.deleteSaleById = exports.updateSaleById = exports.getSaleById = exports.getSales = exports.createSale = void 0;
+exports.updateSaleById = exports.rankingVentasByModelo = exports.rankingVentasByFinanciamiento = exports.rankingVentasByEntidad = exports.probandoRanking = exports.obtenerToyotaValues = exports.getVehiclesySeller = exports.getSalesBySeller = exports.getSales = exports.getSaleById = exports.getRankingByStatusyFecha = exports.deleteSaleById = exports.createSale = exports.conteoVentasByVendedor = exports.conteoVentasBySucursalyEstadoyMarca = exports.conteoVentasByModelo = exports.conteoVehiculosEntregadosByFecha = exports.conteoUnidadesEntregadasBySucursal = exports.conteoUnidadesBySucursalStatusFecha = exports.conteoUnidadesBySucursalFecha = exports.conteoUnidadesByStatus = exports.UnidadesLibres = exports.UnidadesBySucursalyFecha = exports.UnidadesByStatus = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -1803,4 +1803,246 @@ var probandoRanking = /*#__PURE__*/function () {
 }();
 
 exports.probandoRanking = probandoRanking;
+
+var conteoVentasBySucursalyEstadoyMarca = /*#__PURE__*/function () {
+  var _ref22 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee22(req, res) {
+    var _req$body19, sucursal, estado, marca, start, end, query, obj;
+
+    return _regenerator.default.wrap(function _callee22$(_context22) {
+      while (1) {
+        switch (_context22.prev = _context22.next) {
+          case 0:
+            _req$body19 = req.body, sucursal = _req$body19.sucursal, estado = _req$body19.estado, marca = _req$body19.marca, start = _req$body19.start, end = _req$body19.end;
+            _context22.prev = 1;
+            _context22.next = 4;
+            return _Sale.default.find({
+              sucursal_venta: sucursal,
+              estatus_venta: estado,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            }).populate({
+              path: 'auto',
+              select: 'cod_tdp model version',
+              populate: {
+                path: 'model',
+                select: 'avatar name marca',
+                populate: {
+                  path: 'marca',
+                  select: 'avatar name',
+                  match: {
+                    name: marca
+                  }
+                }
+              }
+            });
+
+          case 4:
+            query = _context22.sent;
+            // console.log(query.length);
+            obj = query.filter(function (b) {
+              return b.auto.model.marca;
+            });
+
+            if (obj.length > 0) {
+              // console.log(obj);
+              res.json({
+                total: obj.length,
+                deploy: obj
+              });
+            }
+
+            _context22.next = 13;
+            break;
+
+          case 9:
+            _context22.prev = 9;
+            _context22.t0 = _context22["catch"](1);
+            console.log(_context22.t0);
+            return _context22.abrupt("return", res.status(503).json({
+              message: _context22.t0.message
+            }));
+
+          case 13:
+          case "end":
+            return _context22.stop();
+        }
+      }
+    }, _callee22, null, [[1, 9]]);
+  }));
+
+  return function conteoVentasBySucursalyEstadoyMarca(_x43, _x44) {
+    return _ref22.apply(this, arguments);
+  };
+}();
+
+exports.conteoVentasBySucursalyEstadoyMarca = conteoVentasBySucursalyEstadoyMarca;
+
+var rankingVentasByFinanciamiento = /*#__PURE__*/function () {
+  var _ref23 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee23(req, res) {
+    var _req$body20, sucursal, estado, start, end, filter, query;
+
+    return _regenerator.default.wrap(function _callee23$(_context23) {
+      while (1) {
+        switch (_context23.prev = _context23.next) {
+          case 0:
+            _req$body20 = req.body, sucursal = _req$body20.sucursal, estado = _req$body20.estado, start = _req$body20.start, end = _req$body20.end;
+            _context23.prev = 1;
+            filter = {
+              sucursal_venta: {
+                $regex: '.*' + sucursal + '.*'
+              },
+              estatus_venta: estado,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context23.next = 5;
+            return _Sale.default.aggregate([{
+              $match: filter
+            }, {
+              $group: {
+                _id: "$tipo_financiamiento",
+                qty: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                qty: -1
+              }
+            }]);
+
+          case 5:
+            query = _context23.sent;
+
+            if (!(query.length > 0)) {
+              _context23.next = 10;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              ranking: query
+            });
+            _context23.next = 11;
+            break;
+
+          case 10:
+            return _context23.abrupt("return", res.status(404).json({
+              message: 'No existen Ventas aún'
+            }));
+
+          case 11:
+            _context23.next = 17;
+            break;
+
+          case 13:
+            _context23.prev = 13;
+            _context23.t0 = _context23["catch"](1);
+            console.log(_context23.t0);
+            return _context23.abrupt("return", res.status(503).json({
+              message: _context23.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context23.stop();
+        }
+      }
+    }, _callee23, null, [[1, 13]]);
+  }));
+
+  return function rankingVentasByFinanciamiento(_x45, _x46) {
+    return _ref23.apply(this, arguments);
+  };
+}();
+
+exports.rankingVentasByFinanciamiento = rankingVentasByFinanciamiento;
+
+var rankingVentasByEntidad = /*#__PURE__*/function () {
+  var _ref24 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee24(req, res) {
+    var _req$body21, sucursal, estado, financiamiento, start, end, filter, query;
+
+    return _regenerator.default.wrap(function _callee24$(_context24) {
+      while (1) {
+        switch (_context24.prev = _context24.next) {
+          case 0:
+            _req$body21 = req.body, sucursal = _req$body21.sucursal, estado = _req$body21.estado, financiamiento = _req$body21.financiamiento, start = _req$body21.start, end = _req$body21.end;
+            _context24.prev = 1;
+            filter = {
+              sucursal_venta: {
+                $regex: '.*' + sucursal + '.*'
+              },
+              estatus_venta: estado,
+              tipo_financiamiento: financiamiento,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context24.next = 5;
+            return _Sale.default.aggregate([{
+              $match: filter
+            }, {
+              $group: {
+                _id: "$entidad_bancaria",
+                qty: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                qty: -1
+              }
+            }]);
+
+          case 5:
+            query = _context24.sent;
+
+            if (!(query.length > 0)) {
+              _context24.next = 10;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              ranking: query
+            });
+            _context24.next = 11;
+            break;
+
+          case 10:
+            return _context24.abrupt("return", res.status(404).json({
+              message: 'No existen Ventas aún'
+            }));
+
+          case 11:
+            _context24.next = 17;
+            break;
+
+          case 13:
+            _context24.prev = 13;
+            _context24.t0 = _context24["catch"](1);
+            console.log(_context24.t0);
+            return _context24.abrupt("return", res.status(503).json({
+              message: _context24.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context24.stop();
+        }
+      }
+    }, _callee24, null, [[1, 13]]);
+  }));
+
+  return function rankingVentasByEntidad(_x47, _x48) {
+    return _ref24.apply(this, arguments);
+  };
+}();
+
+exports.rankingVentasByEntidad = rankingVentasByEntidad;
 //# sourceMappingURL=sale.controller.js.map

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as anioCtrl from '../controllers/anio.controller'
-import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
+import { authJwt, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 

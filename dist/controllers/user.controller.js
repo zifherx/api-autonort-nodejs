@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.uploadPhotoProfile = exports.countByOnline = exports.countAll = exports.deleteUserById = exports.updateProfile = exports.updateUserById = exports.getUserById = exports.getUsers = exports.createUser = void 0;
+exports.uploadPhotoProfile = exports.updateUserById = exports.updateProfile = exports.getUsers = exports.getUserById = exports.deleteUserById = exports.createUser = exports.countByOnline = exports.countAll = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -175,7 +175,7 @@ exports.getUsers = getUsers;
 
 var getUserById = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var userId, objeto;
+    var userId, query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -183,17 +183,20 @@ var getUserById = /*#__PURE__*/function () {
             userId = req.params.userId;
             _context3.prev = 1;
             _context3.next = 4;
-            return _User.default.findById(userId).populate('roles', 'name');
+            return _User.default.findById(userId).select('-password').populate({
+              path: 'roles',
+              select: 'name'
+            });
 
           case 4:
-            objeto = _context3.sent;
+            query = _context3.sent;
 
-            if (!objeto) {
+            if (!query) {
               _context3.next = 9;
               break;
             }
 
-            res.json(objeto);
+            res.json(query);
             _context3.next = 10;
             break;
 
@@ -210,9 +213,9 @@ var getUserById = /*#__PURE__*/function () {
             _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
-            res.status(503).json({
-              error: _context3.t0
-            });
+            return _context3.abrupt("return", res.status(503).json({
+              error: _context3.t0.message
+            }));
 
           case 16:
           case "end":

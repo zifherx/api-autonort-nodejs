@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isExecutiveMaf = exports.isVendedor = exports.isChiefEPDPorAdmin = exports.isChiefEPDP = exports.isTasador = exports.isTasadororChiefEPDP = exports.isConexosOrADVOrVendedorOrEPDPOrAdmin = exports.isConexosOrADV = exports.isConexosAsistant = exports.isCSAsistant = exports.isInmatriculadosAsistant = exports.isChiefTunning = exports.isChiefAdvorAdminorAsistantADV = exports.isChiefAdvorAdmin = exports.isChiefAdv = exports.isChiefSales = exports.isAdmin = exports.verifyToken = void 0;
+exports.verifyToken = exports.isVendedor = exports.isTasadororChiefEPDP = exports.isTasador = exports.isInmatriculadosAsistant = exports.isExecutiveMaf = exports.isConexosOrADVOrVendedorOrEPDPOrAdmin = exports.isConexosOrADV = exports.isConexosAsistant = exports.isChiefTunning = exports.isChiefSales = exports.isChiefEPDPorAdmin = exports.isChiefEPDP = exports.isChiefAdvorAdminorAsistantADV = exports.isChiefAdvorAdmin = exports.isChiefAdv = exports.isCSAsistant = exports.isAdmin = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -748,7 +748,7 @@ var isConexosOrADVOrVendedorOrEPDPOrAdmin = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Vendedor' || roles[i].name === 'Administrador' || roles[i].name === 'Jefe-EPDP' || roles[i].name === 'Tasador')) {
+            if (!(roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Asistente-ADV' || roles[i].name === 'Vendedor' || roles[i].name === 'Administrador' || roles[i].name === 'Jefe-EPDP' || roles[i].name === 'Tasador')) {
               _context12.next = 11;
               break;
             }

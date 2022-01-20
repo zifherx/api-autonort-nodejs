@@ -43,6 +43,8 @@ router.post('/conteo/ventas', saleCtrl.conteoVentasByVendedor);
 //Conteo de Ventas By Modelo Vehicular
 router.post('/ranking/vehicles', saleCtrl.conteoVentasByModelo);
 router.post('/ranking/models', saleCtrl.rankingVentasByModelo);
+router.post('/ranking/financiamiento', saleCtrl.rankingVentasByFinanciamiento);
+router.post('/ranking/entity', saleCtrl.rankingVentasByEntidad);
 
 //Ranking de Ventas By Estado
 router.post('/ranking/sales', saleCtrl.getRankingByStatusyFecha);
@@ -50,7 +52,8 @@ router.post('/ranking/sales', saleCtrl.getRankingByStatusyFecha);
 //Vista de Expedientes Toyota Value
 router.post('/toyota-value', saleCtrl.obtenerToyotaValues);
 
-router.post('/test-ranking', saleCtrl.probandoRanking);
+router.post('/ranking-anual/ventas', saleCtrl.probandoRanking);
+router.post('/by-marca', saleCtrl.conteoVentasBySucursalyEstadoyMarca);
 
 //Crear Venta
 router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdminorAsistantADV, verifyDuplicate.checkDuplicateExpediente], saleCtrl.createSale);

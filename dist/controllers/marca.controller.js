@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteMarca = exports.updateMarca = exports.createMarca = exports.getMarcaByActivo = exports.getMarcaById = exports.getAll = void 0;
+exports.updateMarca = exports.getMarcaById = exports.getMarcaByActivo = exports.getAll = exports.deleteMarca = exports.createMarca = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 

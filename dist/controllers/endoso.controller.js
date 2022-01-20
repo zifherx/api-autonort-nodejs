@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteEndoso = exports.updateEndoso = exports.createEndoso = exports.getEndosoById = exports.getEndosoByActivo = exports.getEndosos = void 0;
+exports.updateEndoso = exports.getEndosos = exports.getEndosoById = exports.getEndosoByActivo = exports.deleteEndoso = exports.createEndoso = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteFinanciamiento = exports.updateFinanciamiento = exports.createFinanciamiento = exports.getFinanciamientoByActivo = exports.getFinanciamientoById = exports.getFinanciamientos = void 0;
+exports.updateFinanciamiento = exports.getFinanciamientos = exports.getFinanciamientoById = exports.getFinanciamientoByActivo = exports.deleteFinanciamiento = exports.createFinanciamiento = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 

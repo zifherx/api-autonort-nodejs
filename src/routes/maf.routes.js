@@ -20,6 +20,7 @@ router.post('/by-seller', mafCtrl.getAllByVendedor);
 router.post('/by-sucursal', mafCtrl.getAllBySucursal);
 
 router.post('/ranking/status', mafCtrl.getRankingByStatus);
+router.post('/test-ranking', mafCtrl.testRanking);
 
 router.post('/ranking/seller', mafCtrl.getRankingByVendedor);
 

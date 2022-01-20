@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteSellerById = exports.updateSellerById = exports.uploadAvatar = exports.createSeller = exports.getSellerByName = exports.getSellerByMarcaAndSucursal = exports.getSellerBySucursal = exports.getSellerById = exports.getSellers = void 0;
+exports.uploadAvatar = exports.updateSellerById = exports.getSellers = exports.getSellerBySucursal = exports.getSellerByName = exports.getSellerByMarcaAndSucursal = exports.getSellerById = exports.deleteSellerById = exports.createSeller = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 

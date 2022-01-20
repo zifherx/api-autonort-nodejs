@@ -167,7 +167,7 @@ export const isConexosOrADVOrVendedorOrEPDPOrAdmin = async(req, res, next) => {
     const roles = await Role.find({ _id: { $in: user.roles } })
 
     for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Vendedor' || roles[i].name === 'Administrador' || roles[i].name === 'Jefe-EPDP' || roles[i].name === 'Tasador') {
+        if (roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Asistente-ADV' || roles[i].name === 'Vendedor' || roles[i].name === 'Administrador' || roles[i].name === 'Jefe-EPDP' || roles[i].name === 'Tasador') {
             next();
             return;
         }

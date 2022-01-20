@@ -67,7 +67,7 @@ tecnicoCtrl.updateTecnico = async(req, res) => {
         if (query) {
             res.json({ message: 'Técnico actualizado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe el Técnico a actualizar' });
+            return res.status(404).json({ message: 'No existe el Técnico a actualizar' });
         }
     } catch (err) {
         console.log(err);
@@ -82,7 +82,7 @@ tecnicoCtrl.deleteTecnico = async(req, res) => {
         if (query) {
             res.json({ message: 'Técnico eliminado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe el Técnico a eliminar' });
+            return res.status(404).json({ message: 'No existe el Técnico a eliminar' });
         }
     } catch (err) {
         console.log(err);

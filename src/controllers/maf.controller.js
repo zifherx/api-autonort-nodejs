@@ -13,7 +13,23 @@ import twilio from 'twilio';
 
 export const getAll = async(req, res) => {
     try {
-        const query = await Maf.find().populate('customer seller car userCreator userApprove')
+        const query = await Maf.find()
+        .populate({ path: 'customer', select: 'name document cellphone email'})
+        .populate({path: 'seller', select: 'name avatar sucursal marca'})
+        .populate({
+            path: 'car',
+            select: 'cod_tdp model version',
+            populate: {
+                path: 'model',
+                select: 'avatar name marca',
+                populate: {
+                    path: 'marca',
+                    select: 'avatar name'
+                }
+            }
+        })
+        .populate({path: 'userCreator', select: 'name username avatar'})
+        .populate({ path: 'userApprove', select: 'name username avatar'})
             // console.log(query)
         if (query.length > 0) {
             res.json(query)
@@ -30,12 +46,28 @@ export const getOneById = async(req, res) => {
     const { mafId } = req.params;
 
     try {
-        const query = await Maf.findById(mafId).populate('customer seller car userCreator userApprove')
+        const query = await Maf.findById(mafId)
+        .populate({ path: 'customer', select: 'name document cellphone email'})
+        .populate({path: 'seller', select: 'name avatar sucursal marca'})
+        .populate({
+            path: 'car',
+            select: 'cod_tdp model version',
+            populate: {
+                path: 'model',
+                select: 'avatar name marca',
+                populate: {
+                    path: 'marca',
+                    select: 'avatar name'
+                }
+            }
+        })
+        .populate({path: 'userCreator', select: 'name username avatar'})
+        .populate({ path: 'userApprove', select: 'name username avatar'});
             // console.log(query)
         if (query) {
             res.json(query)
         } else {
-            return res.status(404).json({ message: 'No existen solicitudes' })
+            return res.status(404).json({ message: 'No existen solicitud' })
         }
     } catch (err) {
         console.log(err)
@@ -618,6 +650,51 @@ export const getVehiclesBySeller = async(req, res) => {
         }
     } catch (err) {
         console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const testRanking = async(req, res) => {
+    // const { sucursal,marca, start, end } = req.body;
+    const { marca } = req.body;
+
+    try {
+
+        const query = await Maf.find({
+            "car.model.marca.name" : marca,
+        });
+        // const filtro = {
+        //     sucursal: sucursal,
+        //     "car.model.marca.name" : marca,
+        //     fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) }
+        // };
+
+        console.log(query);
+
+        if(query.length > 0){
+            res.json({deploy: query, total: query.length});
+        }else{
+            return res.status(404).json({message: 'No existen filtros'});
+        }
+
+        // const query = await Maf.aggregate([{
+        //     $match: filtro
+        // }, {
+        //     $group: {
+        //         _id: "$primer_status_request",
+        //         num_solicitudes: { $sum: 1 }
+        //     }
+        // }, {
+        //     $sort: { num_solicitudes: -1 }
+        // }]);
+
+        // if (query.length > 0) {
+        //     res.json({ total: query.length, ranking: query });
+        // } else {
+        //     return res.status(201).json({ message: 'No existen Solicitudes aún' });
+        // }
+    } catch (err) {
+        console.log(err);
         return res.status(503).json({ message: err.message });
     }
 }

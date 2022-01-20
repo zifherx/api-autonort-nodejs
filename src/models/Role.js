@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose'
 
-export const ROLES = ["Aministrador", "Usuario", "Vendedor", "Jefe-Ventas", "Jefe-ADV"];
 
 const roleSchema = new Schema({
     name: { type: String },
@@ -10,4 +9,5 @@ const roleSchema = new Schema({
     versionKey: false
 });
 
+export const ROLES = ["Aministrador", "Usuario", "Vendedor", "Jefe-Ventas", "Jefe-ADV"];
 export default model('Role', roleSchema);

@@ -54,7 +54,7 @@ jefaturaCtrl.updateById = async(req, res) => {
         if (query) {
             res.json({ message: 'Jefe actualizado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Jefe a actualizar' });
+            return res.status(404).json({ message: 'No existe Jefe a actualizar' });
         }
     } catch (err) {
         return res.status(503).json({ message: err.message })

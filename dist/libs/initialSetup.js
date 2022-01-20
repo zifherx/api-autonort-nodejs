@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createConfigStatusFile = exports.createConfigUbicacion = exports.createConfigSustento = exports.createConfigSucursal = exports.createConfigSituacion = exports.createConfigCondicion = exports.createConfigSectorista = exports.createConfigModelo = exports.createConfigFinanciamiento = exports.createConfigBanco = exports.createConfigMarca = exports.createConfigChasis = exports.createConfigColor = exports.createConfigAnios = exports.createUserAdmin = exports.createRoles = void 0;
+exports.createUserAdmin = exports.createRoles = exports.createConfigUbicacion = exports.createConfigSustento = exports.createConfigSucursal = exports.createConfigStatusFile = exports.createConfigSituacion = exports.createConfigSectorista = exports.createConfigModelo = exports.createConfigMarca = exports.createConfigFinanciamiento = exports.createConfigCondicion = exports.createConfigColor = exports.createConfigChasis = exports.createConfigBanco = exports.createConfigAnios = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -52,7 +52,7 @@ var createRoles = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _Role.default.estimatedDocumentCount();
+            return _Role.default.countDocuments();
 
           case 3:
             count = _context.sent;
@@ -112,14 +112,14 @@ exports.createRoles = createRoles;
 
 var createUserAdmin = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
-    var master, usuarios;
+    var master, roleFound, usuarios;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _User.default.estimatedDocumentCount();
+            return _User.default.countDocuments();
 
           case 3:
             master = _context2.sent;
@@ -132,43 +132,51 @@ var createUserAdmin = /*#__PURE__*/function () {
             return _context2.abrupt("return");
 
           case 6:
+            _context2.next = 8;
+            return _Role.default.findOne({
+              name: 'Administrador'
+            });
+
+          case 8:
+            roleFound = _context2.sent;
             _context2.t0 = Promise;
             _context2.t1 = _User.default;
-            _context2.next = 10;
+            _context2.next = 13;
             return _User.default.encryptPassword('admin');
 
-          case 10:
+          case 13:
             _context2.t2 = _context2.sent;
-            _context2.t3 = {
+            _context2.t3 = roleFound._id;
+            _context2.t4 = {
               name: 'Fernando Rojas',
               username: 'frojasq',
               password: _context2.t2,
-              roles: '60940f326432ff2be060a423',
-              activo: 'Activo',
+              roles: _context2.t3,
+              activo: true,
               sucursal: 'Trujillo'
             };
-            _context2.t4 = new _context2.t1(_context2.t3).save();
-            _context2.t5 = [_context2.t4];
-            _context2.next = 16;
-            return _context2.t0.all.call(_context2.t0, _context2.t5);
-
-          case 16:
-            usuarios = _context2.sent;
-            console.log(usuarios);
-            _context2.next = 23;
-            break;
+            _context2.t5 = new _context2.t1(_context2.t4).save();
+            _context2.t6 = [_context2.t5];
+            _context2.next = 20;
+            return _context2.t0.all.call(_context2.t0, _context2.t6);
 
           case 20:
-            _context2.prev = 20;
-            _context2.t6 = _context2["catch"](0);
-            console.error(_context2.t6);
+            usuarios = _context2.sent;
+            console.log(usuarios);
+            _context2.next = 27;
+            break;
 
-          case 23:
+          case 24:
+            _context2.prev = 24;
+            _context2.t7 = _context2["catch"](0);
+            console.error(_context2.t7);
+
+          case 27:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 20]]);
+    }, _callee2, null, [[0, 24]]);
   }));
 
   return function createUserAdmin() {
@@ -187,7 +195,7 @@ var createConfigAnios = /*#__PURE__*/function () {
           case 0:
             _context3.prev = 0;
             _context3.next = 3;
-            return _Anio.default.estimatedDocumentCount();
+            return _Anio.default.countDocuments();
 
           case 3:
             count = _context3.sent;
@@ -203,13 +211,13 @@ var createConfigAnios = /*#__PURE__*/function () {
             _context3.next = 8;
             return Promise.all([new _Anio.default({
               name: '2020',
-              status: 'Activo'
+              status: true
             }).save(), new _Anio.default({
               name: '2021',
-              status: 'Activo'
+              status: true
             }).save(), new _Anio.default({
               name: '2022',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -247,7 +255,7 @@ var createConfigColor = /*#__PURE__*/function () {
           case 0:
             _context4.prev = 0;
             _context4.next = 3;
-            return _Colores.default.estimatedDocumentCount();
+            return _Colores.default.countDocuments();
 
           case 3:
             count = _context4.sent;
@@ -263,76 +271,76 @@ var createConfigColor = /*#__PURE__*/function () {
             _context4.next = 8;
             return Promise.all([new _Colores.default({
               name: 'ANARANJADO METALICO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'AZUL METALICO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'AZUL OSCURO METALICO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'BEIGE MICA',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'BEIGE OSCURO MICA',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'BEIGE/BLANCO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'BLANCO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'BLANCO PERLA',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'GRIS CELESTIAL METALICO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'GRIS OSCURO METALICO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'NEGRO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'NEGRO METALICO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'NEGRO MICA',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'NEGRO/BLANCO PERLA',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'NEGRO/GRIS OSCURO MET.',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'PLATA GALAXY METALICO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'PLATA METALICO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'ROJO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'ROJO ESCARLATA METALICO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'ROJO METALICO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'ROJO MICA',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'ROJO MICA METALICO',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'ROJO OSCURO MICA',
-              status: 'Activo'
+              status: true
             }).save(), new _Colores.default({
               name: 'ROJO SOLIDO',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -370,7 +378,7 @@ var createConfigChasis = /*#__PURE__*/function () {
           case 0:
             _context5.prev = 0;
             _context5.next = 3;
-            return _Chasis.default.estimatedDocumentCount();
+            return _Chasis.default.countDocuments();
 
           case 3:
             count = _context5.sent;
@@ -386,25 +394,25 @@ var createConfigChasis = /*#__PURE__*/function () {
             _context5.next = 8;
             return Promise.all([new _Chasis.default({
               name: 'Sedan',
-              status: 'Activo'
+              status: true
             }).save(), new _Chasis.default({
               name: 'Hatchback',
-              status: 'Activo'
+              status: true
             }).save(), new _Chasis.default({
               name: 'Pick-Up',
-              status: 'Activo'
+              status: true
             }).save(), new _Chasis.default({
               name: 'Coupe',
-              status: 'Activo'
+              status: true
             }).save(), new _Chasis.default({
               name: 'SUV',
-              status: 'Activo'
+              status: true
             }).save(), new _Chasis.default({
               name: 'Cabinado',
-              status: 'Activo'
+              status: true
             }).save(), new _Chasis.default({
               name: 'MicroBus',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -442,7 +450,7 @@ var createConfigMarca = /*#__PURE__*/function () {
           case 0:
             _context6.prev = 0;
             _context6.next = 3;
-            return _Marca.default.estimatedDocumentCount();
+            return _Marca.default.countDocuments();
 
           case 3:
             count = _context6.sent;
@@ -458,13 +466,13 @@ var createConfigMarca = /*#__PURE__*/function () {
             _context6.next = 8;
             return Promise.all([new _Marca.default({
               name: 'Toyota',
-              status: 'Activo'
+              status: true
             }).save(), new _Marca.default({
               name: 'Hino',
               status: 'Inactivo'
             }).save(), new _Marca.default({
               name: 'Lexus',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -502,7 +510,7 @@ var createConfigBanco = /*#__PURE__*/function () {
           case 0:
             _context7.prev = 0;
             _context7.next = 3;
-            return _Banco.default.estimatedDocumentCount();
+            return _Banco.default.countDocuments();
 
           case 3:
             count = _context7.sent;
@@ -518,85 +526,85 @@ var createConfigBanco = /*#__PURE__*/function () {
             _context7.next = 8;
             return Promise.all([new _Banco.default({
               name: 'AUTOPLAN',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'BANBIF',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'BANCO FALABELLA',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'BANCO NACION',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'BBVA',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'BCP',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'CAJA PIURA',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'CAJA SULLANA',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'CAJA TRUJILLO',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'CFC',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'CONTADO',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'COOPERATIVA LEON XII',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'COOPERATIVA SAN LORENZO',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'CREDISCOTIA',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'EDIFICAR',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'ENDOSO',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'FINANCIERA COMPARTAMOS',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'FINANCIERO',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'INTERBANK',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'LEASING TOTAL',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'MAF',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'MAQUISTEMAS',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'MI BANCO',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'OPCION TOYOTA',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'PANDERO',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'SANTANDER',
-              status: 'Activo'
+              status: true
             }).save(), new _Banco.default({
               name: 'SCOTIABANK',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -634,7 +642,7 @@ var createConfigFinanciamiento = /*#__PURE__*/function () {
           case 0:
             _context8.prev = 0;
             _context8.next = 3;
-            return _Financiamiento.default.estimatedDocumentCount();
+            return _Financiamiento.default.countDocuments();
 
           case 3:
             count = _context8.sent;
@@ -650,31 +658,31 @@ var createConfigFinanciamiento = /*#__PURE__*/function () {
             _context8.next = 8;
             return Promise.all([new _Financiamiento.default({
               name: 'ACTIVO FIJO',
-              status: 'Activo'
+              status: true
             }).save(), new _Financiamiento.default({
               name: 'CONTADO',
-              status: 'Activo'
+              status: true
             }).save(), new _Financiamiento.default({
               name: 'CREDITO COMERCIAL',
-              status: 'Activo'
+              status: true
             }).save(), new _Financiamiento.default({
               name: 'CREDITO PERSONAL',
-              status: 'Activo'
+              status: true
             }).save(), new _Financiamiento.default({
               name: 'CREDITO VEHICULAR',
-              status: 'Activo'
+              status: true
             }).save(), new _Financiamiento.default({
               name: 'EN PARTE DE PAGO',
-              status: 'Activo'
+              status: true
             }).save(), new _Financiamiento.default({
               name: 'ENDOSO',
-              status: 'Activo'
+              status: true
             }).save(), new _Financiamiento.default({
               name: 'LEASING',
-              status: 'Activo'
+              status: true
             }).save(), new _Financiamiento.default({
               name: 'LICITACION',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -712,7 +720,7 @@ var createConfigModelo = /*#__PURE__*/function () {
           case 0:
             _context9.prev = 0;
             _context9.next = 3;
-            return _Modelo.default.estimatedDocumentCount();
+            return _Modelo.default.countDocuments();
 
           case 3:
             count = _context9.sent;
@@ -728,73 +736,73 @@ var createConfigModelo = /*#__PURE__*/function () {
             _context9.next = 8;
             return Promise.all([new _Modelo.default({
               name: '4Runner',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Agya',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Avanza',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'C-HR',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Corolla',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Dutro',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Etios',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'FC',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'FD',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'FJ Cruiser',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'FM350',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Fortuner',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'GB',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'GD',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'GH',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'GT86',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Hiace',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Hilux',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Land Cruiser Prado',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Prius',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'RAV4',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Rush',
-              status: 'Activo'
+              status: true
             }).save(), new _Modelo.default({
               name: 'Yaris',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -832,7 +840,7 @@ var createConfigSectorista = /*#__PURE__*/function () {
           case 0:
             _context10.prev = 0;
             _context10.next = 3;
-            return _Sectorista.default.estimatedDocumentCount();
+            return _Sectorista.default.countDocuments();
 
           case 3:
             count = _context10.sent;
@@ -848,10 +856,10 @@ var createConfigSectorista = /*#__PURE__*/function () {
             _context10.next = 8;
             return Promise.all([new _Sectorista.default({
               name: 'ARACELY RIVERA',
-              status: 'Activo'
+              status: true
             }).save(), new _Sectorista.default({
               name: 'OSCAR VERA',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -889,7 +897,7 @@ var createConfigCondicion = /*#__PURE__*/function () {
           case 0:
             _context11.prev = 0;
             _context11.next = 3;
-            return _Condicion.default.estimatedDocumentCount();
+            return _Condicion.default.countDocuments();
 
           case 3:
             count = _context11.sent;
@@ -905,19 +913,19 @@ var createConfigCondicion = /*#__PURE__*/function () {
             _context11.next = 8;
             return Promise.all([new _Condicion.default({
               name: 'ASIGNADO',
-              status: 'Activo'
+              status: true
             }).save(), new _Condicion.default({
               name: 'BLOQUEADO',
-              status: 'Activo'
+              status: true
             }).save(), new _Condicion.default({
               name: 'CONSEGUIR',
-              status: 'Activo'
+              status: true
             }).save(), new _Condicion.default({
               name: 'EXHIBICIÓN',
-              status: 'Activo'
+              status: true
             }).save(), new _Condicion.default({
               name: 'LIBRE',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -955,7 +963,7 @@ var createConfigSituacion = /*#__PURE__*/function () {
           case 0:
             _context12.prev = 0;
             _context12.next = 3;
-            return _Situacion.default.estimatedDocumentCount();
+            return _Situacion.default.countDocuments();
 
           case 3:
             count = _context12.sent;
@@ -971,46 +979,46 @@ var createConfigSituacion = /*#__PURE__*/function () {
             _context12.next = 8;
             return Promise.all([new _Situacion.default({
               name: 'Anticipo',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Cancelado',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Cancelado PT',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Credito',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Devolución',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'En Espera',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Facturado',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Libre',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Por Desembolsar',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Reservado',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Reservado C',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Reservado L',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Stand By',
-              status: 'Activo'
+              status: true
             }).save(), new _Situacion.default({
               name: 'Test Drive',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -1048,7 +1056,7 @@ var createConfigSucursal = /*#__PURE__*/function () {
           case 0:
             _context13.prev = 0;
             _context13.next = 3;
-            return _Sucursal.default.estimatedDocumentCount();
+            return _Sucursal.default.countDocuments();
 
           case 3:
             count = _context13.sent;
@@ -1064,13 +1072,13 @@ var createConfigSucursal = /*#__PURE__*/function () {
             _context13.next = 8;
             return Promise.all([new _Sucursal.default({
               name: 'Jaén',
-              status: 'Activo'
+              status: true
             }).save(), new _Sucursal.default({
               name: 'Tarapoto',
-              status: 'Activo'
+              status: true
             }).save(), new _Sucursal.default({
               name: 'Trujillo',
-              status: 'Activo'
+              status: true
             }).save(), new _Sucursal.default({
               name: 'Chachapoyas',
               status: 'Inactivo'
@@ -1111,7 +1119,7 @@ var createConfigSustento = /*#__PURE__*/function () {
           case 0:
             _context14.prev = 0;
             _context14.next = 3;
-            return _Sustento.default.estimatedDocumentCount();
+            return _Sustento.default.countDocuments();
 
           case 3:
             count = _context14.sent;
@@ -1127,22 +1135,22 @@ var createConfigSustento = /*#__PURE__*/function () {
             _context14.next = 8;
             return Promise.all([new _Sustento.default({
               name: 'BUENA PRO',
-              status: 'Activo'
+              status: true
             }).save(), new _Sustento.default({
               name: 'CARTA APROBACION',
-              status: 'Activo'
+              status: true
             }).save(), new _Sustento.default({
               name: 'CONTADO',
-              status: 'Activo'
+              status: true
             }).save(), new _Sustento.default({
               name: 'ORDEN COMPRA BANCO',
-              status: 'Activo'
+              status: true
             }).save(), new _Sustento.default({
               name: 'ORDEN COMPRA CLIENTE',
-              status: 'Activo'
+              status: true
             }).save(), new _Sustento.default({
               name: 'SOLICITUD COMPRA',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -1180,7 +1188,7 @@ var createConfigUbicacion = /*#__PURE__*/function () {
           case 0:
             _context15.prev = 0;
             _context15.next = 3;
-            return _Ubicacion.default.estimatedDocumentCount();
+            return _Ubicacion.default.countDocuments();
 
           case 3:
             count = _context15.sent;
@@ -1196,40 +1204,40 @@ var createConfigUbicacion = /*#__PURE__*/function () {
             _context15.next = 8;
             return Promise.all([new _Ubicacion.default({
               name: 'ADUANAS',
-              status: 'Activo'
+              status: true
             }).save(), new _Ubicacion.default({
               name: 'ALMACEN TRANSPESA',
-              status: 'Activo'
+              status: true
             }).save(), new _Ubicacion.default({
               name: 'CIGUEÑA',
-              status: 'Activo'
+              status: true
             }).save(), new _Ubicacion.default({
               name: 'EN TRANSITO',
-              status: 'Activo'
+              status: true
             }).save(), new _Ubicacion.default({
               name: 'ENTREGADO',
-              status: 'Activo'
+              status: true
             }).save(), new _Ubicacion.default({
               name: 'JAÉN',
-              status: 'Activo'
+              status: true
             }).save(), new _Ubicacion.default({
               name: 'NACIONALIZACIÓN',
-              status: 'Activo'
+              status: true
             }).save(), new _Ubicacion.default({
               name: 'PRODUCCIÓN',
-              status: 'Activo'
+              status: true
             }).save(), new _Ubicacion.default({
               name: 'RODADO',
-              status: 'Activo'
+              status: true
             }).save(), new _Ubicacion.default({
               name: 'TARAPOTO',
-              status: 'Activo'
+              status: true
             }).save(), new _Ubicacion.default({
               name: 'TDP',
-              status: 'Activo'
+              status: true
             }).save(), new _Ubicacion.default({
               name: 'TRUJILLO',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:
@@ -1267,7 +1275,7 @@ var createConfigStatusFile = /*#__PURE__*/function () {
           case 0:
             _context16.prev = 0;
             _context16.next = 3;
-            return _StatusFile.default.estimatedDocumentCount();
+            return _StatusFile.default.countDocuments();
 
           case 3:
             count = _context16.sent;
@@ -1283,13 +1291,13 @@ var createConfigStatusFile = /*#__PURE__*/function () {
             _context16.next = 8;
             return Promise.all([new _StatusFile.default({
               name: 'Pendiente de Firma',
-              status: 'Activo'
+              status: true
             }).save(), new _StatusFile.default({
               name: 'Legalizado',
-              status: 'Activo'
+              status: true
             }).save(), new _StatusFile.default({
               name: 'Firmado',
-              status: 'Activo'
+              status: true
             }).save()]);
 
           case 8:

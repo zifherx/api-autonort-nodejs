@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.obtenerAsesorByName = exports.obtenerAsesorxArea = exports.obtenerAsesorxSucursal = exports.deleteConexo = exports.updateConexo = exports.createConexo = exports.getConexoById = exports.getConexoByActivo = exports.getConexos = void 0;
+exports.updateConexo = exports.obtenerAsesorxSucursal = exports.obtenerAsesorxArea = exports.obtenerAsesorByName = exports.getConexos = exports.getConexoById = exports.getConexoByActivo = exports.deleteConexo = exports.createConexo = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 

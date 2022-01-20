@@ -43,6 +43,8 @@ import aserviciosRoutes from './aservicios.routes'
 import marcaTRoutes from './marcaT.routes'
 import modeloTRoutes from './modeloT.routes'
 import metaRoutes from './meta.routes';
+import accesorioRoutes from './accesorio.routes';
+import ofertaRoutes from './oferta.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -90,5 +92,7 @@ router.use('/service-advisor', aserviciosRoutes);
 router.use('/brand', marcaTRoutes);
 router.use('/models', modeloTRoutes);
 router.use('/metas', metaRoutes);
+router.use('/accesorio', accesorioRoutes);
+router.use('/oferta', ofertaRoutes);
 
 export default router;

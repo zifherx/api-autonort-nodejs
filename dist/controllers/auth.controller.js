@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.refreshToken = exports.forzarCierre = exports.cerrarSesion = exports.changePassword = exports.signIn = void 0;
+exports.signIn = exports.refreshToken = exports.forzarCierre = exports.changePassword = exports.cerrarSesion = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 

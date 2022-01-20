@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getVehiclesBySeller = exports.getSolicitudesBySeller = exports.getRankingByVehicle = exports.getRankingByVendedor = exports.getRankingByStatus = exports.getCountByStatus = exports.getCountAll = exports.sendMessageWsp = exports.descargaYZip = exports.downloadAndZipeo = exports.enviarCorreoSolicitud = exports.deleteRequest = exports.cambioStatusByMaf = exports.requestaHot = exports.actualizarReqAprobada = exports.agregarNewDocuments = exports.actualizarRequest = exports.createRequest = exports.obtenerRequestbyStatus = exports.getAllBySucursal = exports.getAllByVendedor = exports.getOneById = exports.getAll = void 0;
+exports.testRanking = exports.sendMessageWsp = exports.requestaHot = exports.obtenerRequestbyStatus = exports.getVehiclesBySeller = exports.getSolicitudesBySeller = exports.getRankingByVendedor = exports.getRankingByVehicle = exports.getRankingByStatus = exports.getOneById = exports.getCountByStatus = exports.getCountAll = exports.getAllByVendedor = exports.getAllBySucursal = exports.getAll = exports.enviarCorreoSolicitud = exports.downloadAndZipeo = exports.descargaYZip = exports.deleteRequest = exports.createRequest = exports.cambioStatusByMaf = exports.agregarNewDocuments = exports.actualizarRequest = exports.actualizarReqAprobada = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -44,7 +44,30 @@ var getAll = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _Maf.default.find().populate('customer seller car userCreator userApprove');
+            return _Maf.default.find().populate({
+              path: 'customer',
+              select: 'name document cellphone email'
+            }).populate({
+              path: 'seller',
+              select: 'name avatar sucursal marca'
+            }).populate({
+              path: 'car',
+              select: 'cod_tdp model version',
+              populate: {
+                path: 'model',
+                select: 'avatar name marca',
+                populate: {
+                  path: 'marca',
+                  select: 'avatar name'
+                }
+              }
+            }).populate({
+              path: 'userCreator',
+              select: 'name username avatar'
+            }).populate({
+              path: 'userApprove',
+              select: 'name username avatar'
+            });
 
           case 3:
             query = _context.sent;
@@ -100,7 +123,30 @@ var getOneById = /*#__PURE__*/function () {
             mafId = req.params.mafId;
             _context2.prev = 1;
             _context2.next = 4;
-            return _Maf.default.findById(mafId).populate('customer seller car userCreator userApprove');
+            return _Maf.default.findById(mafId).populate({
+              path: 'customer',
+              select: 'name document cellphone email'
+            }).populate({
+              path: 'seller',
+              select: 'name avatar sucursal marca'
+            }).populate({
+              path: 'car',
+              select: 'cod_tdp model version',
+              populate: {
+                path: 'model',
+                select: 'avatar name marca',
+                populate: {
+                  path: 'marca',
+                  select: 'avatar name'
+                }
+              }
+            }).populate({
+              path: 'userCreator',
+              select: 'name username avatar'
+            }).populate({
+              path: 'userApprove',
+              select: 'name username avatar'
+            });
 
           case 4:
             query = _context2.sent;
@@ -116,7 +162,7 @@ var getOneById = /*#__PURE__*/function () {
 
           case 9:
             return _context2.abrupt("return", res.status(404).json({
-              message: 'No existen solicitudes'
+              message: 'No existen solicitud'
             }));
 
           case 10:
@@ -1622,4 +1668,72 @@ var getVehiclesBySeller = /*#__PURE__*/function () {
 }();
 
 exports.getVehiclesBySeller = getVehiclesBySeller;
+
+var testRanking = /*#__PURE__*/function () {
+  var _ref24 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee24(req, res) {
+    var marca, query;
+    return _regenerator.default.wrap(function _callee24$(_context24) {
+      while (1) {
+        switch (_context24.prev = _context24.next) {
+          case 0:
+            // const { sucursal,marca, start, end } = req.body;
+            marca = req.body.marca;
+            _context24.prev = 1;
+            _context24.next = 4;
+            return _Maf.default.find({
+              "car.model.marca.name": marca
+            });
+
+          case 4:
+            query = _context24.sent;
+            // const filtro = {
+            //     sucursal: sucursal,
+            //     "car.model.marca.name" : marca,
+            //     fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) }
+            // };
+            console.log(query);
+
+            if (!(query.length > 0)) {
+              _context24.next = 10;
+              break;
+            }
+
+            res.json({
+              deploy: query,
+              total: query.length
+            });
+            _context24.next = 11;
+            break;
+
+          case 10:
+            return _context24.abrupt("return", res.status(404).json({
+              message: 'No existen filtros'
+            }));
+
+          case 11:
+            _context24.next = 17;
+            break;
+
+          case 13:
+            _context24.prev = 13;
+            _context24.t0 = _context24["catch"](1);
+            console.log(_context24.t0);
+            return _context24.abrupt("return", res.status(503).json({
+              message: _context24.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context24.stop();
+        }
+      }
+    }, _callee24, null, [[1, 13]]);
+  }));
+
+  return function testRanking(_x47, _x48) {
+    return _ref24.apply(this, arguments);
+  };
+}();
+
+exports.testRanking = testRanking;
 //# sourceMappingURL=maf.controller.js.map

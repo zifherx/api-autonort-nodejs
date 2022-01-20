@@ -7,8 +7,6 @@ exports.default = exports.ROLES = void 0;
 
 var _mongoose = require("mongoose");
 
-var ROLES = ["Aministrador", "Usuario", "Vendedor", "Jefe-Ventas", "Jefe-ADV"];
-exports.ROLES = ROLES;
 var roleSchema = new _mongoose.Schema({
   name: {
     type: String
@@ -20,6 +18,8 @@ var roleSchema = new _mongoose.Schema({
   timestamps: true,
   versionKey: false
 });
+var ROLES = ["Aministrador", "Usuario", "Vendedor", "Jefe-Ventas", "Jefe-ADV"];
+exports.ROLES = ROLES;
 
 var _default = (0, _mongoose.model)('Role', roleSchema);
 

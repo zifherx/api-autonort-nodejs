@@ -158,32 +158,39 @@ jefaturaCtrl.updateById = /*#__PURE__*/function () {
           case 5:
             query = _context3.sent;
 
-            if (query) {
-              res.json({
-                message: 'Jefe actualizado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Jefe a actualizar'
-              });
+            if (!query) {
+              _context3.next = 10;
+              break;
             }
 
-            _context3.next = 12;
+            res.json({
+              message: 'Jefe actualizado con éxito'
+            });
+            _context3.next = 11;
             break;
 
-          case 9:
-            _context3.prev = 9;
+          case 10:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existe Jefe a actualizar'
+            }));
+
+          case 11:
+            _context3.next = 16;
+            break;
+
+          case 13:
+            _context3.prev = 13;
             _context3.t0 = _context3["catch"](2);
             return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
             }));
 
-          case 12:
+          case 16:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[2, 9]]);
+    }, _callee3, null, [[2, 13]]);
   }));
 
   return function (_x5, _x6) {

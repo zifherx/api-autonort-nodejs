@@ -681,3 +681,104 @@ export const probandoRanking = async(req, res) => {
         console.log(err);
     }
 }
+
+export const conteoVentasBySucursalyEstadoyMarca = async (req, res) => {
+    const { sucursal, estado, marca, start, end} = req.body;
+
+    try {
+        const query = await Sale
+        .find({
+            sucursal_venta: sucursal, 
+            estatus_venta: estado, 
+            fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) } 
+        })
+        .populate({
+            path: 'auto',
+            select: 'cod_tdp model version',
+            populate: {
+                path: 'model',
+                select: 'avatar name marca',
+                populate: {
+                    path: 'marca',
+                    select: 'avatar name',
+                    match: { name: marca}
+                }
+            }
+        });
+
+        // console.log(query.length);
+        let obj = query.filter( b => b.auto.model.marca);
+
+        if(obj.length > 0){
+            // console.log(obj);
+            res.json({total: obj.length, deploy: obj});
+        }
+        
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({message: err.message});
+    }
+}
+
+export const rankingVentasByFinanciamiento = async (req, res) => {
+    const { sucursal, estado, start, end } = req.body;
+
+    try {
+        const filter = {
+            sucursal_venta: { $regex: '.*' + sucursal + '.*'},
+            estatus_venta: estado,
+            fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
+        const query = await Sale.aggregate([{
+            $match: filter
+        }, {
+            $group: {
+                _id: "$tipo_financiamiento",
+                qty: { $sum: 1 }
+            }
+        }, {    
+            $sort: { qty: -1 }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query });
+        } else {
+            return res.status(404).json({ message: 'No existen Ventas aún' })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+export const rankingVentasByEntidad = async (req, res) => {
+    const { sucursal, estado,financiamiento, start, end } = req.body;
+
+    try {
+        const filter = {
+            sucursal_venta: { $regex: '.*' + sucursal + '.*'},
+            estatus_venta: estado,
+            tipo_financiamiento: financiamiento,
+            fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) }
+        };
+        const query = await Sale.aggregate([{
+            $match: filter
+        }, {
+            $group: {
+                _id: "$entidad_bancaria",
+                qty: { $sum: 1 }
+            }
+        }, {
+            $sort: { qty: -1 }
+        }]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query });
+        } else {
+            return res.status(404).json({ message: 'No existen Ventas aún' })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
