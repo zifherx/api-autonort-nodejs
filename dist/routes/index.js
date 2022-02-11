@@ -97,6 +97,10 @@ var _accesorio = _interopRequireDefault(require("./accesorio.routes"));
 
 var _oferta = _interopRequireDefault(require("./oferta.routes"));
 
+var _portada = _interopRequireDefault(require("./portada.routes"));
+
+var _submodule = _interopRequireDefault(require("./submodule.routes"));
+
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
   res.send('Api Swagger');
@@ -145,6 +149,8 @@ router.use('/models', _modeloT.default);
 router.use('/metas', _meta.default);
 router.use('/accesorio', _accesorio.default);
 router.use('/oferta', _oferta.default);
+router.use('/portada', _portada.default);
+router.use('/submodule', _submodule.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

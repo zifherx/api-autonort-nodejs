@@ -17,8 +17,6 @@ var _config = _interopRequireDefault(require("../config/config"));
 
 var _User = _interopRequireDefault(require("../models/User"));
 
-var _Role = _interopRequireDefault(require("../models/Role"));
-
 var signIn = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
     var _req$body, username, password, userFound, matchPassword, token;
@@ -145,9 +143,9 @@ var changePassword = /*#__PURE__*/function () {
           case 9:
             _context2.prev = 9;
             _context2.t0 = _context2["catch"](3);
-            res.status(404).json({
+            return _context2.abrupt("return", res.status(404).json({
               message: 'Usuario no existe'
-            });
+            }));
 
           case 12:
             _context2.next = 14;
@@ -191,9 +189,9 @@ var changePassword = /*#__PURE__*/function () {
             _context2.prev = 27;
             _context2.t1 = _context2["catch"](17);
             console.log(_context2.t1);
-            res.status(503).json({
+            return _context2.abrupt("return", res.status(503).json({
               error: _context2.t1
-            });
+            }));
 
           case 31:
           case "end":

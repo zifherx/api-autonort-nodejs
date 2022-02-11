@@ -59,7 +59,7 @@ export const createBanco = async(req, res) => {
             });
         }
 
-        const query = await newBanco.save();
+        const query = await obj.save();
 
         if (query) {
             res.json({ message: 'Banco creado con éxito' })

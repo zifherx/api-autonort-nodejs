@@ -7,12 +7,18 @@ exports.default = void 0;
 
 var _mongoose = require("mongoose");
 
-var statusRP = new _mongoose.Schema({
-  name: {
+var submoduleSchema = new _mongoose.Schema({
+  submodule: {
     type: String
   },
-  value: {
-    type: Number
+  description: {
+    type: String
+  },
+  icon: {
+    type: String
+  },
+  route: {
+    type: String
   },
   status: {
     type: Boolean,
@@ -23,7 +29,7 @@ var statusRP = new _mongoose.Schema({
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('StatusRP', statusRP);
+var _default = (0, _mongoose.model)('Submodule', submoduleSchema);
 
 exports.default = _default;
-//# sourceMappingURL=StatusRP.js.map
+//# sourceMappingURL=Submodule.js.map

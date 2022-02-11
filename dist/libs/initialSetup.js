@@ -152,7 +152,6 @@ var createUserAdmin = /*#__PURE__*/function () {
               username: 'frojasq',
               password: _context2.t2,
               roles: _context2.t3,
-              activo: true,
               sucursal: 'Trujillo'
             };
             _context2.t5 = new _context2.t1(_context2.t4).save();

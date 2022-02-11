@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 import config from '../config/config'
 import User from '../models/User'
-import Role from '../models/Role'
 
 export const signIn = async(req, res) => {
     const { username, password } = req.body;
@@ -40,7 +39,7 @@ export const changePassword = async(req, res) => {
     try {
         user = await User.findById(id);
     } catch (err) {
-        res.status(404).json({ message: 'Usuario no existe' })
+        return res.status(404).json({ message: 'Usuario no existe' })
     }
 
     const matchPassword = await User.comparePassword(oldPassword, user.password);
@@ -57,7 +56,7 @@ export const changePassword = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ error: err });
+        return res.status(503).json({ error: err });
     }
 }
 

@@ -45,6 +45,8 @@ import modeloTRoutes from './modeloT.routes'
 import metaRoutes from './meta.routes';
 import accesorioRoutes from './accesorio.routes';
 import ofertaRoutes from './oferta.routes';
+import portadaRoutes from './portada.routes'
+import subumoduleRoutes from './submodule.routes'
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -94,5 +96,7 @@ router.use('/models', modeloTRoutes);
 router.use('/metas', metaRoutes);
 router.use('/accesorio', accesorioRoutes);
 router.use('/oferta', ofertaRoutes);
+router.use('/portada', portadaRoutes);
+router.use('/submodule', subumoduleRoutes);
 
 export default router;

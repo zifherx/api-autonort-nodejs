@@ -7,12 +7,9 @@ exports.default = void 0;
 
 var _mongoose = require("mongoose");
 
-var statusRP = new _mongoose.Schema({
-  name: {
+var portadaSchema = new _mongoose.Schema({
+  rutaImage: {
     type: String
-  },
-  value: {
-    type: Number
   },
   status: {
     type: Boolean,
@@ -23,7 +20,7 @@ var statusRP = new _mongoose.Schema({
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('StatusRP', statusRP);
+var _default = (0, _mongoose.model)('Portada', portadaSchema);
 
 exports.default = _default;
-//# sourceMappingURL=StatusRP.js.map
+//# sourceMappingURL=Portada.js.map

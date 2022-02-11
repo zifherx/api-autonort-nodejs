@@ -212,7 +212,7 @@ var createBanco = /*#__PURE__*/function () {
             }
 
             _context4.next = 7;
-            return newBanco.save();
+            return obj.save();
 
           case 7:
             query = _context4.sent;
