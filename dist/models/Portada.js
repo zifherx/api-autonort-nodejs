@@ -8,10 +8,16 @@ exports.default = void 0;
 var _mongoose = require("mongoose");
 
 var portadaSchema = new _mongoose.Schema({
-  rutaImage: {
+  name: {
     type: String
   },
-  status: {
+  nombreAvatar: {
+    type: String
+  },
+  avatar: {
+    type: String
+  },
+  estado: {
     type: Boolean,
     default: true
   }

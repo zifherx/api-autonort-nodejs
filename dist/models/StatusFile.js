@@ -16,6 +16,10 @@ var statusFileSchema = new _mongoose.Schema({
   },
   status: {
     type: Boolean
+  },
+  estado: {
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true,

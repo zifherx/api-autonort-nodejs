@@ -32,6 +32,24 @@ import StatusAAP from '../models/StatusAAP'
 import StatusRP from '../models/StatusRP'
 import MarcaTasaciones from '../models/MarcaTasaciones'
 import ModeloTasaciones from "../models/ModeloTasaciones";
+import Area from '../models/Area';
+import StatusTasacion from '../models/StatusTasacion';
+import TipoComprobante from '../models/TipoComprobante'
+import MotivoRechazo from '../models/MotivoRechazo';
+import StatusFacturacion from '../models/StatusFacturacion';
+import StatusEntrega from '../models/StatusEntrega';
+import TipoCampania from '../models/TipoCampania';
+import AccesorioE from '../models/AccesorioE';
+import CondicionAccesorio from '../models/CondicionAccesorio';
+import EstadoSeguro from '../models/EstadoSeguro';
+import TipoUso from '../models/TipoUso';
+import EstadoCivil from '../models/EstadoCivil';
+import PlanMAF from '../models/PlanMAF';
+import FiltroMaf from '../models/FiltroMaf';
+import TipoDocumento from '../models/TipoDocumento';
+import MenuG from '../models/MenuG';
+import ModuloG from '../models/ModuloG'
+import SubmoduloG from '../models/SubmoduloG'
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -177,6 +195,15 @@ export const checkDuplicateAnio = async(req, res, next) => {
     next();
 }
 
+export const checkDuplicateTipoUso = async(req, res, next) => {
+    const { name } = req.body;
+    const encontrado = await TipoUso.findOne({ name: name });
+
+    if (encontrado) return res.status(201).json({ message: 'El tipo de uso ya existe' });
+
+    next();
+}
+
 export const checkDuplicateConexo = async(req, res, next) => {
     const { name } = req.body;
     const encontrado = await Conexos.findOne({ name: name });
@@ -230,6 +257,16 @@ export const checkDuplicateCampania = async(req, res, next) => {
     next();
 }
 
+export const checkDuplicateArea = async(req, res, next) => {
+    const { name } = req.body;
+
+    const encontrado = await Area.findOne({ name });
+
+    if (encontrado) return res.status(201).json({ message: 'El área ya existe' });
+
+    next();
+}
+
 export const checkDuplicateAdicional = async(req, res, next) => {
     const { name } = req.body;
 
@@ -252,21 +289,11 @@ export const checkDuplicateVehiculo = async(req, res, next) => {
     next();
 }
 
-export const checkDuplicateAccesorio = async(req, res, next) => {
-    const { name } = req.body;
-
-    const encontrado = await Props.findOne({ name });
-
-    if (encontrado) return res.status(201).json({ message: 'El Accesorio ya existe' });
-
-    next();
-}
-
 export const checkDuplicateTramite = async(req, res, next) => {
     const { sales } = req.body;
 
-    const expediente = await Sale.find({ nro_comprobante: { $in: sales } });
-    let cod_exp = expediente.map(rs => rs._id)
+    const expediente = await Sale.findOne({ nro_comprobante: sales });
+    let cod_exp = expediente._id;
 
     const encontrado = await Record.findOne({ sales: cod_exp });
 
@@ -315,9 +342,18 @@ export const checkDuplicateStatusRP = async(req, res, next) => {
     next();
 }
 
+export const checkDuplicateStatusTasacion = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await StatusTasacion.findOne({ name: name });
+
+    if (query) return res.status(201).json({ message: 'El Status Tasación ya existe' });
+
+    next();
+}
+
 export const checkDuplicateStatusMafRequest = async(req, res, next) => {
     const { name } = req.body;
-    const query = await StatusMafRequest.findOne({ name: name });
+    const query = await StatusMafRequest.findOne({ name });
 
     if (query) return res.status(201).json({ message: 'El Estado Maf ya existe' });
 
@@ -356,6 +392,144 @@ export const checkDuplicateModeloT = async(req, res, next) => {
     const query = await ModeloTasaciones.findOne({ name: name });
 
     if (query) return res.status(201).json({ message: 'El modelo ya existe' });
+
+    next();
+}
+
+export const checkDuplicateComprobante = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await TipoComprobante.findOne({ name });
+
+    if (query) return res.status(201).json({ message: 'El comprobante ya existe' });
+
+    next();
+}
+
+export const checkDuplicateMotivoRechazo = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await MotivoRechazo.findOne({ name });
+
+    if (query) return res.status(201).json({ message: 'El motivo ya existe' });
+
+    next();
+}
+
+export const checkDuplicateStatusFacturacion = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await StatusFacturacion.findOne({ name });
+
+    if (query) return res.status(201).json({ message: 'El estado de facturación ya existe' });
+
+    next();
+}
+
+export const checkDuplicateStatusEntrega = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await StatusEntrega.findOne({ name });
+
+    if (query) return res.status(201).json({ message: 'El estado de entrega ya existe' });
+
+    next();
+}
+
+export const checkDuplicateTipoCampania = async(req, res, next) => {
+    const { name } = req.body;
+
+    const query = await TipoCampania.findOne({ name });
+
+    if (query) return res.status(201).json({ message: 'El tipo de campaña ya existe' });
+
+    next();
+}
+
+export const checkDuplicateAccesorio = async(req, res, next) => {
+    const { name } = req.body;
+
+    const query = await AccesorioE.findOne({ name });
+
+    if (query) return res.status(201).json({ message: 'El accesorio ya existe' });
+
+    next();
+}
+
+export const checkDuplicateCondicionAccesorio = async(req, res, next) => {
+    const { name } = req.body;
+
+    const query = await CondicionAccesorio.findOne({ name });
+
+    if (query) return res.status(201).json({ message: 'La condición de accesorio ya existe' });
+
+    next();
+}
+
+export const checkDuplicateEstadoSeguro = async (req, res, next) => {
+    const { name } = req.body;
+
+    const query = await EstadoSeguro.findOne({name});
+    if(query) return res.status(201).json({message: 'El estado ya existe'});
+
+    next();
+}
+
+export const checkDuplicateEstadoCivil = async (req, res, next) => {
+    const { name } = req.body;
+
+    const query = await EstadoCivil.findOne({name});
+    if(query) return res.status(201).json({message: 'El estado civil ya existe'});
+
+    next();
+}
+
+export const checkDuplicatePlanMAF = async (req, res, next) => {
+    const { name } = req.body;
+
+    const query = await PlanMAF.findOne({name});
+    if(query) return res.status(201).json({message: 'El plan MAF ya existe'});
+
+    next();
+}
+
+export const checkDuplicateFiltroMaf = async (req, res, next) => {
+    const { name } = req.body;
+
+    const query = await FiltroMaf.findOne({name});
+    if(query) return res.status(201).json({message: 'El estado de filtro ya existe'});
+
+    next();
+}
+
+export const checkDuplicateTipoDocumento = async (req, res, next) => {
+    const { name } = req.body;
+
+    const query = await TipoDocumento.findOne({name});
+    if(query) return res.status(201).json({message: 'El documento de identidad ya existe'});
+
+    next();
+}
+
+export const checkDuplicateMenuG = async (req, res, next) => {
+    const { name } = req.body;
+
+    const query = await MenuG.findOne({name});
+    if(query) return res.status(201).json({message: 'El menú ya existe'});
+
+    next();
+}
+
+export const checkDuplicateModuloG = async (req, res, next) => {
+    const { name } = req.body;
+
+    const query = await ModuloG.findOne({name});
+    if(query) return res.status(201).json({message: 'El módulo ya existe'});
+
+    next();
+}
+
+export const checkDuplicateSubmoduloG = async (req, res, next) => {
+    const { name } = req.body;
+
+    const query = await SubmoduloG.findOne({name});
+    if(query) return res.status(201).json({message: `El submódulo ${name} ya existe`});
 
     next();
 }

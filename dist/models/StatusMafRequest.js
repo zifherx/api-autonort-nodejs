@@ -11,9 +11,14 @@ var statusMafRequest = new _mongoose.Schema({
   name: {
     type: String
   },
-  status: {
+  estado: {
     type: Boolean,
     default: true
+  },
+  value: {
+    type: Number,
+    min: 0,
+    max: 100
   }
 }, {
   timestamps: true,

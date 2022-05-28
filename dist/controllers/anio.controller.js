@@ -15,7 +15,7 @@ var _Anio = _interopRequireDefault(require("../models/Anio"));
 
 var getAnios = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var Anios;
+    var query;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -23,18 +23,21 @@ var getAnios = /*#__PURE__*/function () {
             _context.prev = 0;
             _context.next = 3;
             return _Anio.default.find().sort({
-              name: 'asc'
+              name: -1
             });
 
           case 3:
-            Anios = _context.sent;
+            query = _context.sent;
 
-            if (!(Anios.length > 0)) {
+            if (!(query.length > 0)) {
               _context.next = 8;
               break;
             }
 
-            res.json(Anios);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -72,7 +75,7 @@ exports.getAnios = getAnios;
 
 var getAnioById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var anioId, anios;
+    var anioId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -83,14 +86,16 @@ var getAnioById = /*#__PURE__*/function () {
             return _Anio.default.findById(anioId);
 
           case 4:
-            anios = _context2.sent;
+            query = _context2.sent;
 
-            if (!anios) {
+            if (!query) {
               _context2.next = 9;
               break;
             }
 
-            res.json(anios);
+            res.json({
+              one: query
+            });
             _context2.next = 10;
             break;
 
@@ -128,7 +133,7 @@ exports.getAnioById = getAnioById;
 
 var getAnioByActivo = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var anios;
+    var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -138,18 +143,21 @@ var getAnioByActivo = /*#__PURE__*/function () {
             return _Anio.default.find({
               estado: true
             }).sort({
-              name: 'asc'
+              name: -1
             });
 
           case 3:
-            anios = _context3.sent;
+            query = _context3.sent;
 
-            if (!(anios.length > 0)) {
+            if (!(query.length > 0)) {
               _context3.next = 8;
               break;
             }
 
-            res.json(anios);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context3.next = 9;
             break;
 
@@ -187,7 +195,7 @@ exports.getAnioByActivo = getAnioByActivo;
 
 var createAnio = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, estado, newAnio, anioCreado;
+    var _req$body, name, estado, newAnio, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
@@ -203,9 +211,9 @@ var createAnio = /*#__PURE__*/function () {
             return newAnio.save();
 
           case 5:
-            anioCreado = _context4.sent;
+            query = _context4.sent;
 
-            if (anioCreado) {
+            if (query) {
               res.json({
                 message: 'Año creado con éxito'
               });
@@ -239,7 +247,7 @@ exports.createAnio = createAnio;
 
 var updateAnio = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, estado, anioId, _updateAnio;
+    var _req$body2, name, estado, anioId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
@@ -255,9 +263,9 @@ var updateAnio = /*#__PURE__*/function () {
             });
 
           case 5:
-            _updateAnio = _context5.sent;
+            query = _context5.sent;
 
-            if (!_updateAnio) {
+            if (!query) {
               _context5.next = 10;
               break;
             }
@@ -302,8 +310,7 @@ exports.updateAnio = updateAnio;
 
 var deleteAnio = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var anioId, _deleteAnio;
-
+    var anioId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -314,9 +321,9 @@ var deleteAnio = /*#__PURE__*/function () {
             return _Anio.default.findByIdAndDelete(anioId);
 
           case 4:
-            _deleteAnio = _context6.sent;
+            query = _context6.sent;
 
-            if (!_deleteAnio) {
+            if (!query) {
               _context6.next = 9;
               break;
             }

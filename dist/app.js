@@ -21,6 +21,8 @@ var _helmet = _interopRequireDefault(require("helmet"));
 
 var _routes = _interopRequireDefault(require("./routes"));
 
+var _config = _interopRequireDefault(require("./config/config"));
+
 var initData = _interopRequireWildcard(require("./libs/initialSetup"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -45,7 +47,7 @@ initData.createConfigSustento();
 initData.createConfigUbicacion();
 initData.createConfigStatusFile(); //Settings
 
-app.set('port', Number(process.env.PORT) || Number(4000)); //Middlewares
+app.set('port', Number(_config.default.API_PORT) || Number(4000)); //Middlewares
 
 app.use((0, _morgan.default)('dev'));
 app.use((0, _helmet.default)());
@@ -58,6 +60,7 @@ app.use(_express.default.urlencoded({
 app.use('/api', _routes.default); //Static Files
 
 app.use('/public', _express.default.static(_path.default.join(__dirname, 'public')));
+app.use('/views', _express.default.static(_path.default.join(__dirname, 'views')));
 app.use('/uploads', _express.default.static(_path.default.join(__dirname, 'uploads')));
 var _default = app;
 exports.default = _default;

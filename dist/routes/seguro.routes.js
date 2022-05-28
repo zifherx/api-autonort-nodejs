@@ -1,6 +1,6 @@
 "use strict";
 
-var _typeof = require("@babel/runtime/helpers/typeof");
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -9,43 +9,36 @@ exports.default = void 0;
 
 var _express = require("express");
 
-var seguroCtrl = _interopRequireWildcard(require("../controllers/seguro.controller"));
+var _seguro = _interopRequireDefault(require("../controllers/seguro.controller"));
 
 var _middlewares = require("../middlewares");
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+var router = (0, _express.Router)(); //Obtener Seguro
 
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+router.get('/', _seguro.default.getAll); //Obtener Seguro por ID
 
-var router = (0, _express.Router)(); //Conteo Global de Solicitudes
+router.get('/:seguroId', _seguro.default.getOneById); //Ranking By Status por mes
 
-router.get('/count', seguroCtrl.countAll); //Obtener Seguro
+router.post('/ranking/by-status', _seguro.default.getRankingByStatus); //Ranking By Tipo Seguro por mes
 
-router.get('/', seguroCtrl.getAll); //Obtener Seguro por ID
+router.post('/ranking/by-type', _seguro.default.getRankingByTipo); //Ranking By Vehículo por mes
 
-router.get('/:seguroId', seguroCtrl.getSeguroById); //Conteo by Status
+router.post('/ranking/by-vehicle', _seguro.default.getRankingByVehicle); //Ranking By Vendedor por mes
 
-router.post('/count/by-status', seguroCtrl.countByStatusySucursal); //Conteo by Dates
+router.post('/ranking/by-seller', _seguro.default.getRankingBySeller); //Ranking By Vendedor por mes
 
-router.post('/count/by-dates', seguroCtrl.countByDates); //Ranking By Status por mes
+router.post('/ranking/by-aseguradora', _seguro.default.getRankingByAseguradora);
+router.post('/status-by-seller', _seguro.default.getSegurosByVendedor);
+router.post('/vehicles-by-seller', _seguro.default.getSegurosByModelo);
+router.post('/by-sucursal', _seguro.default.getBySucursalFecha);
+router.post('/by-estado', _seguro.default.getSegurosByEstado);
+router.post('/by-creator', _seguro.default.getSegurosByCreator); //Crear Seguro
 
-router.post('/ranking/by-status', seguroCtrl.getRankingByStatus); //Ranking By Tipo Seguro por mes
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosAsistantOrAdmin], _seguro.default.createOne); //Actualizar Seguro
 
-router.post('/ranking/by-type', seguroCtrl.getRankingByTipo); //Ranking By Vehículo por mes
+router.patch('/:seguroId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosAsistantOrAdmin], _seguro.default.updateOneById); //Eliminar Seguro
 
-router.post('/ranking/by-vehicle', seguroCtrl.getRankingByVehicle); //Ranking By Vendedor por mes
-
-router.post('/ranking/by-seller', seguroCtrl.getRankingBySeller); //Ranking By Vendedor por mes
-
-router.post('/ranking/by-aseguradora', seguroCtrl.getRankingByAseguradora);
-router.post('/status-by-seller', seguroCtrl.getSegurosByVendedor);
-router.post('/vehicles-by-seller', seguroCtrl.getSegurosByModelo); //Crear Seguro
-
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosAsistant, _middlewares.verifySignup.checkRolesExist], seguroCtrl.createSeguro); //Actualizar Seguro
-
-router.patch('/:seguroId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosAsistant, _middlewares.verifySignup.checkRolesExist], seguroCtrl.updateSeguro); //Eliminar Seguro
-
-router.delete('/:seguroId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], seguroCtrl.deleteSeguro);
+router.delete('/:seguroId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _seguro.default.deleteOneById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=seguro.routes.js.map

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateSucursal = exports.getSucursales = exports.getSucursalById = exports.getSucursalByActivo = exports.deleteSucursal = exports.createSucursal = void 0;
+exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -13,7 +13,9 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _Sucursal = _interopRequireDefault(require("../models/Sucursal"));
 
-var getSucursales = /*#__PURE__*/function () {
+var sucursalController = {};
+
+sucursalController.getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee$(_context) {
@@ -34,7 +36,10 @@ var getSucursales = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -63,14 +68,12 @@ var getSucursales = /*#__PURE__*/function () {
     }, _callee, null, [[0, 11]]);
   }));
 
-  return function getSucursales(_x, _x2) {
+  return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 
-exports.getSucursales = getSucursales;
-
-var getSucursalById = /*#__PURE__*/function () {
+sucursalController.getOneById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
     var sucursalId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -90,7 +93,9 @@ var getSucursalById = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              one: query
+            });
             _context2.next = 10;
             break;
 
@@ -119,14 +124,12 @@ var getSucursalById = /*#__PURE__*/function () {
     }, _callee2, null, [[1, 12]]);
   }));
 
-  return function getSucursalById(_x3, _x4) {
+  return function (_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getSucursalById = getSucursalById;
-
-var getSucursalByActivo = /*#__PURE__*/function () {
+sucursalController.getAllActivos = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -149,7 +152,10 @@ var getSucursalByActivo = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context3.next = 9;
             break;
 
@@ -178,14 +184,12 @@ var getSucursalByActivo = /*#__PURE__*/function () {
     }, _callee3, null, [[0, 11]]);
   }));
 
-  return function getSucursalByActivo(_x5, _x6) {
+  return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-exports.getSucursalByActivo = getSucursalByActivo;
-
-var createSucursal = /*#__PURE__*/function () {
+sucursalController.createOne = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
     var _req$body, name, estado, objeto, query;
 
@@ -230,14 +234,12 @@ var createSucursal = /*#__PURE__*/function () {
     }, _callee4, null, [[1, 9]]);
   }));
 
-  return function createSucursal(_x7, _x8) {
+  return function (_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-exports.createSucursal = createSucursal;
-
-var updateSucursal = /*#__PURE__*/function () {
+sucursalController.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
     var _req$body2, name, estado, sucursalId, query;
 
@@ -293,14 +295,12 @@ var updateSucursal = /*#__PURE__*/function () {
     }, _callee5, null, [[2, 13]]);
   }));
 
-  return function updateSucursal(_x9, _x10) {
+  return function (_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.updateSucursal = updateSucursal;
-
-var deleteSucursal = /*#__PURE__*/function () {
+sucursalController.deleteOneById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
     var sucursalId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
@@ -351,10 +351,11 @@ var deleteSucursal = /*#__PURE__*/function () {
     }, _callee6, null, [[1, 12]]);
   }));
 
-  return function deleteSucursal(_x11, _x12) {
+  return function (_x11, _x12) {
     return _ref6.apply(this, arguments);
   };
 }();
 
-exports.deleteSucursal = deleteSucursal;
+var _default = sucursalController;
+exports.default = _default;
 //# sourceMappingURL=sucursal.controller.js.map

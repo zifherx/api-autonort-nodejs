@@ -23,8 +23,9 @@ var vehicleSchema = new _mongoose.Schema({
   version: {
     type: String
   },
-  sucursal: {
-    type: String
+  estado: {
+    type: Boolean,
+    default: true
   },
   empleado: {
     ref: 'User',

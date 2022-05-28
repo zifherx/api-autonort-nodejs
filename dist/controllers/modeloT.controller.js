@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateModeloById = exports.getModelosByName = exports.getModelosByMarca = exports.getModeloById = exports.getModeloActivos = exports.getAll = exports.deleteModeloById = exports.createModelo = exports.countAll = void 0;
+exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -15,7 +15,9 @@ var _MarcaTasaciones = _interopRequireDefault(require("../models/MarcaTasaciones
 
 var _ModeloTasaciones = _interopRequireDefault(require("../models/ModeloTasaciones"));
 
-var getAll = /*#__PURE__*/function () {
+var modeloController = {};
+
+modeloController.getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee$(_context) {
@@ -28,7 +30,7 @@ var getAll = /*#__PURE__*/function () {
               name: 'asc'
             }).populate({
               path: 'marca',
-              select: 'name'
+              select: 'name avatar'
             });
 
           case 3:
@@ -39,7 +41,10 @@ var getAll = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -68,14 +73,12 @@ var getAll = /*#__PURE__*/function () {
     }, _callee, null, [[0, 11]]);
   }));
 
-  return function getAll(_x, _x2) {
+  return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 
-exports.getAll = getAll;
-
-var getModeloById = /*#__PURE__*/function () {
+modeloController.getModeloById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
     var modeloId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -87,7 +90,7 @@ var getModeloById = /*#__PURE__*/function () {
             _context2.next = 4;
             return _ModeloTasaciones.default.findById(modeloId).populate({
               path: 'marca',
-              select: 'name'
+              select: 'name avatar'
             });
 
           case 4:
@@ -98,7 +101,9 @@ var getModeloById = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              one: query
+            });
             _context2.next = 10;
             break;
 
@@ -127,14 +132,12 @@ var getModeloById = /*#__PURE__*/function () {
     }, _callee2, null, [[1, 12]]);
   }));
 
-  return function getModeloById(_x3, _x4) {
+  return function (_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getModeloById = getModeloById;
-
-var getModeloActivos = /*#__PURE__*/function () {
+modeloController.getModeloActivos = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -144,55 +147,60 @@ var getModeloActivos = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _ModeloTasaciones.default.find({
-              status: true
+              estado: true
             }).sort({
               name: 'asc'
             }).populate({
               path: 'marca',
-              select: 'name'
+              select: 'name avatar'
             });
 
           case 3:
             query = _context3.sent;
 
-            if (query.length > 0) {
-              res.json({
-                count: query.length,
-                models: query
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existen Modelos activos'
-              });
+            if (!(query.length > 0)) {
+              _context3.next = 8;
+              break;
             }
 
-            _context3.next = 11;
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
+            _context3.next = 9;
             break;
 
-          case 7:
-            _context3.prev = 7;
+          case 8:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existen Modelos activos'
+            }));
+
+          case 9:
+            _context3.next = 15;
+            break;
+
+          case 11:
+            _context3.prev = 11;
             _context3.t0 = _context3["catch"](0);
             console.log(_context3.t0);
             return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
             }));
 
-          case 11:
+          case 15:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 7]]);
+    }, _callee3, null, [[0, 11]]);
   }));
 
-  return function getModeloActivos(_x5, _x6) {
+  return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-exports.getModeloActivos = getModeloActivos;
-
-var getModelosByMarca = /*#__PURE__*/function () {
+modeloController.getModelosByMarca = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
     var marca, marcaFound, query;
     return _regenerator.default.wrap(function _callee4$(_context4) {
@@ -223,7 +231,10 @@ var getModelosByMarca = /*#__PURE__*/function () {
             return _ModeloTasaciones.default.find({
               marca: marcaFound._id
             }).sort({
-              name: 'asc'
+              name: 1
+            }).populate({
+              path: 'marca',
+              select: 'name avatar'
             });
 
           case 9:
@@ -235,8 +246,8 @@ var getModelosByMarca = /*#__PURE__*/function () {
             }
 
             res.json({
-              count: query.length,
-              models: query
+              total: query.length,
+              all: query
             });
             _context4.next = 15;
             break;
@@ -266,14 +277,12 @@ var getModelosByMarca = /*#__PURE__*/function () {
     }, _callee4, null, [[1, 17]]);
   }));
 
-  return function getModelosByMarca(_x7, _x8) {
+  return function (_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-exports.getModelosByMarca = getModelosByMarca;
-
-var getModelosByName = /*#__PURE__*/function () {
+modeloController.getModelosByName = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
     var name, query;
     return _regenerator.default.wrap(function _callee5$(_context5) {
@@ -287,6 +296,9 @@ var getModelosByName = /*#__PURE__*/function () {
               name: name
             }).sort({
               name: 'asc'
+            }).populate({
+              path: 'marca',
+              select: 'name avatar'
             });
 
           case 4:
@@ -298,8 +310,8 @@ var getModelosByName = /*#__PURE__*/function () {
             }
 
             res.json({
-              count: query.length,
-              models: query
+              total_model: query.length,
+              all_model: query
             });
             _context5.next = 10;
             break;
@@ -329,22 +341,20 @@ var getModelosByName = /*#__PURE__*/function () {
     }, _callee5, null, [[1, 12]]);
   }));
 
-  return function getModelosByName(_x9, _x10) {
+  return function (_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.getModelosByName = getModelosByName;
-
-var createModelo = /*#__PURE__*/function () {
+modeloController.createModelo = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var _req$body, marca, name, status, avatar, obj, marcaFound, query;
+    var _req$body, marca, name, estado, avatar, obj, marcaFound, query;
 
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            _req$body = req.body, marca = _req$body.marca, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, marca = _req$body.marca, name = _req$body.name, estado = _req$body.estado;
             avatar = req.file;
             _context6.prev = 2;
             obj = null;
@@ -352,13 +362,13 @@ var createModelo = /*#__PURE__*/function () {
             if (avatar == undefined || avatar == null) {
               obj = new _ModeloTasaciones.default({
                 name: name,
-                status: status
+                estado: estado
               });
             } else {
               obj = new _ModeloTasaciones.default({
                 avatar: avatar.location,
                 name: name,
-                status: status
+                estado: estado
               });
             }
 
@@ -412,22 +422,20 @@ var createModelo = /*#__PURE__*/function () {
     }, _callee6, null, [[2, 17]]);
   }));
 
-  return function createModelo(_x11, _x12) {
+  return function (_x11, _x12) {
     return _ref6.apply(this, arguments);
   };
 }();
 
-exports.createModelo = createModelo;
-
-var updateModeloById = /*#__PURE__*/function () {
+modeloController.updateModeloById = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var _req$body2, marca, name, status, modeloId, avatar, marcaFound, query;
+    var _req$body2, marca, name, estado, modeloId, avatar, marcaFound, query;
 
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            _req$body2 = req.body, marca = _req$body2.marca, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, marca = _req$body2.marca, name = _req$body2.name, estado = _req$body2.estado;
             modeloId = req.params.modeloId;
             avatar = req.file;
             _context7.prev = 3;
@@ -449,7 +457,7 @@ var updateModeloById = /*#__PURE__*/function () {
             return _ModeloTasaciones.default.findByIdAndUpdate(modeloId, {
               marca: marcaFound._id,
               name: name,
-              status: status
+              estado: estado
             });
 
           case 11:
@@ -463,50 +471,55 @@ var updateModeloById = /*#__PURE__*/function () {
               marca: marcaFound._id,
               avatar: avatar.location,
               name: name,
-              status: status
+              estado: estado
             });
 
           case 16:
             query = _context7.sent;
 
           case 17:
-            if (query) {
-              res.json({
-                message: 'Modelo actualizado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Modelo a actualizar'
-              });
+            if (!query) {
+              _context7.next = 21;
+              break;
             }
 
-            _context7.next = 24;
+            res.json({
+              message: 'Modelo actualizado con éxito'
+            });
+            _context7.next = 22;
             break;
 
-          case 20:
-            _context7.prev = 20;
+          case 21:
+            return _context7.abrupt("return", res.status(404).json({
+              message: 'No existe Modelo a actualizar'
+            }));
+
+          case 22:
+            _context7.next = 28;
+            break;
+
+          case 24:
+            _context7.prev = 24;
             _context7.t0 = _context7["catch"](3);
             console.log(_context7.t0);
             return _context7.abrupt("return", res.status(503).json({
               message: _context7.t0.message
             }));
 
-          case 24:
+          case 28:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[3, 20]]);
+    }, _callee7, null, [[3, 24]]);
   }));
 
-  return function updateModeloById(_x13, _x14) {
+  return function (_x13, _x14) {
     return _ref7.apply(this, arguments);
   };
 }();
 
-exports.updateModeloById = updateModeloById;
-
-var deleteModeloById = /*#__PURE__*/function () {
+modeloController.deleteModeloById = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
     var modeloId, query;
     return _regenerator.default.wrap(function _callee8$(_context8) {
@@ -557,55 +570,11 @@ var deleteModeloById = /*#__PURE__*/function () {
     }, _callee8, null, [[1, 12]]);
   }));
 
-  return function deleteModeloById(_x15, _x16) {
+  return function (_x15, _x16) {
     return _ref8.apply(this, arguments);
   };
 }();
 
-exports.deleteModeloById = deleteModeloById;
-
-var countAll = /*#__PURE__*/function () {
-  var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res) {
-    var query;
-    return _regenerator.default.wrap(function _callee9$(_context9) {
-      while (1) {
-        switch (_context9.prev = _context9.next) {
-          case 0:
-            _context9.prev = 0;
-            _context9.next = 3;
-            return _ModeloTasaciones.default.countDocuments();
-
-          case 3:
-            query = _context9.sent;
-
-            if (query >= 0) {
-              res.json({
-                count: query
-              });
-            }
-
-            _context9.next = 10;
-            break;
-
-          case 7:
-            _context9.prev = 7;
-            _context9.t0 = _context9["catch"](0);
-            return _context9.abrupt("return", res.status(503).json({
-              message: _context9.t0.message
-            }));
-
-          case 10:
-          case "end":
-            return _context9.stop();
-        }
-      }
-    }, _callee9, null, [[0, 7]]);
-  }));
-
-  return function countAll(_x17, _x18) {
-    return _ref9.apply(this, arguments);
-  };
-}();
-
-exports.countAll = countAll;
+var _default = modeloController;
+exports.default = _default;
 //# sourceMappingURL=modeloT.controller.js.map

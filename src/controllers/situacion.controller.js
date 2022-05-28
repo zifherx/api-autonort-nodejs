@@ -2,9 +2,9 @@ import Situacion from "../models/Situacion";
 
 export const getAll = async(req, res) => {
     try {
-        const query = await Situacion.find().sort({ name: 'asc' });
+        const query = await Situacion.find().sort({ name: 1 });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Situaciones' })
         }
@@ -16,9 +16,9 @@ export const getAll = async(req, res) => {
 
 export const getSituacionByActivo = async(req, res) => {
     try {
-        const query = await Situacion.find({ estado: true }).sort({ name: 'asc' });
+        const query = await Situacion.find({ estado: true }).sort({ valor: 1 });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total_active: query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No existen Situaciones Activas' })
         }
@@ -33,7 +33,7 @@ export const getSituacionById = async(req, res) => {
     try {
         const query = await Situacion.findById(situacionId);
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe Situación' })
         }
@@ -44,9 +44,9 @@ export const getSituacionById = async(req, res) => {
 }
 
 export const createSituacion = async(req, res) => {
-    const { name, estado } = req.body;
+    const { name, valor, estado } = req.body;
     try {
-        const objeto = new Situacion({ name, estado });
+        const objeto = new Situacion({ name,valor, estado });
         const query = await objeto.save();
         if (query) {
             res.json({ message: 'Situación creada con éxito' })
@@ -58,17 +58,18 @@ export const createSituacion = async(req, res) => {
 }
 
 export const updateSituacion = async(req, res) => {
-    const { name, estado } = req.body;
+    const { name, estado, valor } = req.body;
     const { situacionId } = req.params;
     try {
         const query = await Situacion.findByIdAndUpdate(situacionId, {
             name,
+            valor,
             estado
         });
         if (query) {
             res.json({ message: 'Situación actualizada con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Situación a actualizar' });
+            return res.status(404).json({ message: 'No existe Situación a actualizar' });
         }
     } catch (err) {
         console.log(err);

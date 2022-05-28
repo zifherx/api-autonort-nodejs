@@ -13,7 +13,7 @@ router.get('/activos', propsCtrl.getAccesoriosActivos)
 router.get('/:propsId', propsCtrl.getAccesorioById);
 
 //Obtener Accesorio por código Vehicular
-router.post('/find', propsCtrl.getAccesorioByAuto);
+router.post('/by-modelo', propsCtrl.getAccesorioByAuto);
 
 //Crear Accesorio
 router.post('/', [authJwt.verifyToken, authJwt.isChiefAdv, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateAccesorio], propsCtrl.createProp);

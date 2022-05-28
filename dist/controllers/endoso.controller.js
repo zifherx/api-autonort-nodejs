@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateEndoso = exports.getEndosos = exports.getEndosoById = exports.getEndosoByActivo = exports.deleteEndoso = exports.createEndoso = void 0;
+exports.updateOneById = exports.getOneById = exports.getAllActivos = exports.getAll = exports.deleteOneById = exports.createOne = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -13,7 +13,7 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _Endoso = _interopRequireDefault(require("../models/Endoso"));
 
-var getEndosos = /*#__PURE__*/function () {
+var getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee$(_context) {
@@ -34,7 +34,10 @@ var getEndosos = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -51,9 +54,9 @@ var getEndosos = /*#__PURE__*/function () {
             _context.prev = 11;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            res.status(409).json({
+            return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -63,14 +66,14 @@ var getEndosos = /*#__PURE__*/function () {
     }, _callee, null, [[0, 11]]);
   }));
 
-  return function getEndosos(_x, _x2) {
+  return function getAll(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 
-exports.getEndosos = getEndosos;
+exports.getAll = getAll;
 
-var getEndosoByActivo = /*#__PURE__*/function () {
+var getAllActivos = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -93,7 +96,10 @@ var getEndosoByActivo = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context2.next = 9;
             break;
 
@@ -110,9 +116,9 @@ var getEndosoByActivo = /*#__PURE__*/function () {
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(409).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -122,14 +128,14 @@ var getEndosoByActivo = /*#__PURE__*/function () {
     }, _callee2, null, [[0, 11]]);
   }));
 
-  return function getEndosoByActivo(_x3, _x4) {
+  return function getAllActivos(_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getEndosoByActivo = getEndosoByActivo;
+exports.getAllActivos = getAllActivos;
 
-var getEndosoById = /*#__PURE__*/function () {
+var getOneById = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
     var endosoId, query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -149,7 +155,9 @@ var getEndosoById = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              one: query
+            });
             _context3.next = 10;
             break;
 
@@ -166,9 +174,9 @@ var getEndosoById = /*#__PURE__*/function () {
             _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
-            res.status(409).json({
+            return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -178,26 +186,26 @@ var getEndosoById = /*#__PURE__*/function () {
     }, _callee3, null, [[1, 12]]);
   }));
 
-  return function getEndosoById(_x5, _x6) {
+  return function getOneById(_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-exports.getEndosoById = getEndosoById;
+exports.getOneById = getOneById;
 
-var createEndoso = /*#__PURE__*/function () {
+var createOne = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, newObj, query;
+    var _req$body, name, estado, newObj, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
             _context4.prev = 1;
             newObj = new _Endoso.default({
               name: name,
-              status: status
+              estado: estado
             });
             _context4.next = 5;
             return newObj.save();
@@ -218,9 +226,9 @@ var createEndoso = /*#__PURE__*/function () {
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
-            });
+            }));
 
           case 13:
           case "end":
@@ -230,34 +238,34 @@ var createEndoso = /*#__PURE__*/function () {
     }, _callee4, null, [[1, 9]]);
   }));
 
-  return function createEndoso(_x7, _x8) {
+  return function createOne(_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-exports.createEndoso = createEndoso;
+exports.createOne = createOne;
 
-var updateEndoso = /*#__PURE__*/function () {
+var updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, endosoId, newObj;
+    var _req$body2, name, estado, endosoId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
             endosoId = req.params.endosoId;
             _context5.prev = 2;
             _context5.next = 5;
             return _Endoso.default.findByIdAndUpdate(endosoId, {
               name: name,
-              status: status
+              estado: estado
             });
 
           case 5:
-            newObj = _context5.sent;
+            query = _context5.sent;
 
-            if (!newObj) {
+            if (!query) {
               _context5.next = 10;
               break;
             }
@@ -281,9 +289,9 @@ var updateEndoso = /*#__PURE__*/function () {
             _context5.prev = 13;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
-            res.status(409).json({
+            return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
-            });
+            }));
 
           case 17:
           case "end":
@@ -293,16 +301,16 @@ var updateEndoso = /*#__PURE__*/function () {
     }, _callee5, null, [[2, 13]]);
   }));
 
-  return function updateEndoso(_x9, _x10) {
+  return function updateOneById(_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.updateEndoso = updateEndoso;
+exports.updateOneById = updateOneById;
 
-var deleteEndoso = /*#__PURE__*/function () {
+var deleteOneById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var endosoId, newObj;
+    var endosoId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -313,9 +321,9 @@ var deleteEndoso = /*#__PURE__*/function () {
             return _Endoso.default.findByIdAndDelete(endosoId);
 
           case 4:
-            newObj = _context6.sent;
+            query = _context6.sent;
 
-            if (!newObj) {
+            if (!query) {
               _context6.next = 9;
               break;
             }
@@ -339,9 +347,9 @@ var deleteEndoso = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -351,10 +359,10 @@ var deleteEndoso = /*#__PURE__*/function () {
     }, _callee6, null, [[1, 12]]);
   }));
 
-  return function deleteEndoso(_x11, _x12) {
+  return function deleteOneById(_x11, _x12) {
     return _ref6.apply(this, arguments);
   };
 }();
 
-exports.deleteEndoso = deleteEndoso;
+exports.deleteOneById = deleteOneById;
 //# sourceMappingURL=endoso.controller.js.map

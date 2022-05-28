@@ -8,7 +8,8 @@ exports.default = void 0;
 var _mongoose = require("mongoose");
 
 var campaniaSchema = new _mongoose.Schema({
-  codigo: {
+  //Campania
+  cod_interno: {
     type: String,
     max: 11,
     required: true,
@@ -27,18 +28,32 @@ var campaniaSchema = new _mongoose.Schema({
   endDate: {
     type: Date
   },
-  //Modelos
-  auto: [{
+  //Vehículo
+  model: {
     type: _mongoose.Schema.Types.ObjectId,
-    ref: 'Vehicle'
+    ref: 'ModeloT'
+  },
+  versiones: [{
+    type: String
   }],
-  ofertas: [{
-    type: _mongoose.Schema.Types.ObjectId,
-    ref: 'Oferta '
+  //Oferta
+  oferta: [{
+    tipo: {
+      type: String,
+      uppercase: true,
+      trim: true
+    },
+    bono: {
+      type: Number,
+      default: 0
+    },
+    descripcion: {
+      type: String
+    }
   }],
   estado: {
     type: Boolean,
-    default: true
+    default: false
   },
   createdBy: {
     type: _mongoose.Schema.Types.ObjectId,
@@ -49,7 +64,7 @@ var campaniaSchema = new _mongoose.Schema({
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('CampaniaN', campaniaSchema);
+var _default = (0, _mongoose.model)('Campania', campaniaSchema);
 
 exports.default = _default;
 //# sourceMappingURL=Campania.js.map

@@ -11,17 +11,31 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
+var _Tasacion = _interopRequireDefault(require("../models/Tasacion"));
+
 var _Customer = _interopRequireDefault(require("../models/Customer"));
 
 var _User = _interopRequireDefault(require("../models/User"));
-
-var _Tasacion = _interopRequireDefault(require("../models/Tasacion"));
 
 var _Tecnico = _interopRequireDefault(require("../models/Tecnico"));
 
 var _AServicios = _interopRequireDefault(require("../models/AServicios"));
 
 var _Seller = _interopRequireDefault(require("../models/Seller"));
+
+var _ModeloTasaciones = _interopRequireDefault(require("../models/ModeloTasaciones"));
+
+var _Colores = _interopRequireDefault(require("../models/Colores"));
+
+var _Anio = _interopRequireDefault(require("../models/Anio"));
+
+var _Sucursal = _interopRequireDefault(require("../models/Sucursal"));
+
+var _OrigenConcesionario = _interopRequireDefault(require("../models/OrigenConcesionario"));
+
+var _MetodoAtencion = _interopRequireDefault(require("../models/MetodoAtencion"));
+
+var _StatusTasacion = _interopRequireDefault(require("../models/StatusTasacion"));
 
 var tasacionCtrl = {};
 
@@ -35,10 +49,28 @@ tasacionCtrl.getAll = /*#__PURE__*/function () {
             _context.prev = 0;
             _context.next = 3;
             return _Tasacion.default.find().sort({
-              name: 'asc'
+              name: 1
             }).populate({
               path: 'cliente',
               select: 'name document'
+            }).populate({
+              path: 'colorE',
+              select: 'name'
+            }).populate({
+              path: 'anioF',
+              select: 'name'
+            }).populate({
+              path: 'estadoTasacionE',
+              select: 'name'
+            }).populate({
+              path: 'sucursalE',
+              select: 'name'
+            }).populate({
+              path: 'origenTasacion',
+              select: 'name'
+            }).populate({
+              path: 'metodoTasacion',
+              select: 'name'
             }).populate({
               path: 'asesor_venta',
               select: 'name'
@@ -50,7 +82,7 @@ tasacionCtrl.getAll = /*#__PURE__*/function () {
               select: 'name'
             }).populate({
               path: 'createdBy',
-              select: 'name'
+              select: 'name username'
             });
 
           case 3:
@@ -63,7 +95,7 @@ tasacionCtrl.getAll = /*#__PURE__*/function () {
 
             res.json({
               total: query.length,
-              tasaciones: query
+              all: query
             });
             _context.next = 9;
             break;
@@ -107,9 +139,36 @@ tasacionCtrl.getOneById = /*#__PURE__*/function () {
             tasacionId = req.params.tasacionId;
             _context2.prev = 1;
             _context2.next = 4;
-            return _Tasacion.default.findById(tasacionId).populate({
+            return _Tasacion.default.findById(tasacionId).sort({
+              fecha_operacion: -1
+            }).populate({
               path: 'cliente',
-              select: 'name document email cellphone address'
+              select: 'name document typeDocument email cellphone representanteLegal'
+            }).populate({
+              path: 'colorE',
+              select: 'name'
+            }).populate({
+              path: 'auto',
+              select: 'name avatar marca',
+              populate: {
+                path: 'marca',
+                select: 'avatar name'
+              }
+            }).populate({
+              path: 'anioF',
+              select: 'name'
+            }).populate({
+              path: 'estadoTasacionE',
+              select: 'name'
+            }).populate({
+              path: 'sucursalE',
+              select: 'name'
+            }).populate({
+              path: 'origenTasacion',
+              select: 'name'
+            }).populate({
+              path: 'metodoTasacion',
+              select: 'name'
             }).populate({
               path: 'asesor_venta',
               select: 'name'
@@ -121,7 +180,7 @@ tasacionCtrl.getOneById = /*#__PURE__*/function () {
               select: 'name'
             }).populate({
               path: 'createdBy',
-              select: 'name'
+              select: 'name username'
             });
 
           case 4:
@@ -132,7 +191,9 @@ tasacionCtrl.getOneById = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              one: query
+            });
             _context2.next = 10;
             break;
 
@@ -167,30 +228,61 @@ tasacionCtrl.getOneById = /*#__PURE__*/function () {
 
 tasacionCtrl.getAllByTasador = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var tasador, userFound, query;
+    var _req$body, status_tasacion, createdBy, userFound, query;
+
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            tasador = req.body.tasador;
+            _req$body = req.body, status_tasacion = _req$body.status_tasacion, createdBy = _req$body.createdBy;
             _context3.prev = 1;
             _context3.next = 4;
-            return _User.default.find({
-              username: tasador
+            return _User.default.findOne({
+              username: createdBy
             });
 
           case 4:
             userFound = _context3.sent;
-            _context3.next = 7;
+
+            if (userFound) {
+              _context3.next = 7;
+              break;
+            }
+
+            return _context3.abrupt("return", res.status(404).json({
+              message: "Usuario ".concat(createdBy, " no encontrado")
+            }));
+
+          case 7:
+            _context3.next = 9;
             return _Tasacion.default.find({
-              createdBy: userFound.map(function (a) {
-                return a._id;
-              })
+              status_tasacion: {
+                $regex: '.*' + status_tasacion + '.*'
+              },
+              createdBy: userFound._id
             }).sort({
-              name: 'asc'
+              name: 1
             }).populate({
               path: 'cliente',
               select: 'name document'
+            }).populate({
+              path: 'colorE',
+              select: 'name'
+            }).populate({
+              path: 'anioF',
+              select: 'name'
+            }).populate({
+              path: 'estadoTasacionE',
+              select: 'name'
+            }).populate({
+              path: 'sucursalE',
+              select: 'name'
+            }).populate({
+              path: 'origenTasacion',
+              select: 'name'
+            }).populate({
+              path: 'metodoTasacion',
+              select: 'name'
             }).populate({
               path: 'asesor_venta',
               select: 'name'
@@ -202,46 +294,46 @@ tasacionCtrl.getAllByTasador = /*#__PURE__*/function () {
               select: 'name'
             }).populate({
               path: 'createdBy',
-              select: 'name'
+              select: 'name username'
             });
 
-          case 7:
+          case 9:
             query = _context3.sent;
 
-            if (!(query.length > 0)) {
-              _context3.next = 12;
+            if (!(query.length >= 0)) {
+              _context3.next = 14;
               break;
             }
 
             res.json({
-              nro_request: query.length,
-              requests: query
+              total: query.length,
+              all: query
             });
-            _context3.next = 13;
+            _context3.next = 15;
             break;
 
-          case 12:
+          case 14:
             return _context3.abrupt("return", res.status(404).json({
-              message: 'No existen Tasaciones'
+              message: "No existen Tasaciones de ".concat(createdBy)
             }));
 
-          case 13:
-            _context3.next = 18;
+          case 15:
+            _context3.next = 20;
             break;
 
-          case 15:
-            _context3.prev = 15;
+          case 17:
+            _context3.prev = 17;
             _context3.t0 = _context3["catch"](1);
             return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
             }));
 
-          case 18:
+          case 20:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 15]]);
+    }, _callee3, null, [[1, 17]]);
   }));
 
   return function (_x5, _x6) {
@@ -249,156 +341,97 @@ tasacionCtrl.getAllByTasador = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.createTasacion = /*#__PURE__*/function () {
+tasacionCtrl.getAllByDatesyEstado = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, cliente, marca, modelo, version, placa, color, anio_fabricacion, kilometraje, tipo_transmision, num_propietarios, precio, observacion, empresa, sucursal, origen_operacion, metodo, fecha_operacion, mes, comentario, ingresoPor, asesor_venta, asesor_servicio, inspeccion_tecnica, tecnico_inspector, createdBy, obj, customerFound, sellerFound, servicesFound, tecnicoFound, userFound, query;
+    var _req$body2, estado, start, end, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, cliente = _req$body.cliente, marca = _req$body.marca, modelo = _req$body.modelo, version = _req$body.version, placa = _req$body.placa, color = _req$body.color, anio_fabricacion = _req$body.anio_fabricacion, kilometraje = _req$body.kilometraje, tipo_transmision = _req$body.tipo_transmision, num_propietarios = _req$body.num_propietarios, precio = _req$body.precio, observacion = _req$body.observacion, empresa = _req$body.empresa, sucursal = _req$body.sucursal, origen_operacion = _req$body.origen_operacion, metodo = _req$body.metodo, fecha_operacion = _req$body.fecha_operacion, mes = _req$body.mes, comentario = _req$body.comentario, ingresoPor = _req$body.ingresoPor, asesor_venta = _req$body.asesor_venta, asesor_servicio = _req$body.asesor_servicio, inspeccion_tecnica = _req$body.inspeccion_tecnica, tecnico_inspector = _req$body.tecnico_inspector, createdBy = _req$body.createdBy;
+            _req$body2 = req.body, estado = _req$body2.estado, start = _req$body2.start, end = _req$body2.end;
             _context4.prev = 1;
-            obj = new _Tasacion.default({
-              marca: marca,
-              modelo: modelo,
-              version: version,
-              placa: placa,
-              color: color,
-              anio_fabricacion: anio_fabricacion,
-              kilometraje: kilometraje,
-              tipo_transmision: tipo_transmision,
-              num_propietarios: num_propietarios,
-              precio: precio,
-              observacion: observacion,
-              empresa: empresa,
-              sucursal: sucursal,
-              origen_operacion: origen_operacion,
-              metodo: metodo,
-              fecha_operacion: fecha_operacion,
-              mes: mes,
-              comentario: comentario,
-              ingresoPor: ingresoPor,
-              inspeccion_tecnica: inspeccion_tecnica
-            });
-            _context4.next = 5;
-            return _Customer.default.find({
-              name: {
-                $in: cliente
+            _context4.next = 4;
+            return _Tasacion.default.find({
+              status_tasacion: estado,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
               }
+            }).sort({
+              fecha_operacion: -1
+            }).populate({
+              path: 'cliente',
+              select: 'name document'
+            }).populate({
+              path: 'colorE',
+              select: 'name'
+            }).populate({
+              path: 'anioF',
+              select: 'name'
+            }).populate({
+              path: 'estadoTasacionE',
+              select: 'name'
+            }).populate({
+              path: 'sucursalE',
+              select: 'name'
+            }).populate({
+              path: 'origenTasacion',
+              select: 'name'
+            }).populate({
+              path: 'metodoTasacion',
+              select: 'name'
+            }).populate({
+              path: 'asesor_venta',
+              select: 'name'
+            }).populate({
+              path: 'asesor_servicio',
+              select: 'name'
+            }).populate({
+              path: 'tecnico_inspector',
+              select: 'name'
+            }).populate({
+              path: 'createdBy',
+              select: 'name username'
             });
 
-          case 5:
-            customerFound = _context4.sent;
-            obj.cliente = customerFound.map(function (a) {
-              return a._id;
-            });
+          case 4:
+            query = _context4.sent;
 
-            if (!asesor_venta) {
-              _context4.next = 14;
+            if (!(query.length > 0)) {
+              _context4.next = 9;
               break;
             }
 
-            _context4.next = 10;
-            return _Seller.default.find({
-              name: {
-                $in: asesor_venta
-              }
+            res.json({
+              total: query.length,
+              all: query
             });
+            _context4.next = 10;
+            break;
+
+          case 9:
+            return _context4.abrupt("return", res.status(404).json({
+              message: "No existen Tasaciones ".concat(estado)
+            }));
 
           case 10:
-            sellerFound = _context4.sent;
-            obj.asesor_venta = sellerFound.map(function (b) {
-              return b._id;
-            });
             _context4.next = 15;
             break;
 
-          case 14:
-            obj.asesor_venta = null;
-
-          case 15:
-            if (!asesor_servicio) {
-              _context4.next = 22;
-              break;
-            }
-
-            _context4.next = 18;
-            return _AServicios.default.find({
-              name: asesor_servicio
-            });
-
-          case 18:
-            servicesFound = _context4.sent;
-            obj.asesor_servicio = servicesFound.map(function (c) {
-              return c._id;
-            });
-            _context4.next = 23;
-            break;
-
-          case 22:
-            obj.asesor_servicio = null;
-
-          case 23:
-            if (!tecnico_inspector) {
-              _context4.next = 30;
-              break;
-            }
-
-            _context4.next = 26;
-            return _Tecnico.default.find({
-              name: tecnico_inspector
-            });
-
-          case 26:
-            tecnicoFound = _context4.sent;
-            obj.tecnico_inspector = tecnicoFound.map(function (d) {
-              return d._id;
-            });
-            _context4.next = 31;
-            break;
-
-          case 30:
-            obj.tecnico_inspector = null;
-
-          case 31:
-            _context4.next = 33;
-            return _User.default.find({
-              username: {
-                $in: createdBy
-              }
-            });
-
-          case 33:
-            userFound = _context4.sent;
-            obj.createdBy = userFound.map(function (e) {
-              return e._id;
-            });
-            _context4.next = 37;
-            return obj.save();
-
-          case 37:
-            query = _context4.sent;
-            if (query) res.json({
-              message: 'Tasación creada con éxito'
-            });
-            _context4.next = 45;
-            break;
-
-          case 41:
-            _context4.prev = 41;
+          case 12:
+            _context4.prev = 12;
             _context4.t0 = _context4["catch"](1);
-            console.error(_context4.t0);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
             }));
 
-          case 45:
+          case 15:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[1, 41]]);
+    }, _callee4, null, [[1, 12]]);
   }));
 
   return function (_x7, _x8) {
@@ -406,68 +439,325 @@ tasacionCtrl.createTasacion = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.updatedOneById = /*#__PURE__*/function () {
+tasacionCtrl.createOne = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var tasacionId, _req$body2, status_tasacion, IsProceso, fechaProceso, IsRechazado, fechaRechazado, IsCerrado, fechaCerrado, comentario, motivo, nro_serie_nuevo_vehiculo, modelo_nuevo_vehiculo, query;
+    var _req$body3, cliente, marca, modelo, version, auto, placa, colorE, anioF, kilometraje, tipo_transmision, num_propietarios, precio, observacion, empresa, sucursal, sucursalE, origenTasacion, metodoTasacion, fecha_operacion, fechaIngresado, comentario, status_tasacion, estadoTasacionE, ingresoPor, asesor_venta, asesor_servicio, inspeccion_tecnica, tecnico_inspector, createdBy, obj, customerFound, colorFound, anioFound, autoFound, sucursalFound, origenFound, metodoFound, estadoFound, sellerFound, servicesFound, tecnicoFound, userFound, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            tasacionId = req.params.tasacionId;
-            _req$body2 = req.body, status_tasacion = _req$body2.status_tasacion, IsProceso = _req$body2.IsProceso, fechaProceso = _req$body2.fechaProceso, IsRechazado = _req$body2.IsRechazado, fechaRechazado = _req$body2.fechaRechazado, IsCerrado = _req$body2.IsCerrado, fechaCerrado = _req$body2.fechaCerrado, comentario = _req$body2.comentario, motivo = _req$body2.motivo, nro_serie_nuevo_vehiculo = _req$body2.nro_serie_nuevo_vehiculo, modelo_nuevo_vehiculo = _req$body2.modelo_nuevo_vehiculo;
-            _context5.prev = 2;
-            _context5.next = 5;
-            return _Tasacion.default.findByIdAndUpdate(tasacionId, {
-              status_tasacion: status_tasacion,
-              IsProceso: IsProceso,
-              fechaProceso: fechaProceso,
-              IsRechazado: IsRechazado,
-              fechaRechazado: fechaRechazado,
-              IsCerrado: IsCerrado,
-              fechaCerrado: fechaCerrado,
+            _req$body3 = req.body, cliente = _req$body3.cliente, marca = _req$body3.marca, modelo = _req$body3.modelo, version = _req$body3.version, auto = _req$body3.auto, placa = _req$body3.placa, colorE = _req$body3.colorE, anioF = _req$body3.anioF, kilometraje = _req$body3.kilometraje, tipo_transmision = _req$body3.tipo_transmision, num_propietarios = _req$body3.num_propietarios, precio = _req$body3.precio, observacion = _req$body3.observacion, empresa = _req$body3.empresa, sucursal = _req$body3.sucursal, sucursalE = _req$body3.sucursalE, origenTasacion = _req$body3.origenTasacion, metodoTasacion = _req$body3.metodoTasacion, fecha_operacion = _req$body3.fecha_operacion, fechaIngresado = _req$body3.fechaIngresado, comentario = _req$body3.comentario, status_tasacion = _req$body3.status_tasacion, estadoTasacionE = _req$body3.estadoTasacionE, ingresoPor = _req$body3.ingresoPor, asesor_venta = _req$body3.asesor_venta, asesor_servicio = _req$body3.asesor_servicio, inspeccion_tecnica = _req$body3.inspeccion_tecnica, tecnico_inspector = _req$body3.tecnico_inspector, createdBy = _req$body3.createdBy;
+            _context5.prev = 1;
+            obj = new _Tasacion.default({
+              marca: marca,
+              modelo: modelo,
+              version: version,
+              placa: placa,
+              kilometraje: kilometraje,
+              tipo_transmision: tipo_transmision,
+              num_propietarios: num_propietarios,
+              precio: precio,
+              observacion: observacion,
+              empresa: empresa,
+              sucursal: sucursal,
+              fecha_operacion: fecha_operacion,
+              fechaIngresado: fechaIngresado,
               comentario: comentario,
-              motivo: motivo,
-              nro_serie_nuevo_vehiculo: nro_serie_nuevo_vehiculo,
-              modelo_nuevo_vehiculo: modelo_nuevo_vehiculo
+              status_tasacion: status_tasacion,
+              ingresoPor: ingresoPor,
+              inspeccion_tecnica: inspeccion_tecnica
+            });
+            _context5.next = 5;
+            return _Customer.default.findOne({
+              name: cliente
             });
 
           case 5:
-            query = _context5.sent;
+            customerFound = _context5.sent;
 
-            if (!query) {
-              _context5.next = 10;
+            if (customerFound) {
+              _context5.next = 8;
               break;
             }
 
-            res.json({
-              message: 'Tasación actualizada con éxito'
-            });
-            _context5.next = 11;
-            break;
-
-          case 10:
             return _context5.abrupt("return", res.status(404).json({
-              messsage: 'No existe Tasación a actualizar'
+              message: "Cliente ".concat(cliente, " no encontrado")
             }));
 
+          case 8:
+            obj.cliente = customerFound._id;
+            _context5.next = 11;
+            return _Colores.default.findOne({
+              name: colorE
+            });
+
           case 11:
-            _context5.next = 16;
+            colorFound = _context5.sent;
+
+            if (colorFound) {
+              _context5.next = 14;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Color ".concat(colorE, " no encontrado")
+            }));
+
+          case 14:
+            obj.colorE = colorFound._id;
+            _context5.next = 17;
+            return _Anio.default.findOne({
+              name: anioF
+            });
+
+          case 17:
+            anioFound = _context5.sent;
+
+            if (anioFound) {
+              _context5.next = 20;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "A\xF1o ".concat(anioF, " no encontrado")
+            }));
+
+          case 20:
+            obj.anioF = anioFound._id;
+            _context5.next = 23;
+            return _ModeloTasaciones.default.findOne({
+              name: auto
+            });
+
+          case 23:
+            autoFound = _context5.sent;
+
+            if (autoFound) {
+              _context5.next = 26;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Modelo ".concat(auto, " no encontrado")
+            }));
+
+          case 26:
+            obj.auto = autoFound._id;
+            _context5.next = 29;
+            return _Sucursal.default.findOne({
+              name: sucursalE
+            });
+
+          case 29:
+            sucursalFound = _context5.sent;
+
+            if (sucursalFound) {
+              _context5.next = 32;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Sucursal ".concat(sucursalE, " no encontrado")
+            }));
+
+          case 32:
+            obj.sucursalE = sucursalFound._id;
+            _context5.next = 35;
+            return _OrigenConcesionario.default.findOne({
+              name: origenTasacion
+            });
+
+          case 35:
+            origenFound = _context5.sent;
+
+            if (origenFound) {
+              _context5.next = 38;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Origen ".concat(origenTasacion, " no encontrado")
+            }));
+
+          case 38:
+            obj.origenTasacion = origenFound._id;
+            _context5.next = 41;
+            return _MetodoAtencion.default.findOne({
+              name: metodoTasacion
+            });
+
+          case 41:
+            metodoFound = _context5.sent;
+
+            if (metodoFound) {
+              _context5.next = 44;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "M\xE9todo ".concat(metodoTasacion, " no encontrado")
+            }));
+
+          case 44:
+            obj.metodoTasacion = metodoFound._id;
+            _context5.next = 47;
+            return _StatusTasacion.default.findOne({
+              name: estadoTasacionE
+            });
+
+          case 47:
+            estadoFound = _context5.sent;
+
+            if (estadoFound) {
+              _context5.next = 50;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Estado ".concat(estadoTasacionE, " no encontrado")
+            }));
+
+          case 50:
+            obj.estadoTasacionE = estadoFound._id;
+
+            if (!asesor_venta) {
+              _context5.next = 60;
+              break;
+            }
+
+            _context5.next = 54;
+            return _Seller.default.findOne({
+              name: asesor_venta
+            });
+
+          case 54:
+            sellerFound = _context5.sent;
+
+            if (sellerFound) {
+              _context5.next = 57;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Asesor venta ".concat(asesor_venta, " no encontrado")
+            }));
+
+          case 57:
+            obj.asesor_venta = sellerFound._id;
+            _context5.next = 61;
             break;
 
-          case 13:
-            _context5.prev = 13;
-            _context5.t0 = _context5["catch"](2);
+          case 60:
+            obj.asesor_venta = null;
+
+          case 61:
+            if (!asesor_servicio) {
+              _context5.next = 70;
+              break;
+            }
+
+            _context5.next = 64;
+            return _AServicios.default.findOne({
+              name: asesor_servicio
+            });
+
+          case 64:
+            servicesFound = _context5.sent;
+
+            if (servicesFound) {
+              _context5.next = 67;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Asesor servicio ".concat(asesor_servicio, " no encontrado")
+            }));
+
+          case 67:
+            obj.asesor_servicio = servicesFound._id;
+            _context5.next = 71;
+            break;
+
+          case 70:
+            obj.asesor_servicio = null;
+
+          case 71:
+            if (!tecnico_inspector) {
+              _context5.next = 80;
+              break;
+            }
+
+            _context5.next = 74;
+            return _Tecnico.default.findOne({
+              name: tecnico_inspector
+            });
+
+          case 74:
+            tecnicoFound = _context5.sent;
+
+            if (tecnicoFound) {
+              _context5.next = 77;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "T\xE9cnico ".concat(tecnico_inspector, " no encontrado")
+            }));
+
+          case 77:
+            obj.tecnico_inspector = tecnicoFound._id;
+            _context5.next = 81;
+            break;
+
+          case 80:
+            obj.tecnico_inspector = null;
+
+          case 81:
+            _context5.next = 83;
+            return _User.default.findOne({
+              username: createdBy
+            });
+
+          case 83:
+            userFound = _context5.sent;
+
+            if (userFound) {
+              _context5.next = 86;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Usuario ".concat(createdBy, " no encontrado")
+            }));
+
+          case 86:
+            obj.createdBy = userFound._id;
+            _context5.next = 89;
+            return obj.save();
+
+          case 89:
+            query = _context5.sent;
+            if (query) res.json({
+              message: 'Tasación creada con éxito'
+            });
+            _context5.next = 97;
+            break;
+
+          case 93:
+            _context5.prev = 93;
+            _context5.t0 = _context5["catch"](1);
+            console.error(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 16:
+          case 97:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 13]]);
+    }, _callee5, null, [[1, 93]]);
   }));
 
   return function (_x9, _x10) {
@@ -475,54 +765,149 @@ tasacionCtrl.updatedOneById = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.deleteOneById = /*#__PURE__*/function () {
+tasacionCtrl.updatedOneById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var tasacionId, query;
+    var tasacionId, _req$body4, status_tasacion, estadoTasacionE, IsProceso, fechaProceso, isHot, fechaHot, IsRechazado, fechaRechazado, IsCerrado, fechaCerrado, comentario, motivo, nro_serie_nuevo_vehiculo, modelo_nuevo_vehiculo, query, estadoFound;
+
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             tasacionId = req.params.tasacionId;
-            _context6.prev = 1;
-            _context6.next = 4;
-            return _Tasacion.default.findByIdAndDelete(tasacionId);
+            _req$body4 = req.body, status_tasacion = _req$body4.status_tasacion, estadoTasacionE = _req$body4.estadoTasacionE, IsProceso = _req$body4.IsProceso, fechaProceso = _req$body4.fechaProceso, isHot = _req$body4.isHot, fechaHot = _req$body4.fechaHot, IsRechazado = _req$body4.IsRechazado, fechaRechazado = _req$body4.fechaRechazado, IsCerrado = _req$body4.IsCerrado, fechaCerrado = _req$body4.fechaCerrado, comentario = _req$body4.comentario, motivo = _req$body4.motivo, nro_serie_nuevo_vehiculo = _req$body4.nro_serie_nuevo_vehiculo, modelo_nuevo_vehiculo = _req$body4.modelo_nuevo_vehiculo;
+            query = null;
+            _context6.prev = 3;
+            _context6.next = 6;
+            return _StatusTasacion.default.findOne({
+              name: estadoTasacionE
+            });
 
-          case 4:
-            query = _context6.sent;
+          case 6:
+            estadoFound = _context6.sent;
 
-            if (!query) {
+            if (estadoFound) {
               _context6.next = 9;
               break;
             }
 
-            res.json({
-              message: 'Tasación eliminada con éxito'
-            });
-            _context6.next = 10;
-            break;
-
-          case 9:
             return _context6.abrupt("return", res.status(404).json({
-              message: 'No existe la Tasación a eliminar'
+              message: "Estado ".concat(estadoTasacionE, " no encontrado")
             }));
 
-          case 10:
-            _context6.next = 15;
-            break;
+          case 9:
+            if (!(estadoTasacionE == 'EN PROCESO')) {
+              _context6.next = 15;
+              break;
+            }
+
+            _context6.next = 12;
+            return _Tasacion.default.findByIdAndUpdate(tasacionId, {
+              status_tasacion: status_tasacion,
+              estadoTasacionE: estadoFound._id,
+              IsProceso: IsProceso,
+              fechaProceso: fechaProceso,
+              comentario: comentario
+            });
 
           case 12:
-            _context6.prev = 12;
-            _context6.t0 = _context6["catch"](1);
+            query = _context6.sent;
+            _context6.next = 31;
+            break;
+
+          case 15:
+            if (!(estadoTasacionE == 'HOT')) {
+              _context6.next = 21;
+              break;
+            }
+
+            _context6.next = 18;
+            return _Tasacion.default.findByIdAndUpdate(tasacionId, {
+              status_tasacion: status_tasacion,
+              estadoTasacionE: estadoFound._id,
+              isHot: isHot,
+              fechaHot: fechaHot,
+              comentario: comentario
+            });
+
+          case 18:
+            query = _context6.sent;
+            _context6.next = 31;
+            break;
+
+          case 21:
+            if (!(estadoTasacionE == 'RECHAZADO')) {
+              _context6.next = 27;
+              break;
+            }
+
+            _context6.next = 24;
+            return _Tasacion.default.findByIdAndUpdate(tasacionId, {
+              status_tasacion: status_tasacion,
+              estadoTasacionE: estadoFound._id,
+              IsRechazado: IsRechazado,
+              fechaRechazado: fechaRechazado,
+              motivo: motivo
+            });
+
+          case 24:
+            query = _context6.sent;
+            _context6.next = 31;
+            break;
+
+          case 27:
+            if (!(estadoTasacionE == 'CERRADO')) {
+              _context6.next = 31;
+              break;
+            }
+
+            _context6.next = 30;
+            return _Tasacion.default.findByIdAndUpdate(tasacionId, {
+              status_tasacion: status_tasacion,
+              estadoTasacionE: estadoFound._id,
+              IsCerrado: IsCerrado,
+              fechaCerrado: fechaCerrado,
+              comentario: comentario,
+              nro_serie_nuevo_vehiculo: nro_serie_nuevo_vehiculo,
+              modelo_nuevo_vehiculo: modelo_nuevo_vehiculo
+            });
+
+          case 30:
+            query = _context6.sent;
+
+          case 31:
+            if (!query) {
+              _context6.next = 35;
+              break;
+            }
+
+            res.json({
+              message: 'Tasación actualizada con éxito'
+            });
+            _context6.next = 36;
+            break;
+
+          case 35:
+            return _context6.abrupt("return", res.status(404).json({
+              messsage: 'No existe tasación a actualizar'
+            }));
+
+          case 36:
+            _context6.next = 41;
+            break;
+
+          case 38:
+            _context6.prev = 38;
+            _context6.t0 = _context6["catch"](3);
             return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
             }));
 
-          case 15:
+          case 41:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[1, 12]]);
+    }, _callee6, null, [[3, 38]]);
   }));
 
   return function (_x11, _x12) {
@@ -530,50 +915,54 @@ tasacionCtrl.deleteOneById = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.countBySucursalFecha = /*#__PURE__*/function () {
+tasacionCtrl.deleteOneById = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var _req$body3, sucursal, start, end, query;
-
+    var tasacionId, query;
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            _req$body3 = req.body, sucursal = _req$body3.sucursal, start = _req$body3.start, end = _req$body3.end;
+            tasacionId = req.params.tasacionId;
             _context7.prev = 1;
             _context7.next = 4;
-            return _Tasacion.default.where({
-              sucursal: sucursal,
-              fecha_operacion: {
-                $gte: start,
-                $lte: end
-              }
-            }).find().countDocuments();
+            return _Tasacion.default.findByIdAndDelete(tasacionId);
 
           case 4:
             query = _context7.sent;
 
-            if (query >= 0) {
-              res.json({
-                count: query
-              });
+            if (!query) {
+              _context7.next = 9;
+              break;
             }
 
-            _context7.next = 11;
+            res.json({
+              message: 'Tasación eliminada con éxito'
+            });
+            _context7.next = 10;
             break;
 
-          case 8:
-            _context7.prev = 8;
+          case 9:
+            return _context7.abrupt("return", res.status(404).json({
+              message: 'No existe la tasación a eliminar'
+            }));
+
+          case 10:
+            _context7.next = 15;
+            break;
+
+          case 12:
+            _context7.prev = 12;
             _context7.t0 = _context7["catch"](1);
             return _context7.abrupt("return", res.status(503).json({
               message: _context7.t0.message
             }));
 
-          case 11:
+          case 15:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[1, 8]]);
+    }, _callee7, null, [[1, 12]]);
   }));
 
   return function (_x13, _x14) {
@@ -581,77 +970,89 @@ tasacionCtrl.countBySucursalFecha = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.getRankingByStatus = /*#__PURE__*/function () {
+tasacionCtrl.getBySucursalFecha = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
-    var _req$body4, sucursal, start, end, filtro, query;
+    var _req$body5, sucursal, start, end, query;
 
     return _regenerator.default.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
-            _req$body4 = req.body, sucursal = _req$body4.sucursal, start = _req$body4.start, end = _req$body4.end;
+            _req$body5 = req.body, sucursal = _req$body5.sucursal, start = _req$body5.start, end = _req$body5.end; // console.log(req.body);
+
             _context8.prev = 1;
-            filtro = {
-              sucursal: sucursal,
+            _context8.next = 4;
+            return _Tasacion.default.find({
+              sucursal: {
+                $regex: '.*' + sucursal + '.*'
+              },
               fecha_operacion: {
                 $gte: new Date(start),
                 $lte: new Date(end)
               }
-            };
-            _context8.next = 5;
-            return _Tasacion.default.aggregate([{
-              $match: filtro
-            }, {
-              $group: {
-                _id: '$status_tasacion',
-                num_tasaciones: {
-                  $sum: 1
-                }
-              }
-            }, {
-              $sort: {
-                num_tasaciones: -1
-              }
-            }]);
+            }).sort({
+              fecha_operacion: -1
+            }).populate({
+              path: 'cliente',
+              select: 'name document'
+            }).populate({
+              path: 'colorE',
+              select: 'name'
+            }).populate({
+              path: 'anioF',
+              select: 'name'
+            }).populate({
+              path: 'estadoTasacionE',
+              select: 'name'
+            }).populate({
+              path: 'sucursalE',
+              select: 'name'
+            }).populate({
+              path: 'origenTasacion',
+              select: 'name'
+            }).populate({
+              path: 'metodoTasacion',
+              select: 'name'
+            }).populate({
+              path: 'asesor_venta',
+              select: 'name'
+            }).populate({
+              path: 'asesor_servicio',
+              select: 'name'
+            }).populate({
+              path: 'tecnico_inspector',
+              select: 'name'
+            }).populate({
+              path: 'createdBy',
+              select: 'name username'
+            });
 
-          case 5:
+          case 4:
             query = _context8.sent;
 
-            if (!(query.length > 0)) {
-              _context8.next = 10;
-              break;
+            if (query.length >= 0) {
+              res.json({
+                total: query.length,
+                all: query
+              });
             }
 
-            res.json({
-              total: query.length,
-              ranking: query
-            });
             _context8.next = 11;
             break;
 
-          case 10:
-            return _context8.abrupt("return", res.status(201).json({
-              message: 'No existen Tasaciones aún'
-            }));
-
-          case 11:
-            _context8.next = 17;
-            break;
-
-          case 13:
-            _context8.prev = 13;
+          case 8:
+            _context8.prev = 8;
             _context8.t0 = _context8["catch"](1);
-            console.log(_context8.t0);
             return _context8.abrupt("return", res.status(503).json({
               message: _context8.t0.message
             }));
 
-          case 17:
+          case 11:
           case "end":
             return _context8.stop();
         }
       }
-    }, _callee8, null, [[1, 13]]);
+    }, _callee8, null, [[1, 8]]);
   }));
 
   return function (_x15, _x16) {
@@ -659,15 +1060,15 @@ tasacionCtrl.getRankingByStatus = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.getCountByMetodo = /*#__PURE__*/function () {
+tasacionCtrl.getRankingByStatus = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res) {
-    var _req$body5, sucursal, start, end, filtro, query;
+    var _req$body6, sucursal, start, end, filtro, query;
 
     return _regenerator.default.wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
-            _req$body5 = req.body, sucursal = _req$body5.sucursal, start = _req$body5.start, end = _req$body5.end;
+            _req$body6 = req.body, sucursal = _req$body6.sucursal, start = _req$body6.start, end = _req$body6.end;
             _context9.prev = 1;
             filtro = {
               sucursal: sucursal,
@@ -681,7 +1082,7 @@ tasacionCtrl.getCountByMetodo = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$metodo',
+                _id: '$status_tasacion',
                 num_tasaciones: {
                   $sum: 1
                 }
@@ -737,15 +1138,15 @@ tasacionCtrl.getCountByMetodo = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.getCountByOrigen = /*#__PURE__*/function () {
+tasacionCtrl.getCountByMetodo = /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee10(req, res) {
-    var _req$body6, sucursal, start, end, filtro, query;
+    var _req$body7, sucursal, start, end, filtro, query;
 
     return _regenerator.default.wrap(function _callee10$(_context10) {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            _req$body6 = req.body, sucursal = _req$body6.sucursal, start = _req$body6.start, end = _req$body6.end;
+            _req$body7 = req.body, sucursal = _req$body7.sucursal, start = _req$body7.start, end = _req$body7.end;
             _context10.prev = 1;
             filtro = {
               sucursal: sucursal,
@@ -759,7 +1160,7 @@ tasacionCtrl.getCountByOrigen = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$origen_operacion',
+                _id: '$metodo',
                 num_tasaciones: {
                   $sum: 1
                 }
@@ -815,15 +1216,15 @@ tasacionCtrl.getCountByOrigen = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.getRankingByIngreso = /*#__PURE__*/function () {
+tasacionCtrl.getCountByOrigen = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res) {
-    var _req$body7, sucursal, start, end, filtro, query;
+    var _req$body8, sucursal, start, end, filtro, query;
 
     return _regenerator.default.wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
-            _req$body7 = req.body, sucursal = _req$body7.sucursal, start = _req$body7.start, end = _req$body7.end;
+            _req$body8 = req.body, sucursal = _req$body8.sucursal, start = _req$body8.start, end = _req$body8.end;
             _context11.prev = 1;
             filtro = {
               sucursal: sucursal,
@@ -837,7 +1238,7 @@ tasacionCtrl.getRankingByIngreso = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$ingresoPor',
+                _id: '$origen_operacion',
                 num_tasaciones: {
                   $sum: 1
                 }
@@ -893,17 +1294,95 @@ tasacionCtrl.getRankingByIngreso = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.getRankingByVendedor = /*#__PURE__*/function () {
+tasacionCtrl.getRankingByIngreso = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res) {
-    var _req$body8, sucursal, estado, ingreso, start, end, query, filtro;
+    var _req$body9, sucursal, start, end, filtro, query;
 
     return _regenerator.default.wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
-            _req$body8 = req.body, sucursal = _req$body8.sucursal, estado = _req$body8.estado, ingreso = _req$body8.ingreso, start = _req$body8.start, end = _req$body8.end;
+            _req$body9 = req.body, sucursal = _req$body9.sucursal, start = _req$body9.start, end = _req$body9.end;
+            _context12.prev = 1;
+            filtro = {
+              sucursal: sucursal,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context12.next = 5;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$ingresoPor',
+                num_tasaciones: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                num_tasaciones: -1
+              }
+            }]);
+
+          case 5:
+            query = _context12.sent;
+
+            if (!(query.length > 0)) {
+              _context12.next = 10;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              ranking: query
+            });
+            _context12.next = 11;
+            break;
+
+          case 10:
+            return _context12.abrupt("return", res.status(201).json({
+              message: 'No existen Tasaciones aún'
+            }));
+
+          case 11:
+            _context12.next = 17;
+            break;
+
+          case 13:
+            _context12.prev = 13;
+            _context12.t0 = _context12["catch"](1);
+            console.log(_context12.t0);
+            return _context12.abrupt("return", res.status(503).json({
+              message: _context12.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context12.stop();
+        }
+      }
+    }, _callee12, null, [[1, 13]]);
+  }));
+
+  return function (_x23, _x24) {
+    return _ref12.apply(this, arguments);
+  };
+}();
+
+tasacionCtrl.getRankingByVendedor = /*#__PURE__*/function () {
+  var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res) {
+    var _req$body10, sucursal, estado, ingreso, start, end, query, filtro;
+
+    return _regenerator.default.wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+            _req$body10 = req.body, sucursal = _req$body10.sucursal, estado = _req$body10.estado, ingreso = _req$body10.ingreso, start = _req$body10.start, end = _req$body10.end;
             query = null;
-            _context12.prev = 2;
+            _context13.prev = 2;
             filtro = {
               sucursal: sucursal,
               ingresoPor: ingreso,
@@ -915,11 +1394,11 @@ tasacionCtrl.getRankingByVendedor = /*#__PURE__*/function () {
             };
 
             if (!(filtro.ingresoPor == "VENTAS")) {
-              _context12.next = 10;
+              _context13.next = 10;
               break;
             }
 
-            _context12.next = 7;
+            _context13.next = 7;
             return _Tasacion.default.aggregate([{
               $match: filtro
             }, {
@@ -936,12 +1415,12 @@ tasacionCtrl.getRankingByVendedor = /*#__PURE__*/function () {
             }]);
 
           case 7:
-            query = _context12.sent;
-            _context12.next = 13;
+            query = _context13.sent;
+            _context13.next = 13;
             break;
 
           case 10:
-            _context12.next = 12;
+            _context13.next = 12;
             return _Tasacion.default.aggregate([{
               $match: filtro
             }, {
@@ -958,11 +1437,11 @@ tasacionCtrl.getRankingByVendedor = /*#__PURE__*/function () {
             }]);
 
           case 12:
-            query = _context12.sent;
+            query = _context13.sent;
 
           case 13:
             if (!(query.length > 0)) {
-              _context12.next = 17;
+              _context13.next = 17;
               break;
             }
 
@@ -970,124 +1449,32 @@ tasacionCtrl.getRankingByVendedor = /*#__PURE__*/function () {
               total: query.length,
               ranking: query
             });
-            _context12.next = 18;
+            _context13.next = 18;
             break;
 
           case 17:
-            return _context12.abrupt("return", res.status(201).json({
+            return _context13.abrupt("return", res.status(201).json({
               message: 'No existen Tasaciones aún'
             }));
 
           case 18:
-            _context12.next = 24;
+            _context13.next = 24;
             break;
 
           case 20:
-            _context12.prev = 20;
-            _context12.t0 = _context12["catch"](2);
-            console.log(_context12.t0);
-            return _context12.abrupt("return", res.status(503).json({
-              message: _context12.t0.message
+            _context13.prev = 20;
+            _context13.t0 = _context13["catch"](2);
+            console.log(_context13.t0);
+            return _context13.abrupt("return", res.status(503).json({
+              message: _context13.t0.message
             }));
 
           case 24:
           case "end":
-            return _context12.stop();
-        }
-      }
-    }, _callee12, null, [[2, 20]]);
-  }));
-
-  return function (_x23, _x24) {
-    return _ref12.apply(this, arguments);
-  };
-}();
-
-tasacionCtrl.getTasacionesBySeller = /*#__PURE__*/function () {
-  var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res) {
-    var _req$body9, vendedor, start, end, sellerFound, filtro, query;
-
-    return _regenerator.default.wrap(function _callee13$(_context13) {
-      while (1) {
-        switch (_context13.prev = _context13.next) {
-          case 0:
-            _req$body9 = req.body, vendedor = _req$body9.vendedor, start = _req$body9.start, end = _req$body9.end;
-            _context13.prev = 1;
-            _context13.next = 4;
-            return _Seller.default.findOne({
-              name: vendedor
-            });
-
-          case 4:
-            sellerFound = _context13.sent;
-
-            if (sellerFound) {
-              _context13.next = 7;
-              break;
-            }
-
-            return _context13.abrupt("return", res.status(404).json({
-              message: 'No existe el vendedor'
-            }));
-
-          case 7:
-            filtro = {
-              asesor_venta: sellerFound._id,
-              fecha_operacion: {
-                $gte: new Date(start),
-                $lte: new Date(end)
-              }
-            };
-            _context13.next = 10;
-            return _Tasacion.default.aggregate([{
-              $match: filtro
-            }, {
-              $group: {
-                _id: '$status_tasacion',
-                qty: {
-                  $sum: 1
-                }
-              }
-            }]);
-
-          case 10:
-            query = _context13.sent;
-
-            if (!(query.length > 0)) {
-              _context13.next = 15;
-              break;
-            }
-
-            res.json({
-              total: query.length,
-              deploy: query
-            });
-            _context13.next = 16;
-            break;
-
-          case 15:
-            return _context13.abrupt("return", res.status(201).json({
-              message: 'Vendedor no ingresó ninguna tasación'
-            }));
-
-          case 16:
-            _context13.next = 22;
-            break;
-
-          case 18:
-            _context13.prev = 18;
-            _context13.t0 = _context13["catch"](1);
-            console.log(err.message);
-            return _context13.abrupt("return", res.status(503).json({
-              message: err.message
-            }));
-
-          case 22:
-          case "end":
             return _context13.stop();
         }
       }
-    }, _callee13, null, [[1, 18]]);
+    }, _callee13, null, [[2, 20]]);
   }));
 
   return function (_x25, _x26) {
@@ -1095,36 +1482,36 @@ tasacionCtrl.getTasacionesBySeller = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.getTasacionesByAdvisor = /*#__PURE__*/function () {
+tasacionCtrl.getTasacionesBySeller = /*#__PURE__*/function () {
   var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
-    var _req$body10, servicios, start, end, advisorFound, filtro, query;
+    var _req$body11, vendedor, start, end, sellerFound, filtro, query;
 
     return _regenerator.default.wrap(function _callee14$(_context14) {
       while (1) {
         switch (_context14.prev = _context14.next) {
           case 0:
-            _req$body10 = req.body, servicios = _req$body10.servicios, start = _req$body10.start, end = _req$body10.end;
+            _req$body11 = req.body, vendedor = _req$body11.vendedor, start = _req$body11.start, end = _req$body11.end;
             _context14.prev = 1;
             _context14.next = 4;
-            return _AServicios.default.findOne({
-              name: servicios
+            return _Seller.default.findOne({
+              name: vendedor
             });
 
           case 4:
-            advisorFound = _context14.sent;
+            sellerFound = _context14.sent;
 
-            if (advisorFound) {
+            if (sellerFound) {
               _context14.next = 7;
               break;
             }
 
             return _context14.abrupt("return", res.status(404).json({
-              message: 'No existe el asesor de servicios'
+              message: 'No existe el vendedor'
             }));
 
           case 7:
             filtro = {
-              asesor_servicio: advisorFound._id,
+              asesor_venta: sellerFound._id,
               fecha_operacion: {
                 $gte: new Date(start),
                 $lte: new Date(end)
@@ -1187,37 +1574,36 @@ tasacionCtrl.getTasacionesByAdvisor = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.getVehiclesByVentas = /*#__PURE__*/function () {
+tasacionCtrl.getTasacionesByAdvisor = /*#__PURE__*/function () {
   var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res) {
-    var _req$body11, asesor, estado, start, end, sellerFound, filtro, query;
+    var _req$body12, servicios, start, end, advisorFound, filtro, query;
 
     return _regenerator.default.wrap(function _callee15$(_context15) {
       while (1) {
         switch (_context15.prev = _context15.next) {
           case 0:
-            _req$body11 = req.body, asesor = _req$body11.asesor, estado = _req$body11.estado, start = _req$body11.start, end = _req$body11.end;
+            _req$body12 = req.body, servicios = _req$body12.servicios, start = _req$body12.start, end = _req$body12.end;
             _context15.prev = 1;
             _context15.next = 4;
-            return _Seller.default.findOne({
-              name: asesor
+            return _AServicios.default.findOne({
+              name: servicios
             });
 
           case 4:
-            sellerFound = _context15.sent;
+            advisorFound = _context15.sent;
 
-            if (sellerFound) {
+            if (advisorFound) {
               _context15.next = 7;
               break;
             }
 
             return _context15.abrupt("return", res.status(404).json({
-              message: 'No existe el vendedor'
+              message: 'No existe el asesor de servicios'
             }));
 
           case 7:
             filtro = {
-              asesor_venta: sellerFound._id,
-              status_tasacion: estado,
+              asesor_servicio: advisorFound._id,
               fecha_operacion: {
                 $gte: new Date(start),
                 $lte: new Date(end)
@@ -1228,7 +1614,7 @@ tasacionCtrl.getVehiclesByVentas = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$modelo',
+                _id: '$status_tasacion',
                 qty: {
                   $sum: 1
                 }
@@ -1252,7 +1638,7 @@ tasacionCtrl.getVehiclesByVentas = /*#__PURE__*/function () {
 
           case 15:
             return _context15.abrupt("return", res.status(201).json({
-              message: 'Vendedor no ingresó ninguna solicitud'
+              message: 'Vendedor no ingresó ninguna tasación'
             }));
 
           case 16:
@@ -1262,9 +1648,9 @@ tasacionCtrl.getVehiclesByVentas = /*#__PURE__*/function () {
           case 18:
             _context15.prev = 18;
             _context15.t0 = _context15["catch"](1);
-            console.log(_context15.t0.message);
+            console.log(err.message);
             return _context15.abrupt("return", res.status(503).json({
-              message: _context15.t0.message
+              message: err.message
             }));
 
           case 22:
@@ -1280,36 +1666,36 @@ tasacionCtrl.getVehiclesByVentas = /*#__PURE__*/function () {
   };
 }();
 
-tasacionCtrl.getVehiclesByServicios = /*#__PURE__*/function () {
+tasacionCtrl.getVehiclesByVentas = /*#__PURE__*/function () {
   var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee16(req, res) {
-    var _req$body12, asesor, estado, start, end, advisorFound, filtro, query;
+    var _req$body13, asesor, estado, start, end, sellerFound, filtro, query;
 
     return _regenerator.default.wrap(function _callee16$(_context16) {
       while (1) {
         switch (_context16.prev = _context16.next) {
           case 0:
-            _req$body12 = req.body, asesor = _req$body12.asesor, estado = _req$body12.estado, start = _req$body12.start, end = _req$body12.end;
+            _req$body13 = req.body, asesor = _req$body13.asesor, estado = _req$body13.estado, start = _req$body13.start, end = _req$body13.end;
             _context16.prev = 1;
             _context16.next = 4;
-            return _AServicios.default.findOne({
+            return _Seller.default.findOne({
               name: asesor
             });
 
           case 4:
-            advisorFound = _context16.sent;
+            sellerFound = _context16.sent;
 
-            if (advisorFound) {
+            if (sellerFound) {
               _context16.next = 7;
               break;
             }
 
             return _context16.abrupt("return", res.status(404).json({
-              message: 'No existe el asesor de servicios'
+              message: 'No existe el vendedor'
             }));
 
           case 7:
             filtro = {
-              asesor_servicio: advisorFound._id,
+              asesor_venta: sellerFound._id,
               status_tasacion: estado,
               fecha_operacion: {
                 $gte: new Date(start),
@@ -1370,6 +1756,99 @@ tasacionCtrl.getVehiclesByServicios = /*#__PURE__*/function () {
 
   return function (_x31, _x32) {
     return _ref16.apply(this, arguments);
+  };
+}();
+
+tasacionCtrl.getVehiclesByServicios = /*#__PURE__*/function () {
+  var _ref17 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee17(req, res) {
+    var _req$body14, asesor, estado, start, end, advisorFound, filtro, query;
+
+    return _regenerator.default.wrap(function _callee17$(_context17) {
+      while (1) {
+        switch (_context17.prev = _context17.next) {
+          case 0:
+            _req$body14 = req.body, asesor = _req$body14.asesor, estado = _req$body14.estado, start = _req$body14.start, end = _req$body14.end;
+            _context17.prev = 1;
+            _context17.next = 4;
+            return _AServicios.default.findOne({
+              name: asesor
+            });
+
+          case 4:
+            advisorFound = _context17.sent;
+
+            if (advisorFound) {
+              _context17.next = 7;
+              break;
+            }
+
+            return _context17.abrupt("return", res.status(404).json({
+              message: 'No existe el asesor de servicios'
+            }));
+
+          case 7:
+            filtro = {
+              asesor_servicio: advisorFound._id,
+              status_tasacion: estado,
+              fecha_operacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            };
+            _context17.next = 10;
+            return _Tasacion.default.aggregate([{
+              $match: filtro
+            }, {
+              $group: {
+                _id: '$modelo',
+                qty: {
+                  $sum: 1
+                }
+              }
+            }]);
+
+          case 10:
+            query = _context17.sent;
+
+            if (!(query.length > 0)) {
+              _context17.next = 15;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              deploy: query
+            });
+            _context17.next = 16;
+            break;
+
+          case 15:
+            return _context17.abrupt("return", res.status(201).json({
+              message: 'Vendedor no ingresó ninguna solicitud'
+            }));
+
+          case 16:
+            _context17.next = 22;
+            break;
+
+          case 18:
+            _context17.prev = 18;
+            _context17.t0 = _context17["catch"](1);
+            console.log(_context17.t0.message);
+            return _context17.abrupt("return", res.status(503).json({
+              message: _context17.t0.message
+            }));
+
+          case 22:
+          case "end":
+            return _context17.stop();
+        }
+      }
+    }, _callee17, null, [[1, 18]]);
+  }));
+
+  return function (_x33, _x34) {
+    return _ref17.apply(this, arguments);
   };
 }();
 

@@ -4,7 +4,7 @@ export const getAll = async(req, res) => {
     try {
         const query = await Chasis.find().sort({ name: 'asc' })
         if (query.length > 0) {
-            res.json({ total: query.length, chasis: query });
+            res.json({ total: query.length, all: query });
         } else {
             return res.status(404).json({ message: 'No existen Chasis' })
         }
@@ -19,7 +19,7 @@ export const getChasisById = async(req, res) => {
     try {
         const query = await Chasis.findById(chasisId)
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe Chasis' })
         }
@@ -31,9 +31,9 @@ export const getChasisById = async(req, res) => {
 
 export const getChasisByActivo = async(req, res) => {
     try {
-        const query = await Chasis.find({ status: true }).sort({ name: 'asc' })
+        const query = await Chasis.find({ estado: true }).sort({ name: 'asc' })
         if (query.length > 0) {
-            res.json(query);
+            res.json({total_active: query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No existen Chasis Activos' })
         }
@@ -44,9 +44,9 @@ export const getChasisByActivo = async(req, res) => {
 }
 
 export const createChasis = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     try {
-        const obj = new Chasis({ name, status })
+        const obj = new Chasis({ name, estado })
         const query = await obj.save()
         if (query) {
             res.json({ message: 'Chasis creado con éxito' })
@@ -58,14 +58,14 @@ export const createChasis = async(req, res) => {
 }
 
 export const updateChasis = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     const { chasisId } = req.params;
     try {
-        const query = await Chasis.findByIdAndUpdate(chasisId, { name, status })
+        const query = await Chasis.findByIdAndUpdate(chasisId, { name, estado })
         if (query) {
             res.json({ message: 'Chasis actualizado con éxito' })
         } else {
-            res.status(404).json({ message: 'No existe Chasis a actualizar' })
+            return res.status(404).json({ message: 'No existe Chasis a actualizar' })
         }
     } catch (err) {
         console.log(err);

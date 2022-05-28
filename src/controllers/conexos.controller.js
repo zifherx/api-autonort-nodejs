@@ -1,149 +1,226 @@
+import Area from "../models/Area";
 import Conexos from "../models/Conexos";
-import User from '../models/User'
+import Sucursal from "../models/Sucursal";
+import User from "../models/User";
 
-export const getConexos = async(req, res) => {
+const conexosController = {};
+
+conexosController.getAll = async (req, res) => {
     try {
-        const query = await Conexos.find().sort({ name: 'asc' });
+        const query = await Conexos.find().sort({ name: 1 })
+        .populate({
+            path: 'areaE',
+            select: 'name'
+        })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        });
+
         if (query.length > 0) {
-            res.json(query);
+            res.json({ total: query.length, all: query });
         } else {
-            return res.status(404).json({ message: 'No existen Asesores de Conexos' })
+            return res.status(404).json({ message: "No existen asesores de conexos" });
         }
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const getConexoByActivo = async(req, res) => {
+conexosController.getAllActivos = async (req, res) => {
     try {
-        const query = await Conexos.find({ status: true }).sort({ name: 'asc' });
+        const query = await Conexos.find({ estado: true }).sort({ name: 1 })
+        .populate({
+            path: 'areaE',
+            select: 'name'
+        })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        });
+
         if (query.length > 0) {
-            res.json(query)
+            res.json({ total_active: query.length, all_active: query });
         } else {
-            return res.status(404).json({ message: 'No existen Asesores Activos' });
+            return res.status(404).json({ message: "No existen asesores activos" });
         }
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const getConexoById = async(req, res) => {
+conexosController.getOneById = async (req, res) => {
     const { conexoId } = req.params;
     try {
-        const query = await Conexos.findById(conexoId);
+        const query = await Conexos.findById(conexoId)
+        .populate({
+            path: 'areaE',
+            select: 'name'
+        })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        });
+
         if (query) {
-            res.json(query);
+            res.json({ one: query });
         } else {
-            return res.status(404).json({ message: 'No existe el Asesor' });
+            return res.status(404).json({ message: "No existe el Asesor" });
         }
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const createConexo = async(req, res) => {
-
-    const { name, email, area, sucursal, encargadoDe, status, createdBy } = req.body;
+conexosController.createOne = async (req, res) => {
+    const { name, email, areaE, sucursalE, encargadoDe, estado, createdBy } = req.body;
 
     try {
-        const newObj = new Conexos({ name, email, area, sucursal, encargadoDe, status });
+        const newObj = new Conexos({ name, email, encargadoDe, estado });
 
-        const userFound = await User.find({ username: { $in: createdBy } })
-        newObj.createdBy = userFound.map(a => a._id)
+        const areaFound = await Area.findOne({ name: areaE });
+        if (!areaFound) return res.status(404).json({ message: `Area ${areaE} no encontrada` });
+        newObj.areaE = areaFound._id;
+
+        const sucursalFound = await Sucursal.findOne({ name: sucursalE });
+        if (!sucursalFound) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrada` });
+        newObj.sucursalE = sucursalFound._id;
+
+        const userFound = await User.findOne({ username: createdBy });
+        newObj.createdBy = userFound._id;
 
         const query = await newObj.save();
         if (query) {
-            res.json({ message: 'Asesor creado con éxito' });
+            res.json({ message: "Asesor creado con éxito" });
         }
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const updateConexo = async(req, res) => {
-    const { name, email, area, sucursal, encargadoDe, status } = req.body;
+conexosController.updateOneById = async (req, res) => {
+    const { name, email, areaE, sucursalE, encargadoDe, estado } = req.body;
+    const { conexoId } = req.params;
+
+    try {
+        const areaFound = await Area.findOne({ name: areaE });
+        if (!areaFound) return res.status(404).json({ message: `Area ${areaE} no encontrada` });
+
+        const sucursalFound = await Sucursal.findOne({ name: sucursalE });
+        if (!sucursalFound) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrada` });
+
+        const query = await Conexos.findByIdAndUpdate(conexoId, {
+            name,
+            email,
+            areaE: areaFound._id,
+            sucursalE: sucursalFound._id,
+            encargadoDe,
+            estado,
+        });
+
+        if (query) {
+            res.json({ message: "Asesor actualizado con éxito" });
+        } else {
+            return res.json(404).json({ message: "No existe Asesor a actualizar" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+conexosController.deleteOneById = async (req, res) => {
     const { conexoId } = req.params;
     try {
-        const newObj = await Conexos.findByIdAndUpdate(conexoId, { name, email, area, sucursal, encargadoDe, status });
-        if (newObj) {
-            res.json({ message: 'Asesor actualizado con éxito' });
+        const query = await Conexos.findByIdAndDelete(conexoId);
+        if (query) {
+            res.json({ message: "Asesor eliminado con éxito" });
         } else {
-            return res.json(404).json({ message: 'No existe Asesor a actualizar' });
+            return res.json(404).json({ message: "No existe Asesor a eliminar" });
         }
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
     }
+};
 
-}
+conexosController.getAsesorxSucursalyArea = async (req, res) => {
+    const { sucursal, area } = req.body;
 
-export const deleteConexo = async(req, res) => {
-    const { conexoId } = req.params;
     try {
-        const newObj = await Conexos.findByIdAndDelete(conexoId);
-        if (newObj) {
-            res.json({ message: 'Asesor eliminado con éxito' });
+        const query = await Conexos.findOne({
+            area: area,
+            encargadoDe: { $in: sucursal },
+            status: true,
+        })
+        .populate({ path: 'areaE', select: 'name' })
+        .populate({ path: 'sucursalE', select: 'name' })
+        .populate({ path: 'createdBy', select: 'name username' });
+
+
+        if (query) {
+            res.json({ one: query });
         } else {
-            return res.json(404).json({ message: 'No existe Asesor a eliminar' });
+            return res.status(404).json({ message: "No se encontraron asesores" });
         }
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const obtenerAsesorxSucursal = async(req, res) => {
-    const { sucursal, area } = req.body
+conexosController.getAsesoresxArea = async (req, res) => {
+    const { areaE } = req.body;
 
     try {
-        const query = await Conexos.findOne({ area: area, encargadoDe: { $in: sucursal }, status: true });
+
+        const areaFound = await Area.findOne({name: areaE});
+        if(!areaFound) return res.status(404).json({message: `Area ${areaE} no encontrada`});
+
+        const query = await Conexos.find({ 
+            areaE: areaFound._id,
+            estado: true
+        });
 
         if (query) {
-            res.json({ asesor: query })
+            res.json({ total: query.length, all: query });
         } else {
-            return res.status(404).json({ message: 'No se encontraron asesores' })
+            return res.status(404).json({ message: "No se encontraron asesores" });
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const obtenerAsesorxArea = async(req, res) => {
-    const { area } = req.body
+conexosController.getAsesorByName = async (req, res) => {
+    const { name } = req.body;
 
     try {
-        const query = await Conexos.find({ area: area, status: true });
+        const query = await Conexos.findOne({ name })
+            .select("name email areaE sucursalE encargadoDe")
+            .populate({
+                path: 'areaE',
+                select: 'name'
+            })
+            .populate({
+                path: 'sucursalE',
+                select: 'name'
+            });
 
         if (query) {
-            res.json({ asesores: query })
+            res.json({ one: query });
         } else {
-            return res.status(404).json({ message: 'No se encontraron asesores' })
+            return res.status(404).json({ message: "No se encontraron asesores" });
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const obtenerAsesorByName = async(req, res) => {
-    const { name } = req.body
-
-    try {
-        const query = await Conexos.findOne({ name: name })
-            .select('name email area sucursal encargadoDe');
-
-        if (query) {
-            res.json({ asesor: query })
-        } else {
-            return res.status(404).json({ message: 'No se encontraron asesores' })
-        }
-    } catch (err) {
-        console.log(err);
-        return res.status(503).json({ message: err.message })
-    }
-}
+export default conexosController;

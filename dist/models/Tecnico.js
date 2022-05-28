@@ -23,7 +23,15 @@ var tecnicoSchema = new _mongoose.Schema({
   sucursal: {
     type: String
   },
+  sucursalE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
+  },
   status: {
+    type: Boolean,
+    default: true
+  },
+  estado: {
     type: Boolean,
     default: true
   }

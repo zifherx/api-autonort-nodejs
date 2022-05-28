@@ -8,10 +8,34 @@ exports.default = void 0;
 var _mongoose = require("mongoose");
 
 var recordSchema = new _mongoose.Schema({
+  codigoInterno: {
+    type: String
+  },
   //Inmatriculados
   sucursal_tramite: {
     type: String
   },
+  // Campos Actualizados----------------------------------------
+  sucursalE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
+  },
+  estadoFileE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'StatusFile',
+    default: null
+  },
+  estadoRPE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'StatusRP',
+    default: null
+  },
+  estadoAAPE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'StatusAAP',
+    default: null
+  },
+  // ------------------------------------------------------------
   fecha_recepcion: {
     type: Date
   },
@@ -99,22 +123,32 @@ var recordSchema = new _mongoose.Schema({
   fecha_entrega_placa_recepcion: {
     type: Date
   },
+  observaciones_aap: {
+    type: String
+  },
   //Empleado
   empleado: {
-    ref: 'User',
+    ref: "User",
     type: _mongoose.Schema.Types.ObjectId
   },
   //Entrega
   pasoaEntrega: {
     type: Number,
     default: 0
+  },
+  isEntregado: {
+    type: Boolean,
+    default: false
+  },
+  fechaProgramacionPDS: {
+    type: Date
   }
 }, {
   timestamps: true,
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('Record', recordSchema);
+var _default = (0, _mongoose.model)("Record", recordSchema);
 
 exports.default = _default;
 //# sourceMappingURL=Record.js.map

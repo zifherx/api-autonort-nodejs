@@ -1,8 +1,10 @@
 import {Schema,model} from 'mongoose';
 
 const portadaSchema = new Schema({
-    rutaImage: {type: String },
-    status: {type: Boolean, default: true}
+    name: { type: String },
+    nombreAvatar: {type: String},
+    avatar: {type: String },
+    estado: {type: Boolean, default: true},
 },{
     timestamps: true,
     versionKey: false

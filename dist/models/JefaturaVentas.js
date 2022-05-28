@@ -18,13 +18,32 @@ var jefaturaSchema = new _mongoose.Schema({
     type: String,
     uppercase: true
   },
+  areaE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Area'
+  },
   marca: {
     type: String
+  },
+  marcaE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'MarcaT'
   },
   sucursal: {
     type: String
   },
+  sucursalE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
+  },
   status: {
+    type: Boolean,
+    default: true
+  },
+  encargadoDe: [{
+    type: String
+  }],
+  estado: {
     type: Boolean,
     default: true
   },

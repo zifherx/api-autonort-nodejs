@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateCustomerById = exports.getCustomers = exports.getCustomerById = exports.getCustomerByDni = exports.deleteCustomerById = exports.createCustomer = void 0;
+exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -13,21 +13,24 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _Customer = _interopRequireDefault(require("../models/Customer"));
 
+var _TipoDocumento = _interopRequireDefault(require("../models/TipoDocumento"));
+
 var _User = _interopRequireDefault(require("../models/User"));
 
-var createCustomer = /*#__PURE__*/function () {
+var customerController = {};
+
+customerController.createOne = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, name, typeDocument, document, representanteLegal, documentoRepresentante, cellphone, email, address, empleado, newCustomer, foundEmployee, customerSaved;
+    var _req$body, name, tipoDocumento, document, representanteLegal, documentoRepresentante, cellphone, email, address, empleado, newCustomer, foundEmployee, tipoDocFound, query;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, typeDocument = _req$body.typeDocument, document = _req$body.document, representanteLegal = _req$body.representanteLegal, documentoRepresentante = _req$body.documentoRepresentante, cellphone = _req$body.cellphone, email = _req$body.email, address = _req$body.address, empleado = _req$body.empleado;
+            _req$body = req.body, name = _req$body.name, tipoDocumento = _req$body.tipoDocumento, document = _req$body.document, representanteLegal = _req$body.representanteLegal, documentoRepresentante = _req$body.documentoRepresentante, cellphone = _req$body.cellphone, email = _req$body.email, address = _req$body.address, empleado = _req$body.empleado;
             _context.prev = 1;
             newCustomer = new _Customer.default({
               name: name,
-              typeDocument: typeDocument,
               document: document,
               representanteLegal: representanteLegal,
               documentoRepresentante: documentoRepresentante,
@@ -36,7 +39,7 @@ var createCustomer = /*#__PURE__*/function () {
               address: address
             });
             _context.next = 5;
-            return _User.default.find({
+            return _User.default.findOne({
               username: {
                 $in: empleado
               }
@@ -44,48 +47,74 @@ var createCustomer = /*#__PURE__*/function () {
 
           case 5:
             foundEmployee = _context.sent;
-            newCustomer.empleado = foundEmployee.map(function (em) {
-              return em._id;
+
+            if (foundEmployee) {
+              _context.next = 8;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "Empleado ".concat(empleado, " no encontrado")
+            }));
+
+          case 8:
+            newCustomer.empleado = foundEmployee._id;
+            _context.next = 11;
+            return _TipoDocumento.default.findOne({
+              abreviatura: tipoDocumento
             });
-            _context.next = 9;
+
+          case 11:
+            tipoDocFound = _context.sent;
+
+            if (tipoDocFound) {
+              _context.next = 14;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "Documento de identidad ".concat(tipoDocumento, " no encontrado")
+            }));
+
+          case 14:
+            newCustomer.tipoDocumento = tipoDocFound._id;
+            _context.next = 17;
             return newCustomer.save();
 
-          case 9:
-            customerSaved = _context.sent;
+          case 17:
+            query = _context.sent;
 
-            if (customerSaved) {
+            if (query) {
               res.json({
-                message: 'Cliente creado con éxito'
+                message: "Cliente creado con éxito"
               });
             }
 
-            _context.next = 17;
+            _context.next = 25;
             break;
 
-          case 13:
-            _context.prev = 13;
+          case 21:
+            _context.prev = 21;
             _context.t0 = _context["catch"](1);
             console.log(_context.t0);
             return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
             }));
 
-          case 17:
+          case 25:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 13]]);
+    }, _callee, null, [[1, 21]]);
   }));
 
-  return function createCustomer(_x, _x2) {
+  return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 
-exports.createCustomer = createCustomer;
-
-var getCustomers = /*#__PURE__*/function () {
+customerController.getAll = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -94,11 +123,14 @@ var getCustomers = /*#__PURE__*/function () {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _Customer.default.find().populate({
-              path: 'empleado',
-              select: 'name username'
-            }).sort({
-              name: 'asc'
+            return _Customer.default.find().sort({
+              name: 1
+            }).populate({
+              path: 'tipoDocumento',
+              select: 'name abreviatura longitud'
+            }).populate({
+              path: "empleado",
+              select: "name username"
             });
 
           case 3:
@@ -109,13 +141,16 @@ var getCustomers = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context2.next = 9;
             break;
 
           case 8:
             return _context2.abrupt("return", res.status(404).json({
-              message: 'No existen Clientes'
+              message: "No existen Clientes"
             }));
 
           case 9:
@@ -138,16 +173,14 @@ var getCustomers = /*#__PURE__*/function () {
     }, _callee2, null, [[0, 11]]);
   }));
 
-  return function getCustomers(_x3, _x4) {
+  return function (_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getCustomers = getCustomers;
-
-var getCustomerById = /*#__PURE__*/function () {
+customerController.getOneById = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var customerId, customer;
+    var customerId, query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -155,23 +188,31 @@ var getCustomerById = /*#__PURE__*/function () {
             customerId = req.params.customerId;
             _context3.prev = 1;
             _context3.next = 4;
-            return _Customer.default.findById(customerId);
+            return _Customer.default.findById(customerId).populate({
+              path: 'tipoDocumento',
+              select: 'name abreviatura longitud'
+            }).populate({
+              path: 'empleado',
+              select: 'name username'
+            });
 
           case 4:
-            customer = _context3.sent;
+            query = _context3.sent;
 
-            if (!customer) {
+            if (!query) {
               _context3.next = 9;
               break;
             }
 
-            res.json(customer);
+            res.json({
+              one: query
+            });
             _context3.next = 10;
             break;
 
           case 9:
             return _context3.abrupt("return", res.status(404).json({
-              messsage: 'No existe cliente'
+              messsage: "No existe cliente"
             }));
 
           case 10:
@@ -194,42 +235,48 @@ var getCustomerById = /*#__PURE__*/function () {
     }, _callee3, null, [[1, 12]]);
   }));
 
-  return function getCustomerById(_x5, _x6) {
+  return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-exports.getCustomerById = getCustomerById;
-
-var getCustomerByDni = /*#__PURE__*/function () {
+customerController.getClienteByDNI = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var customerDni, customer;
+    var document, query;
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            customerDni = req.body.customerDni;
+            document = req.body.document;
             _context4.prev = 1;
             _context4.next = 4;
             return _Customer.default.findOne({
-              document: customerDni
+              document: document
+            }).populate({
+              path: 'tipoDocumento',
+              select: 'name abreviatura longitud'
+            }).populate({
+              path: 'empleado',
+              select: 'name username'
             });
 
           case 4:
-            customer = _context4.sent;
+            query = _context4.sent;
 
-            if (!customer) {
+            if (!query) {
               _context4.next = 9;
               break;
             }
 
-            res.json(customer);
+            res.json({
+              one: query
+            });
             _context4.next = 10;
             break;
 
           case 9:
             return _context4.abrupt("return", res.status(404).json({
-              message: 'No existe el DNI en el Sistema'
+              message: "El documento ".concat(document, " no encontrado")
             }));
 
           case 10:
@@ -252,28 +299,44 @@ var getCustomerByDni = /*#__PURE__*/function () {
     }, _callee4, null, [[1, 12]]);
   }));
 
-  return function getCustomerByDni(_x7, _x8) {
+  return function (_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-exports.getCustomerByDni = getCustomerByDni;
-
-var updateCustomerById = /*#__PURE__*/function () {
+customerController.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var customerId, _req$body2, name, typeDocument, document, representanteLegal, documentoRepresentante, cellphone, email, address, updateCustomer;
+    var customerId, _req$body2, name, tipoDocumento, document, representanteLegal, documentoRepresentante, cellphone, email, address, tipoDocFound, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             customerId = req.params.customerId;
-            _req$body2 = req.body, name = _req$body2.name, typeDocument = _req$body2.typeDocument, document = _req$body2.document, representanteLegal = _req$body2.representanteLegal, documentoRepresentante = _req$body2.documentoRepresentante, cellphone = _req$body2.cellphone, email = _req$body2.email, address = _req$body2.address;
+            _req$body2 = req.body, name = _req$body2.name, tipoDocumento = _req$body2.tipoDocumento, document = _req$body2.document, representanteLegal = _req$body2.representanteLegal, documentoRepresentante = _req$body2.documentoRepresentante, cellphone = _req$body2.cellphone, email = _req$body2.email, address = _req$body2.address;
             _context5.prev = 2;
             _context5.next = 5;
+            return _TipoDocumento.default.findOne({
+              abreviatura: tipoDocumento
+            });
+
+          case 5:
+            tipoDocFound = _context5.sent;
+
+            if (tipoDocFound) {
+              _context5.next = 8;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Documento de identidad ".concat(tipoDocumento, " no encontrado")
+            }));
+
+          case 8:
+            _context5.next = 10;
             return _Customer.default.findByIdAndUpdate(customerId, {
               name: name,
-              typeDocument: typeDocument,
+              tipoDocumento: tipoDocFound._id,
               document: document,
               representanteLegal: representanteLegal,
               documentoRepresentante: documentoRepresentante,
@@ -282,48 +345,53 @@ var updateCustomerById = /*#__PURE__*/function () {
               address: address
             });
 
-          case 5:
-            updateCustomer = _context5.sent;
+          case 10:
+            query = _context5.sent;
 
-            if (updateCustomer) {
-              res.json({
-                message: 'Cliente actualizado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                messsage: 'No existe Cliente a actualizar'
-              });
+            if (!query) {
+              _context5.next = 15;
+              break;
             }
 
-            _context5.next = 13;
+            res.json({
+              message: "Cliente actualizado con éxito"
+            });
+            _context5.next = 16;
             break;
 
-          case 9:
-            _context5.prev = 9;
+          case 15:
+            return _context5.abrupt("return", res.status(404).json({
+              messsage: "No existe cliente a actualizar"
+            }));
+
+          case 16:
+            _context5.next = 22;
+            break;
+
+          case 18:
+            _context5.prev = 18;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 13:
+          case 22:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 9]]);
+    }, _callee5, null, [[2, 18]]);
   }));
 
-  return function updateCustomerById(_x9, _x10) {
+  return function (_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.updateCustomerById = updateCustomerById;
-
-var deleteCustomerById = /*#__PURE__*/function () {
+customerController.deleteOneById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var customerId, deletedCustomer;
+    var customerId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -334,22 +402,22 @@ var deleteCustomerById = /*#__PURE__*/function () {
             return _Customer.default.findByIdAndDelete(customerId);
 
           case 4:
-            deletedCustomer = _context6.sent;
+            query = _context6.sent;
 
-            if (!deletedCustomer) {
+            if (!query) {
               _context6.next = 9;
               break;
             }
 
             res.json({
-              message: 'Cliente eliminado con éxito'
+              message: "Cliente eliminado con éxito"
             });
             _context6.next = 10;
             break;
 
           case 9:
             return _context6.abrupt("return", res.status(404).json({
-              messsage: 'No existe Cliente a eliminar'
+              messsage: "No existe cliente a eliminar"
             }));
 
           case 10:
@@ -372,10 +440,11 @@ var deleteCustomerById = /*#__PURE__*/function () {
     }, _callee6, null, [[1, 12]]);
   }));
 
-  return function deleteCustomerById(_x11, _x12) {
+  return function (_x11, _x12) {
     return _ref6.apply(this, arguments);
   };
 }();
 
-exports.deleteCustomerById = deleteCustomerById;
+var _default = customerController;
+exports.default = _default;
 //# sourceMappingURL=customer.controller.js.map

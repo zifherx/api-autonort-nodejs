@@ -5,25 +5,37 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.testRanking = exports.sendMessageWsp = exports.requestaHot = exports.obtenerRequestbyStatus = exports.getVehiclesBySeller = exports.getSolicitudesBySeller = exports.getRankingByVendedor = exports.getRankingByVehicle = exports.getRankingByStatus = exports.getOneById = exports.getCountByStatus = exports.getCountAll = exports.getAllByVendedor = exports.getAllBySucursal = exports.getAll = exports.enviarCorreoSolicitud = exports.downloadAndZipeo = exports.descargaYZip = exports.deleteRequest = exports.createRequest = exports.cambioStatusByMaf = exports.agregarNewDocuments = exports.actualizarRequest = exports.actualizarReqAprobada = void 0;
+exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _nodemailer = _interopRequireDefault(require("nodemailer"));
+var _Maf = _interopRequireDefault(require("../models/Maf"));
+
+var _Sucursal = _interopRequireDefault(require("../models/Sucursal"));
 
 var _Customer = _interopRequireDefault(require("../models/Customer"));
 
-var _Maf = _interopRequireDefault(require("../models/Maf"));
-
 var _Seller = _interopRequireDefault(require("../models/Seller"));
+
+var _Anio = _interopRequireDefault(require("../models/Anio"));
 
 var _Vehicle = _interopRequireDefault(require("../models/Vehicle"));
 
 var _User = _interopRequireDefault(require("../models/User"));
 
+var _PlanMAF = _interopRequireDefault(require("../models/PlanMAF"));
+
+var _TipoUso = _interopRequireDefault(require("../models/TipoUso"));
+
+var _StatusMafRequest = _interopRequireDefault(require("../models/StatusMafRequest"));
+
+require("dotenv/config");
+
 var _fs = _interopRequireDefault(require("fs"));
+
+var _nodemailer = _interopRequireDefault(require("nodemailer"));
 
 var _path = _interopRequireDefault(require("path"));
 
@@ -31,1709 +43,2094 @@ var _download = _interopRequireDefault(require("download"));
 
 var _admZip = _interopRequireDefault(require("adm-zip"));
 
-require("dotenv/config");
-
 var _twilio = _interopRequireDefault(require("twilio"));
 
-var getAll = /*#__PURE__*/function () {
+var mafController = {}; // Nuevos
+
+mafController.createOne = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var query;
+    var _req$body, nro_solicitud, fecha_ingreso, sucursal, sucursalE, customer, estado_civil, observaciones_ingreso, conyuge, document_conyuge, fecha_nacimiento_conyuge, lugar_trabajo, ingreso_promedio, cuota_inicial, seller, car, anioFabE, anioModE, pvp, planMAF, tipoUsoE, primer_status_request, estadoSolicitudMAF, fechaIngresoSolicitud, createdBy, evidencias, obj, sucursalFound, customerFound, sellerFound, carFound, anioFFound, anioMFound, planMafFound, tipoUsoFound, estadoFound, userFound, query;
+
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            _context.next = 3;
-            return _Maf.default.find().populate({
-              path: 'customer',
-              select: 'name document cellphone email'
-            }).populate({
-              path: 'seller',
-              select: 'name avatar sucursal marca'
-            }).populate({
-              path: 'car',
-              select: 'cod_tdp model version',
-              populate: {
-                path: 'model',
-                select: 'avatar name marca',
-                populate: {
-                  path: 'marca',
-                  select: 'avatar name'
-                }
-              }
-            }).populate({
-              path: 'userCreator',
-              select: 'name username avatar'
-            }).populate({
-              path: 'userApprove',
-              select: 'name username avatar'
-            });
+            _req$body = req.body, nro_solicitud = _req$body.nro_solicitud, fecha_ingreso = _req$body.fecha_ingreso, sucursal = _req$body.sucursal, sucursalE = _req$body.sucursalE, customer = _req$body.customer, estado_civil = _req$body.estado_civil, observaciones_ingreso = _req$body.observaciones_ingreso, conyuge = _req$body.conyuge, document_conyuge = _req$body.document_conyuge, fecha_nacimiento_conyuge = _req$body.fecha_nacimiento_conyuge, lugar_trabajo = _req$body.lugar_trabajo, ingreso_promedio = _req$body.ingreso_promedio, cuota_inicial = _req$body.cuota_inicial, seller = _req$body.seller, car = _req$body.car, anioFabE = _req$body.anioFabE, anioModE = _req$body.anioModE, pvp = _req$body.pvp, planMAF = _req$body.planMAF, tipoUsoE = _req$body.tipoUsoE, primer_status_request = _req$body.primer_status_request, estadoSolicitudMAF = _req$body.estadoSolicitudMAF, fechaIngresoSolicitud = _req$body.fechaIngresoSolicitud, createdBy = _req$body.createdBy; // console.log(req.body);
 
-          case 3:
-            query = _context.sent;
+            evidencias = req.files;
+            _context.prev = 2;
 
-            if (!(query.length > 0)) {
-              _context.next = 8;
+            if (!(evidencias.length == 0)) {
+              _context.next = 5;
               break;
             }
 
-            res.json(query);
-            _context.next = 9;
-            break;
-
-          case 8:
             return _context.abrupt("return", res.status(404).json({
-              message: 'No existen solicitudes'
+              message: "No se cargó ningún archivo"
             }));
 
-          case 9:
-            _context.next = 15;
+          case 5:
+            if (!(evidencias.length > 50)) {
+              _context.next = 7;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "Excedió el límite de archivos"
+            }));
+
+          case 7:
+            // evidencias.map((a) => {
+            //     archivos.push(a.location);
+            // });
+            obj = new _Maf.default({
+              nro_solicitud: nro_solicitud,
+              fecha_ingreso: fecha_ingreso,
+              sucursal: sucursal,
+              estado_civil: estado_civil,
+              lugar_trabajo: lugar_trabajo,
+              observaciones_ingreso: observaciones_ingreso,
+              conyuge: conyuge,
+              document_conyuge: document_conyuge,
+              fecha_nacimiento_conyuge: fecha_nacimiento_conyuge,
+              ingreso_promedio: ingreso_promedio,
+              cuota_inicial: cuota_inicial,
+              pvp: pvp,
+              evidencias: evidencias.map(function (a) {
+                return a.location;
+              }),
+              primer_status_request: primer_status_request,
+              fechaIngresoSolicitud: fechaIngresoSolicitud
+            });
+            _context.next = 10;
+            return _Sucursal.default.findOne({
+              name: sucursalE
+            });
+
+          case 10:
+            sucursalFound = _context.sent;
+
+            if (sucursalFound) {
+              _context.next = 13;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "Sucursal ".concat(sucursalE, " no encontrada")
+            }));
+
+          case 13:
+            obj.sucursalE = sucursalFound._id;
+            _context.next = 16;
+            return _Customer.default.findOne({
+              name: customer
+            });
+
+          case 16:
+            customerFound = _context.sent;
+
+            if (customerFound) {
+              _context.next = 19;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "Cliente ".concat(customer, " no encontrado")
+            }));
+
+          case 19:
+            obj.customer = customerFound._id;
+            _context.next = 22;
+            return _Seller.default.findOne({
+              name: seller
+            });
+
+          case 22:
+            sellerFound = _context.sent;
+
+            if (sellerFound) {
+              _context.next = 25;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "Vendedor ".concat(seller, " no encontrado")
+            }));
+
+          case 25:
+            obj.seller = sellerFound._id;
+            _context.next = 28;
+            return _Vehicle.default.findOne({
+              cod_tdp: car
+            });
+
+          case 28:
+            carFound = _context.sent;
+
+            if (carFound) {
+              _context.next = 31;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "Veh\xEDculo ".concat(car, " no encontrado")
+            }));
+
+          case 31:
+            obj.car = carFound._id;
+            _context.next = 34;
+            return _Anio.default.findOne({
+              name: anioFabE
+            });
+
+          case 34:
+            anioFFound = _context.sent;
+
+            if (anioFFound) {
+              _context.next = 37;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "A\xF1o Fab ".concat(anioFabE, " no encontrado")
+            }));
+
+          case 37:
+            obj.anioFabE = anioFFound._id;
+            _context.next = 40;
+            return _Anio.default.findOne({
+              name: anioModE
+            });
+
+          case 40:
+            anioMFound = _context.sent;
+
+            if (anioMFound) {
+              _context.next = 43;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "A\xF1o Mod ".concat(anioModE, " no encontrado")
+            }));
+
+          case 43:
+            obj.anioModE = anioMFound._id;
+            _context.next = 46;
+            return _PlanMAF.default.findOne({
+              name: planMAF
+            });
+
+          case 46:
+            planMafFound = _context.sent;
+
+            if (planMafFound) {
+              _context.next = 49;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "Plan ".concat(planMAF, " no encontrado")
+            }));
+
+          case 49:
+            obj.planMAF = planMafFound._id;
+            _context.next = 52;
+            return _TipoUso.default.findOne({
+              name: tipoUsoE
+            });
+
+          case 52:
+            tipoUsoFound = _context.sent;
+
+            if (tipoUsoFound) {
+              _context.next = 55;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "Tipo de uso ".concat(tipoUsoE, " no encontrado")
+            }));
+
+          case 55:
+            obj.tipoUsoE = tipoUsoFound._id;
+            _context.next = 58;
+            return _StatusMafRequest.default.findOne({
+              name: estadoSolicitudMAF
+            });
+
+          case 58:
+            estadoFound = _context.sent;
+
+            if (estadoFound) {
+              _context.next = 61;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "Estado ".concat(estadoSolicitudMAF, " no encontrado")
+            }));
+
+          case 61:
+            obj.estadoSolicitudMAF = estadoFound._id;
+            _context.next = 64;
+            return _User.default.findOne({
+              username: createdBy
+            });
+
+          case 64:
+            userFound = _context.sent;
+
+            if (userFound) {
+              _context.next = 67;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              message: "Usuario ".concat(createdBy, " no encontrado")
+            }));
+
+          case 67:
+            obj.createdBy = userFound._id;
+            obj.userCreator = userFound._id;
+            _context.next = 71;
+            return obj.save();
+
+          case 71:
+            query = _context.sent;
+
+            if (query) {
+              res.json({
+                message: "Solicitud creada con éxito"
+              });
+            }
+
+            _context.next = 79;
             break;
 
-          case 11:
-            _context.prev = 11;
-            _context.t0 = _context["catch"](0);
+          case 75:
+            _context.prev = 75;
+            _context.t0 = _context["catch"](2);
             console.log(_context.t0);
             return _context.abrupt("return", res.status(503).json({
               message: _context.t0.message
             }));
 
-          case 15:
+          case 79:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 11]]);
+    }, _callee, null, [[2, 75]]);
   }));
 
-  return function getAll(_x, _x2) {
+  return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 
-exports.getAll = getAll;
-
-var getOneById = /*#__PURE__*/function () {
+mafController.getAllByCreador = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var mafId, query;
+    var _req$body2, primer_status_request, createdBy, userFound, query;
+
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            mafId = req.params.mafId;
+            _req$body2 = req.body, primer_status_request = _req$body2.primer_status_request, createdBy = _req$body2.createdBy; // console.log(req.body);
+
             _context2.prev = 1;
             _context2.next = 4;
-            return _Maf.default.findById(mafId).populate({
-              path: 'customer',
-              select: 'name document cellphone email'
-            }).populate({
-              path: 'seller',
-              select: 'name avatar sucursal marca'
-            }).populate({
-              path: 'car',
-              select: 'cod_tdp model version',
-              populate: {
-                path: 'model',
-                select: 'avatar name marca',
-                populate: {
-                  path: 'marca',
-                  select: 'avatar name'
-                }
-              }
-            }).populate({
-              path: 'userCreator',
-              select: 'name username avatar'
-            }).populate({
-              path: 'userApprove',
-              select: 'name username avatar'
+            return _User.default.findOne({
+              username: createdBy
             });
 
           case 4:
-            query = _context2.sent;
+            userFound = _context2.sent;
 
-            if (!query) {
-              _context2.next = 9;
+            if (userFound) {
+              _context2.next = 7;
               break;
             }
 
-            res.json(query);
-            _context2.next = 10;
-            break;
-
-          case 9:
             return _context2.abrupt("return", res.status(404).json({
-              message: 'No existen solicitud'
+              mesage: "Usuario ".concat(createdBy, " no encontrado")
             }));
 
-          case 10:
-            _context2.next = 16;
+          case 7:
+            _context2.next = 9;
+            return _Maf.default.find({
+              $or: [{
+                primer_status_request: {
+                  $regex: ".*" + primer_status_request + ".*"
+                },
+                createdBy: userFound._id
+              }, {
+                primer_status_request: {
+                  $regex: ".*" + primer_status_request + ".*"
+                },
+                userCreator: userFound._id
+              }]
+            }).sort({
+              fecha_ingreso: -1
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "customer",
+              select: "name document"
+            }).populate({
+              path: "estadoSolicitudMAF",
+              select: "name"
+            }).populate({
+              path: "car",
+              select: "cod_tdp model version",
+              populate: {
+                path: "model",
+                select: "avatar name"
+              }
+            }).populate({
+              path: "seller",
+              select: "name"
+            });
+
+          case 9:
+            query = _context2.sent;
+
+            if (query.length >= 0) {
+              res.json({
+                total: query.length,
+                all: query
+              });
+            }
+
+            _context2.next = 17;
             break;
 
-          case 12:
-            _context2.prev = 12;
+          case 13:
+            _context2.prev = 13;
             _context2.t0 = _context2["catch"](1);
             console.log(_context2.t0);
             return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
             }));
 
-          case 16:
+          case 17:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[1, 12]]);
+    }, _callee2, null, [[1, 13]]);
   }));
 
-  return function getOneById(_x3, _x4) {
+  return function (_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getOneById = getOneById;
-
-var getAllByVendedor = /*#__PURE__*/function () {
+mafController.getAllBySucursal = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var vendedor, sellerFound, query;
+    var _req$body3, sucursalE, startDate, endDate, query, sucursalFound;
+
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            vendedor = req.body.vendedor;
-            _context3.prev = 1;
-            _context3.next = 4;
-            return _Seller.default.find({
-              name: vendedor
+            _req$body3 = req.body, sucursalE = _req$body3.sucursalE, startDate = _req$body3.startDate, endDate = _req$body3.endDate; // console.log(req.body);
+
+            query = null;
+            _context3.prev = 2;
+
+            if (!(sucursalE == "")) {
+              _context3.next = 9;
+              break;
+            }
+
+            _context3.next = 6;
+            return _Maf.default.find({
+              sucursal: {
+                $regex: ".*" + sucursalE + ".*"
+              },
+              fecha_ingreso: {
+                $gte: new Date(startDate),
+                $lte: new Date(endDate)
+              }
+            }).sort({
+              fecha_ingreso: -1
+            }).populate({
+              path: "customer",
+              select: "name document"
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "tipoUsoE",
+              select: "name"
+            }).populate({
+              path: "planMAF",
+              select: "name"
+            }).populate({
+              path: "seller",
+              select: "name"
+            }).populate({
+              path: "car",
+              select: "model cod_tdp version",
+              populate: {
+                path: 'model',
+                select: 'avatar name marca',
+                populate: {
+                  path: 'marca',
+                  select: 'name avatar'
+                }
+              }
+            }).populate({
+              path: "userApprove",
+              select: "name username"
+            }).populate({
+              path: "estadoSolicitudMAF",
+              select: "name"
+            }).populate({
+              path: "estadoAprobacionJefatura",
+              select: "name"
             });
 
-          case 4:
-            sellerFound = _context3.sent;
-            _context3.next = 7;
-            return _Maf.default.find({
-              seller: sellerFound.map(function (a) {
-                return a._id;
-              })
-            }).populate('customer seller car userCreator userApprove');
+          case 6:
+            query = _context3.sent;
+            _context3.next = 17;
+            break;
 
-          case 7:
+          case 9:
+            _context3.next = 11;
+            return _Sucursal.default.findOne({
+              name: sucursalE
+            });
+
+          case 11:
+            sucursalFound = _context3.sent;
+
+            if (sucursalFound) {
+              _context3.next = 14;
+              break;
+            }
+
+            return _context3.abrupt("return", res.status(404).json({
+              message: "Sucursal ".concat(sucursalE, " no encontrada")
+            }));
+
+          case 14:
+            _context3.next = 16;
+            return _Maf.default.find({
+              $or: [{
+                sucursalE: sucursalFound._id,
+                fecha_ingreso: {
+                  $gte: new Date(startDate),
+                  $lte: new Date(endDate)
+                }
+              }, {
+                sucursal: {
+                  $regex: ".*" + sucursalE + ".*"
+                },
+                fecha_ingreso: {
+                  $gte: new Date(startDate),
+                  $lte: new Date(endDate)
+                }
+              }]
+            }).sort({
+              fecha_ingreso: -1
+            }).populate({
+              path: "customer",
+              select: "name document"
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "tipoUsoE",
+              select: "name"
+            }).populate({
+              path: "planMAF",
+              select: "name"
+            }).populate({
+              path: "seller",
+              select: "name"
+            }).populate({
+              path: "car",
+              select: "model cod_tdp version",
+              populate: {
+                path: 'model',
+                select: 'avatar name marca',
+                populate: {
+                  path: 'marca',
+                  select: 'name avatar'
+                }
+              }
+            }).populate({
+              path: "userApprove",
+              select: "name username"
+            }).populate({
+              path: "seller",
+              select: "name"
+            }).populate({
+              path: "estadoSolicitudMAF",
+              select: "name"
+            }).populate({
+              path: "estadoAprobacionJefatura",
+              select: "name"
+            });
+
+          case 16:
             query = _context3.sent;
 
+          case 17:
             if (!(query.length > 0)) {
-              _context3.next = 12;
+              _context3.next = 21;
               break;
             }
 
             res.json({
-              nro_request: query.length,
-              requests: query
+              total: query.length,
+              all: query
             });
-            _context3.next = 13;
+            _context3.next = 22;
             break;
 
-          case 12:
+          case 21:
             return _context3.abrupt("return", res.status(404).json({
-              message: 'No existen solicitudes'
+              message: "No existen solicitudes"
             }));
 
-          case 13:
-            _context3.next = 19;
+          case 22:
+            _context3.next = 28;
             break;
 
-          case 15:
-            _context3.prev = 15;
-            _context3.t0 = _context3["catch"](1);
+          case 24:
+            _context3.prev = 24;
+            _context3.t0 = _context3["catch"](2);
             console.log(_context3.t0);
             return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
             }));
 
-          case 19:
+          case 28:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 15]]);
+    }, _callee3, null, [[2, 24]]);
   }));
 
-  return function getAllByVendedor(_x5, _x6) {
+  return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-exports.getAllByVendedor = getAllByVendedor;
-
-var getAllBySucursal = /*#__PURE__*/function () {
+mafController.getAllByEstado = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var sucursal, query;
+    var _req$body4, estado, sucursalE, startDate, endDate, query, estadoFound;
+
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            sucursal = req.body.sucursal;
-            _context4.prev = 1;
-            _context4.next = 4;
-            return _Maf.default.find({
-              sucursal: sucursal
-            }).populate('customer seller car userCreator userApprove');
+            _req$body4 = req.body, estado = _req$body4.estado, sucursalE = _req$body4.sucursalE, startDate = _req$body4.startDate, endDate = _req$body4.endDate;
+            query = null; // console.log(object);
 
-          case 4:
-            query = _context4.sent;
+            _context4.prev = 2;
 
-            if (!(query.length > 0)) {
+            if (!(startDate && endDate)) {
               _context4.next = 9;
               break;
             }
 
-            res.json({
-              nro_request: query.length,
-              requests: query
+            _context4.next = 6;
+            return _Maf.default.find({
+              sucursal: {
+                $regex: ".*" + sucursalE + ".*"
+              },
+              primer_status_request: {
+                $regex: ".*" + estado + ".*"
+              },
+              fecha_ingreso: {
+                $gte: new Date(startDate),
+                $lte: new Date(endDate)
+              }
+            }).sort({
+              fecha_ingreso: -1
+            }).populate({
+              path: "customer",
+              select: "name document"
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "seller",
+              select: "name email telefono"
+            }).populate({
+              path: "car",
+              select: "model cod_tdp version",
+              populate: {
+                path: "model",
+                select: "name avatar marca",
+                populate: {
+                  path: "marca",
+                  select: "name avatar"
+                }
+              }
+            }).populate({
+              path: "estadoSolicitudMAF",
+              select: "name"
+            }).populate({
+              path: "planMAF",
+              select: "name"
+            }).populate({
+              path: "tipoUsoE",
+              select: "name"
+            }).populate({
+              path: "anioFabE",
+              select: "name"
+            }).populate({
+              path: "anioModE",
+              select: "name"
+            }).populate({
+              path: "estadoAprobacionJefatura",
+              select: "name"
+            }).populate({
+              path: "userApprove",
+              select: "name username email phone"
+            }).populate({
+              path: "userCreator",
+              select: "name username"
+            }).populate({
+              path: "createdBy",
+              select: "name username"
             });
-            _context4.next = 10;
+
+          case 6:
+            query = _context4.sent;
+            _context4.next = 15;
             break;
 
           case 9:
-            return _context4.abrupt("return", res.status(404).json({
-              message: 'No existen solicitudes'
-            }));
+            _context4.next = 11;
+            return _StatusMafRequest.default.findOne({
+              name: estado
+            });
 
-          case 10:
-            _context4.next = 16;
+          case 11:
+            estadoFound = _context4.sent;
+            _context4.next = 14;
+            return _Maf.default.find({
+              $or: [{
+                sucursal: {
+                  $regex: ".*" + sucursalE + ".*"
+                },
+                primer_status_request: {
+                  $regex: ".*" + estado + ".*"
+                }
+              }, {
+                sucursal: {
+                  $regex: ".*" + sucursalE + ".*"
+                },
+                estadoSolicitudMAF: estadoFound._id
+              }]
+            }).sort({
+              fecha_ingreso: -1
+            }).populate({
+              path: "customer",
+              select: "name document"
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "seller",
+              select: "name email telefono"
+            }).populate({
+              path: "car",
+              select: "model cod_tdp version",
+              populate: {
+                path: "model",
+                select: "name avatar marca",
+                populate: {
+                  path: "marca",
+                  select: "name avatar"
+                }
+              }
+            }).populate({
+              path: "estadoSolicitudMAF",
+              select: "name"
+            }).populate({
+              path: "planMAF",
+              select: "name"
+            }).populate({
+              path: "tipoUsoE",
+              select: "name"
+            }).populate({
+              path: "anioFabE",
+              select: "name"
+            }).populate({
+              path: "anioModE",
+              select: "name"
+            }).populate({
+              path: "estadoAprobacionJefatura",
+              select: "name"
+            }).populate({
+              path: "userApprove",
+              select: "name username email phone"
+            }).populate({
+              path: "userCreator",
+              select: "name username"
+            }).populate({
+              path: "createdBy",
+              select: "name username"
+            });
+
+          case 14:
+            query = _context4.sent;
+
+          case 15:
+            if (!(query.length > 0)) {
+              _context4.next = 19;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              all: query
+            });
+            _context4.next = 20;
             break;
 
-          case 12:
-            _context4.prev = 12;
-            _context4.t0 = _context4["catch"](1);
+          case 19:
+            return _context4.abrupt("return", res.status(404).json({
+              message: "No existen solicitudes ".concat(estado)
+            }));
+
+          case 20:
+            _context4.next = 26;
+            break;
+
+          case 22:
+            _context4.prev = 22;
+            _context4.t0 = _context4["catch"](2);
             console.log(_context4.t0);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
             }));
 
-          case 16:
+          case 26:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[1, 12]]);
+    }, _callee4, null, [[2, 22]]);
   }));
 
-  return function getAllBySucursal(_x7, _x8) {
+  return function (_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-exports.getAllBySucursal = getAllBySucursal;
-
-var obtenerRequestbyStatus = /*#__PURE__*/function () {
+mafController.getOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body, status, pasoaHot, sucursal, query;
-
+    var mafId, query;
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body = req.body, status = _req$body.status, pasoaHot = _req$body.pasoaHot, sucursal = _req$body.sucursal;
+            mafId = req.params.mafId;
             _context5.prev = 1;
             _context5.next = 4;
-            return _Maf.default.find({
-              primer_status_request: status,
-              pasoaHot: pasoaHot,
-              sucursal: sucursal
-            }).populate('car seller customer');
+            return _Maf.default.findById(mafId).populate({
+              path: "customer",
+              select: "name document cellphone email typeDocument"
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "seller",
+              select: "name email cellphone"
+            }).populate({
+              path: "estadoSolicitudMAF",
+              select: "name"
+            }).populate({
+              path: "estadoAprobacionJefatura",
+              select: "name"
+            }).populate({
+              path: "userCreator",
+              select: "name username"
+            }).populate({
+              path: "createdBy",
+              select: "name username"
+            }).populate({
+              path: "car",
+              select: "cod_tdp model version",
+              populate: {
+                path: "model",
+                select: "name avatar marca",
+                populate: {
+                  path: "marca",
+                  select: "name avatar"
+                }
+              }
+            }).populate({
+              path: "anioFabE",
+              select: "name"
+            }).populate({
+              path: "anioModE",
+              select: "name"
+            }).populate({
+              path: "planMAF",
+              select: "name"
+            }).populate({
+              path: "tipoUsoE",
+              select: "name"
+            });
 
           case 4:
             query = _context5.sent;
 
-            if (!(query.length > 0)) {
-              _context5.next = 9;
-              break;
+            if (query) {
+              res.json({
+                one: query
+              });
             }
 
-            res.json(query);
-            _context5.next = 10;
+            _context5.next = 12;
             break;
 
-          case 9:
-            return _context5.abrupt("return", res.status(404).json({
-              message: "No se encuentran solicitudes en ".concat(status)
-            }));
-
-          case 10:
-            _context5.next = 16;
-            break;
-
-          case 12:
-            _context5.prev = 12;
+          case 8:
+            _context5.prev = 8;
             _context5.t0 = _context5["catch"](1);
-            console.log(_context5.t0.response);
+            console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 16:
+          case 12:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[1, 12]]);
+    }, _callee5, null, [[1, 8]]);
   }));
 
-  return function obtenerRequestbyStatus(_x9, _x10) {
+  return function (_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.obtenerRequestbyStatus = obtenerRequestbyStatus;
-
-var createRequest = /*#__PURE__*/function () {
+mafController.updateRequestStateById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var _req$body2, nro_solicitud, fecha_ingreso, hora_ingreso, sucursal, cliente, estado_civil, lugar_trabajo, conyuge, document_conyuge, fecha_nacimiento_conyuge, ingreso_promedio, cuota_inicial, vendedor, vehiculo, anio_fab, anio_mod, pvp, plan, tipo_uso, primer_status_request, observaciones_ingreso, userCreator, files, filePaths, obj, clienteEncontrado, vendedorEncontrado, vehiculoEncontrado, usuarioCreador, objCreated;
+    var _req$body5, primer_status_request, estadoSolicitudMAF, observacion, motivo, isEvaluacion, fechaEvaluacion, isObservado, fechaObservado, isRechazado, fechaRechazado, mafId, query, mafStatusFound;
 
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            _req$body2 = req.body, nro_solicitud = _req$body2.nro_solicitud, fecha_ingreso = _req$body2.fecha_ingreso, hora_ingreso = _req$body2.hora_ingreso, sucursal = _req$body2.sucursal, cliente = _req$body2.cliente, estado_civil = _req$body2.estado_civil, lugar_trabajo = _req$body2.lugar_trabajo, conyuge = _req$body2.conyuge, document_conyuge = _req$body2.document_conyuge, fecha_nacimiento_conyuge = _req$body2.fecha_nacimiento_conyuge, ingreso_promedio = _req$body2.ingreso_promedio, cuota_inicial = _req$body2.cuota_inicial, vendedor = _req$body2.vendedor, vehiculo = _req$body2.vehiculo, anio_fab = _req$body2.anio_fab, anio_mod = _req$body2.anio_mod, pvp = _req$body2.pvp, plan = _req$body2.plan, tipo_uso = _req$body2.tipo_uso, primer_status_request = _req$body2.primer_status_request, observaciones_ingreso = _req$body2.observaciones_ingreso, userCreator = _req$body2.userCreator;
-            files = req.files;
-            filePaths = [];
+            _req$body5 = req.body, primer_status_request = _req$body5.primer_status_request, estadoSolicitudMAF = _req$body5.estadoSolicitudMAF, observacion = _req$body5.observacion, motivo = _req$body5.motivo, isEvaluacion = _req$body5.isEvaluacion, fechaEvaluacion = _req$body5.fechaEvaluacion, isObservado = _req$body5.isObservado, fechaObservado = _req$body5.fechaObservado, isRechazado = _req$body5.isRechazado, fechaRechazado = _req$body5.fechaRechazado;
+            mafId = req.params.mafId;
+            query = null;
             _context6.prev = 3;
+            _context6.next = 6;
+            return _StatusMafRequest.default.findOne({
+              name: estadoSolicitudMAF
+            });
 
-            if (!(files.length === 0)) {
-              _context6.next = 6;
+          case 6:
+            mafStatusFound = _context6.sent;
+
+            if (mafStatusFound) {
+              _context6.next = 9;
               break;
             }
 
-            return _context6.abrupt("return", res.status(400).json({
-              message: 'Faltan los documentos'
+            return _context6.abrupt("return", res.status(503).json({
+              message: "Estado ".concat(estadoSolicitudMAF, " no encontrado")
             }));
 
-          case 6:
-            files.map(function (file) {
-              filePaths.push(file.location);
-            });
-            obj = new _Maf.default({
-              nro_solicitud: nro_solicitud,
-              fecha_ingreso: fecha_ingreso,
-              hora_ingreso: hora_ingreso,
-              sucursal: sucursal,
-              estado_civil: estado_civil,
-              lugar_trabajo: lugar_trabajo,
-              conyuge: conyuge,
-              document_conyuge: document_conyuge,
-              fecha_nacimiento_conyuge: fecha_nacimiento_conyuge,
-              ingreso_promedio: ingreso_promedio,
-              cuota_inicial: cuota_inicial,
-              anio_fab: anio_fab,
-              anio_mod: anio_mod,
-              pvp: pvp,
-              plan: plan,
-              tipo_uso: tipo_uso,
-              evidencias: filePaths,
+          case 9:
+            if (!(estadoSolicitudMAF == "EN EVALUACIÓN")) {
+              _context6.next = 15;
+              break;
+            }
+
+            _context6.next = 12;
+            return _Maf.default.findByIdAndUpdate(mafId, {
               primer_status_request: primer_status_request,
-              observaciones_ingreso: observaciones_ingreso
-            });
-            _context6.next = 10;
-            return _Customer.default.find({
-              name: cliente
-            });
-
-          case 10:
-            clienteEncontrado = _context6.sent;
-            obj.customer = clienteEncontrado.map(function (a) {
-              return a._id;
-            });
-            _context6.next = 14;
-            return _Seller.default.find({
-              name: vendedor
+              estadoSolicitudMAF: mafStatusFound._id,
+              observacion: observacion,
+              isEvaluacion: isEvaluacion,
+              fechaEvaluacion: fechaEvaluacion
             });
 
-          case 14:
-            vendedorEncontrado = _context6.sent;
-            obj.seller = vendedorEncontrado.map(function (b) {
-              return b._id;
-            });
+          case 12:
+            query = _context6.sent;
+            _context6.next = 25;
+            break;
+
+          case 15:
+            if (!(estadoSolicitudMAF == "OBSERVADO")) {
+              _context6.next = 21;
+              break;
+            }
+
             _context6.next = 18;
-            return _Vehicle.default.find({
-              cod_tdp: vehiculo
+            return _Maf.default.findByIdAndUpdate(mafId, {
+              primer_status_request: primer_status_request,
+              estadoSolicitudMAF: mafStatusFound._id,
+              observacion: observacion,
+              isObservado: isObservado,
+              fechaObservado: fechaObservado
             });
 
           case 18:
-            vehiculoEncontrado = _context6.sent;
-            obj.car = vehiculoEncontrado.map(function (c) {
-              return c._id;
-            });
-            _context6.next = 22;
-            return _User.default.find({
-              username: userCreator
-            });
-
-          case 22:
-            usuarioCreador = _context6.sent;
-            obj.userCreator = usuarioCreador.map(function (d) {
-              return d._id;
-            });
-            _context6.next = 26;
-            return obj.save();
-
-          case 26:
-            objCreated = _context6.sent;
-
-            if (objCreated) {
-              res.json({
-                message: 'Solicitud MAF creada con éxito'
-              });
-            }
-
-            _context6.next = 34;
+            query = _context6.sent;
+            _context6.next = 25;
             break;
 
+          case 21:
+            if (!(estadoSolicitudMAF == "RECHAZADO")) {
+              _context6.next = 25;
+              break;
+            }
+
+            _context6.next = 24;
+            return _Maf.default.findByIdAndUpdate(mafId, {
+              primer_status_request: primer_status_request,
+              estadoSolicitudMAF: mafStatusFound._id,
+              motivo: motivo,
+              isRechazado: isRechazado,
+              fechaRechazado: fechaRechazado
+            });
+
+          case 24:
+            query = _context6.sent;
+
+          case 25:
+            if (!query) {
+              _context6.next = 29;
+              break;
+            }
+
+            res.json({
+              message: "Solicitud MAF actualizada con éxito"
+            });
+            _context6.next = 30;
+            break;
+
+          case 29:
+            return _context6.abrupt("return", res.status(404).json({
+              message: "No se encontró la solicitud MAF"
+            }));
+
           case 30:
-            _context6.prev = 30;
+            _context6.next = 36;
+            break;
+
+          case 32:
+            _context6.prev = 32;
             _context6.t0 = _context6["catch"](3);
             console.log(_context6.t0);
             return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
             }));
 
-          case 34:
+          case 36:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[3, 30]]);
+    }, _callee6, null, [[3, 32]]);
   }));
 
-  return function createRequest(_x11, _x12) {
+  return function (_x11, _x12) {
     return _ref6.apply(this, arguments);
   };
 }();
 
-exports.createRequest = createRequest;
-
-var actualizarRequest = /*#__PURE__*/function () {
+mafController.approveRequestStateById = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var mafId, _req$body3, primer_status_request, fecha_respuesta, observacion, motivo, userApprove, userFound, obj;
+    var _req$body6, primer_status_request, estadoSolicitudMAF, fecha_aprobacion, carta_aprobacion, observacion, isAprobado, fechaAprobado, userApprove, mafId, docuAprobacion, estadoFound, userFound, query;
 
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
+            _req$body6 = req.body, primer_status_request = _req$body6.primer_status_request, estadoSolicitudMAF = _req$body6.estadoSolicitudMAF, fecha_aprobacion = _req$body6.fecha_aprobacion, carta_aprobacion = _req$body6.carta_aprobacion, observacion = _req$body6.observacion, isAprobado = _req$body6.isAprobado, fechaAprobado = _req$body6.fechaAprobado, userApprove = _req$body6.userApprove;
             mafId = req.params.mafId;
-            _req$body3 = req.body, primer_status_request = _req$body3.primer_status_request, fecha_respuesta = _req$body3.fecha_respuesta, observacion = _req$body3.observacion, motivo = _req$body3.motivo, userApprove = _req$body3.userApprove;
-            _context7.prev = 2;
-            _context7.next = 5;
-            return _User.default.find({
-              username: userApprove
-            });
+            docuAprobacion = req.files; // console.log(req.body);
+            // console.log(docuAprobacion);
+
+            if (!(docuAprobacion.length == 0)) {
+              _context7.next = 5;
+              break;
+            }
+
+            return _context7.abrupt("return", res.status(404).json({
+              message: "No se adjuntó ningún documento"
+            }));
 
           case 5:
-            userFound = _context7.sent;
+            _context7.prev = 5;
             _context7.next = 8;
-            return _Maf.default.findByIdAndUpdate(mafId, {
-              primer_status_request: primer_status_request,
-              fecha_respuesta: fecha_respuesta,
-              observacion: observacion,
-              motivo: motivo,
-              userApprove: userFound.map(function (a) {
-                return a._id;
-              })
+            return _StatusMafRequest.default.findOne({
+              name: estadoSolicitudMAF
             });
 
           case 8:
-            obj = _context7.sent;
+            estadoFound = _context7.sent;
 
-            if (!obj) {
-              _context7.next = 13;
+            if (estadoFound) {
+              _context7.next = 11;
+              break;
+            }
+
+            return _context7.abrupt("return", res.status(404).json({
+              message: "Estado ".concat(estadoSolicitudMAF, " no encontrado")
+            }));
+
+          case 11:
+            _context7.next = 13;
+            return _User.default.findOne({
+              username: userApprove
+            });
+
+          case 13:
+            userFound = _context7.sent;
+
+            if (userFound) {
+              _context7.next = 16;
+              break;
+            }
+
+            return _context7.abrupt("return", res.status(404).json({
+              message: "Usuario ".concat(userApprove, " no encontrado")
+            }));
+
+          case 16:
+            _context7.next = 18;
+            return _Maf.default.findByIdAndUpdate(mafId, {
+              primer_status_request: primer_status_request,
+              estadoSolicitudMAF: estadoFound._id,
+              fecha_aprobacion: fecha_aprobacion,
+              carta_aprobacion: carta_aprobacion,
+              observacion: observacion,
+              isAprobado: isAprobado,
+              fechaAprobado: fechaAprobado,
+              carta_evidencia: docuAprobacion[0].location,
+              cronograma_pagos: docuAprobacion[1].location,
+              userApprove: userFound._id
+            });
+
+          case 18:
+            query = _context7.sent;
+
+            if (!query) {
+              _context7.next = 23;
               break;
             }
 
             res.json({
-              message: 'Solicitud MAF actualizada con éxito'
+              message: "Solicitud actualizada con éxito"
             });
-            _context7.next = 14;
+            _context7.next = 24;
             break;
 
-          case 13:
+          case 23:
             return _context7.abrupt("return", res.status(404).json({
-              messsage: 'No existe Solicitud a actualizar'
+              message: "No se logr\xF3 actualizar solicitud ".concat(mafId)
             }));
 
-          case 14:
-            _context7.next = 20;
+          case 24:
+            _context7.next = 30;
             break;
 
-          case 16:
-            _context7.prev = 16;
-            _context7.t0 = _context7["catch"](2);
+          case 26:
+            _context7.prev = 26;
+            _context7.t0 = _context7["catch"](5);
             console.log(_context7.t0);
             return _context7.abrupt("return", res.status(503).json({
-              error: _context7.t0
+              message: _context7.t0.message
             }));
 
-          case 20:
+          case 30:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[2, 16]]);
+    }, _callee7, null, [[5, 26]]);
   }));
 
-  return function actualizarRequest(_x13, _x14) {
+  return function (_x13, _x14) {
     return _ref7.apply(this, arguments);
   };
 }();
 
-exports.actualizarRequest = actualizarRequest;
-
-var agregarNewDocuments = /*#__PURE__*/function () {
+mafController.reenrollRequestStateById = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
-    var mafId, _req$body4, reingresado, fecha_ingreso, primer_status_request, adicionales, filePaths, query;
+    var _req$body7, primer_status_request, estadoSolicitudMAF, observaciones_ingreso, isReingresado, fechaReingreso, mafId, adicionales, estadoFound, query;
 
     return _regenerator.default.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
+            _req$body7 = req.body, primer_status_request = _req$body7.primer_status_request, estadoSolicitudMAF = _req$body7.estadoSolicitudMAF, observaciones_ingreso = _req$body7.observaciones_ingreso, isReingresado = _req$body7.isReingresado, fechaReingreso = _req$body7.fechaReingreso;
             mafId = req.params.mafId;
-            _req$body4 = req.body, reingresado = _req$body4.reingresado, fecha_ingreso = _req$body4.fecha_ingreso, primer_status_request = _req$body4.primer_status_request;
-            adicionales = req.files; // console.log(req)
+            adicionales = req.files;
 
-            filePaths = [];
-            _context8.prev = 4;
+            if (!(adicionales.length == 0)) {
+              _context8.next = 5;
+              break;
+            }
 
-            if (!(adicionales.length === 0)) {
+            return _context8.abrupt("return", res.status(404).json({
+              message: "No se adjuntó ningún documento"
+            }));
+
+          case 5:
+            if (!(adicionales.length > 30)) {
               _context8.next = 7;
               break;
             }
 
-            return _context8.abrupt("return", res.status(400).json({
-              message: 'Falta los Documentos'
+            return _context8.abrupt("return", res.status(404).json({
+              message: "Se excedió el límite de archivos"
             }));
 
           case 7:
-            adicionales.map(function (file) {
-              filePaths.push(file.location);
-            });
+            _context8.prev = 7;
             _context8.next = 10;
-            return _Maf.default.findByIdAndUpdate(mafId, {
-              isReingresado: reingresado,
-              fecha_ingreso: fecha_ingreso,
-              primer_status_request: primer_status_request,
-              files_adicionales: filePaths
+            return _StatusMafRequest.default.findOne({
+              name: estadoSolicitudMAF
             });
 
           case 10:
+            estadoFound = _context8.sent;
+
+            if (estadoFound) {
+              _context8.next = 13;
+              break;
+            }
+
+            return _context8.abrupt("return", res.status(404).json({
+              message: "Estado ".concat(estadoSolicitudMAF, " no encontrado")
+            }));
+
+          case 13:
+            _context8.next = 15;
+            return _Maf.default.findByIdAndUpdate(mafId, {
+              primer_status_request: primer_status_request,
+              estadoSolicitudMAF: estadoFound._id,
+              observaciones_ingreso: observaciones_ingreso,
+              isReingresado: isReingresado,
+              fechaReingreso: fechaReingreso,
+              files_adicionales: adicionales.map(function (a) {
+                return a.location;
+              })
+            });
+
+          case 15:
             query = _context8.sent;
 
             if (!query) {
-              _context8.next = 15;
+              _context8.next = 20;
               break;
             }
 
             res.json({
-              message: 'Documentos agregados con éxito'
+              message: "Solicitud actualizada con éxito"
             });
-            _context8.next = 16;
+            _context8.next = 21;
             break;
 
-          case 15:
+          case 20:
             return _context8.abrupt("return", res.status(404).json({
-              message: 'No existe Solicitud a modificar'
+              message: "No se logr\xF3 actualizar solicitud ".concat(mafId)
             }));
 
-          case 16:
-            _context8.next = 22;
+          case 21:
+            _context8.next = 27;
             break;
 
-          case 18:
-            _context8.prev = 18;
-            _context8.t0 = _context8["catch"](4);
+          case 23:
+            _context8.prev = 23;
+            _context8.t0 = _context8["catch"](7);
             console.log(_context8.t0);
             return _context8.abrupt("return", res.status(503).json({
               message: _context8.t0.message
             }));
 
-          case 22:
+          case 27:
           case "end":
             return _context8.stop();
         }
       }
-    }, _callee8, null, [[4, 18]]);
+    }, _callee8, null, [[7, 23]]);
   }));
 
-  return function agregarNewDocuments(_x15, _x16) {
+  return function (_x15, _x16) {
     return _ref8.apply(this, arguments);
   };
 }();
 
-exports.agregarNewDocuments = agregarNewDocuments;
-
-var actualizarReqAprobada = /*#__PURE__*/function () {
+mafController.deleteOneById = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res) {
-    var mafId, _req$body5, primer_status_request, fecha_respuesta, observacion, fecha_aprobacion, carta_aprobacion, carta, query;
-
+    var mafId, query;
     return _regenerator.default.wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
             mafId = req.params.mafId;
-            _req$body5 = req.body, primer_status_request = _req$body5.primer_status_request, fecha_respuesta = _req$body5.fecha_respuesta, observacion = _req$body5.observacion, fecha_aprobacion = _req$body5.fecha_aprobacion, carta_aprobacion = _req$body5.carta_aprobacion;
-            carta = req.file;
-            _context9.prev = 3;
-            _context9.next = 6;
-            return _Maf.default.findByIdAndUpdate(mafId, {
-              primer_status_request: primer_status_request,
-              fecha_respuesta: fecha_respuesta,
-              observacion: observacion,
-              fecha_aprobacion: fecha_aprobacion,
-              carta_aprobacion: carta_aprobacion,
-              carta_evidencia: carta.location
-            });
+            _context9.prev = 1;
+            _context9.next = 4;
+            return _Maf.default.findByIdAndDelete(mafId);
 
-          case 6:
+          case 4:
             query = _context9.sent;
 
             if (!query) {
-              _context9.next = 11;
+              _context9.next = 9;
               break;
             }
 
             res.json({
-              message: 'Solicitud MAF aprobada con éxito'
+              message: "Solicitud MAF eliminada con éxito"
             });
-            _context9.next = 12;
+            _context9.next = 10;
             break;
 
-          case 11:
+          case 9:
             return _context9.abrupt("return", res.status(404).json({
-              message: 'No existe Solicitud a aprobar'
+              message: "No se encontró solicitud"
             }));
 
-          case 12:
-            _context9.next = 18;
+          case 10:
+            _context9.next = 16;
             break;
 
-          case 14:
-            _context9.prev = 14;
-            _context9.t0 = _context9["catch"](3);
+          case 12:
+            _context9.prev = 12;
+            _context9.t0 = _context9["catch"](1);
             console.log(_context9.t0);
             return _context9.abrupt("return", res.status(503).json({
               message: _context9.t0.message
             }));
 
-          case 18:
+          case 16:
           case "end":
             return _context9.stop();
         }
       }
-    }, _callee9, null, [[3, 14]]);
+    }, _callee9, null, [[1, 12]]);
   }));
 
-  return function actualizarReqAprobada(_x17, _x18) {
+  return function (_x17, _x18) {
     return _ref9.apply(this, arguments);
   };
-}();
+}(); // Anteriores1
 
-exports.actualizarReqAprobada = actualizarReqAprobada;
+/*
 
-var requestaHot = /*#__PURE__*/function () {
+mafController.getAll = async (req, res) => {
+    try {
+        const query = await Maf.find()
+            .populate({ path: "customer", select: "name document cellphone email" })
+            .populate({ path: "seller", select: "name avatar sucursal marca" })
+            .populate({
+                path: "car",
+                select: "cod_tdp model version",
+                populate: {
+                    path: "model",
+                    select: "avatar name marca",
+                    populate: {
+                        path: "marca",
+                        select: "avatar name",
+                    },
+                },
+            })
+            .populate({ path: "userCreator", select: "name username avatar" })
+            .populate({ path: "userApprove", select: "name username avatar" });
+        // console.log(query)
+        if (query.length > 0) {
+            res.json(query);
+        } else {
+            return res.status(404).json({ message: "No existen solicitudes" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.getOneById = async (req, res) => {
+    const { mafId } = req.params;
+
+    try {
+        const query = await Maf.findById(mafId)
+            .populate({ path: "customer", select: "name document cellphone email" })
+            .populate({ path: "seller", select: "name avatar sucursal marca" })
+            .populate({
+                path: "car",
+                select: "cod_tdp model version",
+                populate: {
+                    path: "model",
+                    select: "avatar name marca",
+                    populate: {
+                        path: "marca",
+                        select: "avatar name",
+                    },
+                },
+            })
+            .populate({ path: "userCreator", select: "name username avatar" })
+            .populate({ path: "userApprove", select: "name username avatar" });
+        // console.log(query)
+        if (query) {
+            res.json({ one: query });
+        } else {
+            return res.status(404).json({ message: "No existen solicitud" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.getAllByVendedor = async (req, res) => {
+    const { vendedor } = req.body;
+    try {
+        const sellerFound = await Seller.find({ name: vendedor });
+        const query = await Maf.find({ seller: sellerFound.map((a) => a._id) }).populate("customer seller car userCreator userApprove");
+        if (query.length > 0) {
+            res.json({ nro_request: query.length, requests: query });
+        } else {
+            return res.status(404).json({ message: "No existen solicitudes" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.getAllBySucursalyFecha = async (req, res) => {
+    const { sucursal, startDate, endDate } = req.body;
+    try {
+        const query = await Maf.find({
+            sucursal: { $regex: ".*" + sucursal + ".*" },
+            fecha_ingreso: {
+                $gte: new Date(startDate),
+                $lte: new Date(endDate),
+            },
+        })
+            .sort({ fecha_ingreso: -1 })
+            .populate({
+                path: "customer",
+                select: "name document",
+            })
+            .populate({
+                path: "seller",
+                select: "name document avatar sucursalE",
+                populate: {
+                    path: "sucursalE",
+                    select: "name",
+                },
+            })
+            .populate({
+                path: "car",
+                select: "model cod_tdp version chasis",
+                populate: [
+                    { path: "chasis", select: "name" },
+                    { path: "model", select: "name avatar marca", populate: { path: "marca", select: "name avatar" } },
+                ],
+            });
+
+        if (query.length > 0) {
+            res.json({ total: query.length, all: query });
+        } else {
+            return res.status(404).json({ message: "No existen solicitudes MAF" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.obtenerRequestbyStatus = async (req, res) => {
+    const { status, pasoaHot, sucursal } = req.body;
+    try {
+        const query = await Maf.find({ primer_status_request: status, pasoaHot: pasoaHot, sucursal: sucursal }).populate("car seller customer");
+        if (query.length > 0) {
+            res.json(query);
+        } else {
+            return res.status(404).json({ message: `No se encuentran solicitudes en ${status}` });
+        }
+    } catch (err) {
+        console.log(err.response);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.createRequest = async (req, res) => {
+    const {
+        nro_solicitud,
+        fecha_ingreso,
+        hora_ingreso,
+        sucursal,
+        cliente,
+        estado_civil,
+        lugar_trabajo,
+        conyuge,
+        document_conyuge,
+        fecha_nacimiento_conyuge,
+        ingreso_promedio,
+        cuota_inicial,
+        vendedor,
+        vehiculo,
+        anio_fab,
+        anio_mod,
+        pvp,
+        plan,
+        tipo_uso,
+        primer_status_request,
+        observaciones_ingreso,
+        userCreator,
+    } = req.body;
+    const files = req.files;
+
+    let filePaths = [];
+
+    try {
+        if (files.length === 0) return res.status(400).json({ message: "Faltan los documentos" });
+
+        files.map((file) => {
+            filePaths.push(file.location);
+        });
+
+        const obj = new Maf({
+            nro_solicitud,
+            fecha_ingreso,
+            hora_ingreso,
+            sucursal,
+            estado_civil,
+            lugar_trabajo,
+            conyuge,
+            document_conyuge,
+            fecha_nacimiento_conyuge,
+            ingreso_promedio,
+            cuota_inicial,
+            anio_fab,
+            anio_mod,
+            pvp,
+            plan,
+            tipo_uso,
+            evidencias: filePaths,
+            primer_status_request,
+            observaciones_ingreso,
+        });
+
+        let clienteEncontrado = await Customer.find({ name: cliente });
+        obj.customer = clienteEncontrado.map((a) => a._id);
+
+        let vendedorEncontrado = await Seller.find({ name: vendedor });
+        obj.seller = vendedorEncontrado.map((b) => b._id);
+
+        let vehiculoEncontrado = await Vehicle.find({ cod_tdp: vehiculo });
+        obj.car = vehiculoEncontrado.map((c) => c._id);
+
+        let usuarioCreador = await User.find({ username: userCreator });
+        obj.userCreator = usuarioCreador.map((d) => d._id);
+
+        const objCreated = await obj.save();
+
+        if (objCreated) {
+            res.json({ message: "Solicitud MAF creada con éxito" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.actualizarRequest = async (req, res) => {
+    const { mafId } = req.params;
+    const { primer_status_request, fecha_respuesta, observacion, motivo, userApprove } = req.body;
+
+    try {
+        const userFound = await User.find({ username: userApprove });
+        const obj = await Maf.findByIdAndUpdate(mafId, {
+            primer_status_request,
+            fecha_respuesta,
+            observacion,
+            motivo,
+            userApprove: userFound.map((a) => a._id),
+        });
+        if (obj) {
+            res.json({ message: "Solicitud MAF actualizada con éxito" });
+        } else {
+            return res.status(404).json({ messsage: "No existe Solicitud a actualizar" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ error: err });
+    }
+};
+
+mafController.agregarNewDocuments = async (req, res) => {
+    const { mafId } = req.params;
+    const { reingresado, fecha_ingreso, primer_status_request } = req.body;
+    const adicionales = req.files;
+    // console.log(req)
+    let filePaths = [];
+
+    try {
+        if (adicionales.length === 0) return res.status(400).json({ message: "Falta los Documentos" });
+
+        adicionales.map((file) => {
+            filePaths.push(file.location);
+        });
+
+        const query = await Maf.findByIdAndUpdate(mafId, {
+            isReingresado: reingresado,
+            fecha_ingreso,
+            primer_status_request,
+            files_adicionales: filePaths,
+        });
+
+        if (query) {
+            res.json({ message: "Documentos agregados con éxito" });
+        } else {
+            return res.status(404).json({ message: "No existe Solicitud a modificar" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.actualizarReqAprobada = async (req, res) => {
+    const { mafId } = req.params;
+    const { primer_status_request, fecha_respuesta, observacion, fecha_aprobacion, carta_aprobacion } = req.body;
+    const carta = req.file;
+
+    try {
+        const query = await Maf.findByIdAndUpdate(mafId, {
+            primer_status_request,
+            fecha_respuesta,
+            observacion,
+            fecha_aprobacion,
+            carta_aprobacion,
+            carta_evidencia: carta.location,
+        });
+
+        if (query) {
+            res.json({ message: "Solicitud MAF aprobada con éxito" });
+        } else {
+            return res.status(404).json({ message: "No existe Solicitud a aprobar" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.requestaHot = async (req, res) => {
+    const { mafId } = req.params;
+    const { pasoaHot } = req.body;
+
+    try {
+        const query = await Maf.findByIdAndUpdate(mafId, { pasoaHot });
+        if (query) {
+            res.json({ message: "Solicitud MAF se actualizó con éxito" });
+        } else {
+            return res.status(404).json({ messsage: "No existe Solicitud a actualizar" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ error: err });
+    }
+};
+
+mafController.cambioStatusByMaf = async (req, res) => {
+    const { mafId } = req.params;
+    const { tercer_status_request } = req.body;
+
+    try {
+        const query = await Maf.findByIdAndUpdate(mafId, { tercer_status_request });
+        if (query) {
+            res.json({ message: `Cambio de Status a ${tercer_status_request} con éxito` });
+        } else {
+            return res.status(404).json({ messsage: "No existe Solicitud a actualizar" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ error: err });
+    }
+};
+
+mafController.deleteRequest = async (req, res) => {
+    const { mafId } = req.params;
+
+    try {
+        const query = await Maf.findByIdAndRemove(mafId);
+        if (query) {
+            res.json({ message: "Solicitud eliminada con éxito" });
+        } else {
+            return res.status(404).json({ message: "No existe la solicitud a eliminar" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.enviarCorreoSolicitud = async (req, res) => {
+    const { to, cc, subject, text, html } = req.body;
+
+    try {
+        const transporter = nodemailer.createTransport({
+            host: "mail.autonortnor.com",
+            port: "465",
+            secure: true,
+            auth: {
+                user: "sistemadv@autonortnor.com",
+                pass: "k=q0mdgLo,QS",
+            },
+        });
+
+        let email = await transporter.sendMail({
+            from: '"Sistema ADV 👻" <sistemadv@autonortnor.com>',
+            to: to,
+            cc: [cc, "frojas@autonortnor.com.pe"],
+            subject: subject,
+            text: text,
+            html: html,
+        });
+
+        let respuesta = email.response.split(" ");
+        // console.log(respuesta)
+        // console.log(respuesta[1])
+        if (respuesta[1] == "OK") {
+            console.log("Preview URL: %s", nodemailer.getTestMessageUrl(email));
+            res.json({ message: "Mensaje enviado", info: email.messageId, retardo: email.envelopeTime, respuesta: email.response });
+        } else {
+            return res.status(500).json({ message: "Error al enviar correo" });
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.downloadAndZipeo = async (req, res) => {
+    const { files } = req.body;
+
+    try {
+        await Promise.all(files.map((url) => download(url, path.resolve("src/uploads"))));
+
+        console.log("Download completed!");
+
+        var dir = path.resolve("src/uploads");
+        var uploadDir = fs.readdirSync(dir);
+
+        const zip = new AdmZip();
+
+        for (var i = 0; i < uploadDir.length; i++) {
+            zip.addLocalFile(dir + "/" + uploadDir[i]);
+        }
+
+        const downloadName = `${Date.now()}.zip`;
+
+        const data = zip.toBuffer();
+
+        zip.writeZip(dir + "/" + downloadName);
+
+        res.json({ url: downloadName });
+
+        // delFiles();
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.descargaYZip = async (req, res) => {
+    const { links } = req.body;
+    const fileZip = req.file;
+
+    await Promise.all(links
+        .map(url => download(url, path.resolve('src/uploads'))));
+
+    console.log('Download completed!');
+    console.log(fileZip);
+};
+
+mafController.sendMessageWsp = async (req, res) => {
+    const { placa, sucursal, servicio, mejora, calificacion, destino } = req.body;
+    const accountSid = "AC5145f2cf5442844fa805e987f09751c6";
+    const authToken = "42d0808b60a3917dddcf06879e56ff4e";
+
+    const client = new twilio(accountSid, authToken);
+
+    client.messages
+        .create({
+            // body: 'Se registró una calificación en la siguiente encuesta.
+            Cliente con placa: {{1}} perteneciente a la sucursal: {{2}} que realizó el servicio de: {{3}}, sugiere mejorar en: {{4}}.
+            Su calificación es: {{5}}'
+            body: `Se registró una calificación en la siguiente encuesta. \nCliente con placa: *${placa}* perteneciente a la sucursal: *${sucursal}* que realizó el servicio de: *${servicio}*, sugiere mejorar en: *${mejora}*. \nSu calificación es: *${calificacion}*`,
+            // to: 'whatsapp:+51924063422', // Fernando Rojas
+            to: "whatsapp:+51" + destino, // Paul holguin
+            // to: '+51989927794', // Paul holguin
+            // to: '+51924063422',
+            from: "whatsapp:+18482856322", // From a valid Twilio number
+            // from: '+18482856322',
+        })
+        .then((message) => {
+            // console.log(message)
+            res.json({ ok: "Message sent", sid: message.sid, status: message.status });
+        });
+};
+
+mafController.getCountAll = async (req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    try {
+        const query = await Maf.find({
+            sucursal: sucursal,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) },
+        }).countDocuments();
+
+        if (query >= 0) {
+            res.json({ count: query });
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.getCountByStatus = async (req, res) => {
+    const { sucursal, estado, start, end } = req.body;
+
+    try {
+        const query = await Maf.find({
+            sucursal: sucursal,
+            primer_status_request: estado,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) },
+        }).countDocuments();
+
+        if (query >= 0) {
+            res.json({ count: query });
+        }
+    } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.getRankingByStatus = async (req, res) => {
+    const { sucursal, start, end } = req.body;
+
+    try {
+        const filtro = {
+            sucursal: sucursal,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) },
+        };
+
+        const query = await Maf.aggregate([
+            {
+                $match: filtro,
+            },
+            {
+                $group: {
+                    _id: "$primer_status_request",
+                    num_solicitudes: { $sum: 1 },
+                },
+            },
+            {
+                $sort: { num_solicitudes: -1 },
+            },
+        ]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query });
+        } else {
+            return res.status(201).json({ message: "No existen Solicitudes aún" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.getRankingByVendedor = async (req, res) => {
+    const { sucursal, estado, start, end } = req.body;
+
+    try {
+        const filtro = {
+            sucursal: sucursal,
+            primer_status_request: estado,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) },
+        };
+
+        const query = await Maf.aggregate([
+            {
+                $match: filtro,
+            },
+            {
+                $group: {
+                    _id: "$seller",
+                    num_solicitudes: { $sum: 1 },
+                },
+            },
+            {
+                $sort: { num_solicitudes: -1 },
+            },
+        ]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query });
+        } else {
+            return res.status(201).json({ message: "No existen Solicitudes aún" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.getRankingByVehicle = async (req, res) => {
+    const { sucursal, estado, start, end } = req.body;
+
+    try {
+        const filtro = {
+            sucursal: sucursal,
+            primer_status_request: estado,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) },
+        };
+
+        const query = await Maf.aggregate([
+            {
+                $match: filtro,
+            },
+            {
+                $group: {
+                    _id: "$car",
+                    num_solicitudes: { $sum: 1 },
+                },
+            },
+            {
+                $sort: { num_solicitudes: -1 },
+            },
+        ]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, ranking: query });
+        } else {
+            return res.status(201).json({ message: "No existen Solicitudes aún" });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.getSolicitudesBySeller = async (req, res) => {
+    const { vendedor, start, end } = req.body;
+
+    try {
+        const sellerFound = await Seller.findOne({ name: vendedor });
+
+        if (!sellerFound) return res.status(404).json({ message: "No existe el vendedor" });
+
+        const filtro = { seller: sellerFound._id, fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) } };
+
+        const query = await Maf.aggregate([
+            {
+                $match: filtro,
+            },
+            {
+                $group: {
+                    _id: "$primer_status_request",
+                    qty: { $sum: 1 },
+                },
+            },
+        ]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: "Vendedor no ingresó ninguna solicitud" });
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.getVehiclesBySeller = async (req, res) => {
+    const { vendedor, estado, start, end } = req.body;
+
+    try {
+        const sellerFound = await Seller.findOne({ name: vendedor });
+
+        if (!sellerFound) return res.status(404).json({ message: "No existe el vendedor" });
+
+        const filtro = {
+            seller: sellerFound._id,
+            primer_status_request: estado,
+            fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) },
+        };
+
+        const query = await Maf.aggregate([
+            {
+                $match: filtro,
+            },
+            {
+                $group: {
+                    _id: "$car",
+                    qty: { $sum: 1 },
+                },
+            },
+        ]);
+
+        if (query.length > 0) {
+            res.json({ total: query.length, deploy: query });
+        } else {
+            return res.status(201).json({ message: "Vendedor no ingresó ninguna solicitud" });
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.testRanking = async (req, res) => {
+    // const { sucursal,marca, start, end } = req.body;
+    const { marca } = req.body;
+
+    try {
+        const query = await Maf.find({
+            "car.model.marca.name": marca,
+        });
+        // const filtro = {
+        //     sucursal: sucursal,
+        //     "car.model.marca.name" : marca,
+        //     fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) }
+        // };
+
+        console.log(query);
+
+        if (query.length > 0) {
+            res.json({ deploy: query, total: query.length });
+        } else {
+            return res.status(404).json({ message: "No existen filtros" });
+        }
+
+        // const query = await Maf.aggregate([{
+        //     $match: filtro
+        // }, {
+        //     $group: {
+        //         _id: "$primer_status_request",
+        //         num_solicitudes: { $sum: 1 }
+        //     }
+        // }, {
+        //     $sort: { num_solicitudes: -1 }
+        // }]);
+
+        // if (query.length > 0) {
+        //     res.json({ total: query.length, ranking: query });
+        // } else {
+        //     return res.status(201).json({ message: 'No existen Solicitudes aún' });
+        // }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+*/
+
+
+mafController.getAllSolicitudesAprobadas = /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee10(req, res) {
-    var mafId, pasoaHot, query;
+    var _req$body8, customer, estado, start, end, customerFound, query;
+
     return _regenerator.default.wrap(function _callee10$(_context10) {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            mafId = req.params.mafId;
-            pasoaHot = req.body.pasoaHot;
-            _context10.prev = 2;
-            _context10.next = 5;
-            return _Maf.default.findByIdAndUpdate(mafId, {
-              pasoaHot: pasoaHot
+            _req$body8 = req.body, customer = _req$body8.customer, estado = _req$body8.estado, start = _req$body8.start, end = _req$body8.end;
+            _context10.prev = 1;
+            _context10.next = 4;
+            return _Customer.default.findOne({
+              name: customer
             });
 
-          case 5:
+          case 4:
+            customerFound = _context10.sent;
+            _context10.next = 7;
+            return _Maf.default.find({
+              customer: customerFound._id,
+              primer_status_request: estado
+            }).select("nro_solicitud fecha_ingreso customer seller car fecha_aprobacion carta_evidencia primer_status_request").populate({
+              path: "customer",
+              select: "name"
+            }).populate({
+              path: "seller",
+              select: "name"
+            }).populate({
+              path: "car",
+              select: "model cod_tdp version",
+              populate: {
+                path: "model",
+                select: "name avatar marca",
+                populate: {
+                  path: "marca",
+                  select: "name avatar"
+                }
+              }
+            });
+
+          case 7:
             query = _context10.sent;
 
-            if (!query) {
-              _context10.next = 10;
+            if (!(query.length > 0)) {
+              _context10.next = 12;
               break;
             }
 
             res.json({
-              message: 'Solicitud MAF se actualizó con éxito'
+              total: query.length,
+              all: query
             });
-            _context10.next = 11;
+            _context10.next = 13;
             break;
 
-          case 10:
+          case 12:
             return _context10.abrupt("return", res.status(404).json({
-              messsage: 'No existe Solicitud a actualizar'
+              message: "No se encontraron solicitudes"
             }));
-
-          case 11:
-            _context10.next = 17;
-            break;
 
           case 13:
-            _context10.prev = 13;
-            _context10.t0 = _context10["catch"](2);
+            _context10.next = 19;
+            break;
+
+          case 15:
+            _context10.prev = 15;
+            _context10.t0 = _context10["catch"](1);
             console.log(_context10.t0);
             return _context10.abrupt("return", res.status(503).json({
-              error: _context10.t0
+              message: _context10.t0.message
             }));
 
-          case 17:
+          case 19:
           case "end":
             return _context10.stop();
         }
       }
-    }, _callee10, null, [[2, 13]]);
+    }, _callee10, null, [[1, 15]]);
   }));
 
-  return function requestaHot(_x19, _x20) {
+  return function (_x19, _x20) {
     return _ref10.apply(this, arguments);
   };
 }();
 
-exports.requestaHot = requestaHot;
-
-var cambioStatusByMaf = /*#__PURE__*/function () {
-  var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res) {
-    var mafId, tercer_status_request, query;
-    return _regenerator.default.wrap(function _callee11$(_context11) {
-      while (1) {
-        switch (_context11.prev = _context11.next) {
-          case 0:
-            mafId = req.params.mafId;
-            tercer_status_request = req.body.tercer_status_request;
-            _context11.prev = 2;
-            _context11.next = 5;
-            return _Maf.default.findByIdAndUpdate(mafId, {
-              tercer_status_request: tercer_status_request
-            });
-
-          case 5:
-            query = _context11.sent;
-
-            if (!query) {
-              _context11.next = 10;
-              break;
-            }
-
-            res.json({
-              message: "Cambio de Status a ".concat(tercer_status_request, " con \xE9xito")
-            });
-            _context11.next = 11;
-            break;
-
-          case 10:
-            return _context11.abrupt("return", res.status(404).json({
-              messsage: 'No existe Solicitud a actualizar'
-            }));
-
-          case 11:
-            _context11.next = 17;
-            break;
-
-          case 13:
-            _context11.prev = 13;
-            _context11.t0 = _context11["catch"](2);
-            console.log(_context11.t0);
-            return _context11.abrupt("return", res.status(503).json({
-              error: _context11.t0
-            }));
-
-          case 17:
-          case "end":
-            return _context11.stop();
-        }
-      }
-    }, _callee11, null, [[2, 13]]);
-  }));
-
-  return function cambioStatusByMaf(_x21, _x22) {
-    return _ref11.apply(this, arguments);
-  };
-}();
-
-exports.cambioStatusByMaf = cambioStatusByMaf;
-
-var deleteRequest = /*#__PURE__*/function () {
-  var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res) {
-    var mafId, query;
-    return _regenerator.default.wrap(function _callee12$(_context12) {
-      while (1) {
-        switch (_context12.prev = _context12.next) {
-          case 0:
-            mafId = req.params.mafId;
-            _context12.prev = 1;
-            _context12.next = 4;
-            return _Maf.default.findByIdAndRemove(mafId);
-
-          case 4:
-            query = _context12.sent;
-
-            if (!query) {
-              _context12.next = 9;
-              break;
-            }
-
-            res.json({
-              message: 'Solicitud eliminada con éxito'
-            });
-            _context12.next = 10;
-            break;
-
-          case 9:
-            return _context12.abrupt("return", res.status(404).json({
-              message: 'No existe la solicitud a eliminar'
-            }));
-
-          case 10:
-            _context12.next = 16;
-            break;
-
-          case 12:
-            _context12.prev = 12;
-            _context12.t0 = _context12["catch"](1);
-            console.log(_context12.t0);
-            return _context12.abrupt("return", res.status(503).json({
-              message: _context12.t0.message
-            }));
-
-          case 16:
-          case "end":
-            return _context12.stop();
-        }
-      }
-    }, _callee12, null, [[1, 12]]);
-  }));
-
-  return function deleteRequest(_x23, _x24) {
-    return _ref12.apply(this, arguments);
-  };
-}();
-
-exports.deleteRequest = deleteRequest;
-
-var enviarCorreoSolicitud = /*#__PURE__*/function () {
-  var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res) {
-    var _req$body6, to, cc, subject, text, html, transporter, email, respuesta;
-
-    return _regenerator.default.wrap(function _callee13$(_context13) {
-      while (1) {
-        switch (_context13.prev = _context13.next) {
-          case 0:
-            _req$body6 = req.body, to = _req$body6.to, cc = _req$body6.cc, subject = _req$body6.subject, text = _req$body6.text, html = _req$body6.html;
-            _context13.prev = 1;
-            transporter = _nodemailer.default.createTransport({
-              host: 'mail.autonortnor.com',
-              port: '465',
-              secure: true,
-              auth: {
-                user: 'sistemadv@autonortnor.com',
-                pass: 'k=q0mdgLo,QS'
-              }
-            });
-            _context13.next = 5;
-            return transporter.sendMail({
-              from: '"Sistema ADV 👻" <sistemadv@autonortnor.com>',
-              to: to,
-              cc: [cc, 'frojas@autonortnor.com.pe'],
-              subject: subject,
-              text: text,
-              html: html
-            });
-
-          case 5:
-            email = _context13.sent;
-            respuesta = email.response.split(" "); // console.log(respuesta)
-            // console.log(respuesta[1])
-
-            if (!(respuesta[1] == 'OK')) {
-              _context13.next = 12;
-              break;
-            }
-
-            console.log("Preview URL: %s", _nodemailer.default.getTestMessageUrl(email));
-            res.json({
-              message: 'Mensaje enviado',
-              info: email.messageId,
-              retardo: email.envelopeTime,
-              respuesta: email.response
-            });
-            _context13.next = 13;
-            break;
-
-          case 12:
-            return _context13.abrupt("return", res.status(500).json({
-              message: 'Error al enviar correo'
-            }));
-
-          case 13:
-            _context13.next = 19;
-            break;
-
-          case 15:
-            _context13.prev = 15;
-            _context13.t0 = _context13["catch"](1);
-            console.log(_context13.t0.message);
-            return _context13.abrupt("return", res.status(503).json({
-              message: _context13.t0.message
-            }));
-
-          case 19:
-          case "end":
-            return _context13.stop();
-        }
-      }
-    }, _callee13, null, [[1, 15]]);
-  }));
-
-  return function enviarCorreoSolicitud(_x25, _x26) {
-    return _ref13.apply(this, arguments);
-  };
-}();
-
-exports.enviarCorreoSolicitud = enviarCorreoSolicitud;
-
-var downloadAndZipeo = /*#__PURE__*/function () {
-  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
-    var files, dir, uploadDir, zip, i, downloadName, data;
-    return _regenerator.default.wrap(function _callee14$(_context14) {
-      while (1) {
-        switch (_context14.prev = _context14.next) {
-          case 0:
-            files = req.body.files;
-            _context14.prev = 1;
-            _context14.next = 4;
-            return Promise.all(files.map(function (url) {
-              return (0, _download.default)(url, _path.default.resolve('src/uploads'));
-            }));
-
-          case 4:
-            console.log('Download completed!');
-            dir = _path.default.resolve('src/uploads');
-            uploadDir = _fs.default.readdirSync(dir);
-            zip = new _admZip.default();
-
-            for (i = 0; i < uploadDir.length; i++) {
-              zip.addLocalFile(dir + '/' + uploadDir[i]);
-            }
-
-            downloadName = "".concat(Date.now(), ".zip");
-            data = zip.toBuffer();
-            zip.writeZip(dir + '/' + downloadName);
-            res.json({
-              url: downloadName
-            }); // delFiles();
-
-            _context14.next = 19;
-            break;
-
-          case 15:
-            _context14.prev = 15;
-            _context14.t0 = _context14["catch"](1);
-            console.log(_context14.t0);
-            return _context14.abrupt("return", res.status(503).json({
-              message: _context14.t0.message
-            }));
-
-          case 19:
-          case "end":
-            return _context14.stop();
-        }
-      }
-    }, _callee14, null, [[1, 15]]);
-  }));
-
-  return function downloadAndZipeo(_x27, _x28) {
-    return _ref14.apply(this, arguments);
-  };
-}();
-
-exports.downloadAndZipeo = downloadAndZipeo;
-
-var descargaYZip = /*#__PURE__*/function () {
-  var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res) {
-    var links, fileZip;
-    return _regenerator.default.wrap(function _callee15$(_context15) {
-      while (1) {
-        switch (_context15.prev = _context15.next) {
-          case 0:
-            links = req.body.links;
-            fileZip = req.file;
-            /* await Promise.all(links
-                .map(url => download(url, path.resolve('src/uploads'))));
-              console.log('Download completed!'); */
-
-            console.log(fileZip);
-
-          case 3:
-          case "end":
-            return _context15.stop();
-        }
-      }
-    }, _callee15);
-  }));
-
-  return function descargaYZip(_x29, _x30) {
-    return _ref15.apply(this, arguments);
-  };
-}();
-
-exports.descargaYZip = descargaYZip;
-
-var sendMessageWsp = /*#__PURE__*/function () {
-  var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee16(req, res) {
-    var _req$body7, placa, sucursal, servicio, mejora, calificacion, destino, accountSid, authToken, client;
-
-    return _regenerator.default.wrap(function _callee16$(_context16) {
-      while (1) {
-        switch (_context16.prev = _context16.next) {
-          case 0:
-            _req$body7 = req.body, placa = _req$body7.placa, sucursal = _req$body7.sucursal, servicio = _req$body7.servicio, mejora = _req$body7.mejora, calificacion = _req$body7.calificacion, destino = _req$body7.destino;
-            accountSid = 'AC5145f2cf5442844fa805e987f09751c6';
-            authToken = '42d0808b60a3917dddcf06879e56ff4e';
-            client = new _twilio.default(accountSid, authToken);
-            client.messages.create({
-              /* body: 'Se registró una calificación en la siguiente encuesta.
-              Cliente con placa: {{1}} perteneciente a la sucursal: {{2}} que realizó el servicio de: {{3}}, sugiere mejorar en: {{4}}.
-              Su calificación es: {{5}}' */
-              body: "Se registr\xF3 una calificaci\xF3n en la siguiente encuesta. \nCliente con placa: *".concat(placa, "* perteneciente a la sucursal: *").concat(sucursal, "* que realiz\xF3 el servicio de: *").concat(servicio, "*, sugiere mejorar en: *").concat(mejora, "*. \nSu calificaci\xF3n es: *").concat(calificacion, "*"),
-              // to: 'whatsapp:+51924063422', // Fernando Rojas
-              to: 'whatsapp:+51' + destino,
-              // Paul holguin
-              // to: '+51989927794', // Paul holguin
-              // to: '+51924063422',
-              from: 'whatsapp:+18482856322' // From a valid Twilio number
-              // from: '+18482856322',
-
-            }).then(function (message) {
-              // console.log(message)
-              res.json({
-                ok: 'Message sent',
-                sid: message.sid,
-                status: message.status
-              });
-            });
-
-          case 5:
-          case "end":
-            return _context16.stop();
-        }
-      }
-    }, _callee16);
-  }));
-
-  return function sendMessageWsp(_x31, _x32) {
-    return _ref16.apply(this, arguments);
-  };
-}();
-
-exports.sendMessageWsp = sendMessageWsp;
-
-var getCountAll = /*#__PURE__*/function () {
-  var _ref17 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee17(req, res) {
-    var _req$body8, sucursal, start, end, query;
-
-    return _regenerator.default.wrap(function _callee17$(_context17) {
-      while (1) {
-        switch (_context17.prev = _context17.next) {
-          case 0:
-            _req$body8 = req.body, sucursal = _req$body8.sucursal, start = _req$body8.start, end = _req$body8.end;
-            _context17.prev = 1;
-            _context17.next = 4;
-            return _Maf.default.find({
-              sucursal: sucursal,
-              fecha_ingreso: {
-                $gte: new Date(start),
-                $lte: new Date(end)
-              }
-            }).countDocuments();
-
-          case 4:
-            query = _context17.sent;
-
-            if (query >= 0) {
-              res.json({
-                count: query
-              });
-            }
-
-            _context17.next = 11;
-            break;
-
-          case 8:
-            _context17.prev = 8;
-            _context17.t0 = _context17["catch"](1);
-            return _context17.abrupt("return", res.status(503).json({
-              message: _context17.t0.message
-            }));
-
-          case 11:
-          case "end":
-            return _context17.stop();
-        }
-      }
-    }, _callee17, null, [[1, 8]]);
-  }));
-
-  return function getCountAll(_x33, _x34) {
-    return _ref17.apply(this, arguments);
-  };
-}();
-
-exports.getCountAll = getCountAll;
-
-var getCountByStatus = /*#__PURE__*/function () {
-  var _ref18 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee18(req, res) {
-    var _req$body9, sucursal, estado, start, end, query;
-
-    return _regenerator.default.wrap(function _callee18$(_context18) {
-      while (1) {
-        switch (_context18.prev = _context18.next) {
-          case 0:
-            _req$body9 = req.body, sucursal = _req$body9.sucursal, estado = _req$body9.estado, start = _req$body9.start, end = _req$body9.end;
-            _context18.prev = 1;
-            _context18.next = 4;
-            return _Maf.default.find({
-              sucursal: sucursal,
-              primer_status_request: estado,
-              fecha_ingreso: {
-                $gte: new Date(start),
-                $lte: new Date(end)
-              }
-            }).countDocuments();
-
-          case 4:
-            query = _context18.sent;
-
-            if (query >= 0) {
-              res.json({
-                count: query
-              });
-            }
-
-            _context18.next = 11;
-            break;
-
-          case 8:
-            _context18.prev = 8;
-            _context18.t0 = _context18["catch"](1);
-            return _context18.abrupt("return", res.status(503).json({
-              message: _context18.t0.message
-            }));
-
-          case 11:
-          case "end":
-            return _context18.stop();
-        }
-      }
-    }, _callee18, null, [[1, 8]]);
-  }));
-
-  return function getCountByStatus(_x35, _x36) {
-    return _ref18.apply(this, arguments);
-  };
-}();
-
-exports.getCountByStatus = getCountByStatus;
-
-var getRankingByStatus = /*#__PURE__*/function () {
-  var _ref19 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee19(req, res) {
-    var _req$body10, sucursal, start, end, filtro, query;
-
-    return _regenerator.default.wrap(function _callee19$(_context19) {
-      while (1) {
-        switch (_context19.prev = _context19.next) {
-          case 0:
-            _req$body10 = req.body, sucursal = _req$body10.sucursal, start = _req$body10.start, end = _req$body10.end;
-            _context19.prev = 1;
-            filtro = {
-              sucursal: sucursal,
-              fecha_ingreso: {
-                $gte: new Date(start),
-                $lte: new Date(end)
-              }
-            };
-            _context19.next = 5;
-            return _Maf.default.aggregate([{
-              $match: filtro
-            }, {
-              $group: {
-                _id: "$primer_status_request",
-                num_solicitudes: {
-                  $sum: 1
-                }
-              }
-            }, {
-              $sort: {
-                num_solicitudes: -1
-              }
-            }]);
-
-          case 5:
-            query = _context19.sent;
-
-            if (!(query.length > 0)) {
-              _context19.next = 10;
-              break;
-            }
-
-            res.json({
-              total: query.length,
-              ranking: query
-            });
-            _context19.next = 11;
-            break;
-
-          case 10:
-            return _context19.abrupt("return", res.status(201).json({
-              message: 'No existen Solicitudes aún'
-            }));
-
-          case 11:
-            _context19.next = 17;
-            break;
-
-          case 13:
-            _context19.prev = 13;
-            _context19.t0 = _context19["catch"](1);
-            console.log(_context19.t0);
-            return _context19.abrupt("return", res.status(503).json({
-              message: _context19.t0.message
-            }));
-
-          case 17:
-          case "end":
-            return _context19.stop();
-        }
-      }
-    }, _callee19, null, [[1, 13]]);
-  }));
-
-  return function getRankingByStatus(_x37, _x38) {
-    return _ref19.apply(this, arguments);
-  };
-}();
-
-exports.getRankingByStatus = getRankingByStatus;
-
-var getRankingByVendedor = /*#__PURE__*/function () {
-  var _ref20 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee20(req, res) {
-    var _req$body11, sucursal, estado, start, end, filtro, query;
-
-    return _regenerator.default.wrap(function _callee20$(_context20) {
-      while (1) {
-        switch (_context20.prev = _context20.next) {
-          case 0:
-            _req$body11 = req.body, sucursal = _req$body11.sucursal, estado = _req$body11.estado, start = _req$body11.start, end = _req$body11.end;
-            _context20.prev = 1;
-            filtro = {
-              sucursal: sucursal,
-              primer_status_request: estado,
-              fecha_ingreso: {
-                $gte: new Date(start),
-                $lte: new Date(end)
-              }
-            };
-            _context20.next = 5;
-            return _Maf.default.aggregate([{
-              $match: filtro
-            }, {
-              $group: {
-                _id: "$seller",
-                num_solicitudes: {
-                  $sum: 1
-                }
-              }
-            }, {
-              $sort: {
-                num_solicitudes: -1
-              }
-            }]);
-
-          case 5:
-            query = _context20.sent;
-
-            if (!(query.length > 0)) {
-              _context20.next = 10;
-              break;
-            }
-
-            res.json({
-              total: query.length,
-              ranking: query
-            });
-            _context20.next = 11;
-            break;
-
-          case 10:
-            return _context20.abrupt("return", res.status(201).json({
-              message: 'No existen Solicitudes aún'
-            }));
-
-          case 11:
-            _context20.next = 17;
-            break;
-
-          case 13:
-            _context20.prev = 13;
-            _context20.t0 = _context20["catch"](1);
-            console.log(_context20.t0);
-            return _context20.abrupt("return", res.status(503).json({
-              message: _context20.t0.message
-            }));
-
-          case 17:
-          case "end":
-            return _context20.stop();
-        }
-      }
-    }, _callee20, null, [[1, 13]]);
-  }));
-
-  return function getRankingByVendedor(_x39, _x40) {
-    return _ref20.apply(this, arguments);
-  };
-}();
-
-exports.getRankingByVendedor = getRankingByVendedor;
-
-var getRankingByVehicle = /*#__PURE__*/function () {
-  var _ref21 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee21(req, res) {
-    var _req$body12, sucursal, estado, start, end, filtro, query;
-
-    return _regenerator.default.wrap(function _callee21$(_context21) {
-      while (1) {
-        switch (_context21.prev = _context21.next) {
-          case 0:
-            _req$body12 = req.body, sucursal = _req$body12.sucursal, estado = _req$body12.estado, start = _req$body12.start, end = _req$body12.end;
-            _context21.prev = 1;
-            filtro = {
-              sucursal: sucursal,
-              primer_status_request: estado,
-              fecha_ingreso: {
-                $gte: new Date(start),
-                $lte: new Date(end)
-              }
-            };
-            _context21.next = 5;
-            return _Maf.default.aggregate([{
-              $match: filtro
-            }, {
-              $group: {
-                _id: "$car",
-                num_solicitudes: {
-                  $sum: 1
-                }
-              }
-            }, {
-              $sort: {
-                num_solicitudes: -1
-              }
-            }]);
-
-          case 5:
-            query = _context21.sent;
-
-            if (!(query.length > 0)) {
-              _context21.next = 10;
-              break;
-            }
-
-            res.json({
-              total: query.length,
-              ranking: query
-            });
-            _context21.next = 11;
-            break;
-
-          case 10:
-            return _context21.abrupt("return", res.status(201).json({
-              message: 'No existen Solicitudes aún'
-            }));
-
-          case 11:
-            _context21.next = 17;
-            break;
-
-          case 13:
-            _context21.prev = 13;
-            _context21.t0 = _context21["catch"](1);
-            console.log(_context21.t0);
-            return _context21.abrupt("return", res.status(503).json({
-              message: _context21.t0.message
-            }));
-
-          case 17:
-          case "end":
-            return _context21.stop();
-        }
-      }
-    }, _callee21, null, [[1, 13]]);
-  }));
-
-  return function getRankingByVehicle(_x41, _x42) {
-    return _ref21.apply(this, arguments);
-  };
-}();
-
-exports.getRankingByVehicle = getRankingByVehicle;
-
-var getSolicitudesBySeller = /*#__PURE__*/function () {
-  var _ref22 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee22(req, res) {
-    var _req$body13, vendedor, start, end, sellerFound, filtro, query;
-
-    return _regenerator.default.wrap(function _callee22$(_context22) {
-      while (1) {
-        switch (_context22.prev = _context22.next) {
-          case 0:
-            _req$body13 = req.body, vendedor = _req$body13.vendedor, start = _req$body13.start, end = _req$body13.end;
-            _context22.prev = 1;
-            _context22.next = 4;
-            return _Seller.default.findOne({
-              name: vendedor
-            });
-
-          case 4:
-            sellerFound = _context22.sent;
-
-            if (sellerFound) {
-              _context22.next = 7;
-              break;
-            }
-
-            return _context22.abrupt("return", res.status(404).json({
-              message: 'No existe el vendedor'
-            }));
-
-          case 7:
-            filtro = {
-              seller: sellerFound._id,
-              fecha_ingreso: {
-                $gte: new Date(start),
-                $lte: new Date(end)
-              }
-            };
-            _context22.next = 10;
-            return _Maf.default.aggregate([{
-              $match: filtro
-            }, {
-              $group: {
-                _id: "$primer_status_request",
-                qty: {
-                  $sum: 1
-                }
-              }
-            }]);
-
-          case 10:
-            query = _context22.sent;
-
-            if (!(query.length > 0)) {
-              _context22.next = 15;
-              break;
-            }
-
-            res.json({
-              total: query.length,
-              deploy: query
-            });
-            _context22.next = 16;
-            break;
-
-          case 15:
-            return _context22.abrupt("return", res.status(201).json({
-              message: 'Vendedor no ingresó ninguna solicitud'
-            }));
-
-          case 16:
-            _context22.next = 22;
-            break;
-
-          case 18:
-            _context22.prev = 18;
-            _context22.t0 = _context22["catch"](1);
-            console.log(_context22.t0.message);
-            return _context22.abrupt("return", res.status(503).json({
-              message: _context22.t0.message
-            }));
-
-          case 22:
-          case "end":
-            return _context22.stop();
-        }
-      }
-    }, _callee22, null, [[1, 18]]);
-  }));
-
-  return function getSolicitudesBySeller(_x43, _x44) {
-    return _ref22.apply(this, arguments);
-  };
-}();
-
-exports.getSolicitudesBySeller = getSolicitudesBySeller;
-
-var getVehiclesBySeller = /*#__PURE__*/function () {
-  var _ref23 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee23(req, res) {
-    var _req$body14, vendedor, estado, start, end, sellerFound, filtro, query;
-
-    return _regenerator.default.wrap(function _callee23$(_context23) {
-      while (1) {
-        switch (_context23.prev = _context23.next) {
-          case 0:
-            _req$body14 = req.body, vendedor = _req$body14.vendedor, estado = _req$body14.estado, start = _req$body14.start, end = _req$body14.end;
-            _context23.prev = 1;
-            _context23.next = 4;
-            return _Seller.default.findOne({
-              name: vendedor
-            });
-
-          case 4:
-            sellerFound = _context23.sent;
-
-            if (sellerFound) {
-              _context23.next = 7;
-              break;
-            }
-
-            return _context23.abrupt("return", res.status(404).json({
-              message: 'No existe el vendedor'
-            }));
-
-          case 7:
-            filtro = {
-              seller: sellerFound._id,
-              primer_status_request: estado,
-              fecha_ingreso: {
-                $gte: new Date(start),
-                $lte: new Date(end)
-              }
-            };
-            _context23.next = 10;
-            return _Maf.default.aggregate([{
-              $match: filtro
-            }, {
-              $group: {
-                _id: '$car',
-                qty: {
-                  $sum: 1
-                }
-              }
-            }]);
-
-          case 10:
-            query = _context23.sent;
-
-            if (!(query.length > 0)) {
-              _context23.next = 15;
-              break;
-            }
-
-            res.json({
-              total: query.length,
-              deploy: query
-            });
-            _context23.next = 16;
-            break;
-
-          case 15:
-            return _context23.abrupt("return", res.status(201).json({
-              message: 'Vendedor no ingresó ninguna solicitud'
-            }));
-
-          case 16:
-            _context23.next = 22;
-            break;
-
-          case 18:
-            _context23.prev = 18;
-            _context23.t0 = _context23["catch"](1);
-            console.log(_context23.t0.message);
-            return _context23.abrupt("return", res.status(503).json({
-              message: _context23.t0.message
-            }));
-
-          case 22:
-          case "end":
-            return _context23.stop();
-        }
-      }
-    }, _callee23, null, [[1, 18]]);
-  }));
-
-  return function getVehiclesBySeller(_x45, _x46) {
-    return _ref23.apply(this, arguments);
-  };
-}();
-
-exports.getVehiclesBySeller = getVehiclesBySeller;
-
-var testRanking = /*#__PURE__*/function () {
-  var _ref24 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee24(req, res) {
-    var marca, query;
-    return _regenerator.default.wrap(function _callee24$(_context24) {
-      while (1) {
-        switch (_context24.prev = _context24.next) {
-          case 0:
-            // const { sucursal,marca, start, end } = req.body;
-            marca = req.body.marca;
-            _context24.prev = 1;
-            _context24.next = 4;
-            return _Maf.default.find({
-              "car.model.marca.name": marca
-            });
-
-          case 4:
-            query = _context24.sent;
-            // const filtro = {
-            //     sucursal: sucursal,
-            //     "car.model.marca.name" : marca,
-            //     fecha_ingreso: { $gte: new Date(start), $lte: new Date(end) }
-            // };
-            console.log(query);
-
-            if (!(query.length > 0)) {
-              _context24.next = 10;
-              break;
-            }
-
-            res.json({
-              deploy: query,
-              total: query.length
-            });
-            _context24.next = 11;
-            break;
-
-          case 10:
-            return _context24.abrupt("return", res.status(404).json({
-              message: 'No existen filtros'
-            }));
-
-          case 11:
-            _context24.next = 17;
-            break;
-
-          case 13:
-            _context24.prev = 13;
-            _context24.t0 = _context24["catch"](1);
-            console.log(_context24.t0);
-            return _context24.abrupt("return", res.status(503).json({
-              message: _context24.t0.message
-            }));
-
-          case 17:
-          case "end":
-            return _context24.stop();
-        }
-      }
-    }, _callee24, null, [[1, 13]]);
-  }));
-
-  return function testRanking(_x47, _x48) {
-    return _ref24.apply(this, arguments);
-  };
-}();
-
-exports.testRanking = testRanking;
+var _default = mafController;
+exports.default = _default;
 //# sourceMappingURL=maf.controller.js.map

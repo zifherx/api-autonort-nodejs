@@ -22,6 +22,10 @@ var modeloTSchema = new _mongoose.Schema({
   status: {
     type: Boolean,
     default: true
+  },
+  estado: {
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true,

@@ -1,6 +1,6 @@
 "use strict";
 
-var _typeof = require("@babel/runtime/helpers/typeof");
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -9,27 +9,23 @@ exports.default = void 0;
 
 var _express = require("express");
 
-var customerCtrl = _interopRequireWildcard(require("../controllers/customer.controller"));
+var _customer = _interopRequireDefault(require("../controllers/customer.controller"));
 
 var _middlewares = require("../middlewares");
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 var router = (0, _express.Router)(); //Obtener Clientes
 
-router.get('/', customerCtrl.getCustomers); //Obtener Cliente por Id
+router.get('/', _customer.default.getAll); //Obtener Cliente por Id
 
-router.get('/:customerId', customerCtrl.getCustomerById); //Obtener Cliente por DNI
+router.get('/:customerId', _customer.default.getOneById); //Obtener Cliente por DNI
 
-router.post('/find', customerCtrl.getCustomerByDni); //Crear Cliente
+router.post('/find', _customer.default.getClienteByDNI); //Crear Cliente
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosOrADVOrVendedorOrEPDPOrAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateCliente], customerCtrl.createCustomer); //Actualizar Cliente
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosOrADVOrVendedorOrEPDPOrAdmin, _middlewares.verifyDuplicate.checkDuplicateCliente], _customer.default.createOne); //Actualizar Cliente
 
-router.patch('/:customerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosOrADVOrVendedorOrEPDPOrAdmin, _middlewares.verifySignup.checkRolesExist], customerCtrl.updateCustomerById); //Remover Cliente
+router.patch('/:customerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosOrADVOrVendedorOrEPDPOrAdmin], _customer.default.updateOneById); //Remover Cliente
 
-router.delete('/:customerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], customerCtrl.deleteCustomerById);
+router.delete('/:customerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _customer.default.deleteOneById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=customer.routes.js.map

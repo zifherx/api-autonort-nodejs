@@ -16,6 +16,11 @@ var customerSchema = new _mongoose.Schema({
     min: 0,
     max: 2
   },
+  tipoDocumento: {
+    ref: 'TipoDocumento',
+    type: _mongoose.Schema.Types.ObjectId
+  },
+  //Actualizado
   document: {
     type: String
   },

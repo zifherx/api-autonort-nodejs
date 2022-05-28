@@ -14,13 +14,17 @@ var aseguradoraSchema = new _mongoose.Schema({
   status: {
     type: Boolean,
     default: false
+  },
+  estado: {
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true,
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('ASeguradora', aseguradoraSchema);
+var _default = (0, _mongoose.model)('Aseguradora', aseguradoraSchema);
 
 exports.default = _default;
 //# sourceMappingURL=Aseguradora.js.map

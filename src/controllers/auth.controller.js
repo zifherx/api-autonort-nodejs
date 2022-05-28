@@ -44,7 +44,7 @@ export const changePassword = async(req, res) => {
 
     const matchPassword = await User.comparePassword(oldPassword, user.password);
 
-    if (!matchPassword) return res.status(401).json({ message: 'Contraseña Anterior Errónea' });
+    if (!matchPassword) return res.status(401).json({ message: 'Contraseña actual errónea' });
 
     try {
         user.password = await User.encryptPassword(newPassword);
@@ -56,7 +56,7 @@ export const changePassword = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({ error: err });
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -71,7 +71,7 @@ export const cerrarSesion = async(req, res) => {
 
         if (offline) return res.json({ message: 'Sesión cerrada con éxito' });
     } catch (err) {
-        return res.status(503).json({ error: err });
+        return res.status(503).json({ message: err.message });
     }
 }
 
@@ -94,7 +94,6 @@ export const forzarCierre = async(req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
-        // return res.status(503).json({ error: err });
     }
 }
 

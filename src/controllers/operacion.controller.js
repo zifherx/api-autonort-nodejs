@@ -1,10 +1,12 @@
 import Operacion from "../models/Operacion";
 
-export const getAll = async(req, res) => {
+const operacionController = {};
+
+operacionController.getAll = async(req, res) => {
     try {
-        const query = await Operacion.find().sort({ name: 'asc' });
+        const query = await Operacion.find().sort({ name: 1 });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Tipos de operaciónes' })
         }
@@ -14,12 +16,12 @@ export const getAll = async(req, res) => {
     }
 }
 
-export const getOperacionById = async(req, res) => {
+operacionController.getOneById = async(req, res) => {
     const { operacionId } = req.params;
     try {
         const query = await Operacion.findById(operacionId);
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe Tipo de operación' })
         }
@@ -29,11 +31,11 @@ export const getOperacionById = async(req, res) => {
     }
 }
 
-export const getOperacionActivos = async(req, res) => {
+operacionController.getAllActivos = async(req, res) => {
     try {
-        const query = await Operacion.find({ status: true }).sort({ name: 'asc' });
+        const query = await Operacion.find({ estado: true }).sort({ name: 1 });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total_active: query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No existen Tipos Activos' })
         }
@@ -43,10 +45,10 @@ export const getOperacionActivos = async(req, res) => {
     }
 }
 
-export const createOperacion = async(req, res) => {
-    const { name, status } = req.body;
+operacionController.createOne = async(req, res) => {
+    const { name, estado } = req.body;
     try {
-        const query = new Operacion({ name, status });
+        const query = new Operacion({ name, estado });
 
         const newObj = await query.save();
 
@@ -59,16 +61,16 @@ export const createOperacion = async(req, res) => {
     }
 }
 
-export const updateOperacion = async(req, res) => {
-    const { name, status } = req.body;
+operacionController.updateOneById = async(req, res) => {
+    const { name, estado } = req.body;
     const { operacionId } = req.params;
     try {
-        const query = await Operacion.findByIdAndUpdate(operacionId, { name, status });
+        const query = await Operacion.findByIdAndUpdate(operacionId, { name, estado });
 
         if (query) {
             res.json({ message: 'Tipo de operación actualizada con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Tipo de operación a actualizar' });
+            return res.status(404).json({ message: 'No existe Tipo de operación a actualizar' });
         }
     } catch (err) {
         console.log(err);
@@ -76,7 +78,7 @@ export const updateOperacion = async(req, res) => {
     }
 }
 
-export const deleteOperacion = async(req, res) => {
+operacionController.deleteOneById = async(req, res) => {
     const { operacionId } = req.params;
     try {
         const query = await Operacion.findByIdAndDelete(operacionId);
@@ -90,3 +92,5 @@ export const deleteOperacion = async(req, res) => {
         return res.status(503).json({ message: err.message })
     }
 }
+
+export default operacionController;

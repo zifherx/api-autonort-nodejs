@@ -160,7 +160,7 @@ var changePassword = /*#__PURE__*/function () {
             }
 
             return _context2.abrupt("return", res.status(401).json({
-              message: 'Contraseña Anterior Errónea'
+              message: 'Contraseña actual errónea'
             }));
 
           case 17:
@@ -190,7 +190,7 @@ var changePassword = /*#__PURE__*/function () {
             _context2.t1 = _context2["catch"](17);
             console.log(_context2.t1);
             return _context2.abrupt("return", res.status(503).json({
-              error: _context2.t1
+              message: _context2.t1.message
             }));
 
           case 31:
@@ -258,7 +258,7 @@ var cerrarSesion = /*#__PURE__*/function () {
             _context3.prev = 14;
             _context3.t0 = _context3["catch"](1);
             return _context3.abrupt("return", res.status(503).json({
-              error: _context3.t0
+              message: _context3.t0.message
             }));
 
           case 17:

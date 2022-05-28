@@ -5,7 +5,7 @@ const vehicleSchema = new Schema({
     model: { type: Schema.Types.ObjectId, ref: 'ModeloT' },
     cod_tdp: { type: String, unique: true },
     version: { type: String },
-    sucursal: { type: String },
+    estado: { type: Boolean, default: true },
     empleado: { ref: 'User', type: Schema.Types.ObjectId }
 }, {
     timestamps: true,

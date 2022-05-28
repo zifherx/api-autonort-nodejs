@@ -29,21 +29,21 @@ export const getAll = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(409).json({ message: err.message })
     }
 }
 
 export const getAccesoriosActivos = async(req, res) => {
     try {
-        const activos = await Props.find({ status: 'Activo' }).sort({ name: 'asc' });
-        if (activos.length > 0) {
-            res.json(activos);
+        const query = await Props.find({ status: 'Activo' }).sort({ name: 1 });
+        if (query.length > 0) {
+            res.json({total_active: query.length, all_active:query});
         } else {
-            return res.status(404).json({ message: 'No existe Accesorios Activos' })
+            return res.status(404).json({ message: 'No existe accesorios activos' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(409).json({ message: err.message })
     }
 }
 
@@ -58,23 +58,23 @@ export const getAccesorioById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(409).json({ message: err.message })
     }
 }
 
 export const getAccesorioByAuto = async(req, res) => {
     const { modelo } = req.body;
     try {
-        const foundProp = await Props.find({ forCar: modelo });
+        const query = await Props.find({ forCar: modelo });
 
-        if (foundProp) {
-            res.json(foundProp);
+        if (query.length > 0) {
+            res.json({total: query.length,all: query});
         } else {
-            res.status(404).json({ message: 'No existe el accesorio' });
+            return res.status(404).json({ message: 'No existe el accesorio' });
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -93,7 +93,7 @@ export const updatePropById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(409).json({ message: err.message })
     }
 }
 
@@ -108,6 +108,6 @@ export const deletePropById = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(409).json({ message: err.message })
     }
 }

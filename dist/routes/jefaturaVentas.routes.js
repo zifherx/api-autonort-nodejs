@@ -14,9 +14,11 @@ var _jefaturaVentas = _interopRequireDefault(require("../controllers/jefaturaVen
 var _middlewares = require("../middlewares");
 
 var router = (0, _express.Router)();
-router.get('/', _jefaturaVentas.default.getAll); //Obtener Asesor x Sucursal
+router.get('/', _jefaturaVentas.default.getAll);
+router.get('/activos', _jefaturaVentas.default.getAllActivos);
+router.get('/:jefaturaId', _jefaturaVentas.default.getOneById); //Obtener Asesor x Sucursal
 
-router.post('/sucursal', _jefaturaVentas.default.obtenerJefexSucursal);
+router.post('/by-sucursal', _jefaturaVentas.default.obtenerJefexSucursal);
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _jefaturaVentas.default.createOne);
 router.patch('/:jefaturaId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _jefaturaVentas.default.updateById);
 router.delete('/:jefaturaId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _jefaturaVentas.default.deleteById);

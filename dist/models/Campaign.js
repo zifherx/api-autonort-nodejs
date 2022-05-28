@@ -38,10 +38,6 @@ var campaignSchema = new _mongoose.Schema({
     type: Boolean,
     default: false
   },
-  createdBy: {
-    ref: 'User',
-    type: _mongoose.Schema.Types.ObjectId
-  },
   descripcion: {
     type: String
   },
@@ -52,8 +48,12 @@ var campaignSchema = new _mongoose.Schema({
   //No usar
   status: {
     type: String
-  } //No usar
-
+  },
+  //No usar
+  createdBy: {
+    ref: 'User',
+    type: _mongoose.Schema.Types.ObjectId
+  }
 }, {
   timestamps: true,
   versionKey: false

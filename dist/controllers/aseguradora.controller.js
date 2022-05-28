@@ -15,7 +15,7 @@ var _Aseguradora = _interopRequireDefault(require("../models/Aseguradora"));
 
 var getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var objeto;
+    var query;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -27,14 +27,17 @@ var getAll = /*#__PURE__*/function () {
             });
 
           case 3:
-            objeto = _context.sent;
+            query = _context.sent;
 
-            if (!(objeto.length > 0)) {
+            if (!(query.length > 0)) {
               _context.next = 8;
               break;
             }
 
-            res.json(objeto);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -72,7 +75,7 @@ exports.getAll = getAll;
 
 var getAseguradoraById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var aseguradoraId, objeto;
+    var aseguradoraId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -83,14 +86,16 @@ var getAseguradoraById = /*#__PURE__*/function () {
             return _Aseguradora.default.findById(aseguradoraId);
 
           case 4:
-            objeto = _context2.sent;
+            query = _context2.sent;
 
-            if (!objeto) {
+            if (!query) {
               _context2.next = 9;
               break;
             }
 
-            res.json(objeto);
+            res.json({
+              one: query
+            });
             _context2.next = 10;
             break;
 
@@ -128,7 +133,7 @@ exports.getAseguradoraById = getAseguradoraById;
 
 var getAseguradoraByActivo = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var objeto;
+    var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -136,20 +141,23 @@ var getAseguradoraByActivo = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _Aseguradora.default.find({
-              status: true
+              estado: true
             }).sort({
-              name: 'asc'
+              name: 1
             });
 
           case 3:
-            objeto = _context3.sent;
+            query = _context3.sent;
 
-            if (!(objeto.length > 0)) {
+            if (!(query.length > 0)) {
               _context3.next = 8;
               break;
             }
 
-            res.json(objeto);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context3.next = 9;
             break;
 
@@ -187,25 +195,25 @@ exports.getAseguradoraByActivo = getAseguradoraByActivo;
 
 var createAseguradora = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, nuevo, objeto;
+    var _req$body, name, estado, nuevo, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
             _context4.prev = 1;
             nuevo = new _Aseguradora.default({
               name: name,
-              status: status
+              estado: estado
             });
             _context4.next = 5;
             return nuevo.save();
 
           case 5:
-            objeto = _context4.sent;
+            query = _context4.sent;
 
-            if (objeto) {
+            if (query) {
               res.json({
                 message: 'Aseguradora creado con éxito'
               });
@@ -239,25 +247,25 @@ exports.createAseguradora = createAseguradora;
 
 var updateAseguradora = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, aseguradoraId, objeto;
+    var _req$body2, name, estado, aseguradoraId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
             aseguradoraId = req.params.aseguradoraId;
             _context5.prev = 2;
             _context5.next = 5;
             return _Aseguradora.default.findByIdAndUpdate(aseguradoraId, {
               name: name,
-              status: status
+              estado: estado
             });
 
           case 5:
-            objeto = _context5.sent;
+            query = _context5.sent;
 
-            if (!objeto) {
+            if (!query) {
               _context5.next = 10;
               break;
             }
@@ -302,7 +310,7 @@ exports.updateAseguradora = updateAseguradora;
 
 var deleteAseguradora = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var aseguradoraId, objeto;
+    var aseguradoraId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -313,9 +321,9 @@ var deleteAseguradora = /*#__PURE__*/function () {
             return _Aseguradora.default.findByIdAndDelete(aseguradoraId);
 
           case 4:
-            objeto = _context6.sent;
+            query = _context6.sent;
 
-            if (!objeto) {
+            if (!query) {
               _context6.next = 9;
               break;
             }

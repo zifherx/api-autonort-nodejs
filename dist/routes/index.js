@@ -19,7 +19,9 @@ var _vehicle = _interopRequireDefault(require("./vehicle.routes"));
 
 var _seller = _interopRequireDefault(require("./seller.routes"));
 
-var _campaign = _interopRequireDefault(require("./campaign.routes"));
+var _campania = _interopRequireDefault(require("./campania.routes"));
+
+var _tipoCampania = _interopRequireDefault(require("./tipoCampania.routes"));
 
 var _adicional = _interopRequireDefault(require("./adicional.routes"));
 
@@ -27,7 +29,7 @@ var _props = _interopRequireDefault(require("./props.routes"));
 
 var _customer = _interopRequireDefault(require("./customer.routes"));
 
-var _sale = _interopRequireDefault(require("./sale.routes"));
+var _files = _interopRequireDefault(require("./files.routes"));
 
 var _record = _interopRequireDefault(require("./record.routes"));
 
@@ -75,6 +77,8 @@ var _statusRP = _interopRequireDefault(require("./statusRP.routes"));
 
 var _statusAAP = _interopRequireDefault(require("./statusAAP.routes"));
 
+var _statusTasacion = _interopRequireDefault(require("./statusTasacion.routes"));
+
 var _maf = _interopRequireDefault(require("./maf.routes"));
 
 var _jefaturaVentas = _interopRequireDefault(require("./jefaturaVentas.routes"));
@@ -95,11 +99,49 @@ var _meta = _interopRequireDefault(require("./meta.routes"));
 
 var _accesorio = _interopRequireDefault(require("./accesorio.routes"));
 
-var _oferta = _interopRequireDefault(require("./oferta.routes"));
-
 var _portada = _interopRequireDefault(require("./portada.routes"));
 
 var _submodule = _interopRequireDefault(require("./submodule.routes"));
+
+var _area = _interopRequireDefault(require("./area.routes"));
+
+var _tipoComprobante = _interopRequireDefault(require("./tipoComprobante.routes"));
+
+var _motivo = _interopRequireDefault(require("./motivo.routes"));
+
+var _statusFacturacion = _interopRequireDefault(require("./statusFacturacion.routes"));
+
+var _statusEntrega = _interopRequireDefault(require("./statusEntrega.routes"));
+
+var _entrega = _interopRequireDefault(require("./entrega.routes"));
+
+var _condicionAccesorio = _interopRequireDefault(require("./condicionAccesorio.routes"));
+
+var _estadoSeguro = _interopRequireDefault(require("./estadoSeguro.routes"));
+
+var _tipoUso = _interopRequireDefault(require("./tipoUso.routes"));
+
+var _origenConcesionario = _interopRequireDefault(require("./origenConcesionario.routes"));
+
+var _metodoAtencion = _interopRequireDefault(require("./metodoAtencion.routes"));
+
+var _civil = _interopRequireDefault(require("./civil.routes"));
+
+var _planMaf = _interopRequireDefault(require("./planMaf.routes"));
+
+var _filtroMaf = _interopRequireDefault(require("./filtroMaf.routes"));
+
+var _helper = _interopRequireDefault(require("./helper.routes"));
+
+var _tipoDocumento = _interopRequireDefault(require("./tipoDocumento.routes"));
+
+var _permiso = _interopRequireDefault(require("./permiso.routes"));
+
+var _menuG = _interopRequireDefault(require("./menuG.routes"));
+
+var _moduloG = _interopRequireDefault(require("./moduloG.routes"));
+
+var _submoduloG = _interopRequireDefault(require("./submoduloG.routes"));
 
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
@@ -110,15 +152,16 @@ router.use('/users', _user.default);
 router.use('/roles', _roles.default);
 router.use('/vehicles', _vehicle.default);
 router.use('/seller', _seller.default);
-router.use('/campania', _campaign.default);
+router.use('/campania', _campania.default);
+router.use('/tipo-campania', _tipoCampania.default);
 router.use('/adicional', _adicional.default);
 router.use('/props', _props.default);
 router.use('/customer', _customer.default);
-router.use('/sale', _sale.default);
+router.use('/files', _files.default);
 router.use('/record', _record.default);
 router.use('/modelo', _modelo.default);
 router.use('/banco', _banco.default);
-router.use('/conexo', _conexos.default);
+router.use('/asesor-conexo', _conexos.default);
 router.use('/endoso', _endoso.default);
 router.use('/color', _colores.default);
 router.use('/sectorista', _sectorista.default);
@@ -140,17 +183,38 @@ router.use('/status-rp', _statusRP.default);
 router.use('/status-aap', _statusAAP.default);
 router.use('/maf', _maf.default);
 router.use('/jefatura-ventas', _jefaturaVentas.default);
-router.use('/status-maf-request', _statusMafRequest.default);
+router.use('/status-maf', _statusMafRequest.default);
 router.use('/tasacion', _tasacion.default);
-router.use('/technical', _tecnico.default);
+router.use('/tecnico-automotriz', _tecnico.default);
 router.use('/service-advisor', _aservicios.default);
 router.use('/brand', _marcaT.default);
 router.use('/models', _modeloT.default);
 router.use('/metas', _meta.default);
-router.use('/accesorio', _accesorio.default);
-router.use('/oferta', _oferta.default);
+router.use('/accesorios', _accesorio.default);
 router.use('/portada', _portada.default);
 router.use('/submodule', _submodule.default);
+router.use('/area', _area.default);
+router.use('/status-tasacion', _statusTasacion.default);
+router.use('/comprobante', _tipoComprobante.default);
+router.use('/motivo-rechazo', _motivo.default);
+router.use('/status-facturacion', _statusFacturacion.default);
+router.use('/status-entrega', _statusEntrega.default);
+router.use('/entregas', _entrega.default);
+router.use('/condicion-accesorio', _condicionAccesorio.default);
+router.use('/status-seguro', _estadoSeguro.default);
+router.use('/tipo-uso', _tipoUso.default);
+router.use('/origen-concesionario', _origenConcesionario.default);
+router.use('/metodo-atencion', _metodoAtencion.default);
+router.use('/estado-civil', _civil.default);
+router.use('/plan-maf', _planMaf.default);
+router.use('/filtro-maf', _filtroMaf.default);
+router.use('/helper', _helper.default);
+router.use('/documento-identidad', _tipoDocumento.default);
+router.use('/permisos', _permiso.default); //Modulos
+
+router.use('/menuG', _menuG.default);
+router.use('/moduloG', _moduloG.default);
+router.use('/submoduloG', _submoduloG.default);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=index.js.map

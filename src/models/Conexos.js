@@ -5,8 +5,10 @@ const conexoSchema = new Schema({
     email: { type: String },
     area: { type: String },
     sucursal: { type: String },
+    areaE: { type: Schema.Types.ObjectId, ref: 'Area'},
+    sucursalE: { type: Schema.Types.ObjectId, ref: 'Sucursal'},
     encargadoDe: [{ type: String }],
-    status: { type: Boolean, default: true },
+    estado: { type: Boolean, default: true },
     createdBy: { ref: 'User', type: Schema.Types.ObjectId }
 }, {
     timestamps: true,

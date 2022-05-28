@@ -29,31 +29,41 @@ var getCondiciones = /*#__PURE__*/function () {
           case 3:
             query = _context.sent;
 
-            if (query.length > 0) {
-              res.send(query);
-            } else {
-              res.status(404).json({
-                message: 'No existen Condiciones'
-              });
+            if (!(query.length > 0)) {
+              _context.next = 8;
+              break;
             }
 
-            _context.next = 11;
+            res.json({
+              total: query.length,
+              all: query
+            });
+            _context.next = 9;
             break;
 
-          case 7:
-            _context.prev = 7;
-            _context.t0 = _context["catch"](0);
-            console.log(_context.t0);
-            res.status(409).json({
-              message: _context.t0.message
-            });
+          case 8:
+            return _context.abrupt("return", res.status(404).json({
+              message: 'No existen Condiciones'
+            }));
+
+          case 9:
+            _context.next = 15;
+            break;
 
           case 11:
+            _context.prev = 11;
+            _context.t0 = _context["catch"](0);
+            console.log(_context.t0);
+            return _context.abrupt("return", res.status(503).json({
+              message: _context.t0.message
+            }));
+
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[0, 11]]);
   }));
 
   return function getCondiciones(_x, _x2) {
@@ -83,7 +93,9 @@ var getCondicionById = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              one: query
+            });
             _context2.next = 10;
             break;
 
@@ -100,9 +112,9 @@ var getCondicionById = /*#__PURE__*/function () {
             _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
             console.log(_context2.t0);
-            res.status(409).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -129,7 +141,7 @@ var getCondicionByActivo = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _Condicion.default.find({
-              status: "Activo"
+              estado: true
             }).sort({
               name: 'asc'
             });
@@ -142,7 +154,10 @@ var getCondicionByActivo = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context3.next = 9;
             break;
 
@@ -159,9 +174,9 @@ var getCondicionByActivo = /*#__PURE__*/function () {
             _context3.prev = 11;
             _context3.t0 = _context3["catch"](0);
             console.log(_context3.t0);
-            res.status(409).json({
+            return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -180,17 +195,17 @@ exports.getCondicionByActivo = getCondicionByActivo;
 
 var createCondicion = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, objeto, query;
+    var _req$body, name, estado, objeto, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
             _context4.prev = 1;
             objeto = new _Condicion.default({
               name: name,
-              status: status
+              estado: estado
             });
             _context4.next = 5;
             return objeto.save();
@@ -211,9 +226,9 @@ var createCondicion = /*#__PURE__*/function () {
             _context4.prev = 9;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
-            });
+            }));
 
           case 13:
           case "end":
@@ -232,21 +247,19 @@ exports.createCondicion = createCondicion;
 
 var updateCondicion = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, condicionId, query;
+    var _req$body2, name, estado, condicionId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
             condicionId = req.params.condicionId;
             _context5.prev = 2;
             _context5.next = 5;
             return _Condicion.default.findByIdAndUpdate(condicionId, {
               name: name,
-              status: status
-            }, {
-              new: true
+              estado: estado
             });
 
           case 5:
@@ -276,9 +289,9 @@ var updateCondicion = /*#__PURE__*/function () {
             _context5.prev = 13;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
-            res.status(409).json({
+            return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
-            });
+            }));
 
           case 17:
           case "end":
@@ -334,9 +347,9 @@ var deleteCondicion = /*#__PURE__*/function () {
             _context6.prev = 12;
             _context6.t0 = _context6["catch"](1);
             console.log(_context6.t0);
-            res.status(409).json({
+            return _context6.abrupt("return", res.status(503).json({
               message: _context6.t0.message
-            });
+            }));
 
           case 16:
           case "end":

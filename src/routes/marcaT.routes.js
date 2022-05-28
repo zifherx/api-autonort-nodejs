@@ -7,8 +7,6 @@ const router = Router();
 
 router.get('/activos', marcaTCtrl.getMarcaActiva);
 
-router.get('/count', marcaTCtrl.countAll);
-
 router.get('/:marcaId', marcaTCtrl.getMarcaById);
 
 router.get('/', marcaTCtrl.getAll);

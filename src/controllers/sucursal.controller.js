@@ -1,10 +1,12 @@
 import Sucursal from "../models/Sucursal";
 
-export const getSucursales = async(req, res) => {
+const sucursalController = {};
+
+sucursalController.getAll = async(req, res) => {
     try {
         const query = await Sucursal.find().sort({ name: 'asc' });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total: query.length, all: query});
         } else {
            return res.status(404).json({ message: 'No existen Sucursales' })
         }
@@ -14,12 +16,12 @@ export const getSucursales = async(req, res) => {
     }
 }
 
-export const getSucursalById = async(req, res) => {
+sucursalController.getOneById = async(req, res) => {
     const { sucursalId } = req.params;
     try {
         const query = await Sucursal.findById(sucursalId);
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe Sucursales' })
         }
@@ -29,11 +31,11 @@ export const getSucursalById = async(req, res) => {
     }
 }
 
-export const getSucursalByActivo = async(req, res) => {
+sucursalController.getAllActivos = async(req, res) => {
     try {
         const query = await Sucursal.find({ estado: true }).sort({ name: 'asc' });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total_active: query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No hay Sucursales activas' })
         }
@@ -43,7 +45,7 @@ export const getSucursalByActivo = async(req, res) => {
     }
 }
 
-export const createSucursal = async(req, res) => {
+sucursalController.createOne = async(req, res) => {
     const { name, estado } = req.body;
     try {
         const objeto = new Sucursal({ name, estado });
@@ -59,7 +61,7 @@ export const createSucursal = async(req, res) => {
     }
 }
 
-export const updateSucursal = async(req, res) => {
+sucursalController.updateOneById = async(req, res) => {
     const { name, estado } = req.body;
     const { sucursalId } = req.params;
     try {
@@ -77,7 +79,7 @@ export const updateSucursal = async(req, res) => {
     }
 }
 
-export const deleteSucursal = async(req, res) => {
+sucursalController.deleteOneById = async(req, res) => {
     const { sucursalId } = req.params;
     try {
         const query = await Sucursal.findByIdAndDelete(sucursalId);
@@ -92,3 +94,5 @@ export const deleteSucursal = async(req, res) => {
         return res.status(503).json({ message: err.message })
     }
 }
+
+export default sucursalController;

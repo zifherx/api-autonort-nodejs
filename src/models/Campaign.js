@@ -10,10 +10,10 @@ const campaignSchema = new Schema({
     startDate: { type: Date },
     endDate: { type: Date },
     estado: { type: Boolean, default: false },
-    createdBy: { ref: 'User', type: Schema.Types.ObjectId },
     descripcion: { type: String }, //No usar
     forCar: { type: String }, //No usar
     status: { type: String }, //No usar
+    createdBy: { ref: 'User', type: Schema.Types.ObjectId },
 }, {
     timestamps: true,
     versionKey: false

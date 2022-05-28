@@ -24,14 +24,27 @@ var tasacionSchema = new _mongoose.Schema({
   version: {
     type: String
   },
+  auto: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'ModeloT'
+  },
   placa: {
     type: String
   },
   color: {
     type: String
   },
+  //actualizado
+  colorE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Colores'
+  },
   anio_fabricacion: {
     type: String
+  },
+  anioF: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Anio'
   },
   kilometraje: {
     type: Number
@@ -43,7 +56,8 @@ var tasacionSchema = new _mongoose.Schema({
     type: Number
   },
   precio: {
-    type: Number
+    type: Number,
+    default: 0
   },
   observacion: {
     type: String
@@ -55,15 +69,27 @@ var tasacionSchema = new _mongoose.Schema({
   sucursal: {
     type: String
   },
+  sucursalE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
+  },
   origen_operacion: {
     type: Number,
     min: 0,
     max: 2
   },
+  origenTasacion: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'OrigenConcesionario'
+  },
   metodo: {
     type: Number,
     min: 0,
     max: 2
+  },
+  metodoTasacion: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'MetodoAtencion'
   },
   fecha_operacion: {
     type: Date
@@ -74,14 +100,31 @@ var tasacionSchema = new _mongoose.Schema({
     max: 12
   },
   status_tasacion: {
-    type: String,
-    default: 'INGRESADO'
+    type: String
+  },
+  estadoTasacionE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'StatusTasacion'
+  },
+  isIngresado: {
+    type: Boolean,
+    default: true
+  },
+  fechaIngresado: {
+    type: Date
   },
   IsProceso: {
     type: Boolean,
     default: false
   },
   fechaProceso: {
+    type: Date
+  },
+  isHot: {
+    type: Boolean,
+    default: false
+  },
+  fechaHot: {
     type: Date
   },
   IsRechazado: {

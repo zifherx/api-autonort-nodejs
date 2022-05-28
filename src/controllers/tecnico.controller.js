@@ -1,12 +1,18 @@
+import Sucursal from "../models/Sucursal";
 import Tecnico from "../models/Tecnico";
 
 const tecnicoCtrl = {};
 
 tecnicoCtrl.getAll = async(req, res) => {
     try {
-        const query = await Tecnico.find().sort({ name: 'asc' });
+        const query = await Tecnico.find().sort({ name: 1 })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        });
+
         if (query.length > 0) {
-            res.json(query);
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Técnicos' })
         }
@@ -16,12 +22,17 @@ tecnicoCtrl.getAll = async(req, res) => {
     }
 }
 
-tecnicoCtrl.getTecnicoById = async(req, res) => {
+tecnicoCtrl.getOneById = async(req, res) => {
     const { tecnicoId } = req.params;
     try {
-        const query = await Tecnico.findById(tecnicoId);
+        const query = await Tecnico.findById(tecnicoId)
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        });
+
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe el Técnico' })
         }
@@ -31,11 +42,16 @@ tecnicoCtrl.getTecnicoById = async(req, res) => {
     }
 }
 
-tecnicoCtrl.getTecnicoByActivo = async(req, res) => {
+tecnicoCtrl.getAllActivos = async(req, res) => {
     try {
-        const query = await Tecnico.find({ status: true }).sort({ name: 'asc' });
+        const query = await Tecnico.find({ estado: true }).sort({ name: 1 })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        });
+
         if (query.length > 0) {
-            res.json(query);
+            res.json({total_active: query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No hay Técnicos Activos' })
         }
@@ -45,10 +61,17 @@ tecnicoCtrl.getTecnicoByActivo = async(req, res) => {
     }
 }
 
-tecnicoCtrl.createTecnico = async(req, res) => {
-    const { name, document, cellphone, email, sucursal, status } = req.body;
+tecnicoCtrl.createOne = async(req, res) => {
+    const { name, document, cellphone, email, sucursalE, estado } = req.body;
+
     try {
-        const objeto = new Tecnico({ name, document, cellphone, email, sucursal, status });
+        const objeto = new Tecnico({ name, document, cellphone, email, estado });
+
+        const sucursalFound = await Sucursal.findOne({name: sucursalE});
+        if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
+
+        objeto.sucursalE = sucursalFound._id;
+
         const query = await objeto.save();
         if (query) {
             res.json({ message: 'Técnico creado con éxito' })
@@ -59,11 +82,23 @@ tecnicoCtrl.createTecnico = async(req, res) => {
     }
 }
 
-tecnicoCtrl.updateTecnico = async(req, res) => {
-    const { name, document, cellphone, email, sucursal, status } = req.body;
+tecnicoCtrl.updateOneById = async(req, res) => {
+    const { name, document, cellphone, email, sucursalE, estado } = req.body;
     const { tecnicoId } = req.params;
+
     try {
-        const query = await Tecnico.findByIdAndUpdate(tecnicoId, { name, document, cellphone, email, sucursal, status });
+
+        const sucursalFound = await Sucursal.findOne({name: sucursalE});
+        if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
+
+        const query = await Tecnico.findByIdAndUpdate(tecnicoId, { 
+            name,
+            document,
+            cellphone,
+            email,
+            sucursalE: sucursalFound._id,
+            estado 
+        });
         if (query) {
             res.json({ message: 'Técnico actualizado con éxito' });
         } else {
@@ -75,7 +110,7 @@ tecnicoCtrl.updateTecnico = async(req, res) => {
     }
 }
 
-tecnicoCtrl.deleteTecnico = async(req, res) => {
+tecnicoCtrl.deleteOneById = async(req, res) => {
     const { tecnicoId } = req.params;
     try {
         const query = await Tecnico.findByIdAndDelete(tecnicoId);
@@ -83,43 +118,6 @@ tecnicoCtrl.deleteTecnico = async(req, res) => {
             res.json({ message: 'Técnico eliminado con éxito' });
         } else {
             return res.status(404).json({ message: 'No existe el Técnico a eliminar' });
-        }
-    } catch (err) {
-        console.log(err);
-        return res.status(503).json({ message: err.message })
-    }
-}
-
-tecnicoCtrl.countAll = async(req, res) => {
-    try {
-        const query = await Tecnico.countDocuments();
-        if (query >= 0) return res.json({ count: query })
-    } catch (err) {
-        console.log(err);
-        return res.status(503).json({ message: err.message })
-    }
-}
-
-tecnicoCtrl.countByStatus = async(req, res) => {
-    const { estado } = req.body;
-    try {
-        const query = await Tecnico.find({ status: estado }).countDocuments();
-        if (query >= 0) return res.json({ count: query })
-    } catch (err) {
-        console.log(err);
-        return res.status(503).json({ message: err.message })
-    }
-}
-
-tecnicoCtrl.getBySucursal = async(req, res) => {
-    const { sucursal } = req.body;
-
-    try {
-        const query = await Tecnico.find({ sucursal, status: true }).sort({ name: 'asc' });
-        if (query.length > 0) {
-            res.json({ count: query.length, tecnicos: query });
-        } else {
-            return res.status(404).json({ message: `No Existen Técnicos en ${sucursal}` })
         }
     } catch (err) {
         console.log(err);

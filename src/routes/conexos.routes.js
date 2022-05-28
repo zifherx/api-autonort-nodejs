@@ -1,30 +1,30 @@
 import { Router } from "express";
-import * as conexoCtrl from '../controllers/conexos.controller'
+import conexoCtrl from '../controllers/conexos.controller'
 import { authJwt, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
 //Obtener Conexo
-router.get('/', conexoCtrl.getConexos);
+router.get('/', conexoCtrl.getAll);
 
 //Obtener Conexo Activos
-router.get('/activos', conexoCtrl.getConexoByActivo);
+router.get('/activos', conexoCtrl.getAllActivos);
 
 //Obtener Conexo por ID
-router.get('/:conexoId', conexoCtrl.getConexoById);
+router.get('/:conexoId', conexoCtrl.getOneById);
 
 //Obtener Asesor x Sucursal
-router.post('/sucursal', conexoCtrl.obtenerAsesorxSucursal);
-router.post('/area', conexoCtrl.obtenerAsesorxArea);
-router.post('/by-name', conexoCtrl.obtenerAsesorByName);
+router.post('/by-sucursal', conexoCtrl.getAsesorxSucursalyArea);
+router.post('/by-area', conexoCtrl.getAsesoresxArea);
+router.post('/by-name', conexoCtrl.getAsesorByName);
 
 //Crear Conexo
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateConexo], conexoCtrl.createConexo);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateConexo], conexoCtrl.createOne);
 
 //Actualizar Conexo
-router.patch('/:conexoId', [authJwt.verifyToken, authJwt.isAdmin], conexoCtrl.updateConexo);
+router.patch('/:conexoId', [authJwt.verifyToken, authJwt.isAdmin], conexoCtrl.updateOneById);
 
 //Eliminar Conexo
-router.delete('/:conexoId', [authJwt.verifyToken, authJwt.isAdmin], conexoCtrl.deleteConexo);
+router.delete('/:conexoId', [authJwt.verifyToken, authJwt.isAdmin], conexoCtrl.deleteOneById);
 
 export default router;

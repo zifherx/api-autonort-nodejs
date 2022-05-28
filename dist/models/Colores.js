@@ -16,7 +16,7 @@ var colorSchema = new _mongoose.Schema({
   },
   estado: {
     type: Boolean,
-    default: false
+    default: true
   }
 }, {
   timestamps: true,

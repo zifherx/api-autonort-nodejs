@@ -146,7 +146,7 @@ var createUserAdmin = /*#__PURE__*/function () {
 
           case 13:
             _context2.t2 = _context2.sent;
-            _context2.t3 = roleFound._id;
+            _context2.t3 = [roleFound._id];
             _context2.t4 = {
               name: 'Fernando Rojas',
               username: 'frojasq',

@@ -4,31 +4,22 @@ import { authJwt, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
-//Obtener Conteo Tecnicos
-router.get('/count', tecnicoCtrl.countAll);
-
 //Obtener Tecnico Activos
-router.get('/activos', tecnicoCtrl.getTecnicoByActivo);
+router.get('/activos', tecnicoCtrl.getAllActivos);
 
 //Obtener Tecnico por ID
-router.get('/:tecnicoId', tecnicoCtrl.getTecnicoById);
+router.get('/:tecnicoId', tecnicoCtrl.getOneById);
 
 //Obtener Tecnico
 router.get('/', tecnicoCtrl.getAll);
 
-//Obtener Tecnico por ID
-router.post('/count/status', tecnicoCtrl.countByStatus);
-
-//Obtener Tecnico por Scuursal
-router.post('/sucursal', tecnicoCtrl.getBySucursal);
-
 //Crear Tecnico
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateTecnico], tecnicoCtrl.createTecnico);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateTecnico], tecnicoCtrl.createOne);
 
 //Actualizar Tecnico
-router.patch('/:tecnicoId', [authJwt.verifyToken, authJwt.isAdmin], tecnicoCtrl.updateTecnico);
+router.patch('/:tecnicoId', [authJwt.verifyToken, authJwt.isAdmin], tecnicoCtrl.updateOneById);
 
 //Eliminar Tecnico
-router.delete('/:tecnicoId', [authJwt.verifyToken, authJwt.isAdmin], tecnicoCtrl.deleteTecnico);
+router.delete('/:tecnicoId', [authJwt.verifyToken, authJwt.isAdmin], tecnicoCtrl.deleteOneById);
 
 export default router;

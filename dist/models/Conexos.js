@@ -20,10 +20,18 @@ var conexoSchema = new _mongoose.Schema({
   sucursal: {
     type: String
   },
+  areaE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Area'
+  },
+  sucursalE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
+  },
   encargadoDe: [{
     type: String
   }],
-  status: {
+  estado: {
     type: Boolean,
     default: true
   },

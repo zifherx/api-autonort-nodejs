@@ -16,13 +16,13 @@ var _mongoose = require("mongoose");
 var _bcryptjs = _interopRequireDefault(require("bcryptjs"));
 
 var userSchema = new _mongoose.Schema({
-  username: {
-    type: String,
-    unique: true
-  },
   name: {
     type: String,
     required: true
+  },
+  username: {
+    type: String,
+    unique: true
   },
   email: {
     type: String
@@ -35,8 +35,11 @@ var userSchema = new _mongoose.Schema({
     required: true
   },
   sucursal: {
-    type: String,
-    required: true
+    type: String
+  },
+  sucursalE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
   },
   direccion: {
     type: String
@@ -50,11 +53,15 @@ var userSchema = new _mongoose.Schema({
   about: {
     type: String
   },
-  roles: {
+  roles: [{
     ref: "Role",
     type: _mongoose.Schema.Types.ObjectId
-  },
+  }],
   status: {
+    type: Boolean,
+    default: true
+  },
+  estado: {
     type: Boolean,
     default: true
   },
@@ -63,7 +70,8 @@ var userSchema = new _mongoose.Schema({
     default: false
   },
   avatar: {
-    type: String
+    type: String,
+    default: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
   }
 }, {
   timestamps: true,

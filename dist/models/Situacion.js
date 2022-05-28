@@ -11,6 +11,10 @@ var situacionSchema = new _mongoose.Schema({
   name: {
     type: String
   },
+  valor: {
+    type: Number,
+    default: 0
+  },
   status: {
     type: String
   },

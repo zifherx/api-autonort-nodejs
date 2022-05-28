@@ -7,7 +7,6 @@ const router = Router();
 router.get('/:tasacionId', tasacionCtrl.getOneById);
 router.get('/', tasacionCtrl.getAll);
 
-router.post('/count', tasacionCtrl.countBySucursalFecha);
 router.post('/ranking/status', tasacionCtrl.getRankingByStatus);
 router.post('/ranking/metodo', tasacionCtrl.getCountByMetodo);
 router.post('/ranking/origin', tasacionCtrl.getCountByOrigen);
@@ -20,8 +19,11 @@ router.post('/status-by-advisor', tasacionCtrl.getTasacionesByAdvisor);
 router.post('/vehicles-by-seller', tasacionCtrl.getVehiclesByVentas);
 router.post('/vehicles-by-advisor', tasacionCtrl.getVehiclesByServicios);
 
+router.post('/by-sucursal', tasacionCtrl.getBySucursalFecha);
+router.post('/by-estado', [authJwt.verifyToken], tasacionCtrl.getAllByDatesyEstado);
 router.post('/by-tasador', [authJwt.verifyToken, authJwt.isTasadororChiefEPDP], tasacionCtrl.getAllByTasador);
-router.post('/', [authJwt.verifyToken, authJwt.isTasadororChiefEPDP], tasacionCtrl.createTasacion);
+router.post('/', [authJwt.verifyToken, authJwt.isTasadororChiefEPDP], tasacionCtrl.createOne);
+
 router.patch('/:tasacionId', [authJwt.verifyToken, authJwt.isTasadororChiefEPDP], tasacionCtrl.updatedOneById);
 router.delete('/:tasacionId', [authJwt.verifyToken, authJwt.isChiefEPDPorAdmin], tasacionCtrl.deleteOneById);
 

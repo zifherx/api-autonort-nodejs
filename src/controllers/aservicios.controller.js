@@ -1,12 +1,18 @@
 import AServicios from "../models/AServicios";
+import Sucursal from "../models/Sucursal";
 
 const serviciosCtrl = {};
 
 serviciosCtrl.getAll = async(req, res) => {
     try {
-        const query = await AServicios.find().sort({ name: 'asc' });
+        const query = await AServicios.find().sort({ name: 1 })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        });
+
         if (query.length > 0) {
-            res.json(query);
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Asesores de Servicios' })
         }
@@ -19,9 +25,14 @@ serviciosCtrl.getAll = async(req, res) => {
 serviciosCtrl.getOneById = async(req, res) => {
     const { asesorId } = req.params;
     try {
-        const query = await AServicios.findById(asesorId);
+        const query = await AServicios.findById(asesorId)
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        });
+
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe el Asesor de Servicio' })
         }
@@ -33,9 +44,15 @@ serviciosCtrl.getOneById = async(req, res) => {
 
 serviciosCtrl.getAllByActivo = async(req, res) => {
     try {
-        const query = await AServicios.find({ status: true }).sort({ name: 'asc' });
+        const query = await AServicios.find({ estado: true })
+        .sort({ name: 1 })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        });
+
         if (query.length > 0) {
-            res.json(query);
+            res.json({total_active: query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No hay Asesores de Servicios Activos' })
         }
@@ -46,17 +63,38 @@ serviciosCtrl.getAllByActivo = async(req, res) => {
 }
 
 serviciosCtrl.createOne = async(req, res) => {
-    const { name, document, cellphone, email, sucursal, status } = req.body;
+    const { name, document, cellphone, email, sucursalE, estado } = req.body;
+    const avatar = req.file;
+
     try {
-        const objeto = new AServicios({
-            name,
-            document,
-            cellphone,
-            email,
-            sucursal,
-            status
-        });
-        const query = await objeto.save();
+        let obj = null;
+
+        const sucursalFound = await Sucursal.findOne({name: sucursalE});
+        if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
+
+        if(avatar == null || avatar == undefined){
+            obj = new AServicios({
+                name,
+                document,
+                cellphone,
+                email,
+                sucursalE: sucursalFound._id,
+                estado
+            });
+        }else{
+            obj = new AServicios({
+                name,
+                document,
+                cellphone,
+                email,
+                sucursalE: sucursalFound._id,
+                estado,
+                avatar: avatar.location,
+            });
+        }
+
+        const query = await obj.save();
+
         if (query) {
             res.json({ message: 'Asesor de Servicio creado con éxito' })
         }
@@ -67,21 +105,42 @@ serviciosCtrl.createOne = async(req, res) => {
 }
 
 serviciosCtrl.updatedOneById = async(req, res) => {
-    const { name, document, cellphone, email, sucursal, status } = req.body;
+    const { name, document, cellphone, email, sucursalE, estado } = req.body;
     const { asesorId } = req.params;
+    const avatar = req.file;
+
     try {
-        const query = await AServicios.findByIdAndUpdate(asesorId, {
-            name,
-            document,
-            cellphone,
-            email,
-            sucursal,
-            status
-        });
+
+        let query = null;
+
+        const sucursalFound = await Sucursal.findOne({name: sucursalE});
+        if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
+
+        if(avatar == undefined || avatar == null){
+            query = await AServicios.findByIdAndUpdate(asesorId,{
+                name,
+                document,
+                cellphone,
+                email,
+                sucursalE: sucursalFound._id,
+                estado
+            })
+        }else{
+            query = await AServicios.findByIdAndUpdate(asesorId,{
+                name,
+                document,
+                cellphone,
+                email,
+                sucursalE: sucursalFound._id,
+                estado,
+                avatar: avatar.location
+            })
+        }
+
         if (query) {
             res.json({ message: 'Asesor de Servicio actualizado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe el Asesor de Servicio a actualizar' });
+            return res.status(404).json({ message: 'No existe el Asesor de Servicio a actualizar' });
         }
     } catch (err) {
         console.log(err);
@@ -96,29 +155,8 @@ serviciosCtrl.deleteOneById = async(req, res) => {
         if (query) {
             res.json({ message: 'Asesor de Servicio eliminado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe el Asesor de Servicio a eliminar' });
+            return res.status(404).json({ message: 'No existe el Asesor de Servicio a eliminar' });
         }
-    } catch (err) {
-        console.log(err);
-        return res.status(503).json({ message: err.message })
-    }
-}
-
-serviciosCtrl.countAll = async(req, res) => {
-    try {
-        const query = await AServicios.countDocuments();
-        if (query >= 0) return res.json({ count: query });
-    } catch (err) {
-        console.log(err);
-        return res.status(503).json({ message: err.message })
-    }
-}
-
-serviciosCtrl.countByStatus = async(req, res) => {
-    const { estado } = req.body;
-    try {
-        const query = await AServicios.find({ status: estado }).countDocuments();
-        if (query >= 0) return res.json({ count: query });
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message })
@@ -126,38 +164,26 @@ serviciosCtrl.countByStatus = async(req, res) => {
 }
 
 serviciosCtrl.getBySucursal = async(req, res) => {
-    const { sucursal } = req.body;
+    const { sucursalE } = req.body;
 
     try {
-        const query = await AServicios.find({ sucursal, status: true }).sort({ name: 'asc' });
+
+        const sucursalFound = await Sucursal.findOne({name: sucursalE});
+        if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
+
+        const query = await AServicios.find({ 
+            sucursalE: sucursalFound._id, 
+            estado: true 
+        }).sort({ name: 1 });
+
         if (query.length > 0) {
-            res.json({ count: query.length, asesores: query });
+            res.json({ total: query.length, all: query });
         } else {
             return res.status(404).json({ message: `No Existen Asesores de Servicios en ${sucursal}` })
         }
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message })
-    }
-}
-
-serviciosCtrl.uploadAvatar = async(req, res) => {
-    const { asesorId } = req.params;
-    const photo = req.file;
-    // console.log(photo)
-    try {
-        const query = await AServicios.findByIdAndUpdate(asesorId, {
-            avatar: photo.location
-        });
-
-        if (query) {
-            res.json({ message: 'Avatar subido con éxito' });
-        } else {
-            return res.status(404).json({ message: 'No existe el asesor' });
-        }
-    } catch (err) {
-        console.log(err);
-        return res.status(503).json({ message: err.message });
     }
 }
 

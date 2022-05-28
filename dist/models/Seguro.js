@@ -21,8 +21,10 @@ var seguroSchema = new _mongoose.Schema({
   sucursal: {
     type: String
   },
-  fecha_registro: {
-    type: Date
+  //actualizado
+  sucursalE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
   },
   mes: {
     type: Number
@@ -30,26 +32,12 @@ var seguroSchema = new _mongoose.Schema({
   status: {
     type: String
   },
-  isIngresado: {
-    type: Boolean,
-    default: true
+  //actualizado
+  estadoSeguroE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'EstadoSeguro'
   },
-  fechaRegistro: {
-    type: Date,
-    default: new Date()
-  },
-  isProceso: {
-    type: Boolean,
-    default: false
-  },
-  fechaProceso: {
-    type: Date
-  },
-  isEmitido: {
-    type: Boolean,
-    default: false
-  },
-  fechaEmision: {
+  fecha_registro: {
     type: Date
   },
   forma_pago: {
@@ -76,16 +64,29 @@ var seguroSchema = new _mongoose.Schema({
     ref: 'Seller',
     type: _mongoose.Schema.Types.ObjectId
   },
+  // Logs
+  isIngresado: {
+    type: Boolean,
+    default: true
+  },
+  fechaRegistro: {
+    type: Date
+  },
+  isProceso: {
+    type: Boolean,
+    default: false
+  },
+  fechaProceso: {
+    type: Date
+  },
+  isEmitido: {
+    type: Boolean,
+    default: false
+  },
+  fechaEmision: {
+    type: Date
+  },
   //Vehículo
-  placa: {
-    type: String
-  },
-  chasis: {
-    type: String
-  },
-  motor: {
-    type: String
-  },
   marca: {
     type: String
   },
@@ -95,15 +96,43 @@ var seguroSchema = new _mongoose.Schema({
   version: {
     type: String
   },
+  vehicleE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Vehicle',
+    default: null
+  },
   anio: {
+    type: String
+  },
+  anioE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Anio',
+    default: null
+  },
+  placa: {
     type: String
   },
   uso: {
     type: String
   },
+  tipoUsoE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'TipoUso'
+  },
+  motor: {
+    type: String
+  },
+  chasis: {
+    type: String
+  },
   //Aseguradora
   asesor: {
     type: String
+  },
+  //actualizado
+  asesorConexosE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Conexos'
   },
   endoso: {
     type: String
@@ -123,6 +152,11 @@ var seguroSchema = new _mongoose.Schema({
   aseguradora: {
     type: String
   },
+  aseguradoraE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Aseguradora',
+    default: null
+  },
   comision_seguro: {
     type: Number
   },
@@ -131,8 +165,8 @@ var seguroSchema = new _mongoose.Schema({
   },
   //Empleado
   createdBy: {
-    ref: 'User',
-    type: _mongoose.Schema.Types.ObjectId
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 }, {
   timestamps: true,

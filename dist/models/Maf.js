@@ -1,13 +1,19 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _mongoose = require("mongoose");
 
-var mafSchema = new _mongoose.Schema({
+var _Schema;
+
+var mafSchema = new _mongoose.Schema((_Schema = {
   //Solicitud a Evaluacion
   nro_solicitud: {
     type: String
@@ -20,6 +26,11 @@ var mafSchema = new _mongoose.Schema({
   },
   sucursal: {
     type: String
+  },
+  // actualizado
+  sucursalE: {
+    type: _mongoose.Types.ObjectId,
+    ref: 'Sucursal'
   },
   customer: {
     ref: 'Customer',
@@ -64,8 +75,18 @@ var mafSchema = new _mongoose.Schema({
   anio_fab: {
     type: Number
   },
+  // actualizado
+  anioFabE: {
+    type: _mongoose.Types.ObjectId,
+    ref: 'Anio'
+  },
   anio_mod: {
     type: Number
+  },
+  // actualizado
+  anioModE: {
+    type: _mongoose.Types.ObjectId,
+    ref: 'Anio'
   },
   pvp: {
     type: Number,
@@ -74,8 +95,18 @@ var mafSchema = new _mongoose.Schema({
   plan: {
     type: String
   },
+  // actualizado
+  planMAF: {
+    type: _mongoose.Types.ObjectId,
+    ref: 'PlanMAF'
+  },
   tipo_uso: {
     type: String
+  },
+  // actualizado
+  tipoUsoE: {
+    type: _mongoose.Types.ObjectId,
+    ref: 'TipoUso'
   },
   evidencias: [{
     type: String
@@ -102,6 +133,10 @@ var mafSchema = new _mongoose.Schema({
   carta_evidencia: {
     type: String
   },
+  cronograma_pagos: {
+    type: String
+  },
+  // actualizado
   observacion: {
     type: String
   },
@@ -112,58 +147,97 @@ var mafSchema = new _mongoose.Schema({
   primer_status_request: {
     type: String
   },
+  // actualizado
+  estadoSolicitudMAF: {
+    type: _mongoose.Types.ObjectId,
+    ref: 'StatusMafRequest'
+  },
+  //Logs
   isIngresada: {
     type: Boolean,
     default: true
   },
   fechaIngresoSolicitud: {
     type: Date
-  },
-  isEvaluacion: {
-    type: Boolean
-  },
-  fechaEvaluacion: {
-    type: Date
-  },
-  isObservado: {
-    type: Boolean
-  },
-  fechaObservado: {
-    type: Date
-  },
-  isRechazado: {
-    type: Boolean
-  },
-  fechaRechazado: {
-    type: Date
-  },
-  isAprobado: {
-    type: Boolean
-  },
-  fechaProbado: {
-    type: Date
-  },
-  //Solitud Aprobada por Jefatura
-  pasoaHot: {
-    type: Number,
-    min: 0,
-    max: 3,
-    default: 0
-  },
-  //Estatus que cambia por asesor MAF
-  tercer_status_request: {
-    type: String
-  },
-  //Aprobadores
-  userCreator: {
-    type: _mongoose.Types.ObjectId,
-    ref: 'User'
-  },
-  userApprove: {
-    type: _mongoose.Types.ObjectId,
-    ref: 'User'
   }
-}, {
+}, (0, _defineProperty2.default)(_Schema, "isReingresado", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaReingreso", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isEvaluacion", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaEvaluacion", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isObservado", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaObservado", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isRechazado", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaRechazado", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isAprobado", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaAprobado", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isRevisorio", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaRevisorio", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isDesembolsar", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaDesembolsar", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isActivado", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaActivado", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "pasoaHot", {
+  type: Number,
+  min: 0,
+  max: 3,
+  default: 0
+}), (0, _defineProperty2.default)(_Schema, "estadoAprobacionJefatura", {
+  type: _mongoose.Types.ObjectId,
+  ref: 'StatusJefaturaMaf',
+  default: null
+}), (0, _defineProperty2.default)(_Schema, "isHot", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaHot", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isProxMes", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaProxMes", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isNoVa", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaNoVa", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "tercer_status_request", {
+  type: String
+}), (0, _defineProperty2.default)(_Schema, "userCreator", {
+  type: _mongoose.Types.ObjectId,
+  ref: 'User',
+  default: null
+}), (0, _defineProperty2.default)(_Schema, "userApprove", {
+  type: _mongoose.Types.ObjectId,
+  ref: 'User',
+  default: null
+}), (0, _defineProperty2.default)(_Schema, "createdBy", {
+  type: _mongoose.Types.ObjectId,
+  ref: 'User'
+}), _Schema), {
   timestamps: true,
   versionKey: false
 });

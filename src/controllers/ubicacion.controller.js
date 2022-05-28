@@ -1,10 +1,12 @@
 import Ubicacion from "../models/Ubicacion";
 
-export const getUbicaciones = async(req, res) => {
+const ubicacionController = {};
+
+ubicacionController.getAll = async(req, res) => {
     try {
-        const query = await Ubicacion.find().sort({ name: 'asc' });
+        const query = await Ubicacion.find().sort({ valor: 1 });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Ubicaciones' })
         }
@@ -14,12 +16,12 @@ export const getUbicaciones = async(req, res) => {
     }
 }
 
-export const getUbicacionById = async(req, res) => {
+ubicacionController.getOneById = async(req, res) => {
     const { ubicacionId } = req.params;
     try {
         const query = await Ubicacion.findById(ubicacionId);
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe Ubicación' })
         }
@@ -29,11 +31,11 @@ export const getUbicacionById = async(req, res) => {
     }
 }
 
-export const getUbicacionByActivo = async(req, res) => {
+ubicacionController.getAllActivos = async(req, res) => {
     try {
-        const query = await Ubicacion.find({ estado: true }).sort({ name: 'asc' });
+        const query = await Ubicacion.find({ estado: true }).sort({ valor: 1 });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total_active: query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No hay Ubicaciones Activas' })
         }
@@ -43,10 +45,10 @@ export const getUbicacionByActivo = async(req, res) => {
     }
 }
 
-export const createUbicacion = async(req, res) => {
-    const { name, estado } = req.body;
+ubicacionController.createOne = async(req, res) => {
+    const { name,valor, estado } = req.body;
     try {
-        const objeto = new Ubicacion({ name, estado });
+        const objeto = new Ubicacion({ name, value, estado });
         const query = await objeto.save();
         if (query) {
             res.json({ message: 'Ubicación creada con éxito' })
@@ -57,11 +59,11 @@ export const createUbicacion = async(req, res) => {
     }
 }
 
-export const updateUbicacion = async(req, res) => {
-    const { name, estado } = req.body;
+ubicacionController.updateOneById = async(req, res) => {
+    const { name, valor, estado } = req.body;
     const { ubicacionId } = req.params;
     try {
-        const query = await Ubicacion.findByIdAndUpdate(ubicacionId, { name, estado });
+        const query = await Ubicacion.findByIdAndUpdate(ubicacionId, { name, valor, estado });
         if (query) {
             res.json({ message: 'Ubicación actualizada con éxito' });
         } else {
@@ -73,7 +75,7 @@ export const updateUbicacion = async(req, res) => {
     }
 }
 
-export const deleteUbicacion = async(req, res) => {
+ubicacionController.deleteOneById = async(req, res) => {
     const { ubicacionId } = req.params;
     try {
         const query = await Ubicacion.findByIdAndDelete(ubicacionId);
@@ -87,3 +89,5 @@ export const deleteUbicacion = async(req, res) => {
         return res.status(503).json({ message: err.message })
     }
 }
+
+export default ubicacionController;

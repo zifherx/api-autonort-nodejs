@@ -15,7 +15,7 @@ var _Banco = _interopRequireDefault(require("../models/Banco"));
 
 var getBancos = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var bancos;
+    var query;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -27,14 +27,17 @@ var getBancos = /*#__PURE__*/function () {
             });
 
           case 3:
-            bancos = _context.sent;
+            query = _context.sent;
 
-            if (!(bancos.length > 0)) {
+            if (!(query.length > 0)) {
               _context.next = 8;
               break;
             }
 
-            res.json(bancos);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -72,7 +75,7 @@ exports.getBancos = getBancos;
 
 var getBancoById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var bancoId, bancos;
+    var bancoId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -83,14 +86,16 @@ var getBancoById = /*#__PURE__*/function () {
             return _Banco.default.findById(bancoId);
 
           case 4:
-            bancos = _context2.sent;
+            query = _context2.sent;
 
-            if (!bancos) {
+            if (!query) {
               _context2.next = 9;
               break;
             }
 
-            res.json(bancos);
+            res.json({
+              one: query
+            });
             _context2.next = 10;
             break;
 
@@ -128,7 +133,7 @@ exports.getBancoById = getBancoById;
 
 var getBancoByActivo = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var bancos;
+    var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -136,20 +141,23 @@ var getBancoByActivo = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _Banco.default.find({
-              status: true
+              estado: true
             }).sort({
-              name: 'asc'
+              name: 1
             });
 
           case 3:
-            bancos = _context3.sent;
+            query = _context3.sent;
 
-            if (!(bancos.length > 0)) {
+            if (!(query.length > 0)) {
               _context3.next = 8;
               break;
             }
 
-            res.json(bancos);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context3.next = 9;
             break;
 
@@ -187,13 +195,13 @@ exports.getBancoByActivo = getBancoByActivo;
 
 var createBanco = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, avatar, obj, query;
+    var _req$body, name, estado, avatar, obj, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
             avatar = req.file;
             _context4.prev = 2;
             obj = null;
@@ -201,13 +209,13 @@ var createBanco = /*#__PURE__*/function () {
             if (avatar == undefined || avatar == null) {
               obj = new _Banco.default({
                 name: name,
-                status: status
+                estado: estado
               });
             } else {
               obj = new _Banco.default({
                 avatar: avatar.location,
                 name: name,
-                status: status
+                estado: estado
               });
             }
 
@@ -251,13 +259,13 @@ exports.createBanco = createBanco;
 
 var updateBanco = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, bancoId, avatar, query;
+    var _req$body2, name, estado, bancoId, avatar, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
             bancoId = req.params.bancoId;
             avatar = req.file;
             _context5.prev = 3;
@@ -271,7 +279,7 @@ var updateBanco = /*#__PURE__*/function () {
             _context5.next = 8;
             return _Banco.default.findByIdAndUpdate(bancoId, {
               name: name,
-              status: status
+              estado: estado
             });
 
           case 8:
@@ -284,7 +292,7 @@ var updateBanco = /*#__PURE__*/function () {
             return _Banco.default.findByIdAndUpdate(bancoId, {
               avatar: avatar.location,
               name: name,
-              status: status
+              estado: estado
             });
 
           case 13:

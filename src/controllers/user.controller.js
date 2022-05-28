@@ -1,18 +1,104 @@
 import User from '../models/User'
 import Role from '../models/Role'
+import Sucursal from '../models/Sucursal';
 
-export const createUser = async(req, res) => {
-    const { username, name, password, sucursal, roles, status } = req.body;
+const userController = {};
+
+userController.getAll = async(req, res) => {
+    try {
+        const query = await User.find()
+            .select('-password')
+            .sort({ name: 1 })
+            .populate({
+                path: 'roles',
+                select: 'name'
+            })
+            .populate({
+                path: 'sucursalE',
+                select: 'name'
+            });
+
+        if (query.length > 0) {
+            res.json({total: query.length, all: query});
+        } else {
+            return res.status(404).json({ message: 'No existen usuarios' })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message })
+    }
+}
+
+userController.getAllActivos = async(req, res) => {
+    try {
+        const query = await User.find({estado: true})
+            .select('-password')
+            .sort({ name: 1 })
+            .populate({
+                path: 'roles',
+                select: 'name'
+            })
+            .populate({
+                path: 'sucursalE',
+                select: 'name'
+            });
+
+        if (query.length > 0) {
+            res.json({total_active: query.length, all_active: query});
+        } else {
+            return res.status(404).json({ message: 'No existen usuarios activos' })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message })
+    }
+}
+
+userController.getOneById = async(req, res) => {
+    const { userId } = req.params;
 
     try {
-
-        const newUser = new User({
-            username,
-            name,
-            password: await User.encryptPassword(password),
-            sucursal,
-            status
+        const query = await User.findById(userId)
+        .select('-password')
+        .populate({
+            path: 'roles',
+            select: 'name'
+        })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
         });
+
+        if (query) {
+            res.json({one: query});
+        } else {
+            return res.status(404).json({ message: 'No existe usuario' })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message })
+    }
+
+}
+
+userController.createOne = async(req, res) => {
+    const { name, username, password,sucursal, sucursalE, roles, estado } = req.body;
+    console.log(req.body);
+
+    try {
+        const newUser = new User({
+            name,
+            username,
+            sucursal,
+            password: await User.encryptPassword(password),
+            estado
+        });
+
+        const sucursalFound = await Sucursal.findOne({name: sucursalE});
+        console.log('Sucursal Found:', sucursalFound);
+        if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
+
+        newUser.sucursalE = sucursalFound._id;
 
         if (roles) {
             const foundRoles = await Role.find({ name: { $in: roles } });
@@ -22,77 +108,58 @@ export const createUser = async(req, res) => {
             newUser.roles = [role._id];
         }
 
-        const userSaved = await newUser.save();
+        const query = await newUser.save();
 
-        if (userSaved) {
+        if (query) {
             res.json({ message: 'Usuario creado con éxito' });
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ error: err })
+        return res.status(503).json({ message: err.message })
     }
 }
 
-export const getUsers = async(req, res) => {
-    try {
-        const lista = await User.find()
-            .select('-password')
-            .sort({ name: 'asc' })
-            .populate({
-                path: 'roles',
-                select: 'name'
-            })
-
-        if (lista.length > 0) {
-            res.json(lista)
-        } else {
-            return res.status(404).json({ message: 'No existen Usuarios' })
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(503).json({ error: err })
-    }
-}
-
-export const getUserById = async(req, res) => {
+userController.updateOneById = async(req, res) => {
     const { userId } = req.params;
+    const { name, username, sucursalE, email, phone, roles, estado } = req.body;
+    const avatar = req.file;
+
+    // console.log(req.body);
 
     try {
 
-        const query = await User.findById(userId)
-        .select('-password')
-        .populate({
-            path: 'roles',
-            select: 'name'
-        })
+        let query = null;
+
+        const sucursalFound = await Sucursal.findOne({name: sucursalE});
+        if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
+        
+        const roleFound = await Role.find({ name: { $in: roles } });
+        if(!roleFound) return res.status(404).json({message: `Rol ${roles} no encontrado`});
+
+        if(avatar == null || avatar == undefined){
+            query = await User.findByIdAndUpdate(userId, {
+                username,
+                name,
+                sucursalE: sucursalFound._id,
+                roles: roleFound.map(a => a._id),
+                email, 
+                phone,
+                estado
+            });
+        }else{
+            query = await User.findByIdAndUpdate(userId, {
+                username,
+                name,
+                sucursalE: sucursalFound._id,
+                roles: roleFound.map(a => a._id),
+                avatar: avatar.location,
+                email, 
+                phone,
+                estado
+            });
+        }
 
         if (query) {
-            res.json(query)
-        } else {
-            return res.status(404).json({ message: 'No existe Usuario' })
-        }
-    } catch (err) {
-        console.log(err);
-        return res.status(503).json({ error: err.message })
-    }
-
-}
-
-export const updateUserById = async(req, res) => {
-    const { userId } = req.params;
-    const { username, name, sucursal, roles, status } = req.body;
-
-    try {
-        const foundRoles = await Role.find({ name: { $in: roles } })
-        const userFound = await User.findByIdAndUpdate(userId, {
-            username,
-            name,
-            sucursal,
-            roles: foundRoles.map(role => role._id),
-            status
-        });
-
-        if (userFound) {
             res.json({ message: 'Usuario actualizado con éxito' });
         } else {
             return res.status(404).json({ messsage: 'No existe usuario a actualizar' })
@@ -100,41 +167,43 @@ export const updateUserById = async(req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(503).json({ error: err })
+        return res.status(503).json({ message: err.message });
     }
 }
 
-export const updateProfile = async(req, res) => {
-    const { email, phone, direccion, pais, codigo_postal, about } = req.body;
+userController.updateProfileById = async (req, res) => {
     const { userId } = req.params;
+    const {name, email,phone,pais,codigo_postal,direccion,about} = req.body;
 
     try {
-        const objeto = await User.findByIdAndUpdate(userId, {
+        const query = await User.findByIdAndUpdate(userId, {
+            name,
             email,
             phone,
-            direccion,
             pais,
             codigo_postal,
+            direccion,
             about
         });
-        if (objeto) {
-            res.json({ message: 'Actualización de Perfil con éxito' })
+
+        if (query) {
+            res.json({ message: 'Perfil actualizado con éxito' });
         } else {
-            return res.json.status(404).json({ message: 'No existe Perfil a modificar' })
+            return res.status(404).json({ messsage: 'No existe perfil a actualizar' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message });
     }
 }
 
-export const deleteUserById = async(req, res) => {
+userController.deleteOneById = async(req, res) => {
     const { userId } = req.params;
     try {
 
-        const deletedUser = await User.findByIdAndRemove(userId);
+        const query = await User.findByIdAndRemove(userId);
 
-        if (deletedUser) {
+        if (query) {
             res.json({ message: 'Usuario eliminado con éxito' });
         } else {
             return res.status(404).json({ message: 'No existe usuario a eliminar' })
@@ -142,49 +211,24 @@ export const deleteUserById = async(req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 
 }
 
-export const countAll = async(req, res) => {
-    try {
-        const query = await User.countDocuments();
-
-        if (query >= 0) return res.json({ count_user: query });
-    } catch (err) {
-        console.log(err);
-        res.status(503).json({ error: err })
-    }
-}
-
-export const countByOnline = async(req, res) => {
+userController.countByOnlineStatus = async (req, res) => {
     const { online } = req.body;
-    try {
-        const query = await User.where({ online }).find().countDocuments();
-
-        if (query >= 0) return res.json({ count_onlines: query });
-    } catch (err) {
-        console.log(err);
-        res.status(503).json({ error: err })
-    }
-}
-
-export const uploadPhotoProfile = async(req, res) => {
-    const { userId } = req.params;
-    const photo = req.file;
 
     try {
-        const query = await User.findByIdAndUpdate(userId, {
-            avatar: photo.location
-        })
-
-        if (query) {
-            res.json({ message: 'Foto subida con éxito' });
-        } else {
-            return res.status(404).json({ message: 'No existe el usuario' });
+        const query = await User.find({online}).countDocuments();
+        
+        if(query >= 0){
+            res.json({total: query});
         }
     } catch (err) {
-        return res.status(503).json({ message: err.message });
+        console.log(err);
+        return res.status(503).json({ message: err.message })
     }
 }
+
+export default userController;

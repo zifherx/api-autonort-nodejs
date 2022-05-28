@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateUbicacion = exports.getUbicaciones = exports.getUbicacionById = exports.getUbicacionByActivo = exports.deleteUbicacion = exports.createUbicacion = void 0;
+exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -13,7 +13,9 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _Ubicacion = _interopRequireDefault(require("../models/Ubicacion"));
 
-var getUbicaciones = /*#__PURE__*/function () {
+var ubicacionController = {};
+
+ubicacionController.getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee$(_context) {
@@ -23,7 +25,7 @@ var getUbicaciones = /*#__PURE__*/function () {
             _context.prev = 0;
             _context.next = 3;
             return _Ubicacion.default.find().sort({
-              name: 'asc'
+              valor: 1
             });
 
           case 3:
@@ -34,7 +36,10 @@ var getUbicaciones = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -63,14 +68,12 @@ var getUbicaciones = /*#__PURE__*/function () {
     }, _callee, null, [[0, 11]]);
   }));
 
-  return function getUbicaciones(_x, _x2) {
+  return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 
-exports.getUbicaciones = getUbicaciones;
-
-var getUbicacionById = /*#__PURE__*/function () {
+ubicacionController.getOneById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
     var ubicacionId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -90,7 +93,9 @@ var getUbicacionById = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              one: query
+            });
             _context2.next = 10;
             break;
 
@@ -119,14 +124,12 @@ var getUbicacionById = /*#__PURE__*/function () {
     }, _callee2, null, [[1, 12]]);
   }));
 
-  return function getUbicacionById(_x3, _x4) {
+  return function (_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getUbicacionById = getUbicacionById;
-
-var getUbicacionByActivo = /*#__PURE__*/function () {
+ubicacionController.getAllActivos = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -138,7 +141,7 @@ var getUbicacionByActivo = /*#__PURE__*/function () {
             return _Ubicacion.default.find({
               estado: true
             }).sort({
-              name: 'asc'
+              valor: 1
             });
 
           case 3:
@@ -149,7 +152,10 @@ var getUbicacionByActivo = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context3.next = 9;
             break;
 
@@ -178,25 +184,24 @@ var getUbicacionByActivo = /*#__PURE__*/function () {
     }, _callee3, null, [[0, 11]]);
   }));
 
-  return function getUbicacionByActivo(_x5, _x6) {
+  return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-exports.getUbicacionByActivo = getUbicacionByActivo;
-
-var createUbicacion = /*#__PURE__*/function () {
+ubicacionController.createOne = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, estado, objeto, query;
+    var _req$body, name, valor, estado, objeto, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
+            _req$body = req.body, name = _req$body.name, valor = _req$body.valor, estado = _req$body.estado;
             _context4.prev = 1;
             objeto = new _Ubicacion.default({
               name: name,
+              value: value,
               estado: estado
             });
             _context4.next = 5;
@@ -230,27 +235,26 @@ var createUbicacion = /*#__PURE__*/function () {
     }, _callee4, null, [[1, 9]]);
   }));
 
-  return function createUbicacion(_x7, _x8) {
+  return function (_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-exports.createUbicacion = createUbicacion;
-
-var updateUbicacion = /*#__PURE__*/function () {
+ubicacionController.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, estado, ubicacionId, query;
+    var _req$body2, name, valor, estado, ubicacionId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
+            _req$body2 = req.body, name = _req$body2.name, valor = _req$body2.valor, estado = _req$body2.estado;
             ubicacionId = req.params.ubicacionId;
             _context5.prev = 2;
             _context5.next = 5;
             return _Ubicacion.default.findByIdAndUpdate(ubicacionId, {
               name: name,
+              valor: valor,
               estado: estado
             });
 
@@ -293,14 +297,12 @@ var updateUbicacion = /*#__PURE__*/function () {
     }, _callee5, null, [[2, 13]]);
   }));
 
-  return function updateUbicacion(_x9, _x10) {
+  return function (_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.updateUbicacion = updateUbicacion;
-
-var deleteUbicacion = /*#__PURE__*/function () {
+ubicacionController.deleteOneById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
     var ubicacionId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
@@ -351,10 +353,11 @@ var deleteUbicacion = /*#__PURE__*/function () {
     }, _callee6, null, [[1, 12]]);
   }));
 
-  return function deleteUbicacion(_x11, _x12) {
+  return function (_x11, _x12) {
     return _ref6.apply(this, arguments);
   };
 }();
 
-exports.deleteUbicacion = deleteUbicacion;
+var _default = ubicacionController;
+exports.default = _default;
 //# sourceMappingURL=ubicacion.controller.js.map

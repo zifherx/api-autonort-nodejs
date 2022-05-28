@@ -1,89 +1,93 @@
-import StatusMafRequest from '../models/StatusMafRequest'
+import StatusMafRequest from '../models/StatusMafRequest';
 
-export const getAll = async(req, res) => {
+const estadoController = {};
+
+estadoController.getAll = async(req, res) => {
     try {
-        const objeto = await StatusMafRequest.find().sort({ name: 'asc' })
-        if (objeto.length > 0) {
-            res.json(objeto);
+        const query = await StatusMafRequest.find().sort({ value: 1 })
+        if (query.length > 0) {
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen estados MAF' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ error: err })
+        return res.status(503).json({ message: err.message });
     }
 }
 
-export const getStatusMafRequestById = async(req, res) => {
-    const { statusMafRequestId } = req.params
+estadoController.getOneById = async(req, res) => {
+    const { estadoId } = req.params
     try {
-        const objeto = await StatusMafRequest.findById(statusMafRequestId)
-        if (objeto) {
-            res.json(objeto);
+        const query = await StatusMafRequest.findById(estadoId)
+        if (query) {
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe estado MAF' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ error: err })
+        return res.status(503).json({ message: err.message });
     }
 }
 
-export const getStatusMafRequestByActivo = async(req, res) => {
+estadoController.getAllActivos = async(req, res) => {
     try {
-        const objeto = await StatusMafRequest.find({ status: true }).sort({ name: 'asc' })
-        if (objeto.length > 0) {
-            res.json(objeto);
+        const query = await StatusMafRequest.find({ estado: true }).sort({ value: 1 })
+        if (query.length > 0) {
+            res.json({total_active: query.length, all_active: query});
         } else {
-            return res.status(404).json({ message: 'No existen estados Maf Activos' })
+            return res.status(404).json({ message: 'No existen estados Maf activos' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ error: err })
+        return res.status(503).json({ message: err.message });
     }
 }
 
-export const createStatusMafRequest = async(req, res) => {
-    const { name, status } = req.body;
+estadoController.createOne = async(req, res) => {
+    const { name, estado, value } = req.body;
     try {
-        const nuevo = new StatusMafRequest({ name, status })
-        const objeto = await nuevo.save()
-        if (objeto) {
+        const obj = new StatusMafRequest({ name, estado, value });
+        const query = await obj.save()
+        if (query) {
             res.json({ message: 'Estado Maf creado con éxito' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ error: err })
+        return res.status(503).json({ message: err.message });
     }
 }
 
-export const updateStatusMafRequest = async(req, res) => {
-    const { name, status } = req.body;
-    const { statusMafRequestId } = req.params;
+estadoController.updateOneById = async(req, res) => {
+    const { name, estado,value } = req.body;
+    const { estadoId } = req.params;
     try {
-        const objeto = await StatusMafRequest.findByIdAndUpdate(statusMafRequestId, { name, status })
-        if (objeto) {
+        const query = await StatusMafRequest.findByIdAndUpdate(estadoId, { name, estado, value });
+        if (query) {
             res.json({ message: 'Estado Maf actualizado con éxito' })
         } else {
-            res.status(404).json({ message: 'No existe Estado Maf a actualizar' })
+            return res.status(404).json({ message: 'No existe Estado Maf a actualizar' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ error: err })
+        return res.status(503).json({ message: err.message });
     }
 }
 
-export const deleteStatusMafRequest = async(req, res) => {
-    const { statusMafRequestId } = req.params;
+estadoController.deleteOneById = async(req, res) => {
+    const { estadoId } = req.params;
     try {
-        const objeto = await StatusMafRequest.findByIdAndDelete(statusMafRequestId)
-        if (objeto) {
+        const query = await StatusMafRequest.findByIdAndDelete(estadoId);
+        if (query) {
             res.json({ message: 'Estado Maf eliminado con éxito' })
         } else {
             return res.status(404).json({ message: 'No existe Estado Maf a eliminar' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ error: err })
+        return res.status(503).json({ message: err.message });
     }
 }
+
+export default estadoController;

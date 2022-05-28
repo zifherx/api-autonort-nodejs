@@ -2,9 +2,9 @@ import Aseguradora from '../models/Aseguradora'
 
 export const getAll = async(req, res) => {
     try {
-        const objeto = await Aseguradora.find().sort({ name: 'asc' })
-        if (objeto.length > 0) {
-            res.json(objeto);
+        const query = await Aseguradora.find().sort({ name: 'asc' })
+        if (query.length > 0) {
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Aseguradora' })
         }
@@ -17,9 +17,9 @@ export const getAll = async(req, res) => {
 export const getAseguradoraById = async(req, res) => {
     const { aseguradoraId } = req.params
     try {
-        const objeto = await Aseguradora.findById(aseguradoraId)
-        if (objeto) {
-            res.json(objeto);
+        const query = await Aseguradora.findById(aseguradoraId)
+        if (query) {
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe Aseguradora' })
         }
@@ -31,9 +31,9 @@ export const getAseguradoraById = async(req, res) => {
 
 export const getAseguradoraByActivo = async(req, res) => {
     try {
-        const objeto = await Aseguradora.find({ status: true }).sort({ name: 'asc' })
-        if (objeto.length > 0) {
-            res.json(objeto);
+        const query = await Aseguradora.find({ estado: true }).sort({ name: 1 })
+        if (query.length > 0) {
+            res.json({total_active:query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No existen Aseguradora Activos' })
         }
@@ -44,11 +44,11 @@ export const getAseguradoraByActivo = async(req, res) => {
 }
 
 export const createAseguradora = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     try {
-        const nuevo = new Aseguradora({ name, status })
-        const objeto = await nuevo.save()
-        if (objeto) {
+        const nuevo = new Aseguradora({ name, estado })
+        const query = await nuevo.save()
+        if (query) {
             res.json({ message: 'Aseguradora creado con éxito' })
         }
     } catch (err) {
@@ -58,11 +58,11 @@ export const createAseguradora = async(req, res) => {
 }
 
 export const updateAseguradora = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     const { aseguradoraId } = req.params;
     try {
-        const objeto = await Aseguradora.findByIdAndUpdate(aseguradoraId, { name, status })
-        if (objeto) {
+        const query = await Aseguradora.findByIdAndUpdate(aseguradoraId, { name, estado })
+        if (query) {
             res.json({ message: 'Aseguradora actualizado con éxito' })
         } else {
             return res.status(404).json({ message: 'No existe Aseguradora a actualizar' })
@@ -76,8 +76,8 @@ export const updateAseguradora = async(req, res) => {
 export const deleteAseguradora = async(req, res) => {
     const { aseguradoraId } = req.params;
     try {
-        const objeto = await Aseguradora.findByIdAndDelete(aseguradoraId)
-        if (objeto) {
+        const query = await Aseguradora.findByIdAndDelete(aseguradoraId)
+        if (query) {
             res.json({ message: 'Aseguradora eliminado con éxito' })
         } else {
             return res.status(404).json({ message: 'No existe Aseguradora a eliminar' })

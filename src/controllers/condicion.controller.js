@@ -4,13 +4,13 @@ export const getCondiciones = async(req, res) => {
     try {
         const query = await Condicion.find().sort({ name: 'asc' });
         if (query.length > 0) {
-            res.send(query);
+            res.json({total: query.length, all: query});
         } else {
-            res.status(404).json({ message: 'No existen Condiciones' })
+            return res.status(404).json({ message: 'No existen Condiciones' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -19,49 +19,49 @@ export const getCondicionById = async(req, res) => {
     try {
         const query = await Condicion.findById(condicionId);
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe Condición' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const getCondicionByActivo = async(req, res) => {
     try {
-        const query = await Condicion.find({ status: "Activo" }).sort({ name: 'asc' });
+        const query = await Condicion.find({ estado: true }).sort({ name: 'asc' });
         if (query) {
-            res.json(query);
+            res.json({total_active: query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No existen Condiciones Activas' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const createCondicion = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     try {
-        const objeto = new Condicion({ name, status });
+        const objeto = new Condicion({ name, estado });
         const query = await objeto.save();
         if (query) {
             res.json({ message: 'Condición creada con éxito' })
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
 export const updateCondicion = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     const { condicionId } = req.params;
     try {
-        const query = await Condicion.findByIdAndUpdate(condicionId, { name, status }, { new: true });
+        const query = await Condicion.findByIdAndUpdate(condicionId, { name, estado });
         if (query) {
             res.json({ message: 'Condición actualizada con éxito' });
         } else {
@@ -69,7 +69,7 @@ export const updateCondicion = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -84,6 +84,6 @@ export const deleteCondicion = async(req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }

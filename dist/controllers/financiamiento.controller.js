@@ -34,7 +34,10 @@ var getFinanciamientos = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -90,7 +93,9 @@ var getFinanciamientoById = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              one: query
+            });
             _context2.next = 10;
             break;
 
@@ -107,9 +112,9 @@ var getFinanciamientoById = /*#__PURE__*/function () {
             _context2.prev = 12;
             _context2.t0 = _context2["catch"](1);
             console.log(_context2.t0);
-            returnres.status(503).json({
+            return _context2.abrupt("return", res.status(503).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -149,7 +154,10 @@ var getFinanciamientoByActivo = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context3.next = 9;
             break;
 
@@ -257,33 +265,40 @@ var updateFinanciamiento = /*#__PURE__*/function () {
           case 5:
             query = _context5.sent;
 
-            if (query) {
-              res.json({
-                message: 'Financiamiento actualizado con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Financiamiento a actualizar'
-              });
+            if (!query) {
+              _context5.next = 10;
+              break;
             }
 
-            _context5.next = 13;
+            res.json({
+              message: 'Financiamiento actualizado con éxito'
+            });
+            _context5.next = 11;
             break;
 
-          case 9:
-            _context5.prev = 9;
+          case 10:
+            return _context5.abrupt("return", res.status(404).json({
+              message: 'No existe Financiamiento a actualizar'
+            }));
+
+          case 11:
+            _context5.next = 17;
+            break;
+
+          case 13:
+            _context5.prev = 13;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 13:
+          case 17:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 9]]);
+    }, _callee5, null, [[2, 13]]);
   }));
 
   return function updateFinanciamiento(_x9, _x10) {

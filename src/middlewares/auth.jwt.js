@@ -110,6 +110,19 @@ export const isChiefTunning = async(req, res, next) => {
     return res.status(403).json({ message: 'Requiere permiso de Jefe-Tunning' });
 }
 
+export const isInmatriculadosAsistantyAdministrador = async(req, res, next) => {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'Asistente-Inmatriculaciones' || roles[i].name === 'Administrador') {
+            next()
+            return;
+        }
+    }
+    return res.status(403).json({ message: 'Requiere permiso del Asistente-Inmatriculacion o Administrador' });
+}
+
 export const isInmatriculadosAsistant = async(req, res, next) => {
     const user = await User.findById(req.userId);
     const roles = await Role.find({ _id: { $in: user.roles } });
@@ -136,12 +149,12 @@ export const isCSAsistant = async(req, res, next) => {
     return res.status(403).json({ message: 'Requiere permiso del Asistente-CS' })
 }
 
-export const isConexosAsistant = async(req, res, next) => {
+export const isConexosAsistantOrAdmin = async(req, res, next) => {
     const user = await User.findById(req.userId);
     const roles = await Role.find({ _id: { $in: user.roles } })
 
     for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === 'Asistente-Conexos') {
+        if (roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Administrador') {
             next();
             return;
         }

@@ -4,11 +4,12 @@ import { authJwt, verifyDuplicate} from '../middlewares'
 
 const router = Router();
 
-router.get('/activos', accesorioCtrl.getActivos);
+router.get('/activos', accesorioCtrl.getAllActivos);
 router.get('/:accesorioId', accesorioCtrl.getOne);
 router.get('/', accesorioCtrl.getAll);
-router.post('/', accesorioCtrl.createOne);
-router.patch('/:accesorioId', accesorioCtrl.updateById);
-router.delete('/:accesorioId', accesorioCtrl.deleteById);
+router.post('/by-modelo', accesorioCtrl.getAccesoriosByModelo);
+router.post('/', [ authJwt.verifyToken, authJwt.isChiefAdvorAdminorAsistantADV, verifyDuplicate.checkDuplicateAccesorio], accesorioCtrl.createOne);
+router.patch('/:accesorioId', [authJwt.verifyToken, authJwt.isChiefAdvorAdminorAsistantADV] ,accesorioCtrl.updateById);
+router.delete('/:accesorioId', [authJwt.verifyToken, authJwt.isChiefAdvorAdminorAsistantADV] , accesorioCtrl.deleteById);
 
 export default router;

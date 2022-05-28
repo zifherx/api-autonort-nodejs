@@ -4,7 +4,7 @@ const bancoSchema = new Schema({
     avatar: { type: String, default: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg' },
     name: { type: String },
     status: { type: Boolean, default: false },
-    estado: { type: String }
+    estado: { type: Boolean, default: true }
 }, {
     timestamps: true,
     versionKey: false

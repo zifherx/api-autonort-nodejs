@@ -11,18 +11,19 @@ var metaSchema = new _mongoose.Schema({
   name: {
     type: String
   },
-  sucursal: {
-    type: String
-  },
+  sucursal: [{
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
+  }],
   area: {
-    type: String
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Area'
   },
   tipo: {
     type: String
   },
   fecha: {
-    type: Date,
-    default: new Date()
+    type: Date
   },
   mes: {
     type: Number
@@ -31,7 +32,7 @@ var metaSchema = new _mongoose.Schema({
     type: Number,
     default: 0
   },
-  status: {
+  estado: {
     type: Boolean,
     default: false
   },

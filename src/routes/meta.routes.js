@@ -4,9 +4,11 @@ import { authJwt, verifyDuplicate } from '../middlewares';
 
 const router = Router();
 
-router.get('/', metaCtrl.getAll);
+router.get('/activos', metaCtrl.getAllActivos);
 
 router.get('/:metaId', metaCtrl.getOneById);
+
+router.get('/', metaCtrl.getAll);
 
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin], metaCtrl.createOne);
 

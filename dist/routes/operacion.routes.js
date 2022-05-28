@@ -1,6 +1,6 @@
 "use strict";
 
-var _typeof = require("@babel/runtime/helpers/typeof");
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -9,27 +9,23 @@ exports.default = void 0;
 
 var _express = require("express");
 
-var operacionCtrl = _interopRequireWildcard(require("../controllers/operacion.controller"));
+var _operacion = _interopRequireDefault(require("../controllers/operacion.controller"));
 
 var _middlewares = require("../middlewares");
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 var router = (0, _express.Router)(); //Obtener Operacion
 
-router.get('/', operacionCtrl.getAll); //Obtener Operacion Activos
+router.get('/', _operacion.default.getAll); //Obtener Operacion Activos
 
-router.get('/activos', operacionCtrl.getOperacionActivos); //Obtener Operacion por ID
+router.get('/activos', _operacion.default.getAllActivos); //Obtener Operacion por ID
 
-router.get('/:operacionId', operacionCtrl.getOperacionById); //Crear Operacion
+router.get('/:operacionId', _operacion.default.getOneById); //Crear Operacion
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], operacionCtrl.createOperacion); //Actualizar Operacion
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _operacion.default.createOne); //Actualizar Operacion
 
-router.patch('/:operacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], operacionCtrl.updateOperacion); //Eliminar Operacion
+router.patch('/:operacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _operacion.default.updateOneById); //Eliminar Operacion
 
-router.delete('/:operacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], operacionCtrl.deleteOperacion);
+router.delete('/:operacionId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _operacion.default.deleteOneById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=operacion.routes.js.map

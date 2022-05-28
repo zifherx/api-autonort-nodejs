@@ -20,7 +20,8 @@ var bancoSchema = new _mongoose.Schema({
     default: false
   },
   estado: {
-    type: String
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true,

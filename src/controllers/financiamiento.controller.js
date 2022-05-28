@@ -4,7 +4,7 @@ export const getFinanciamientos = async(req, res) => {
     try {
         const query = await Financiamiento.find().sort({ name: 'asc' });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Financiamientos' })
         }
@@ -19,13 +19,13 @@ export const getFinanciamientoById = async(req, res) => {
     try {
         const query = await Financiamiento.findById(financiamientoId);
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe Financiamiento' })
         }
     } catch (err) {
         console.log(err);
-        returnres.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
@@ -33,7 +33,7 @@ export const getFinanciamientoByActivo = async(req, res) => {
     try {
         const query = await Financiamiento.find({ estado: true }).sort({ name: "asc" });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total_active: query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No existen Financiamientos Activos' })
         }
@@ -65,7 +65,7 @@ export const updateFinanciamiento = async(req, res) => {
         if (query) {
             res.json({ message: 'Financiamiento actualizado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Financiamiento a actualizar' });
+            return res.status(404).json({ message: 'No existe Financiamiento a actualizar' });
         }
     } catch (err) {
         console.log(err);

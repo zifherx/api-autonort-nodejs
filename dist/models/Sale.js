@@ -1,49 +1,61 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _mongoose = require("mongoose");
 
-var saleSchema = new _mongoose.Schema({
+var _Schema;
+
+var saleSchema = new _mongoose.Schema((_Schema = {
   //Vendedor
   vendedor: {
-    ref: 'Seller',
+    ref: "Seller",
     type: _mongoose.Schema.Types.ObjectId,
-    allowEmpty: true
+    default: null
   },
   //Cliente
   cliente: {
-    ref: 'Customer',
+    ref: "Customer",
     type: _mongoose.Schema.Types.ObjectId,
-    allowEmpty: true
+    default: null
   },
   //Vehiculo
   auto: {
-    ref: 'Vehicle',
-    type: _mongoose.Schema.Types.ObjectId
+    ref: "Vehicle",
+    type: _mongoose.Schema.Types.ObjectId,
+    default: null
   },
   serie_tdp: {
     type: String,
-    allowEmpty: true
+    default: ""
   },
   color: {
     type: String
   },
+  //actualizado
   precio: {
-    type: Number
+    type: Number,
+    default: 0
   },
   anio_fabricacion: {
     type: String
   },
+  //actualizado
   anio_modelo: {
     type: String
   },
+  //actualizado
   ubicacion_vehiculo: {
     type: String
   },
+  //actualizado
   fecha_ciguena: {
     type: Date
   },
@@ -53,13 +65,125 @@ var saleSchema = new _mongoose.Schema({
   estatus_vehiculo: {
     type: String
   },
+  //actualizado
+  //Nuevos Campos ----------------------------------------------------------------------
+  colorE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Colores",
+    default: null
+  },
+  anioFabricacionE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Anio",
+    default: null
+  },
+  anioModeloE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Anio",
+    default: null
+  },
+  ubicacionVehiculoE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Ubicacion",
+    default: null
+  },
+  estadoVehiculoE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Condicion",
+    default: null
+  },
+  financiamientoE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Financiamiento",
+    default: null
+  },
+  bancoE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Banco",
+    default: null
+  },
+  solicitudMAF: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Maf",
+    default: null
+  },
+  adelantosE: [{
+    fechaAdelanto: {
+      type: Date
+    },
+    importeAdelanto: {
+      type: Number
+    }
+  }],
+  campaniasTDPE: [{
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Campania'
+  }],
+  ofertaTDPE: [{
+    type: String
+  }],
+  campaniasMafE: [{
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Campania'
+  }],
+  ofertaMafE: [{
+    type: String
+  }],
+  isToyotaValue: {
+    type: Boolean,
+    default: false
+  },
+  arrayToyotaValues: [{
+    type: String
+  }],
+  tipoOperacionE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Operacion',
+    default: null
+  },
+  createdBy: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
+  },
+  tipoComprobanteE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'TipoComprobante',
+    default: null
+  },
+  sucursalE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Sucursal",
+    default: null
+  },
+  estadoVentaE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Situacion',
+    default: null
+  },
+  estadoFacturacionE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'StatusFacturacion',
+    default: null
+  },
+  accesoriosE: [{
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'AccesorioE'
+  }],
+  pasoTramiteE: {
+    type: Boolean,
+    default: false
+  },
+  //------------------------------------------------------------------------------------
   //Financiamiento
   tipo_financiamiento: {
     type: String
   },
+  //actualizado
   entidad_bancaria: {
     type: String
   },
+  //actualizado
   sustento: {
     type: String
   },
@@ -125,85 +249,263 @@ var saleSchema = new _mongoose.Schema({
   },
   //Campaña
   campanias: [{
-    ref: 'Campaign',
+    ref: "Campaign",
     type: _mongoose.Schema.Types.ObjectId
   }],
+  //actualizado
   adicional: [{
-    ref: 'Adicional',
+    ref: "Adicional",
     type: _mongoose.Schema.Types.ObjectId
   }],
+  //actualizado
   descuento_autonort: {
-    type: Number
+    type: Number,
+    default: 0
+  },
+  acuerdoTDP: {
+    type: Number,
+    default: 0
   },
   observacion_adv: {
     type: String
   },
   //Accesorio
   accesorios: [{
-    ref: 'Props',
+    ref: "Props",
     type: _mongoose.Schema.Types.ObjectId
-  }],
-  condicion_accesorios: {
-    type: String
-  },
-  //Facturacion TDP
-  fecha_facturacion_tdp: {
-    type: Date
-  },
-  estatus_facturacion: {
-    type: String
-  },
-  monto_facturado: {
-    type: Number
-  },
-  //Venta
-  tipo_operacion: {
-    type: String
-  },
-  tipo_comprobante: {
-    type: String
-  },
-  nro_comprobante: {
-    type: String
-  },
-  fecha_comprobante: {
-    type: String
-  },
-  estatus_venta: {
-    type: String
-  },
-  sucursal_venta: {
-    type: String
-  },
-  fecha_cancelacion: {
-    type: Date
-  },
-  //Empleado
-  empleado: {
-    ref: 'User',
-    type: _mongoose.Schema.Types.ObjectId
-  },
-  //Está en Tramite
-  pasoaTramite: {
-    type: Number,
-    default: 0
-  },
-  isReportado: {
-    type: Boolean,
-    default: false
-  },
-  fechaReporte: {
-    type: Date
-  },
-  mesReportado: {
-    type: Number
-  }
-}, {
+  }]
+}, (0, _defineProperty2.default)(_Schema, "accesoriosE", [{
+  ref: 'AccesorioE',
+  type: _mongoose.Schema.Types.ObjectId
+}]), (0, _defineProperty2.default)(_Schema, "condicion_accesorios", {
+  type: String
+}), (0, _defineProperty2.default)(_Schema, "condicionAccesorioE", {
+  ref: 'CondicionAccesorio',
+  type: _mongoose.Schema.Types.ObjectId
+}), (0, _defineProperty2.default)(_Schema, "fecha_facturacion_tdp", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "estatus_facturacion", {
+  type: String
+}), (0, _defineProperty2.default)(_Schema, "monto_facturado", {
+  type: Number
+}), (0, _defineProperty2.default)(_Schema, "tipo_operacion", {
+  type: String
+}), (0, _defineProperty2.default)(_Schema, "tipo_comprobante", {
+  type: String
+}), (0, _defineProperty2.default)(_Schema, "nro_comprobante", {
+  type: String
+}), (0, _defineProperty2.default)(_Schema, "fecha_comprobante", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "estatus_venta", {
+  type: String
+}), (0, _defineProperty2.default)(_Schema, "sucursal_venta", {
+  type: String
+}), (0, _defineProperty2.default)(_Schema, "fecha_cancelacion", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "empleado", {
+  ref: "User",
+  type: _mongoose.Schema.Types.ObjectId
+}), (0, _defineProperty2.default)(_Schema, "pasoaTramite", {
+  type: Number,
+  default: 0
+}), (0, _defineProperty2.default)(_Schema, "isReportado", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaReporte", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "mesReportado", {
+  type: Number
+}), (0, _defineProperty2.default)(_Schema, "isCreadoS", {
+  type: Boolean,
+  default: true
+}), (0, _defineProperty2.default)(_Schema, "fechaCreacionS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isLibreS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaLibreS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isDevolucionS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaDevolucionS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isCreditoS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaCreditoS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isTestDrive", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaTestDriveS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isBloqueadoS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaBloqueadoS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isStandByS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaStandByS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isReservadoS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaReservadoS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isReservadoCS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaReservadoCS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isReservadoLS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaReservadoLS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isEsperaS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaEsperaS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isFacturadoS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaFacturadoS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isAnticipoS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaAnticipoS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isDesembolsarS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaDesembolsarS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isExhibicionS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaExhibicionS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isCanceladoS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaCanceladoS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isCanceladoPTS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaCanceladoPTS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isEPDPS", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaEPDPS", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isLibreC", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaLibreC", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isConseguirC", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaConseguirC", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isExhibicionC", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaExhibicionC", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isBloqueadoC", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaBloqueadoC", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isAsignadoC", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaAsignadoC", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isProduccionU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaProduccionU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isTransitoU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaTransitoU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isRodadoU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaRodadoU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isAduanasU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaAduanasU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isNacionalizacionU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaNacionalizacionU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isTranspesaU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaTranspesaU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isTDPU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaTDPU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isCiguenaU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaCiguenaU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isCiguenaTarapotoU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaCiguenaTarapotoU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isCiguenaJaenU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaCiguenaJaenU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isJaenU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaJaenU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isTarapotoU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaTarapotoU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isTrujilloU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaTrujilloU", {
+  type: Date
+}), (0, _defineProperty2.default)(_Schema, "isEntregadoU", {
+  type: Boolean,
+  default: false
+}), (0, _defineProperty2.default)(_Schema, "fechaEntregadoU", {
+  type: Date
+}), _Schema), {
   timestamps: true,
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('Sale', saleSchema);
+var _default = (0, _mongoose.model)("Sale", saleSchema);
 
 exports.default = _default;
 //# sourceMappingURL=Sale.js.map

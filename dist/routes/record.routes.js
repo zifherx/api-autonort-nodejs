@@ -1,6 +1,6 @@
 "use strict";
 
-var _typeof = require("@babel/runtime/helpers/typeof");
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -9,29 +9,26 @@ exports.default = void 0;
 
 var _express = require("express");
 
-var recordCtrl = _interopRequireWildcard(require("../controllers/record.controller"));
+var _record = _interopRequireDefault(require("../controllers/record.controller"));
 
 var _middlewares = require("../middlewares");
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 var router = (0, _express.Router)(); //Obtener Inmatriculados
 
-router.get('/', recordCtrl.getRecords); //Obtener Inmatriculado por Id
+router.get('/', _record.default.getAll); //Obtener Inmatriculado por Id
 
-router.get('/:recordId', recordCtrl.getRecordById); //Get Tramites by Sucursal
+router.get('/:recordId', _record.default.getOneById); //Por Cliente
 
-router.post('/sucursal', recordCtrl.getRecordBySucursal); //Obtener Inmatriculado por Status
+router.post('/by-seller', _record.default.getAllBySeller);
+router.post('/count/by-estado', _record.default.countAllByStatus); //Get Tramites by Sucursal
 
-router.post('/estado', recordCtrl.getRecordByTarjetayPlaca); //Crear Inmatriculado
+router.post('/by-sucursal', _record.default.getAllBySucursal); //Crear Inmatriculado
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistant, _middlewares.verifyDuplicate.checkDuplicateTramite], recordCtrl.createRecord); //Actualizar Inmatriculado
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistantyAdministrador, _middlewares.verifyDuplicate.checkDuplicateTramite], _record.default.createOne); //Actualizar Inmatriculado
 
-router.patch('/:recordId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistant], recordCtrl.updateRecordById); //Remover Inmatriculado
+router.patch('/:recordId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistantyAdministrador], _record.default.updateOneById); //Remover Inmatriculado
 
-router.delete('/:recordId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isInmatriculadosAsistant], recordCtrl.deleteRecordById);
+router.delete('/:recordId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _record.default.deleteOneById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=record.routes.js.map

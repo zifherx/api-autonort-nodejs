@@ -5,21 +5,21 @@ import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 const router = Router();
 
 //Obtener Endoso
-router.get('/', endosoCtrl.getEndosos);
+router.get('/', endosoCtrl.getAll);
 
 //Obtener Endoso Activos
-router.get('/activos', endosoCtrl.getEndosoByActivo);
+router.get('/activos', endosoCtrl.getAllActivos);
 
 //Obtener Endoso por ID
-router.get('/:endosoId', endosoCtrl.getEndosoById);
+router.get('/:endosoId', endosoCtrl.getOneById);
 
 //Crear Endoso
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateEndoso], endosoCtrl.createEndoso);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateEndoso], endosoCtrl.createOne);
 
 //Actualizar Endoso
-router.patch('/:endosoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], endosoCtrl.updateEndoso);
+router.patch('/:endosoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], endosoCtrl.updateOneById);
 
 //Eliminar Endoso
-router.delete('/:endosoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], endosoCtrl.deleteEndoso);
+router.delete('/:endosoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], endosoCtrl.deleteOneById);
 
 export default router;

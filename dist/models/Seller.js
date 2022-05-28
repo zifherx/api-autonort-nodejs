@@ -11,12 +11,6 @@ var sellerSchema = new _mongoose.Schema({
   name: {
     type: String
   },
-  sucursal: {
-    type: String
-  },
-  marca: {
-    type: String
-  },
   document: {
     type: String
   },
@@ -27,9 +21,28 @@ var sellerSchema = new _mongoose.Schema({
     type: String
   },
   avatar: {
+    type: String,
+    default: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+  },
+  sucursal: {
     type: String
   },
+  sucursalE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
+  },
+  marca: {
+    type: String
+  },
+  marcaE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'MarcaT'
+  },
   estatus: {
+    type: Boolean,
+    default: true
+  },
+  estado: {
     type: Boolean,
     default: true
   },

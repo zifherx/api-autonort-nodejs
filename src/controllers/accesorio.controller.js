@@ -1,48 +1,30 @@
-import Accesorio from '../models/Accesorio';
+import AccesorioE from '../models/AccesorioE';
+import ModeloTasaciones from '../models/ModeloTasaciones'
 import User from '../models/User';
 
-const ctrlAccesorio = {};
+const accesorioController = {};
 
-ctrlAccesorio.getAll = async (req, res) => {
+accesorioController.getAll = async (req, res) => {
     try {
-        const query = await Accesorio.find()
+        const query = await AccesorioE.find()
         .sort({ name: 1})
         .populate({
-            path: 'createdBy',
-            select: 'name username roles',
+            path: 'model',
+            select: 'name avatar marca',
             populate: {
-                path: 'roles',
-                select: 'name'
+                path: 'marca',
+                select: 'name avatar'
             }
-        });
-        if(query.length > 0){
-            res.json({total: query.length, props: query});
-        }else{
-            return res.status(404).json({message: 'No existen Accesorios'});
-        }
-    } catch (err) {
-        console.log(err);
-        return res.status(503).json({message: err.message});
-    }
-}
-
-ctrlAccesorio.getOne = async (req, res) => {
-    const { accesorioId} = req.params;
-    try {
-        const query = await Accesorio
-        .findById(accesorioId)
+        })
         .populate({
             path: 'createdBy',
-            select: 'name username roles',
-            populate: {
-                path: 'roles',
-                select: 'name'
-            }
+            select: 'name username'
         });
-        if(query){
-            res.json(query);
+
+        if(query.length > 0){
+            res.json({total: query.length, all: query});
         }else{
-            return res.status(404).json({message: 'No existe Accesorio'});
+            return res.status(404).json({message: 'No existen accesorios creados'});
         }
     } catch (err) {
         console.log(err);
@@ -50,22 +32,57 @@ ctrlAccesorio.getOne = async (req, res) => {
     }
 }
 
-ctrlAccesorio.getActivos = async (req, res) => {
+accesorioController.getOne = async (req, res) => {
+    const { accesorioId} = req.params;
+
     try {
-        const query = await Accesorio.find({status: true})
+        const query = await AccesorioE.findById(accesorioId)
+        .populate({
+            path: 'model',
+            select: 'name avatar marca',
+            populate: {
+                path: 'marca',
+                select: 'name avatar'
+            }
+        })
+        .populate({
+            path: 'createdBy',
+            select: 'name username'
+        });
+
+        if(query){
+            res.json({one: query});
+        }else{
+            return res.status(404).json({message: `No existe accesorio ${accesorioId}`});
+        }
+
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({message: err.message});
+    }
+}
+
+accesorioController.getAllActivos = async (req, res) => {
+    try {
+        const query = await AccesorioE.find({estado: true})
         .sort({name: 1})
         .populate({
-            path: 'createdBy',
-            select: 'name username roles',
+            path: 'model',
+            select: 'name avatar marca',
             populate: {
-                path: 'roles',
-                select: 'name'
+                path: 'marca',
+                select: 'name avatar'
             }
+        })
+        .populate({
+            path: 'createdBy',
+            select: 'name username'
         });
+
         if (query.length > 0) {
-            res.json({total: query.length, props: query});
+            res.json({total_active: query.length, all_active: query});
         } else {
-            return res.status(404).json({ message: 'No hay Accesorios Activos' });
+            return res.status(404).json({ message: 'No hay accesorios activos' });
         }
     } catch (err) {
         console.log(err);
@@ -73,13 +90,18 @@ ctrlAccesorio.getActivos = async (req, res) => {
     }
 }
 
-ctrlAccesorio.createOne = async (req, res) => {
-    const { codigo, categoria, nombre, descripcion, stock, status, createdBy} = req.body;
+accesorioController.createOne = async (req, res) => {
+    const { cod_interno, name, model, precio, estado, createdBy} = req.body;
     try {
-        const obj = new Accesorio({ codigo, categoria, nombre, descripcion, stock, status });
+        const obj = new AccesorioE({ cod_interno, name, precio, estado });
 
-        const userFound = await User.find({username: {$in: createdBy}});
-        obj.createdBy = userFound.map(a => a._id);
+        const modelFound = await ModeloTasaciones.findOne({name: model});
+        if(!modelFound) return res.status(404).json({message: `Modelo ${model} no encontrado`});
+        obj.model = modelFound._id;
+        
+        const userFound = await User.findOne({username: createdBy});
+        if(!userFound) return res.status(404).json({message: `Usuario ${createdBy} no encontrado`});
+        obj.createdBy = userFound._id;
 
         const query = await obj.save();
         if(query){
@@ -91,12 +113,21 @@ ctrlAccesorio.createOne = async (req, res) => {
     }
 }
 
-ctrlAccesorio.updateById = async (req, res) => {
+accesorioController.updateById = async (req, res) => {
     const {accesorioId} = req.params;
-    const { categoria, nombre, descripcion, stock, status } = req.body;
+    const { cod_interno, name, model, precio, estado } = req.body;
+    
     try {
-        const query = await Accesorio.findByIdAndUpdate(accesorioId, {
-            categoria, nombre, descripcion, stock, status
+
+        const modelFound = await ModeloTasaciones.findOne({name: model});
+        if(!modelFound) return res.status(404).json({message: `Modelo ${model} no encontrado`});
+
+        const query = await AccesorioE.findByIdAndUpdate(accesorioId, {
+            cod_interno, 
+            name, 
+            model: modelFound._id,
+            precio, 
+            estado
         });
 
         if (query) {
@@ -110,14 +141,14 @@ ctrlAccesorio.updateById = async (req, res) => {
     }
 }
 
-ctrlAccesorio.deleteById = async (req, res) => {
+accesorioController.deleteById = async (req, res) => {
     const {accesorioId} = req.params;
     try {
-        const query = await Accesorio.findByIdAndDelete(accesorioId);
+        const query = await AccesorioE.findByIdAndDelete(accesorioId);
         if (query) {
             res.json({ message: 'Accesorio eliminado con éxito' });
         } else {
-            return res.status(404).json({ message: 'No existe accesorio a eliminado' });
+            return res.status(404).json({ message: 'No existe accesorio a eliminar' });
         }
     } catch (err) {
         console.log(err);
@@ -125,4 +156,25 @@ ctrlAccesorio.deleteById = async (req, res) => {
     }
 }
 
-export default ctrlAccesorio;
+accesorioController.getAccesoriosByModelo = async (req, res) => {
+    const { modelo } = req.body;
+
+    try {
+        const modelFound = await ModeloTasaciones.findOne({name: modelo});
+
+        const query = await AccesorioE.find({
+            model: modelFound._id
+        }).sort({ cod_interno: 1});
+
+        if(query.length > 0){
+            res.json({total: query.length, all: query});
+        }else{
+            return res.status(404).json({message: `No se encontraron accesorios para ${modelo}`});
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({message: err.message});
+    }
+}
+
+export default accesorioController;

@@ -1,10 +1,12 @@
 import Sustento from "../models/Sustento";
 
-export const getSustentos = async(req, res) => {
+const sustentoController = {};
+
+sustentoController.getAll = async(req, res) => {
     try {
         const query = await Sustento.find().sort({ name: 'asc' });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Sustentos' })
         }
@@ -14,12 +16,12 @@ export const getSustentos = async(req, res) => {
     }
 }
 
-export const getSustentoById = async(req, res) => {
+sustentoController.getOneById = async(req, res) => {
     const { sustentoId } = req.params;
     try {
         const query = await Sustento.findById(sustentoId);
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe Sustento' })
         }
@@ -29,11 +31,11 @@ export const getSustentoById = async(req, res) => {
     }
 }
 
-export const getSustentoByActivo = async(req, res) => {
+sustentoController.getAllActivos = async(req, res) => {
     try {
         const query = await Sustento.find({ estado: true }).sort({ name: 'asc' });
         if (query.length > 0) {
-            res.json(query);
+            res.json({total_active: query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No hay Sustentos Activos' })
         }
@@ -43,7 +45,7 @@ export const getSustentoByActivo = async(req, res) => {
     }
 }
 
-export const createSustento = async(req, res) => {
+sustentoController.createOne = async(req, res) => {
     const { name, estado } = req.body;
     try {
         const objeto = new Sustento({ name, estado });
@@ -57,7 +59,7 @@ export const createSustento = async(req, res) => {
     }
 }
 
-export const updateSustento = async(req, res) => {
+sustentoController.updateOneById = async(req, res) => {
     const { name, estado } = req.body;
     const { sustentoId } = req.params;
     try {
@@ -65,7 +67,7 @@ export const updateSustento = async(req, res) => {
         if (query) {
             res.json({ message: 'Sustento actualizado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Sustento a actualizar' });
+            return res.status(404).json({ message: 'No existe Sustento a actualizar' });
         }
     } catch (err) {
         console.log(err);
@@ -73,17 +75,19 @@ export const updateSustento = async(req, res) => {
     }
 }
 
-export const deleteSustento = async(req, res) => {
+sustentoController.deleteOneById = async(req, res) => {
     const { sustentoId } = req.params;
     try {
         const query = await Sustento.findByIdAndDelete(sustentoId);
         if (query) {
             res.json({ message: 'Sustento eliminado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Sustento a eliminar' });
+            return res.status(404).json({ message: 'No existe Sustento a eliminar' });
         }
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message })
     }
 }
+
+export default sustentoController;

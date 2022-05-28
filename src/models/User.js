@@ -2,20 +2,22 @@ import { Schema, model } from 'mongoose'
 import bcrypt from 'bcryptjs'
 
 const userSchema = new Schema({
-    username: { type: String, unique: true },
     name: { type: String, required: true },
+    username: { type: String, unique: true },
     email: { type: String },
     phone: { type: String },
     password: { type: String, required: true },
-    sucursal: { type: String, required: true },
+    sucursal: { type: String },
+    sucursalE: { type: Schema.Types.ObjectId, ref: 'Sucursal'},
     direccion: { type: String },
     pais: { type: String },
     codigo_postal: { type: String },
     about: { type: String },
-    roles: { ref: "Role", type: Schema.Types.ObjectId },
+    roles: [{ ref: "Role", type: Schema.Types.ObjectId }],
     status: { type: Boolean, default: true },
+    estado: { type: Boolean, default: true },
     online: { type: Boolean, default: false },
-    avatar: { type: String }
+    avatar: { type: String, default: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg' }
 }, {
     timestamps: true,
     versionKey: false

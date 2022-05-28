@@ -7,9 +7,11 @@ const aserviciosSchema = new Schema({
     email: { type: String },
     avatar: { type: String },
     sucursal: { type: String },
+    sucursalE: { type: Schema.Types.ObjectId, ref: 'Sucursal'},
     status: { type: Boolean, default: true },
+    estado: { type: Boolean, default: true },
 }, {
-    timestamps: true,
+    timestamps: true,   
     versionKey: false
 });
 

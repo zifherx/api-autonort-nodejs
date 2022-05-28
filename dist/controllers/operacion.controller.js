@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateOperacion = exports.getOperacionById = exports.getOperacionActivos = exports.getAll = exports.deleteOperacion = exports.createOperacion = void 0;
+exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -13,7 +13,9 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _Operacion = _interopRequireDefault(require("../models/Operacion"));
 
-var getAll = /*#__PURE__*/function () {
+var operacionController = {};
+
+operacionController.getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee$(_context) {
@@ -23,7 +25,7 @@ var getAll = /*#__PURE__*/function () {
             _context.prev = 0;
             _context.next = 3;
             return _Operacion.default.find().sort({
-              name: 'asc'
+              name: 1
             });
 
           case 3:
@@ -34,7 +36,10 @@ var getAll = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -63,14 +68,12 @@ var getAll = /*#__PURE__*/function () {
     }, _callee, null, [[0, 11]]);
   }));
 
-  return function getAll(_x, _x2) {
+  return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 
-exports.getAll = getAll;
-
-var getOperacionById = /*#__PURE__*/function () {
+operacionController.getOneById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
     var operacionId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -90,7 +93,9 @@ var getOperacionById = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              one: query
+            });
             _context2.next = 10;
             break;
 
@@ -119,14 +124,12 @@ var getOperacionById = /*#__PURE__*/function () {
     }, _callee2, null, [[1, 12]]);
   }));
 
-  return function getOperacionById(_x3, _x4) {
+  return function (_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getOperacionById = getOperacionById;
-
-var getOperacionActivos = /*#__PURE__*/function () {
+operacionController.getAllActivos = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -136,9 +139,9 @@ var getOperacionActivos = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _Operacion.default.find({
-              status: true
+              estado: true
             }).sort({
-              name: 'asc'
+              name: 1
             });
 
           case 3:
@@ -149,7 +152,10 @@ var getOperacionActivos = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context3.next = 9;
             break;
 
@@ -178,26 +184,24 @@ var getOperacionActivos = /*#__PURE__*/function () {
     }, _callee3, null, [[0, 11]]);
   }));
 
-  return function getOperacionActivos(_x5, _x6) {
+  return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-exports.getOperacionActivos = getOperacionActivos;
-
-var createOperacion = /*#__PURE__*/function () {
+operacionController.createOne = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, query, newObj;
+    var _req$body, name, estado, query, newObj;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
             _context4.prev = 1;
             query = new _Operacion.default({
               name: name,
-              status: status
+              estado: estado
             });
             _context4.next = 5;
             return query.save();
@@ -230,70 +234,73 @@ var createOperacion = /*#__PURE__*/function () {
     }, _callee4, null, [[1, 9]]);
   }));
 
-  return function createOperacion(_x7, _x8) {
+  return function (_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-exports.createOperacion = createOperacion;
-
-var updateOperacion = /*#__PURE__*/function () {
+operacionController.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, operacionId, query;
+    var _req$body2, name, estado, operacionId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
             operacionId = req.params.operacionId;
             _context5.prev = 2;
             _context5.next = 5;
             return _Operacion.default.findByIdAndUpdate(operacionId, {
               name: name,
-              status: status
+              estado: estado
             });
 
           case 5:
             query = _context5.sent;
 
-            if (query) {
-              res.json({
-                message: 'Tipo de operación actualizada con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Tipo de operación a actualizar'
-              });
+            if (!query) {
+              _context5.next = 10;
+              break;
             }
 
-            _context5.next = 13;
+            res.json({
+              message: 'Tipo de operación actualizada con éxito'
+            });
+            _context5.next = 11;
             break;
 
-          case 9:
-            _context5.prev = 9;
+          case 10:
+            return _context5.abrupt("return", res.status(404).json({
+              message: 'No existe Tipo de operación a actualizar'
+            }));
+
+          case 11:
+            _context5.next = 17;
+            break;
+
+          case 13:
+            _context5.prev = 13;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 13:
+          case 17:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 9]]);
+    }, _callee5, null, [[2, 13]]);
   }));
 
-  return function updateOperacion(_x9, _x10) {
+  return function (_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.updateOperacion = updateOperacion;
-
-var deleteOperacion = /*#__PURE__*/function () {
+operacionController.deleteOneById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
     var operacionId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
@@ -344,10 +351,11 @@ var deleteOperacion = /*#__PURE__*/function () {
     }, _callee6, null, [[1, 12]]);
   }));
 
-  return function deleteOperacion(_x11, _x12) {
+  return function (_x11, _x12) {
     return _ref6.apply(this, arguments);
   };
 }();
 
-exports.deleteOperacion = deleteOperacion;
+var _default = operacionController;
+exports.default = _default;
 //# sourceMappingURL=operacion.controller.js.map

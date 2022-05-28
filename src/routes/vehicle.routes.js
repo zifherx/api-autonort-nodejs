@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import * as vehicleCtrl from '../controllers/vehicles.controller'
+import vehicleCtrl from '../controllers/vehicles.controller'
 import { authJwt, verifySignup, verifyDuplicate } from '../middlewares'
 
 const router = Router();
@@ -11,17 +11,17 @@ router.get('/', vehicleCtrl.getAll);
 router.get('/:vehicleId', vehicleCtrl.getVehicleById);
 
 //Obtener Vehiculo por COD-TDP
-router.post('/find', vehicleCtrl.getVehicleByCodigo);
+router.post('/by-codtdp', vehicleCtrl.getVehicleByCodigo);
 
 //Obtener Vehiculo por Marca
-router.post('/marca', vehicleCtrl.getVehiculeByMarca);
+router.post('/by-marca', vehicleCtrl.getVehiculeByMarca);
 
 //Obtener Vehiculo por Modelo
-router.post('/modelo', vehicleCtrl.getVehiculeByModelo);
+router.post('/by-modelo', vehicleCtrl.getVehiculeByModelo);
 
 //Crear Vehiculo
 // router.post('/', vehicleCtrl.createVehicle);
-router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateVehiculo], vehicleCtrl.createVehicle);
+router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifyDuplicate.checkDuplicateVehiculo], vehicleCtrl.createVehicle);
 
 //Actualizar Vehiculo
 // router.patch('/:vehicleId', vehicleCtrl.updateVehicleById);

@@ -15,7 +15,7 @@ var _Colores = _interopRequireDefault(require("../models/Colores"));
 
 var getColors = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var colores;
+    var query;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -27,14 +27,17 @@ var getColors = /*#__PURE__*/function () {
             });
 
           case 3:
-            colores = _context.sent;
+            query = _context.sent;
 
-            if (!(colores.length > 0)) {
+            if (!(query.length > 0)) {
               _context.next = 8;
               break;
             }
 
-            res.send(colores);
+            res.send({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -72,7 +75,7 @@ exports.getColors = getColors;
 
 var getColorByActivo = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var colores;
+    var query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -86,14 +89,17 @@ var getColorByActivo = /*#__PURE__*/function () {
             });
 
           case 3:
-            colores = _context2.sent;
+            query = _context2.sent;
 
-            if (!(colores.length > 0)) {
+            if (!(query.length > 0)) {
               _context2.next = 8;
               break;
             }
 
-            res.json(colores);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context2.next = 9;
             break;
 
@@ -131,7 +137,7 @@ exports.getColorByActivo = getColorByActivo;
 
 var getColorById = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var colorId, color;
+    var colorId, query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -142,14 +148,16 @@ var getColorById = /*#__PURE__*/function () {
             return _Colores.default.findById(colorId);
 
           case 4:
-            color = _context3.sent;
+            query = _context3.sent;
 
-            if (!color) {
+            if (!query) {
               _context3.next = 9;
               break;
             }
 
-            res.send(color);
+            res.json({
+              one: query
+            });
             _context3.next = 10;
             break;
 
@@ -187,7 +195,7 @@ exports.getColorById = getColorById;
 
 var createColor = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, estado, newColor, colorCreado;
+    var _req$body, name, estado, newColor, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
@@ -203,9 +211,9 @@ var createColor = /*#__PURE__*/function () {
             return newColor.save();
 
           case 5:
-            colorCreado = _context4.sent;
+            query = _context4.sent;
 
-            if (colorCreado) {
+            if (query) {
               res.json({
                 message: 'Color creado con éxito'
               });
@@ -239,7 +247,7 @@ exports.createColor = createColor;
 
 var updateColor = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, estado, colorId, _updateColor;
+    var _req$body2, name, estado, colorId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
@@ -255,9 +263,9 @@ var updateColor = /*#__PURE__*/function () {
             });
 
           case 5:
-            _updateColor = _context5.sent;
+            query = _context5.sent;
 
-            if (!_updateColor) {
+            if (!query) {
               _context5.next = 10;
               break;
             }
@@ -302,8 +310,7 @@ exports.updateColor = updateColor;
 
 var deleteColor = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var colorId, _deleteColor;
-
+    var colorId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -314,9 +321,9 @@ var deleteColor = /*#__PURE__*/function () {
             return _Colores.default.findByIdAndDelete(colorId);
 
           case 4:
-            _deleteColor = _context6.sent;
+            query = _context6.sent;
 
-            if (!_deleteColor) {
+            if (!query) {
               _context6.next = 9;
               break;
             }

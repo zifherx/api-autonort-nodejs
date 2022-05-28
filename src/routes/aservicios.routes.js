@@ -5,9 +5,6 @@ import multer from '../middlewares/multer';
 
 const router = Router();
 
-//Obtener Conteo Tecnicos
-router.get('/count', serviciosCtrl.countAll);
-
 //Obtener Asesor de Servicios Activos
 router.get('/activos', serviciosCtrl.getAllByActivo);
 
@@ -17,20 +14,14 @@ router.get('/:asesorId', serviciosCtrl.getOneById);
 //Obtener Asesor de Servicios
 router.get('/', serviciosCtrl.getAll);
 
-//Obtener Asesor de Servicios por ID
-router.post('/count/status', serviciosCtrl.countByStatus);
-
 //Obtener Asesor de Servicios por Sucrsal
-router.post('/sucursal', serviciosCtrl.getBySucursal);
+router.post('/by-sucursal', serviciosCtrl.getBySucursal);
 
 //Crear Asesor de Servicios
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateAServicios], serviciosCtrl.createOne);
-
-//Subir Foto
-router.patch('/upload/:asesorId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('photo'), serviciosCtrl.uploadAvatar);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateAServicios], multer.single('avatar'), serviciosCtrl.createOne);
 
 //Actualizar Asesor de Servicios
-router.patch('/:asesorId', [authJwt.verifyToken, authJwt.isAdmin], serviciosCtrl.updatedOneById);
+router.patch('/:asesorId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('avatar'), serviciosCtrl.updatedOneById);
 
 //Eliminar Asesor de Servicios
 router.delete('/:asesorId', [authJwt.verifyToken, authJwt.isAdmin], serviciosCtrl.deleteOneById);

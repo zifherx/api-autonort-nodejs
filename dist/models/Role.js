@@ -13,6 +13,10 @@ var roleSchema = new _mongoose.Schema({
   },
   description: {
     type: String
+  },
+  estado: {
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true,

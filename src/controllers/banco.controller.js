@@ -2,9 +2,9 @@ import Banco from "../models/Banco";
 
 export const getBancos = async(req, res) => {
     try {
-        const bancos = await Banco.find().sort({ name: 'asc' });
-        if (bancos.length > 0) {
-            res.json(bancos);
+        const query = await Banco.find().sort({ name: 'asc' });
+        if (query.length > 0) {
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Bancos' })
         }
@@ -17,9 +17,9 @@ export const getBancos = async(req, res) => {
 export const getBancoById = async(req, res) => {
     const { bancoId } = req.params;
     try {
-        const bancos = await Banco.findById(bancoId);
-        if (bancos) {
-            res.json(bancos);
+        const query = await Banco.findById(bancoId);
+        if (query) {
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe Banco' })
         }
@@ -31,9 +31,9 @@ export const getBancoById = async(req, res) => {
 
 export const getBancoByActivo = async(req, res) => {
     try {
-        const bancos = await Banco.find({ status: true }).sort({ name: 'asc' });
-        if (bancos.length > 0) {
-            res.json(bancos);
+        const query = await Banco.find({ estado: true }).sort({ name: 1 });
+        if (query.length > 0) {
+            res.json({total_active: query.length, all_active: query});
         } else {
             return res.status(404).json({ message: 'No existen Bancos Activos' })
         }
@@ -44,18 +44,18 @@ export const getBancoByActivo = async(req, res) => {
 }
 
 export const createBanco = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     const avatar = req.file;
 
     try {
         let obj = null;
         if (avatar == undefined || avatar == null) {
-            obj = new Banco({ name, status });
+            obj = new Banco({ name, estado });
         } else {
             obj = new Banco({
                 avatar: avatar.location,
                 name,
-                status
+                estado
             });
         }
 
@@ -71,7 +71,7 @@ export const createBanco = async(req, res) => {
 }
 
 export const updateBanco = async(req, res) => {
-    const { name, status } = req.body;
+    const { name, estado } = req.body;
     const { bancoId } = req.params;
     const avatar = req.file;
 
@@ -81,13 +81,13 @@ export const updateBanco = async(req, res) => {
         if (avatar == undefined || avatar == null) {
             query = await Banco.findByIdAndUpdate(bancoId, {
                 name,
-                status
+                estado
             });
         } else {
             query = await Banco.findByIdAndUpdate(bancoId, {
                 avatar: avatar.location,
                 name,
-                status
+                estado
             });
         }
 

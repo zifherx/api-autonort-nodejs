@@ -1,43 +1,108 @@
-import Seller from '../models/Seller'
-import User from '../models/User'
+import Seller from '../models/Seller';
+import User from '../models/User';
+import Sucursal from '../models/Sucursal';
+import MarcaTasaciones from '../models/MarcaTasaciones';
 
-export const getSellers = async(req, res) => {
+const sellerController = {};
+
+sellerController.getAll = async(req, res) => {
     try {
-        const query = await Seller.find().sort({ name: 'asc' });
+        const query = await Seller.find()
+        .sort({ name: 1 })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        })
+        .populate({
+            path: 'marcaE',
+            select: 'name avatar'
+        });
+
         if (query.length > 0) {
-            res.json(query);
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Vendedores' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
-export const getSellerById = async(req, res) => {
+sellerController.getAllActive = async(req, res) => {
+    try {
+        const query = await Seller.find({estado: true})
+        .sort({ name: 1 })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        })
+        .populate({
+            path: 'marcaE',
+            select: 'name avatar'
+        });
+
+        if (query.length > 0) {
+            res.json({total_active: query.length, all_active: query});
+        } else {
+            return res.status(404).json({ message: 'No existen Vendedores' })
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message })
+    }
+}
+
+sellerController.getSellerById = async(req, res) => {
     const { sellerId } = req.params;
     try {
-        const query = await Seller.findById(sellerId);
+        const query = await Seller.findById(sellerId)
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        })
+        .populate({
+            path: 'marcaE',
+            select: 'name avatar'
+        });
+
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe Vendedor' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 
 }
 
-export const getSellerBySucursal = async(req, res) => {
+sellerController.getSellerBySucursal = async(req, res) => {
     const { sucursal } = req.body;
     try {
-        const query = await Seller.find({ sucursal: sucursal, estatus: true }).sort({ name: 'asc' });
+        const sucursalFound = await Sucursal.findOne({name: sucursal});
+        if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursal} no encontrada`})
+
+        const query = await Seller.find({ 
+            sucursalE: sucursalFound._id,
+            estado: true })
+        .sort({ name: 1 })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        })
+        .populate({
+            path: 'marcaE',
+            select: 'name avatar'
+        })
+        .populate({
+            path: 'createdBy',
+            select: 'name'
+        })
 
         if (query.length > 0) {
-            res.json(query);
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: `No existen Vendedores en ${sucursal}` });
         }
@@ -47,7 +112,7 @@ export const getSellerBySucursal = async(req, res) => {
     }
 }
 
-export const getSellerByMarcaAndSucursal = async(req, res) => {
+sellerController.getSellerByMarcaAndSucursal = async(req, res) => {
     const { sucursal, marca } = req.body;
     try {
         const query = await Seller.find({ sucursal: sucursal, marca: marca, estatus: true }).sort({ name: 'asc' });
@@ -62,7 +127,7 @@ export const getSellerByMarcaAndSucursal = async(req, res) => {
     }
 }
 
-export const getSellerByName = async(req, res) => {
+sellerController.getSellerByName = async(req, res) => {
     const { name } = req.body;
     try {
         const query = await Seller.findOne({ name: name });
@@ -77,87 +142,100 @@ export const getSellerByName = async(req, res) => {
     }
 }
 
-export const createSeller = async(req, res) => {
-    const { name, sucursal, marca, document, telefono, email, estatus, empleado } = req.body;
+sellerController.createSeller = async(req, res) => {
+    const { name, document, telefono, email,sucursalE, marcaE, estado, createdBy } = req.body;
+
     try {
-        const newSeller = new Seller({
+        const obj = new Seller({
             name,
-            sucursal,
-            marca,
             document,
             telefono,
             email,
-            estatus
+            estado
         });
 
-        const foundEmployee = await User.find({ username: { $in: empleado } });
-        newSeller.createdBy = foundEmployee.map(em => em._id);
+        const foundEmployee = await User.findOne({ username: createdBy });
+        if(!foundEmployee) return res.status(404).json({message: `Colaborador ${createdBy} no encontrado`});
+        obj.createdBy = foundEmployee._id;
 
-        const sellerSaved = await newSeller.save();
-        if (sellerSaved) {
+        const sucursalFound = await Sucursal.findOne({ name: sucursalE });
+        if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
+        obj.sucursalE = sucursalFound._id;
+
+        const marcaFound = await MarcaTasaciones.findOne({ name: marcaE });
+        if(!marcaFound) return res.status(404).json({message: `Marca ${marcaE} no encontrada`});
+        obj.marcaE = marcaFound._id;
+
+        const query = await obj.save();
+        if (query) {
             res.json({ message: 'Vendedor creado con éxito' });
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
-export const uploadAvatar = async(req, res) => {
+sellerController.updateSellerById = async(req, res) => {
     const { sellerId } = req.params;
-    const photo = req.file;
+    const { name, document, telefono, email, sucursalE, marcaE , estado } = req.body;
+    const avatar = req.file;
 
     try {
-        const query = await Seller.findByIdAndUpdate(sellerId, {
-            avatar: photo.location
-        });
+        let query = null;
 
-        if (query) {
-            res.json({ message: 'Avatar subido con éxito' });
-        } else {
-            return res.status(404).json({ message: 'No existe el vendedor' });
+        const sucursalFound = await Sucursal.findOne({ name: sucursalE });
+        if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
+
+        const marcaFound = await MarcaTasaciones.findOne({ name: marcaE });
+        if(!marcaFound) return res.status(404).json({message: `Marca ${marcaE} no encontrada`});
+
+        if(avatar == null || avatar == undefined){
+            query = await Seller.findByIdAndUpdate(sellerId, {
+                name,
+                document,
+                telefono,
+                email,
+                sucursalE: sucursalFound._id,
+                marcaE: marcaFound._id,
+                estado 
+            });
+        }else{
+            query = await Seller.findByIdAndUpdate(sellerId, {
+                name,
+                document,
+                telefono,
+                email,
+                sucursalE: sucursalFound._id,
+                marcaE: marcaFound._id,
+                avatar: avatar.location,
+                estado 
+            });
         }
-    } catch (err) {
-        console.error(err);
-        return res.status(503).json({ message: err.message });
-    }
-}
-
-export const updateSellerById = async(req, res) => {
-    const { sellerId } = req.params;
-    const { name, sucursal, marca, document, telefono, email, estatus } = req.body;
-    try {
-        const updateSeller = await Seller.findByIdAndUpdate(sellerId, {
-            name,
-            sucursal,
-            marca,
-            document,
-            telefono,
-            email,
-            estatus
-        });
-        if (updateSeller) {
+        if (query) {
             res.json({ message: 'Vendedor actualizado con éxito' });
         } else {
             return res.status(404).json({ message: 'No existe Vendedor a actualizar' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
 
-export const deleteSellerById = async(req, res) => {
+sellerController.deleteSellerById = async(req, res) => {
     const { sellerId } = req.params;
     try {
-        const deletedSeller = await Seller.findByIdAndDelete(sellerId);
-        if (deletedSeller) {
+        const query = await Seller.findByIdAndDelete(sellerId);
+        if (query) {
             res.json({ message: 'Vendedor eliminado con éxito' });
         } else {
             return res.status(404).json({ message: 'No existe Vendedor a eliminar' })
         }
     } catch (err) {
         console.log(err);
-        res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message })
     }
 }
+
+export default sellerController;

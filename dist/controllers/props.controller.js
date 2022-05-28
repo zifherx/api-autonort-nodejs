@@ -113,9 +113,9 @@ var getAll = /*#__PURE__*/function () {
             _context2.prev = 7;
             _context2.t0 = _context2["catch"](0);
             console.log(_context2.t0);
-            res.status(409).json({
+            return _context2.abrupt("return", res.status(409).json({
               message: _context2.t0.message
-            });
+            }));
 
           case 11:
           case "end":
@@ -134,7 +134,7 @@ exports.getAll = getAll;
 
 var getAccesoriosActivos = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var activos;
+    var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -144,24 +144,27 @@ var getAccesoriosActivos = /*#__PURE__*/function () {
             return _Props.default.find({
               status: 'Activo'
             }).sort({
-              name: 'asc'
+              name: 1
             });
 
           case 3:
-            activos = _context3.sent;
+            query = _context3.sent;
 
-            if (!(activos.length > 0)) {
+            if (!(query.length > 0)) {
               _context3.next = 8;
               break;
             }
 
-            res.json(activos);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context3.next = 9;
             break;
 
           case 8:
             return _context3.abrupt("return", res.status(404).json({
-              message: 'No existe Accesorios Activos'
+              message: 'No existe accesorios activos'
             }));
 
           case 9:
@@ -172,9 +175,9 @@ var getAccesoriosActivos = /*#__PURE__*/function () {
             _context3.prev = 11;
             _context3.t0 = _context3["catch"](0);
             console.log(_context3.t0);
-            res.status(409).json({
+            return _context3.abrupt("return", res.status(409).json({
               message: _context3.t0.message
-            });
+            }));
 
           case 15:
           case "end":
@@ -228,9 +231,9 @@ var getAccesorioById = /*#__PURE__*/function () {
             _context4.prev = 12;
             _context4.t0 = _context4["catch"](1);
             console.log(_context4.t0);
-            res.status(409).json({
+            return _context4.abrupt("return", res.status(409).json({
               message: _context4.t0.message
-            });
+            }));
 
           case 16:
           case "end":
@@ -249,7 +252,7 @@ exports.getAccesorioById = getAccesorioById;
 
 var getAccesorioByAuto = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var modelo, foundProp;
+    var modelo, query;
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
@@ -262,33 +265,43 @@ var getAccesorioByAuto = /*#__PURE__*/function () {
             });
 
           case 4:
-            foundProp = _context5.sent;
+            query = _context5.sent;
 
-            if (foundProp) {
-              res.json(foundProp);
-            } else {
-              res.status(404).json({
-                message: 'No existe el accesorio'
-              });
+            if (!(query.length > 0)) {
+              _context5.next = 9;
+              break;
             }
 
-            _context5.next = 12;
+            res.json({
+              total: query.length,
+              all: query
+            });
+            _context5.next = 10;
             break;
 
-          case 8:
-            _context5.prev = 8;
-            _context5.t0 = _context5["catch"](1);
-            console.log(_context5.t0);
-            res.status(409).json({
-              message: _context5.t0.message
-            });
+          case 9:
+            return _context5.abrupt("return", res.status(404).json({
+              message: 'No existe el accesorio'
+            }));
+
+          case 10:
+            _context5.next = 16;
+            break;
 
           case 12:
+            _context5.prev = 12;
+            _context5.t0 = _context5["catch"](1);
+            console.log(_context5.t0);
+            return _context5.abrupt("return", res.status(503).json({
+              message: _context5.t0.message
+            }));
+
+          case 16:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[1, 8]]);
+    }, _callee5, null, [[1, 12]]);
   }));
 
   return function getAccesorioByAuto(_x9, _x10) {
@@ -345,9 +358,9 @@ var updatePropById = /*#__PURE__*/function () {
             _context6.prev = 13;
             _context6.t0 = _context6["catch"](2);
             console.log(_context6.t0);
-            res.status(409).json({
+            return _context6.abrupt("return", res.status(409).json({
               message: _context6.t0.message
-            });
+            }));
 
           case 17:
           case "end":
@@ -396,9 +409,9 @@ var deletePropById = /*#__PURE__*/function () {
             _context7.prev = 8;
             _context7.t0 = _context7["catch"](1);
             console.log(_context7.t0);
-            res.status(409).json({
+            return _context7.abrupt("return", res.status(409).json({
               message: _context7.t0.message
-            });
+            }));
 
           case 12:
           case "end":

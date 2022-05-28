@@ -4,6 +4,7 @@ import cors from 'cors'
 import path from 'path'
 import helmet from 'helmet'
 import routes from "./routes"
+import config from './config/config'
 import * as initData from './libs/initialSetup'
 
 const app = express();
@@ -26,7 +27,7 @@ initData.createConfigUbicacion();
 initData.createConfigStatusFile();
 
 //Settings
-app.set('port', Number(process.env.PORT) || Number(4000));
+app.set('port', Number(config.API_PORT) || Number(4000));
 
 //Middlewares
 app.use(morgan('dev'));
@@ -40,6 +41,7 @@ app.use('/api', routes);
 
 //Static Files
 app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/views', express.static(path.join(__dirname, 'views')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 

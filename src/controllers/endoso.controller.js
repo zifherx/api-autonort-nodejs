@@ -1,91 +1,91 @@
 import Endoso from "../models/Endoso";
 
-export const getEndosos = async (req,res) => {
+export const getAll = async (req,res) => {
     try {
         const query = await Endoso.find().sort({name: 'asc'});
         if(query.length > 0){
-            res.json(query);
+            res.json({total: query.length, all: query});
         }else{
             return res.status(404).json({message: 'No existen Endosos'})
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({message: err.message});
+        return res.status(503).json({message: err.message});
     }
 }
 
-export const getEndosoByActivo = async (req,res) => {
+export const getAllActivos = async (req,res) => {
     try {
         const query = await Endoso.find({status: 'Activo'}).sort({name: 'asc'});
         if(query.length > 0){
-            res.json(query)
+            res.json({total_active: query.length, all_active: query});
         }else{
             return res.status(404).json({message: 'No existen Endosos Activos'});
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({message: err.message});
+        return res.status(503).json({message: err.message});
     }
 }
 
-export const getEndosoById = async (req,res) => {
+export const getOneById = async (req,res) => {
     const {endosoId} = req.params;
     try {
         const query = await Endoso.findById(endosoId);
         if(query){
-            res.json(query);
+            res.json({one: query});
         }else{
             return res.status(404).json({message: 'No existe el Endoso'});
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({message: err.message});
+        return res.status(503).json({message: err.message});
     }
 }
 
-export const createEndoso = async (req,res) => {
-    const { name, status} = req.body;
+export const createOne = async (req,res) => {
+    const { name, estado} = req.body;
     
     try {
-        const newObj = new Endoso( { name, status});
+        const newObj = new Endoso( { name, estado});
         const query = await newObj.save();
         if(query){
             res.json({message: 'Endoso creado con éxito'});
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({message: err.message});
+        return res.status(503).json({message: err.message});
     }
 }
 
-export const updateEndoso = async (req,res) => {
-    const { name, status} = req.body;
+export const updateOneById = async (req,res) => {
+    const { name, estado} = req.body;
     const { endosoId } = req.params;
     try {
-        const newObj = await Endoso.findByIdAndUpdate(endosoId, {name, status});
-        if(newObj){
+        const query = await Endoso.findByIdAndUpdate(endosoId, {name, estado});
+        if(query){
             res.json({message: 'Endoso actualizado con éxito'});
         }else{
             return res.json(404).json({message: 'No existe Endoso a actualizar'});
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({message: err.message});
+        return res.status(503).json({message: err.message});
     }
     
 }
 
-export const deleteEndoso = async (req,res) => {
+export const deleteOneById = async (req,res) => {
     const { endosoId } = req.params;
     try {
-        const newObj = await Endoso.findByIdAndDelete(endosoId);
-        if(newObj){
+        const query = await Endoso.findByIdAndDelete(endosoId);
+        if(query){
             res.json({message: 'Endoso eliminado con éxito'});
         }else{
             return res.json(404).json({message: 'No existe Endoso a eliminar'});
         }
     } catch (err) {
         console.log(err);
-        res.status(409).json({message: err.message});
+        return res.status(503).json({message: err.message});
     }
 }

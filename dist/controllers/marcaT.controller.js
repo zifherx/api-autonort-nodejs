@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateMarcaById = exports.getMarcaById = exports.getMarcaActiva = exports.getAll = exports.deleteMarcaById = exports.createMarca = exports.countAll = void 0;
+exports.updateMarcaById = exports.getMarcaById = exports.getMarcaActiva = exports.getAll = exports.deleteMarcaById = exports.createMarca = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -34,7 +34,10 @@ var getAll = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -90,7 +93,9 @@ var getMarcaById = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              one: query
+            });
             _context2.next = 10;
             break;
 
@@ -136,9 +141,9 @@ var getMarcaActiva = /*#__PURE__*/function () {
             _context3.prev = 0;
             _context3.next = 3;
             return _MarcaTasaciones.default.find({
-              status: true
+              estado: true
             }).sort({
-              name: 'asc'
+              name: 1
             });
 
           case 3:
@@ -150,8 +155,8 @@ var getMarcaActiva = /*#__PURE__*/function () {
             }
 
             res.json({
-              count: query.length,
-              brands: query
+              total_active: query.length,
+              all_active: query
             });
             _context3.next = 9;
             break;
@@ -190,13 +195,13 @@ exports.getMarcaActiva = getMarcaActiva;
 
 var createMarca = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, status, avatar, obj, query;
+    var _req$body, name, estado, avatar, obj, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, status = _req$body.status;
+            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
             avatar = req.file;
             _context4.prev = 2;
             obj = null;
@@ -204,13 +209,13 @@ var createMarca = /*#__PURE__*/function () {
             if (avatar == undefined || avatar == null) {
               obj = new _MarcaTasaciones.default({
                 name: name,
-                status: status
+                estado: estado
               });
             } else {
               obj = new _MarcaTasaciones.default({
                 avatar: avatar.location,
                 name: name,
-                status: status
+                estado: estado
               });
             }
 
@@ -254,13 +259,13 @@ exports.createMarca = createMarca;
 
 var updateMarcaById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, status, marcaId, avatar, query;
+    var _req$body2, name, estado, marcaId, avatar, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, status = _req$body2.status;
+            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
             marcaId = req.params.marcaId;
             avatar = req.file;
             _context5.prev = 3;
@@ -274,7 +279,7 @@ var updateMarcaById = /*#__PURE__*/function () {
             _context5.next = 8;
             return _MarcaTasaciones.default.findByIdAndUpdate(marcaId, {
               name: name,
-              status: status
+              estado: estado
             });
 
           case 8:
@@ -287,40 +292,45 @@ var updateMarcaById = /*#__PURE__*/function () {
             return _MarcaTasaciones.default.findByIdAndUpdate(marcaId, {
               avatar: avatar.location,
               name: name,
-              status: status
+              estado: estado
             });
 
           case 13:
             query = _context5.sent;
 
           case 14:
-            if (query) {
-              res.json({
-                message: 'Marca actualizada con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Marca a eliminar'
-              });
+            if (!query) {
+              _context5.next = 18;
+              break;
             }
 
-            _context5.next = 21;
+            return _context5.abrupt("return", res.json({
+              message: 'Marca actualizada con éxito'
+            }));
+
+          case 18:
+            res.status(404).json({
+              message: 'No existe Marca a eliminar'
+            });
+
+          case 19:
+            _context5.next = 25;
             break;
 
-          case 17:
-            _context5.prev = 17;
+          case 21:
+            _context5.prev = 21;
             _context5.t0 = _context5["catch"](3);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 21:
+          case 25:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[3, 17]]);
+    }, _callee5, null, [[3, 21]]);
   }));
 
   return function updateMarcaById(_x9, _x10) {
@@ -387,49 +397,4 @@ var deleteMarcaById = /*#__PURE__*/function () {
 }();
 
 exports.deleteMarcaById = deleteMarcaById;
-
-var countAll = /*#__PURE__*/function () {
-  var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var query;
-    return _regenerator.default.wrap(function _callee7$(_context7) {
-      while (1) {
-        switch (_context7.prev = _context7.next) {
-          case 0:
-            _context7.prev = 0;
-            _context7.next = 3;
-            return _MarcaTasaciones.default.countDocuments();
-
-          case 3:
-            query = _context7.sent;
-
-            if (query >= 0) {
-              res.json({
-                count: query
-              });
-            }
-
-            _context7.next = 10;
-            break;
-
-          case 7:
-            _context7.prev = 7;
-            _context7.t0 = _context7["catch"](0);
-            return _context7.abrupt("return", res.status(503).json({
-              message: _context7.t0.message
-            }));
-
-          case 10:
-          case "end":
-            return _context7.stop();
-        }
-      }
-    }, _callee7, null, [[0, 7]]);
-  }));
-
-  return function countAll(_x13, _x14) {
-    return _ref7.apply(this, arguments);
-  };
-}();
-
-exports.countAll = countAll;
 //# sourceMappingURL=marcaT.controller.js.map

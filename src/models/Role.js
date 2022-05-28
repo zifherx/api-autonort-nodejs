@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose'
 
-
 const roleSchema = new Schema({
     name: { type: String },
-    description: { type: String }
+    description: { type: String },
+    estado: { type: Boolean, default: true}
 }, {
     timestamps: true,
     versionKey: false

@@ -1,13 +1,15 @@
 import MarcaTasaciones from "../models/MarcaTasaciones";
 import ModeloTasaciones from "../models/ModeloTasaciones";
 
-export const getAll = async(req, res) => {
+const modeloController = {};
+
+modeloController.getAll = async(req, res) => {
     try {
         const query = await ModeloTasaciones.find()
             .sort({ name: 'asc' })
-            .populate({ path: 'marca', select: 'name' })
+            .populate({ path: 'marca', select: 'name avatar' })
         if (query.length > 0) {
-            res.json(query);
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Modelos' })
         }
@@ -17,13 +19,13 @@ export const getAll = async(req, res) => {
     }
 }
 
-export const getModeloById = async(req, res) => {
+modeloController.getModeloById = async(req, res) => {
     const { modeloId } = req.params;
     try {
         const query = await ModeloTasaciones.findById(modeloId)
-            .populate({ path: 'marca', select: 'name' })
+            .populate({ path: 'marca', select: 'name avatar' })
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existe la Modelo' })
         }
@@ -33,15 +35,15 @@ export const getModeloById = async(req, res) => {
     }
 }
 
-export const getModeloActivos = async(req, res) => {
+modeloController.getModeloActivos = async(req, res) => {
     try {
-        const query = await ModeloTasaciones.find({ status: true })
+        const query = await ModeloTasaciones.find({ estado: true })
             .sort({ name: 'asc' })
-            .populate({ path: 'marca', select: 'name' });
+            .populate({ path: 'marca', select: 'name avatar' });
         if (query.length > 0) {
-            res.json({ count: query.length, models: query });
+            res.json({ total_active: query.length, all_active: query });
         } else {
-            res.status(404).json({ message: 'No existen Modelos activos' })
+            return res.status(404).json({ message: 'No existen Modelos activos' })
         }
     } catch (err) {
         console.log(err);
@@ -49,16 +51,18 @@ export const getModeloActivos = async(req, res) => {
     }
 }
 
-export const getModelosByMarca = async(req, res) => {
+modeloController.getModelosByMarca = async(req, res) => {
     const { marca } = req.body;
     try {
         const marcaFound = await MarcaTasaciones.findOne({ name: marca });
         if (!marcaFound) return res.status(404).json({ message: `La marca ${marca} no existe` });
 
-        const query = await ModeloTasaciones.find({ marca: marcaFound._id }).sort({ name: 'asc' });
+        const query = await ModeloTasaciones.find({ marca: marcaFound._id })
+        .sort({ name: 1 })
+        .populate({ path: 'marca', select: 'name avatar' });
 
         if (query.length > 0) {
-            res.json({ count: query.length, models: query });
+            res.json({ total: query.length, all: query });
         } else {
             return res.status(404).json({ message: `La marca ${marca} no tiene modelos creados` })
         }
@@ -68,13 +72,15 @@ export const getModelosByMarca = async(req, res) => {
     }
 }
 
-export const getModelosByName = async(req, res) => {
+modeloController.getModelosByName = async(req, res) => {
     const { name } = req.body;
     try {
-        const query = await ModeloTasaciones.findOne({ name: name }).sort({ name: 'asc' });
+        const query = await ModeloTasaciones.findOne({ name: name })
+        .sort({ name: 'asc' })
+        .populate({ path: 'marca', select: 'name avatar' });
 
         if (query) {
-            res.json({ count: query.length, models: query });
+            res.json({ total_model: query.length, all_model: query });
         } else {
             return res.status(404).json({ message: `El modelo ${name} no existe` })
         }
@@ -84,21 +90,21 @@ export const getModelosByName = async(req, res) => {
     }
 }
 
-export const createModelo = async(req, res) => {
-    const { marca, name, status } = req.body;
+modeloController.createModelo = async(req, res) => {
+    const { marca, name, estado } = req.body;
     const avatar = req.file;
     try {
         let obj = null;
         if (avatar == undefined || avatar == null) {
             obj = new ModeloTasaciones({
                 name,
-                status
+                estado
             });
         } else {
             obj = new ModeloTasaciones({
                 avatar: avatar.location,
                 name,
-                status
+                estado
             });
 
         }
@@ -118,32 +124,33 @@ export const createModelo = async(req, res) => {
     }
 }
 
-export const updateModeloById = async(req, res) => {
-    const { marca, name, status } = req.body;
+modeloController.updateModeloById = async(req, res) => {
+    const { marca, name, estado } = req.body;
     const { modeloId } = req.params;
     const avatar = req.file;
     try {
         const marcaFound = await MarcaTasaciones.findOne({ name: marca });
+
         let query = null;
         if (avatar == undefined || avatar == null) {
             query = await ModeloTasaciones.findByIdAndUpdate(modeloId, {
                 marca: marcaFound._id,
                 name,
-                status
+                estado
             });
         } else {
             query = await ModeloTasaciones.findByIdAndUpdate(modeloId, {
                 marca: marcaFound._id,
                 avatar: avatar.location,
                 name,
-                status
+                estado
             });
         }
 
         if (query) {
             res.json({ message: 'Modelo actualizado con éxito' });
         } else {
-            res.status(404).json({ message: 'No existe Modelo a actualizar' });
+            return res.status(404).json({ message: 'No existe Modelo a actualizar' });
         }
     } catch (err) {
         console.log(err);
@@ -151,7 +158,7 @@ export const updateModeloById = async(req, res) => {
     }
 }
 
-export const deleteModeloById = async(req, res) => {
+modeloController.deleteModeloById = async(req, res) => {
     const { modeloId } = req.params;
     try {
         const query = await ModeloTasaciones.findByIdAndDelete(modeloId);
@@ -166,13 +173,4 @@ export const deleteModeloById = async(req, res) => {
     }
 }
 
-export const countAll = async(req, res) => {
-    try {
-        const query = await ModeloTasaciones.countDocuments();
-        if (query >= 0) {
-            res.json({ count: query });
-        }
-    } catch (err) {
-        return res.status(503).json({ message: err.message })
-    }
-}
+export default modeloController;

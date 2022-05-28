@@ -23,7 +23,7 @@ var getAll = /*#__PURE__*/function () {
             _context.prev = 0;
             _context.next = 3;
             return _Situacion.default.find().sort({
-              name: 'asc'
+              name: 1
             });
 
           case 3:
@@ -34,7 +34,10 @@ var getAll = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total: query.length,
+              all: query
+            });
             _context.next = 9;
             break;
 
@@ -82,7 +85,7 @@ var getSituacionByActivo = /*#__PURE__*/function () {
             return _Situacion.default.find({
               estado: true
             }).sort({
-              name: 'asc'
+              valor: 1
             });
 
           case 3:
@@ -93,7 +96,10 @@ var getSituacionByActivo = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              total_active: query.length,
+              all_active: query
+            });
             _context2.next = 9;
             break;
 
@@ -149,7 +155,9 @@ var getSituacionById = /*#__PURE__*/function () {
               break;
             }
 
-            res.json(query);
+            res.json({
+              one: query
+            });
             _context3.next = 10;
             break;
 
@@ -187,16 +195,17 @@ exports.getSituacionById = getSituacionById;
 
 var createSituacion = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, estado, objeto, query;
+    var _req$body, name, valor, estado, objeto, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, estado = _req$body.estado;
+            _req$body = req.body, name = _req$body.name, valor = _req$body.valor, estado = _req$body.estado;
             _context4.prev = 1;
             objeto = new _Situacion.default({
               name: name,
+              valor: valor,
               estado: estado
             });
             _context4.next = 5;
@@ -239,51 +248,59 @@ exports.createSituacion = createSituacion;
 
 var updateSituacion = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, estado, situacionId, query;
+    var _req$body2, name, estado, valor, situacionId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
+            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado, valor = _req$body2.valor;
             situacionId = req.params.situacionId;
             _context5.prev = 2;
             _context5.next = 5;
             return _Situacion.default.findByIdAndUpdate(situacionId, {
               name: name,
+              valor: valor,
               estado: estado
             });
 
           case 5:
             query = _context5.sent;
 
-            if (query) {
-              res.json({
-                message: 'Situación actualizada con éxito'
-              });
-            } else {
-              res.status(404).json({
-                message: 'No existe Situación a actualizar'
-              });
+            if (!query) {
+              _context5.next = 10;
+              break;
             }
 
-            _context5.next = 13;
+            res.json({
+              message: 'Situación actualizada con éxito'
+            });
+            _context5.next = 11;
             break;
 
-          case 9:
-            _context5.prev = 9;
+          case 10:
+            return _context5.abrupt("return", res.status(404).json({
+              message: 'No existe Situación a actualizar'
+            }));
+
+          case 11:
+            _context5.next = 17;
+            break;
+
+          case 13:
+            _context5.prev = 13;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 13:
+          case 17:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 9]]);
+    }, _callee5, null, [[2, 13]]);
   }));
 
   return function updateSituacion(_x9, _x10) {

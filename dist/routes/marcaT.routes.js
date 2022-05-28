@@ -23,7 +23,6 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 var router = (0, _express.Router)();
 router.get('/activos', marcaTCtrl.getMarcaActiva);
-router.get('/count', marcaTCtrl.countAll);
 router.get('/:marcaId', marcaTCtrl.getMarcaById);
 router.get('/', marcaTCtrl.getAll); // router.post('/', multer.single('avatar'), marcaTCtrl.createMarca);
 

@@ -11,6 +11,9 @@ var ubicacionSchema = new _mongoose.Schema({
   name: {
     type: String
   },
+  valor: {
+    type: Number
+  },
   status: {
     type: String
   },

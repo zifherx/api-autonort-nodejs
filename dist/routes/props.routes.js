@@ -25,7 +25,7 @@ router.get('/activos', propsCtrl.getAccesoriosActivos); //Obtener Accesorio por 
 
 router.get('/:propsId', propsCtrl.getAccesorioById); //Obtener Accesorio por código Vehicular
 
-router.post('/find', propsCtrl.getAccesorioByAuto); //Crear Accesorio
+router.post('/by-modelo', propsCtrl.getAccesorioByAuto); //Crear Accesorio
 
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdv, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateAccesorio], propsCtrl.createProp); //Actualizar Accesorio
 

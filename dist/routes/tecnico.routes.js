@@ -13,25 +13,19 @@ var _tecnico = _interopRequireDefault(require("../controllers/tecnico.controller
 
 var _middlewares = require("../middlewares");
 
-var router = (0, _express.Router)(); //Obtener Conteo Tecnicos
+var router = (0, _express.Router)(); //Obtener Tecnico Activos
 
-router.get('/count', _tecnico.default.countAll); //Obtener Tecnico Activos
+router.get('/activos', _tecnico.default.getAllActivos); //Obtener Tecnico por ID
 
-router.get('/activos', _tecnico.default.getTecnicoByActivo); //Obtener Tecnico por ID
+router.get('/:tecnicoId', _tecnico.default.getOneById); //Obtener Tecnico
 
-router.get('/:tecnicoId', _tecnico.default.getTecnicoById); //Obtener Tecnico
+router.get('/', _tecnico.default.getAll); //Crear Tecnico
 
-router.get('/', _tecnico.default.getAll); //Obtener Tecnico por ID
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifyDuplicate.checkDuplicateTecnico], _tecnico.default.createOne); //Actualizar Tecnico
 
-router.post('/count/status', _tecnico.default.countByStatus); //Obtener Tecnico por Scuursal
+router.patch('/:tecnicoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _tecnico.default.updateOneById); //Eliminar Tecnico
 
-router.post('/sucursal', _tecnico.default.getBySucursal); //Crear Tecnico
-
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifyDuplicate.checkDuplicateTecnico], _tecnico.default.createTecnico); //Actualizar Tecnico
-
-router.patch('/:tecnicoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _tecnico.default.updateTecnico); //Eliminar Tecnico
-
-router.delete('/:tecnicoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _tecnico.default.deleteTecnico);
+router.delete('/:tecnicoId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _tecnico.default.deleteOneById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=tecnico.routes.js.map

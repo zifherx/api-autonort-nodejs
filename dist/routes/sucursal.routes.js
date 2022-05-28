@@ -1,6 +1,6 @@
 "use strict";
 
-var _typeof = require("@babel/runtime/helpers/typeof");
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -9,27 +9,23 @@ exports.default = void 0;
 
 var _express = require("express");
 
-var sucursalCtrl = _interopRequireWildcard(require("../controllers/sucursal.controller"));
+var _sucursal = _interopRequireDefault(require("../controllers/sucursal.controller"));
 
 var _middlewares = require("../middlewares");
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 var router = (0, _express.Router)(); //Obtener Sucursal
 
-router.get('/', sucursalCtrl.getSucursales); //Obtener Sucursal Activos
+router.get('/', _sucursal.default.getAll); //Obtener Sucursal Activos
 
-router.get('/activos', sucursalCtrl.getSucursalByActivo); //Obtener Sucursal por ID
+router.get('/activos', _sucursal.default.getAllActivos); //Obtener Sucursal por ID
 
-router.get('/:sucursalId', sucursalCtrl.getSucursalById); //Crear Sucursal
+router.get('/:sucursalId', _sucursal.default.getOneById); //Crear Sucursal
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateSucursal], sucursalCtrl.createSucursal); //Actualizar Sucursal
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist, _middlewares.verifyDuplicate.checkDuplicateSucursal], _sucursal.default.createOne); //Actualizar Sucursal
 
-router.patch('/:sucursalId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], sucursalCtrl.updateSucursal); //Eliminar Sucursal
+router.patch('/:sucursalId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], _sucursal.default.updateOneById); //Eliminar Sucursal
 
-router.delete('/:sucursalId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], sucursalCtrl.deleteSucursal);
+router.delete('/:sucursalId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin, _middlewares.verifySignup.checkRolesExist], _sucursal.default.deleteOneById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=sucursal.routes.js.map
