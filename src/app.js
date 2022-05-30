@@ -31,8 +31,10 @@ app.set('port', Number(config.API_PORT) || Number(4000));
 
 //Middlewares
 app.use(morgan('dev'));
-app.use(helmet());
-app.use(cors());
+// app.use(helmet());
+app.use(cors({
+    origin: ['https://autonortnor.com','http://localhost:8080']
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

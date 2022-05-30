@@ -49,9 +49,11 @@ initData.createConfigStatusFile(); //Settings
 
 app.set('port', Number(_config.default.API_PORT) || Number(4000)); //Middlewares
 
-app.use((0, _morgan.default)('dev'));
-app.use((0, _helmet.default)());
-app.use((0, _cors.default)());
+app.use((0, _morgan.default)('dev')); // app.use(helmet());
+
+app.use((0, _cors.default)({
+  origin: ['https://autonortnor.com', 'http://localhost:8080']
+}));
 app.use(_express.default.json());
 app.use(_express.default.urlencoded({
   extended: true
