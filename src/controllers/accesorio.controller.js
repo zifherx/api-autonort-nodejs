@@ -164,7 +164,16 @@ accesorioController.getAccesoriosByModelo = async (req, res) => {
 
         const query = await AccesorioE.find({
             model: modelFound._id
-        }).sort({ cod_interno: 1});
+        })
+        .sort({ cod_interno: 1})
+        .populate({
+            path: 'model',
+            select: 'name'
+        })
+        .populate({
+            path: 'createdBy',
+            select: 'name username'
+        })
 
         if(query.length > 0){
             res.json({total: query.length, all: query});

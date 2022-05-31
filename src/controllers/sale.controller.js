@@ -349,10 +349,10 @@ saleController.getAll = async (req, res) => {
 };
 
 saleController.getOneById = async (req, res) => {
-     const { salesId } = req.params;
+     const { filesId } = req.params;
 
      try {
-          const query = await Sale.findById(salesId)
+          const query = await Sale.findById(filesId)
                .populate({
                     path: "vendedor",
                     select: "name sucursal",
@@ -415,6 +415,14 @@ saleController.getOneById = async (req, res) => {
                })
                .populate({
                     path: "campaniasTDPE",
+                    select: "cod_interno descripcion tipo oferta",
+                    populate: {
+                         path: "tipo",
+                         select: "name",
+                    },
+               })
+               .populate({
+                    path: "campaniasMafE",
                     select: "cod_interno descripcion tipo oferta",
                     populate: {
                          path: "tipo",

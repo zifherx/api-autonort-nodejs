@@ -190,8 +190,8 @@ campaniaCtrl.findCampaniaByParams = async (req, res) => {
     const { startDate, endDate, model, tipo, version } = req.body;
 
     try {
-        // const modelFound = await ModeloTasaciones.findOne({ name: model });
-        // if (!modelFound) return res.status(404).json({ message: `Modelo ${model} no encontrado` });
+        const modelFound = await ModeloTasaciones.findOne({ name: model });
+        if (!modelFound) return res.status(404).json({ message: `Modelo ${model} no encontrado` });
 
         const tipoFound = await TipoCampania.findOne({ name: tipo });
         if (!tipoFound) return res.status(404).json({ message: `Tipo ${tipo} no encontrado` });
@@ -199,9 +199,9 @@ campaniaCtrl.findCampaniaByParams = async (req, res) => {
         const query = await Campania.find({
             startDate,
             endDate,
-            versiones: { $in: [version] },
             tipo: tipoFound._id,
-            // model: modelFound._id,
+            versiones: { $in: version },
+            model: modelFound._id,
         })
             .sort({ cod_interno: 1 })
             .populate({
@@ -223,6 +223,8 @@ campaniaCtrl.findCampaniaByParams = async (req, res) => {
 
         if (query.length > 0) {
             res.json({ total: query.length, all: query });
+        }else{
+            return res.status(404).json({message: `No existen campañas ${tipo} del ${model}`});
         }
     } catch (err) {
         console.log(err);

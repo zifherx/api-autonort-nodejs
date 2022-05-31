@@ -559,6 +559,8 @@ recordController.getAllBySeller = async (req, res) => {
 
           if (obj.length > 0) {
                res.json({ total: obj.length, all: obj });
+          }else{
+               return res.status(404).json({message: `Asesor ${seller} no cuenta con trámites`});
           }
      } catch (err) {
           console.log(err);

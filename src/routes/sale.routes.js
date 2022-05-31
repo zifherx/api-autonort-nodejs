@@ -31,7 +31,7 @@ router.post('/sucursal', saleCtrl.UnidadesBySucursalyFecha);//Usandose
 // router.post('/conteo/by-status', saleCtrl.conteoUnidadesByStatus);
 
 //Obtener Venta por Id
-router.get('/:salesId', saleCtrl.getOneById); // Corregido
+router.get('/:filesId', saleCtrl.getOneById); // Corregido
 
 // //Sales by Vendedor
 // router.post('/vehicles-by-seller', saleCtrl.getVehiclesySeller);

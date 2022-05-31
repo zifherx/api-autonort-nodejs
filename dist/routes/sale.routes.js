@@ -35,7 +35,7 @@ router.post('/sucursal', _sale.default.UnidadesBySucursalyFecha); //Usandose
 // router.post('/conteo/by-status', saleCtrl.conteoUnidadesByStatus);
 //Obtener Venta por Id
 
-router.get('/:salesId', _sale.default.getOneById); // Corregido
+router.get('/:filesId', _sale.default.getOneById); // Corregido
 // //Sales by Vendedor
 // router.post('/vehicles-by-seller', saleCtrl.getVehiclesySeller);
 // //Ranking By Vendedor

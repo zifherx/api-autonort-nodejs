@@ -237,6 +237,23 @@ fileController.getOneById = /*#__PURE__*/function () {
                 select: "name"
               }
             }).populate({
+              path: "campaniasMafE",
+              select: "cod_interno descripcion tipo oferta",
+              populate: {
+                path: "tipo",
+                select: "name"
+              }
+            }).populate({
+              path: 'accesoriosE',
+              select: 'cod_interno name model precio',
+              populate: {
+                path: 'model',
+                select: 'name'
+              }
+            }).populate({
+              path: "condicionAccesorioE",
+              select: "name"
+            }).populate({
               path: "tipoOperacionE",
               select: "name document"
             }).populate({
@@ -303,13 +320,13 @@ fileController.getOneById = /*#__PURE__*/function () {
 
 fileController.createOne = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var _req$body, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, estadoVehiculoE, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, observacion_adv, accesoriosE, condicionAccesorioE, condicion_accesorios, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, fecha_cancelacion, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, createdBy, fechaCreacionS, newSale, sellerFound, carFound, customerFound, colorFound, anioFFound, anioMFound, ubicacionFound, estadoVehicularFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, operacionFound, userFound, comprobanteFound, condicionFound, sucursalFound, situacionFound, facturacionFound, accesorioFound, query;
+    var _req$body, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, estadoVehiculoE, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, observacion_adv, accesoriosE, condicionAccesorioE, condicion_accesorios, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, estatus_venta, fecha_cancelacion, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, createdBy, fechaCreacionS, newSale, sellerFound, carFound, customerFound, colorFound, anioFFound, anioMFound, ubicacionFound, estadoVehicularFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, operacionFound, userFound, comprobanteFound, condicionFound, sucursalFound, situacionFound, facturacionFound, accesorioFound, query;
 
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _req$body = req.body, vendedor = _req$body.vendedor, cliente = _req$body.cliente, auto = _req$body.auto, serie_tdp = _req$body.serie_tdp, colorE = _req$body.colorE, precio = _req$body.precio, anioFabricacionE = _req$body.anioFabricacionE, anioModeloE = _req$body.anioModeloE, ubicacionVehiculoE = _req$body.ubicacionVehiculoE, estadoVehiculoE = _req$body.estadoVehiculoE, fecha_ciguena = _req$body.fecha_ciguena, fecha_entrega = _req$body.fecha_entrega, financiamientoE = _req$body.financiamientoE, bancoE = _req$body.bancoE, solicitudMAF = _req$body.solicitudMAF, adelantosE = _req$body.adelantosE, campaniasTDPE = _req$body.campaniasTDPE, ofertaTDPE = _req$body.ofertaTDPE, campaniasMafE = _req$body.campaniasMafE, ofertaMafE = _req$body.ofertaMafE, isToyotaValue = _req$body.isToyotaValue, arrayToyotaValues = _req$body.arrayToyotaValues, descuento_autonort = _req$body.descuento_autonort, acuerdoTDP = _req$body.acuerdoTDP, observacion_adv = _req$body.observacion_adv, accesoriosE = _req$body.accesoriosE, condicionAccesorioE = _req$body.condicionAccesorioE, condicion_accesorios = _req$body.condicion_accesorios, tipoOperacionE = _req$body.tipoOperacionE, tipoComprobanteE = _req$body.tipoComprobanteE, nro_comprobante = _req$body.nro_comprobante, fecha_comprobante = _req$body.fecha_comprobante, sucursal_venta = _req$body.sucursal_venta, sucursalE = _req$body.sucursalE, estadoVentaE = _req$body.estadoVentaE, fecha_cancelacion = _req$body.fecha_cancelacion, fecha_facturacion_tdp = _req$body.fecha_facturacion_tdp, estadoFacturacionE = _req$body.estadoFacturacionE, monto_facturado = _req$body.monto_facturado, createdBy = _req$body.createdBy, fechaCreacionS = _req$body.fechaCreacionS;
+            _req$body = req.body, vendedor = _req$body.vendedor, cliente = _req$body.cliente, auto = _req$body.auto, serie_tdp = _req$body.serie_tdp, colorE = _req$body.colorE, precio = _req$body.precio, anioFabricacionE = _req$body.anioFabricacionE, anioModeloE = _req$body.anioModeloE, ubicacionVehiculoE = _req$body.ubicacionVehiculoE, estadoVehiculoE = _req$body.estadoVehiculoE, fecha_ciguena = _req$body.fecha_ciguena, fecha_entrega = _req$body.fecha_entrega, financiamientoE = _req$body.financiamientoE, bancoE = _req$body.bancoE, solicitudMAF = _req$body.solicitudMAF, adelantosE = _req$body.adelantosE, campaniasTDPE = _req$body.campaniasTDPE, ofertaTDPE = _req$body.ofertaTDPE, campaniasMafE = _req$body.campaniasMafE, ofertaMafE = _req$body.ofertaMafE, isToyotaValue = _req$body.isToyotaValue, arrayToyotaValues = _req$body.arrayToyotaValues, descuento_autonort = _req$body.descuento_autonort, acuerdoTDP = _req$body.acuerdoTDP, observacion_adv = _req$body.observacion_adv, accesoriosE = _req$body.accesoriosE, condicionAccesorioE = _req$body.condicionAccesorioE, condicion_accesorios = _req$body.condicion_accesorios, tipoOperacionE = _req$body.tipoOperacionE, tipoComprobanteE = _req$body.tipoComprobanteE, nro_comprobante = _req$body.nro_comprobante, fecha_comprobante = _req$body.fecha_comprobante, sucursal_venta = _req$body.sucursal_venta, sucursalE = _req$body.sucursalE, estadoVentaE = _req$body.estadoVentaE, estatus_venta = _req$body.estatus_venta, fecha_cancelacion = _req$body.fecha_cancelacion, fecha_facturacion_tdp = _req$body.fecha_facturacion_tdp, estadoFacturacionE = _req$body.estadoFacturacionE, monto_facturado = _req$body.monto_facturado, createdBy = _req$body.createdBy, fechaCreacionS = _req$body.fechaCreacionS;
             _context3.prev = 1;
             newSale = new _Sale.default({
               serie_tdp: serie_tdp,
@@ -330,6 +347,7 @@ fileController.createOne = /*#__PURE__*/function () {
               nro_comprobante: nro_comprobante,
               fecha_comprobante: fecha_comprobante,
               fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
               sucursal_venta: sucursal_venta,
               fechaCreacionS: fechaCreacionS
             }); //Seller Obligado

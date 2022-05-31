@@ -962,30 +962,41 @@ recordController.getAllBySeller = /*#__PURE__*/function () {
               return b.sales.vendedor;
             });
 
-            if (obj.length > 0) {
-              res.json({
-                total: obj.length,
-                all: obj
-              });
+            if (!(obj.length > 0)) {
+              _context7.next = 10;
+              break;
             }
 
-            _context7.next = 13;
+            res.json({
+              total: obj.length,
+              all: obj
+            });
+            _context7.next = 11;
             break;
 
-          case 9:
-            _context7.prev = 9;
+          case 10:
+            return _context7.abrupt("return", res.status(404).json({
+              message: "Asesor ".concat(seller, " no cuenta con tr\xE1mites")
+            }));
+
+          case 11:
+            _context7.next = 17;
+            break;
+
+          case 13:
+            _context7.prev = 13;
             _context7.t0 = _context7["catch"](1);
             console.log(_context7.t0);
             return _context7.abrupt("return", res.status(503).json({
               message: _context7.t0.message
             }));
 
-          case 13:
+          case 17:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[1, 9]]);
+    }, _callee7, null, [[1, 13]]);
   }));
 
   return function (_x13, _x14) {

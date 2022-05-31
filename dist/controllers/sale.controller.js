@@ -782,15 +782,15 @@ saleController.getAll = /*#__PURE__*/function () {
 
 saleController.getOneById = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var salesId, query;
+    var filesId, query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            salesId = req.params.salesId;
+            filesId = req.params.filesId;
             _context3.prev = 1;
             _context3.next = 4;
-            return _Sale.default.findById(salesId).populate({
+            return _Sale.default.findById(filesId).populate({
               path: "vendedor",
               select: "name sucursal"
             }).populate({
@@ -840,6 +840,13 @@ saleController.getOneById = /*#__PURE__*/function () {
               select: "name document"
             }).populate({
               path: "campaniasTDPE",
+              select: "cod_interno descripcion tipo oferta",
+              populate: {
+                path: "tipo",
+                select: "name"
+              }
+            }).populate({
+              path: "campaniasMafE",
               select: "cod_interno descripcion tipo oferta",
               populate: {
                 path: "tipo",

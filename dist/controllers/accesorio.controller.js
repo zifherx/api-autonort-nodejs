@@ -472,6 +472,12 @@ accesorioController.getAccesoriosByModelo = /*#__PURE__*/function () {
               model: modelFound._id
             }).sort({
               cod_interno: 1
+            }).populate({
+              path: 'model',
+              select: 'name'
+            }).populate({
+              path: 'createdBy',
+              select: 'name username'
             });
 
           case 7:

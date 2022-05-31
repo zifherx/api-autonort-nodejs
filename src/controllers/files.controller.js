@@ -193,6 +193,26 @@ fileController.getOneById = async (req, res) => {
                     },
                })
                .populate({
+                    path: "campaniasMafE",
+                    select: "cod_interno descripcion tipo oferta",
+                    populate: {
+                         path: "tipo",
+                         select: "name",
+                    },
+               })
+               .populate({
+                    path: 'accesoriosE',
+                    select: 'cod_interno name model precio',
+                    populate: {
+                         path: 'model',
+                         select: 'name'
+                    }
+               })
+               .populate({
+                    path: "condicionAccesorioE",
+                    select: "name",
+               })
+               .populate({
                     path: "tipoOperacionE",
                     select: "name document",
                })
@@ -266,6 +286,7 @@ fileController.createOne = async (req, res) => {
           sucursal_venta,
           sucursalE,
           estadoVentaE,
+          estatus_venta,
           fecha_cancelacion,
           fecha_facturacion_tdp,
           estadoFacturacionE,
@@ -294,6 +315,7 @@ fileController.createOne = async (req, res) => {
                nro_comprobante,
                fecha_comprobante,
                fecha_cancelacion,
+               estatus_venta,
                sucursal_venta,
                fechaCreacionS,
           });

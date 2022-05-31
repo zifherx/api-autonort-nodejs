@@ -486,7 +486,7 @@ campaniaCtrl.deleteOneById = /*#__PURE__*/function () {
 
 campaniaCtrl.findCampaniaByParams = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var _req$body3, startDate, endDate, model, tipo, version, tipoFound, query;
+    var _req$body3, startDate, endDate, model, tipo, version, modelFound, tipoFound, query;
 
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
@@ -495,15 +495,33 @@ campaniaCtrl.findCampaniaByParams = /*#__PURE__*/function () {
             _req$body3 = req.body, startDate = _req$body3.startDate, endDate = _req$body3.endDate, model = _req$body3.model, tipo = _req$body3.tipo, version = _req$body3.version;
             _context7.prev = 1;
             _context7.next = 4;
+            return _ModeloTasaciones.default.findOne({
+              name: model
+            });
+
+          case 4:
+            modelFound = _context7.sent;
+
+            if (modelFound) {
+              _context7.next = 7;
+              break;
+            }
+
+            return _context7.abrupt("return", res.status(404).json({
+              message: "Modelo ".concat(model, " no encontrado")
+            }));
+
+          case 7:
+            _context7.next = 9;
             return _TipoCampania.default.findOne({
               name: tipo
             });
 
-          case 4:
+          case 9:
             tipoFound = _context7.sent;
 
             if (tipoFound) {
-              _context7.next = 7;
+              _context7.next = 12;
               break;
             }
 
@@ -511,16 +529,16 @@ campaniaCtrl.findCampaniaByParams = /*#__PURE__*/function () {
               message: "Tipo ".concat(tipo, " no encontrado")
             }));
 
-          case 7:
-            _context7.next = 9;
+          case 12:
+            _context7.next = 14;
             return _Campania.default.find({
               startDate: startDate,
               endDate: endDate,
+              tipo: tipoFound._id,
               versiones: {
-                $in: [version]
+                $in: version
               },
-              tipo: tipoFound._id // model: modelFound._id,
-
+              model: modelFound._id
             }).sort({
               cod_interno: 1
             }).populate({
@@ -538,33 +556,44 @@ campaniaCtrl.findCampaniaByParams = /*#__PURE__*/function () {
               select: "name"
             });
 
-          case 9:
+          case 14:
             query = _context7.sent;
 
-            if (query.length > 0) {
-              res.json({
-                total: query.length,
-                all: query
-              });
+            if (!(query.length > 0)) {
+              _context7.next = 19;
+              break;
             }
 
-            _context7.next = 17;
+            res.json({
+              total: query.length,
+              all: query
+            });
+            _context7.next = 20;
             break;
 
-          case 13:
-            _context7.prev = 13;
+          case 19:
+            return _context7.abrupt("return", res.status(404).json({
+              message: "No existen campa\xF1as ".concat(tipo, " del ").concat(model)
+            }));
+
+          case 20:
+            _context7.next = 26;
+            break;
+
+          case 22:
+            _context7.prev = 22;
             _context7.t0 = _context7["catch"](1);
             console.log(_context7.t0);
             return _context7.abrupt("return", res.status(503).json({
               message: _context7.t0.message
             }));
 
-          case 17:
+          case 26:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[1, 13]]);
+    }, _callee7, null, [[1, 22]]);
   }));
 
   return function (_x13, _x14) {
