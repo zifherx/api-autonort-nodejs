@@ -248,6 +248,8 @@ campaniaCtrl.getOfertaByCampania = async (req,res) => {
 
         if (query) {
             res.json({ one: query });
+        }else{
+            return res.status(404).json({message: `Campania ${cod_interno} no encontrada`});
         }
     } catch (err) {
         console.log(err);

@@ -621,29 +621,40 @@ campaniaCtrl.getOfertaByCampania = /*#__PURE__*/function () {
           case 4:
             query = _context8.sent;
 
-            if (query) {
-              res.json({
-                one: query
-              });
+            if (!query) {
+              _context8.next = 9;
+              break;
             }
 
-            _context8.next = 12;
+            res.json({
+              one: query
+            });
+            _context8.next = 10;
             break;
 
-          case 8:
-            _context8.prev = 8;
+          case 9:
+            return _context8.abrupt("return", res.status(404).json({
+              message: "Campania ".concat(cod_interno, " no encontrada")
+            }));
+
+          case 10:
+            _context8.next = 16;
+            break;
+
+          case 12:
+            _context8.prev = 12;
             _context8.t0 = _context8["catch"](1);
             console.log(_context8.t0);
             return _context8.abrupt("return", res.status(503).json({
               message: _context8.t0.message
             }));
 
-          case 12:
+          case 16:
           case "end":
             return _context8.stop();
         }
       }
-    }, _callee8, null, [[1, 8]]);
+    }, _callee8, null, [[1, 12]]);
   }));
 
   return function (_x15, _x16) {
