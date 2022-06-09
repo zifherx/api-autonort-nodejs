@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/controllers/resultado.controller.js"],"names":["resultadoCtrl"],"mappings":";;;;;;;;;AAAA;;AAEA,IAAMA,aAAa,GAAG,EAAtB;eAEeA,a","sourcesContent":["import Resultado from '../models/Resultado';\r\n\r\nconst resultadoCtrl = {};\r\n\r\nexport default resultadoCtrl;"],"file":"resultado.controller.js"}

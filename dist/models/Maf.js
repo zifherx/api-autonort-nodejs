@@ -36,6 +36,9 @@ var mafSchema = new _mongoose.Schema((_Schema = {
     ref: 'Customer',
     type: _mongoose.Types.ObjectId
   },
+  fecha_nacimiento_titular: {
+    type: Date
+  },
   estado_civil: {
     type: String
   },

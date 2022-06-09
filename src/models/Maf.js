@@ -8,6 +8,7 @@ const mafSchema = new Schema({
     sucursal: { type: String }, // actualizado
     sucursalE: { type: Types.ObjectId, ref: 'Sucursal'},
     customer: { ref: 'Customer', type: Types.ObjectId },
+    fecha_nacimiento_titular: { type: Date },
     estado_civil: { type: String },
     lugar_trabajo: { type: String },
     observaciones_ingreso: { type: String },

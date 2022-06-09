@@ -55,7 +55,7 @@ modeloController.getModelosByMarca = async(req, res) => {
     const { marca } = req.body;
     try {
         const marcaFound = await MarcaTasaciones.findOne({ name: marca });
-        if (!marcaFound) return res.status(404).json({ message: `La marca ${marca} no existe` });
+        if (!marcaFound) return res.status(404).json({ message: `La marca ${marca} no existe`});
 
         const query = await ModeloTasaciones.find({ marca: marcaFound._id })
         .sort({ name: 1 })

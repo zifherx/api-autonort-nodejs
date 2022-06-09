@@ -68,7 +68,7 @@ export const updateAnio = async(req, res) => {
         if (query) {
             res.json({ message: 'Año actualizado con éxito' });
         } else {
-            return res.status(404).json({ message: 'No existe Anio a eliminar' });
+            return res.status(404).json({ message: 'No existe Anio a actualizar' });
         }
     } catch (err) {
         console.log(err);

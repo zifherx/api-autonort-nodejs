@@ -17,9 +17,9 @@ menuController.getAll = async(req, res) => {
 }
 
 menuController.getOneById = async(req, res) => {
-    const { menuId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await MenuG.findById(menuId);
+        const query = await MenuG.findById(itemId);
         if (query) {
             res.json({one: query});
         } else {
@@ -63,9 +63,9 @@ menuController.createOne = async(req, res) => {
 
 menuController.updateOneById = async(req, res) => {
     const { name, estado } = req.body;
-    const { menuId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await MenuG.findByIdAndUpdate(menuId, { name, estado });
+        const query = await MenuG.findByIdAndUpdate(itemId, { name, estado });
 
         if (query) {
             res.json({ message: 'Menú actualizado con éxito' });
@@ -79,9 +79,9 @@ menuController.updateOneById = async(req, res) => {
 }
 
 menuController.deleteOneById = async(req, res) => {
-    const { menuId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await MenuG.findByIdAndDelete(menuId);
+        const query = await MenuG.findByIdAndDelete(itemId);
         if (query) {
             res.json({ message: 'Menú eliminado con éxito' });
         } else {

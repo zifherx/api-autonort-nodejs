@@ -45,7 +45,6 @@ import tecnicoRoutes from './tecnico.routes'
 import aserviciosRoutes from './aservicios.routes'
 import marcaTRoutes from './marcaT.routes'
 import modeloTRoutes from './modeloT.routes'
-import metaRoutes from './meta.routes';
 import accesorioRoutes from './accesorio.routes';
 import portadaRoutes from './portada.routes'
 import subumoduleRoutes from './submodule.routes';
@@ -69,6 +68,8 @@ import permisoRoutes from './permiso.routes';
 import menuGRoutes from './menuG.routes';
 import moduloGRoutes from './moduloG.routes';
 import submoduloGRoutes from './submoduloG.routes';
+import tProductoRoutes from './tipoProducto.routes';
+import mesRoutes from './mes.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -116,7 +117,6 @@ router.use('/tecnico-automotriz', tecnicoRoutes);
 router.use('/service-advisor', aserviciosRoutes);
 router.use('/brand', marcaTRoutes);
 router.use('/models', modeloTRoutes);
-router.use('/metas', metaRoutes);
 router.use('/accesorios', accesorioRoutes);
 router.use('/portada', portadaRoutes);
 router.use('/submodule', subumoduleRoutes);
@@ -138,6 +138,8 @@ router.use('/filtro-maf', filtroMafRoutes);
 router.use('/helper', helperRoutes);
 router.use('/documento-identidad', tDocumentoRoutes);
 router.use('/permisos',permisoRoutes);
+router.use('/tipo-producto', tProductoRoutes);
+router.use('/mes', mesRoutes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);

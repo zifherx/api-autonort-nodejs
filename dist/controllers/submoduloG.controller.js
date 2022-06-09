@@ -11,8 +11,6 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _express = require("express");
-
 var _ModuloG = _interopRequireDefault(require("../models/ModuloG"));
 
 var _SubmoduloG = _interopRequireDefault(require("../models/SubmoduloG"));
@@ -21,8 +19,7 @@ var submoduloController = {};
 
 submoduloController.getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _query;
-
+    var query;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -41,16 +38,16 @@ submoduloController.getAll = /*#__PURE__*/function () {
             });
 
           case 3:
-            _query = _context.sent;
+            query = _context.sent;
 
-            if (!(_query.length > 0)) {
+            if (!(query.length > 0)) {
               _context.next = 8;
               break;
             }
 
             res.json({
-              total: _query.length,
-              all: _query
+              total: query.length,
+              all: query
             });
             _context.next = 9;
             break;
@@ -87,8 +84,7 @@ submoduloController.getAll = /*#__PURE__*/function () {
 
 submoduloController.getOneById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var subModuloId, _query2;
-
+    var subModuloId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -106,15 +102,15 @@ submoduloController.getOneById = /*#__PURE__*/function () {
             });
 
           case 4:
-            _query2 = _context2.sent;
+            query = _context2.sent;
 
-            if (!_query2) {
+            if (!query) {
               _context2.next = 9;
               break;
             }
 
             res.json({
-              one: _query2
+              one: query
             });
             _context2.next = 10;
             break;
@@ -151,8 +147,7 @@ submoduloController.getOneById = /*#__PURE__*/function () {
 
 submoduloController.getAllByActivos = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var _query3;
-
+    var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -173,16 +168,16 @@ submoduloController.getAllByActivos = /*#__PURE__*/function () {
             });
 
           case 3:
-            _query3 = _context3.sent;
+            query = _context3.sent;
 
-            if (!(_query3.length > 0)) {
+            if (!(query.length > 0)) {
               _context3.next = 8;
               break;
             }
 
             res.json({
-              total_active: _query3.length,
-              all_active: _query3
+              total_active: query.length,
+              all_active: query
             });
             _context3.next = 9;
             break;
@@ -219,7 +214,7 @@ submoduloController.getAllByActivos = /*#__PURE__*/function () {
 
 submoduloController.createOne = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, moduloG, name, estado, obj, moduloFound, _query4;
+    var _req$body, moduloG, name, estado, obj, moduloFound, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
@@ -254,9 +249,9 @@ submoduloController.createOne = /*#__PURE__*/function () {
             return obj.save();
 
           case 11:
-            _query4 = _context4.sent;
+            query = _context4.sent;
 
-            if (_query4) {
+            if (query) {
               res.json({
                 message: 'Submódulo creado con éxito'
               });
@@ -288,7 +283,7 @@ submoduloController.createOne = /*#__PURE__*/function () {
 
 submoduloController.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, moduloG, name, estado, subModuloId, moduloFound, _query5;
+    var _req$body2, moduloG, name, estado, subModuloId, moduloFound, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
@@ -323,9 +318,9 @@ submoduloController.updateOneById = /*#__PURE__*/function () {
             });
 
           case 10:
-            _query5 = _context5.sent;
+            query = _context5.sent;
 
-            if (!_query5) {
+            if (!query) {
               _context5.next = 15;
               break;
             }
@@ -368,8 +363,7 @@ submoduloController.updateOneById = /*#__PURE__*/function () {
 
 submoduloController.deleteOneById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var subModuloId, _query6;
-
+    var subModuloId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -380,9 +374,9 @@ submoduloController.deleteOneById = /*#__PURE__*/function () {
             return _SubmoduloG.default.findByIdAndDelete(subModuloId);
 
           case 4:
-            _query6 = _context6.sent;
+            query = _context6.sent;
 
-            if (!_query6) {
+            if (!query) {
               _context6.next = 9;
               break;
             }
@@ -425,8 +419,7 @@ submoduloController.deleteOneById = /*#__PURE__*/function () {
 
 submoduloController.getAllActiveByModulo = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
-    var moduloG, moduloFound, _query7;
-
+    var moduloG, moduloFound, query;
     return _regenerator.default.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
@@ -467,16 +460,16 @@ submoduloController.getAllActiveByModulo = /*#__PURE__*/function () {
             });
 
           case 9:
-            _query7 = _context7.sent;
+            query = _context7.sent;
 
-            if (!(_query7.length > 0)) {
+            if (!(query.length > 0)) {
               _context7.next = 14;
               break;
             }
 
             res.json({
-              total_active: _query7.length,
-              all_active: _query7
+              total_active: query.length,
+              all_active: query
             });
             _context7.next = 15;
             break;

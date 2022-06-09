@@ -16,7 +16,6 @@ import Customer from '../models/Customer'
 import Campaign from '../models/Campaign'
 import Adicional from '../models/Adicional'
 import Vehicle from '../models/Vehicle'
-import Props from '../models/Props'
 import Record from '../models/Record'
 import Sale from '../models/Sale'
 import Anio from '../models/Anio'
@@ -50,6 +49,8 @@ import TipoDocumento from '../models/TipoDocumento';
 import MenuG from '../models/MenuG';
 import ModuloG from '../models/ModuloG'
 import SubmoduloG from '../models/SubmoduloG'
+import TipoProducto from '../models/TipoProducto';
+import Mes from '../models/Mes';
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -530,6 +531,24 @@ export const checkDuplicateSubmoduloG = async (req, res, next) => {
 
     const query = await SubmoduloG.findOne({name});
     if(query) return res.status(201).json({message: `El submódulo ${name} ya existe`});
+
+    next();
+}
+
+export const checkDuplicateTipoProducto = async (req, res, next) => {
+    const { name } = req.body;
+
+    const query = await TipoProducto.findOne({name});
+    if(query) return res.status(201).json({message: `El tipo de producto ${name} ya existe`});
+
+    next();
+}
+
+export const checkDuplicateMes = async (req, res, next) => {
+    const { name } = req.body;
+
+    const query = await Mes.findOne({name});
+    if(query) return res.status(201).json({message: `El mes ${name} ya existe`});
 
     next();
 }

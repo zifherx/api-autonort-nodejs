@@ -95,8 +95,6 @@ var _marcaT = _interopRequireDefault(require("./marcaT.routes"));
 
 var _modeloT = _interopRequireDefault(require("./modeloT.routes"));
 
-var _meta = _interopRequireDefault(require("./meta.routes"));
-
 var _accesorio = _interopRequireDefault(require("./accesorio.routes"));
 
 var _portada = _interopRequireDefault(require("./portada.routes"));
@@ -142,6 +140,10 @@ var _menuG = _interopRequireDefault(require("./menuG.routes"));
 var _moduloG = _interopRequireDefault(require("./moduloG.routes"));
 
 var _submoduloG = _interopRequireDefault(require("./submoduloG.routes"));
+
+var _tipoProducto = _interopRequireDefault(require("./tipoProducto.routes"));
+
+var _mes = _interopRequireDefault(require("./mes.routes"));
 
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
@@ -189,7 +191,6 @@ router.use('/tecnico-automotriz', _tecnico.default);
 router.use('/service-advisor', _aservicios.default);
 router.use('/brand', _marcaT.default);
 router.use('/models', _modeloT.default);
-router.use('/metas', _meta.default);
 router.use('/accesorios', _accesorio.default);
 router.use('/portada', _portada.default);
 router.use('/submodule', _submodule.default);
@@ -210,7 +211,9 @@ router.use('/plan-maf', _planMaf.default);
 router.use('/filtro-maf', _filtroMaf.default);
 router.use('/helper', _helper.default);
 router.use('/documento-identidad', _tipoDocumento.default);
-router.use('/permisos', _permiso.default); //Modulos
+router.use('/permisos', _permiso.default);
+router.use('/tipo-producto', _tipoProducto.default);
+router.use('/mes', _mes.default); //Modulos
 
 router.use('/menuG', _menuG.default);
 router.use('/moduloG', _moduloG.default);

@@ -7,34 +7,34 @@ exports.default = void 0;
 
 var _mongoose = require("mongoose");
 
-var metaSchema = new _mongoose.Schema({
-  name: {
+var resultadoSchema = new _mongoose.Schema({
+  cod_interno: {
     type: String
   },
-  sucursal: [{
+  tipoProducto: {
     type: _mongoose.Schema.Types.ObjectId,
-    ref: 'Sucursal'
-  }],
-  area: {
-    type: _mongoose.Schema.Types.ObjectId,
-    ref: 'Area'
-  },
-  tipo: {
-    type: String
+    ref: ''
   },
   fecha: {
     type: Date
   },
+  anio: {
+    type: Number
+  },
   mes: {
     type: Number
+  },
+  sucursalE: [{
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
+  }],
+  meta: {
+    type: Number,
+    default: 0
   },
   valor: {
     type: Number,
     default: 0
-  },
-  estado: {
-    type: Boolean,
-    default: false
   },
   createdBy: {
     ref: 'User',
@@ -45,7 +45,7 @@ var metaSchema = new _mongoose.Schema({
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('Meta', metaSchema);
+var _default = (0, _mongoose.model)('Resultado', resultadoSchema);
 
 exports.default = _default;
-//# sourceMappingURL=Meta.js.map
+//# sourceMappingURL=Resultado.js.map

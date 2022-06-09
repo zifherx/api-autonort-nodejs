@@ -278,7 +278,7 @@ var updateAnio = /*#__PURE__*/function () {
 
           case 10:
             return _context5.abrupt("return", res.status(404).json({
-              message: 'No existe Anio a eliminar'
+              message: 'No existe Anio a actualizar'
             }));
 
           case 11:

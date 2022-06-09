@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.checkDuplicateVendedor = exports.checkDuplicateVehiculo = exports.checkDuplicateUser = exports.checkDuplicateUbicacion = exports.checkDuplicateTramite = exports.checkDuplicateTipoUso = exports.checkDuplicateTipoDocumento = exports.checkDuplicateTipoCampania = exports.checkDuplicateTecnico = exports.checkDuplicateSustento = exports.checkDuplicateSucursal = exports.checkDuplicateSubmoduloG = exports.checkDuplicateStatusTasacion = exports.checkDuplicateStatusRP = exports.checkDuplicateStatusMafRequest = exports.checkDuplicateStatusFile = exports.checkDuplicateStatusFacturacion = exports.checkDuplicateStatusEntrega = exports.checkDuplicateStatusAAP = exports.checkDuplicateSituacion = exports.checkDuplicateSectorista = exports.checkDuplicateRole = exports.checkDuplicatePlanMAF = exports.checkDuplicateMotivoRechazo = exports.checkDuplicateModuloG = exports.checkDuplicateModeloT = exports.checkDuplicateModelo = exports.checkDuplicateMenuG = exports.checkDuplicateMarcaT = exports.checkDuplicateMarca = exports.checkDuplicateFinanciamiento = exports.checkDuplicateFiltroMaf = exports.checkDuplicateExpediente = exports.checkDuplicateEstadoSeguro = exports.checkDuplicateEstadoCivil = exports.checkDuplicateEndoso = exports.checkDuplicateConexo = exports.checkDuplicateCondicionAccesorio = exports.checkDuplicateCondicion = exports.checkDuplicateComprobante = exports.checkDuplicateColor = exports.checkDuplicateCliente = exports.checkDuplicateChasis = exports.checkDuplicateCampania = exports.checkDuplicateBanco = exports.checkDuplicateAseguradora = exports.checkDuplicateArea = exports.checkDuplicateAnio = exports.checkDuplicateAdicional = exports.checkDuplicateAccesorio = exports.checkDuplicateAServicios = void 0;
+exports.checkDuplicateVendedor = exports.checkDuplicateVehiculo = exports.checkDuplicateUser = exports.checkDuplicateUbicacion = exports.checkDuplicateTramite = exports.checkDuplicateTipoUso = exports.checkDuplicateTipoProducto = exports.checkDuplicateTipoDocumento = exports.checkDuplicateTipoCampania = exports.checkDuplicateTecnico = exports.checkDuplicateSustento = exports.checkDuplicateSucursal = exports.checkDuplicateSubmoduloG = exports.checkDuplicateStatusTasacion = exports.checkDuplicateStatusRP = exports.checkDuplicateStatusMafRequest = exports.checkDuplicateStatusFile = exports.checkDuplicateStatusFacturacion = exports.checkDuplicateStatusEntrega = exports.checkDuplicateStatusAAP = exports.checkDuplicateSituacion = exports.checkDuplicateSectorista = exports.checkDuplicateRole = exports.checkDuplicatePlanMAF = exports.checkDuplicateMotivoRechazo = exports.checkDuplicateModuloG = exports.checkDuplicateModeloT = exports.checkDuplicateModelo = exports.checkDuplicateMes = exports.checkDuplicateMenuG = exports.checkDuplicateMarcaT = exports.checkDuplicateMarca = exports.checkDuplicateFinanciamiento = exports.checkDuplicateFiltroMaf = exports.checkDuplicateExpediente = exports.checkDuplicateEstadoSeguro = exports.checkDuplicateEstadoCivil = exports.checkDuplicateEndoso = exports.checkDuplicateConexo = exports.checkDuplicateCondicionAccesorio = exports.checkDuplicateCondicion = exports.checkDuplicateComprobante = exports.checkDuplicateColor = exports.checkDuplicateCliente = exports.checkDuplicateChasis = exports.checkDuplicateCampania = exports.checkDuplicateBanco = exports.checkDuplicateAseguradora = exports.checkDuplicateArea = exports.checkDuplicateAnio = exports.checkDuplicateAdicional = exports.checkDuplicateAccesorio = exports.checkDuplicateAServicios = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -46,8 +46,6 @@ var _Campaign = _interopRequireDefault(require("../models/Campaign"));
 var _Adicional = _interopRequireDefault(require("../models/Adicional"));
 
 var _Vehicle = _interopRequireDefault(require("../models/Vehicle"));
-
-var _Props = _interopRequireDefault(require("../models/Props"));
 
 var _Record = _interopRequireDefault(require("../models/Record"));
 
@@ -114,6 +112,10 @@ var _MenuG = _interopRequireDefault(require("../models/MenuG"));
 var _ModuloG = _interopRequireDefault(require("../models/ModuloG"));
 
 var _SubmoduloG = _interopRequireDefault(require("../models/SubmoduloG"));
+
+var _TipoProducto = _interopRequireDefault(require("../models/TipoProducto"));
+
+var _Mes = _interopRequireDefault(require("../models/Mes"));
 
 var checkDuplicateRole = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res, next) {
@@ -2380,4 +2382,90 @@ var checkDuplicateSubmoduloG = /*#__PURE__*/function () {
 }();
 
 exports.checkDuplicateSubmoduloG = checkDuplicateSubmoduloG;
+
+var checkDuplicateTipoProducto = /*#__PURE__*/function () {
+  var _ref52 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee52(req, res, next) {
+    var name, query;
+    return _regenerator.default.wrap(function _callee52$(_context52) {
+      while (1) {
+        switch (_context52.prev = _context52.next) {
+          case 0:
+            name = req.body.name;
+            _context52.next = 3;
+            return _TipoProducto.default.findOne({
+              name: name
+            });
+
+          case 3:
+            query = _context52.sent;
+
+            if (!query) {
+              _context52.next = 6;
+              break;
+            }
+
+            return _context52.abrupt("return", res.status(201).json({
+              message: "El tipo de producto ".concat(name, " ya existe")
+            }));
+
+          case 6:
+            next();
+
+          case 7:
+          case "end":
+            return _context52.stop();
+        }
+      }
+    }, _callee52);
+  }));
+
+  return function checkDuplicateTipoProducto(_x154, _x155, _x156) {
+    return _ref52.apply(this, arguments);
+  };
+}();
+
+exports.checkDuplicateTipoProducto = checkDuplicateTipoProducto;
+
+var checkDuplicateMes = /*#__PURE__*/function () {
+  var _ref53 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee53(req, res, next) {
+    var name, query;
+    return _regenerator.default.wrap(function _callee53$(_context53) {
+      while (1) {
+        switch (_context53.prev = _context53.next) {
+          case 0:
+            name = req.body.name;
+            _context53.next = 3;
+            return _Mes.default.findOne({
+              name: name
+            });
+
+          case 3:
+            query = _context53.sent;
+
+            if (!query) {
+              _context53.next = 6;
+              break;
+            }
+
+            return _context53.abrupt("return", res.status(201).json({
+              message: "El mes ".concat(name, " ya existe")
+            }));
+
+          case 6:
+            next();
+
+          case 7:
+          case "end":
+            return _context53.stop();
+        }
+      }
+    }, _callee53);
+  }));
+
+  return function checkDuplicateMes(_x157, _x158, _x159) {
+    return _ref53.apply(this, arguments);
+  };
+}();
+
+exports.checkDuplicateMes = checkDuplicateMes;
 //# sourceMappingURL=verifyDuplicate.js.map

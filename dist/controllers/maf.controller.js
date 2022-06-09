@@ -49,13 +49,13 @@ var mafController = {}; // Nuevos
 
 mafController.createOne = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
-    var _req$body, nro_solicitud, fecha_ingreso, sucursal, sucursalE, customer, estado_civil, observaciones_ingreso, conyuge, document_conyuge, fecha_nacimiento_conyuge, lugar_trabajo, ingreso_promedio, cuota_inicial, seller, car, anioFabE, anioModE, pvp, planMAF, tipoUsoE, primer_status_request, estadoSolicitudMAF, fechaIngresoSolicitud, createdBy, evidencias, obj, sucursalFound, customerFound, sellerFound, carFound, anioFFound, anioMFound, planMafFound, tipoUsoFound, estadoFound, userFound, query;
+    var _req$body, nro_solicitud, fecha_ingreso, sucursal, sucursalE, customer, fecha_nacimiento_titular, estado_civil, observaciones_ingreso, conyuge, document_conyuge, fecha_nacimiento_conyuge, lugar_trabajo, ingreso_promedio, cuota_inicial, seller, car, anioFabE, anioModE, pvp, planMAF, tipoUsoE, primer_status_request, estadoSolicitudMAF, fechaIngresoSolicitud, createdBy, evidencias, obj, sucursalFound, customerFound, sellerFound, carFound, anioFFound, anioMFound, planMafFound, tipoUsoFound, estadoFound, userFound, query;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$body = req.body, nro_solicitud = _req$body.nro_solicitud, fecha_ingreso = _req$body.fecha_ingreso, sucursal = _req$body.sucursal, sucursalE = _req$body.sucursalE, customer = _req$body.customer, estado_civil = _req$body.estado_civil, observaciones_ingreso = _req$body.observaciones_ingreso, conyuge = _req$body.conyuge, document_conyuge = _req$body.document_conyuge, fecha_nacimiento_conyuge = _req$body.fecha_nacimiento_conyuge, lugar_trabajo = _req$body.lugar_trabajo, ingreso_promedio = _req$body.ingreso_promedio, cuota_inicial = _req$body.cuota_inicial, seller = _req$body.seller, car = _req$body.car, anioFabE = _req$body.anioFabE, anioModE = _req$body.anioModE, pvp = _req$body.pvp, planMAF = _req$body.planMAF, tipoUsoE = _req$body.tipoUsoE, primer_status_request = _req$body.primer_status_request, estadoSolicitudMAF = _req$body.estadoSolicitudMAF, fechaIngresoSolicitud = _req$body.fechaIngresoSolicitud, createdBy = _req$body.createdBy; // console.log(req.body);
+            _req$body = req.body, nro_solicitud = _req$body.nro_solicitud, fecha_ingreso = _req$body.fecha_ingreso, sucursal = _req$body.sucursal, sucursalE = _req$body.sucursalE, customer = _req$body.customer, fecha_nacimiento_titular = _req$body.fecha_nacimiento_titular, estado_civil = _req$body.estado_civil, observaciones_ingreso = _req$body.observaciones_ingreso, conyuge = _req$body.conyuge, document_conyuge = _req$body.document_conyuge, fecha_nacimiento_conyuge = _req$body.fecha_nacimiento_conyuge, lugar_trabajo = _req$body.lugar_trabajo, ingreso_promedio = _req$body.ingreso_promedio, cuota_inicial = _req$body.cuota_inicial, seller = _req$body.seller, car = _req$body.car, anioFabE = _req$body.anioFabE, anioModE = _req$body.anioModE, pvp = _req$body.pvp, planMAF = _req$body.planMAF, tipoUsoE = _req$body.tipoUsoE, primer_status_request = _req$body.primer_status_request, estadoSolicitudMAF = _req$body.estadoSolicitudMAF, fechaIngresoSolicitud = _req$body.fechaIngresoSolicitud, createdBy = _req$body.createdBy; // console.log(req.body);
 
             evidencias = req.files;
             _context.prev = 2;
@@ -87,6 +87,7 @@ mafController.createOne = /*#__PURE__*/function () {
               nro_solicitud: nro_solicitud,
               fecha_ingreso: fecha_ingreso,
               sucursal: sucursal,
+              fecha_nacimiento_titular: fecha_nacimiento_titular,
               estado_civil: estado_civil,
               lugar_trabajo: lugar_trabajo,
               observaciones_ingreso: observaciones_ingreso,

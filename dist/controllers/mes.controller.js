@@ -11,11 +11,11 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _MenuG = _interopRequireDefault(require("../models/MenuG"));
+var _Mes = _interopRequireDefault(require("../models/Mes"));
 
-var menuController = {};
+var mesController = {};
 
-menuController.getAll = /*#__PURE__*/function () {
+mesController.getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee$(_context) {
@@ -24,8 +24,8 @@ menuController.getAll = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _MenuG.default.find().sort({
-              name: 1
+            return _Mes.default.find().sort({
+              numero: -1
             });
 
           case 3:
@@ -45,7 +45,7 @@ menuController.getAll = /*#__PURE__*/function () {
 
           case 8:
             return _context.abrupt("return", res.status(404).json({
-              message: 'No existen menús'
+              message: 'No existen meses'
             }));
 
           case 9:
@@ -73,7 +73,7 @@ menuController.getAll = /*#__PURE__*/function () {
   };
 }();
 
-menuController.getOneById = /*#__PURE__*/function () {
+mesController.getOneById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
     var itemId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -83,7 +83,7 @@ menuController.getOneById = /*#__PURE__*/function () {
             itemId = req.params.itemId;
             _context2.prev = 1;
             _context2.next = 4;
-            return _MenuG.default.findById(itemId);
+            return _Mes.default.findById(itemId);
 
           case 4:
             query = _context2.sent;
@@ -101,7 +101,7 @@ menuController.getOneById = /*#__PURE__*/function () {
 
           case 9:
             return _context2.abrupt("return", res.status(404).json({
-              message: 'No existe menú'
+              message: 'No existe mes'
             }));
 
           case 10:
@@ -129,7 +129,7 @@ menuController.getOneById = /*#__PURE__*/function () {
   };
 }();
 
-menuController.getAllByActivos = /*#__PURE__*/function () {
+mesController.getAllActive = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -138,10 +138,10 @@ menuController.getAllByActivos = /*#__PURE__*/function () {
           case 0:
             _context3.prev = 0;
             _context3.next = 3;
-            return _MenuG.default.find({
+            return _Mes.default.find({
               estado: true
             }).sort({
-              name: 1
+              numero: 1
             });
 
           case 3:
@@ -153,15 +153,15 @@ menuController.getAllByActivos = /*#__PURE__*/function () {
             }
 
             res.json({
-              total_active: query.length,
-              all_active: query
+              total: query.length,
+              all: query
             });
             _context3.next = 9;
             break;
 
           case 8:
             return _context3.abrupt("return", res.status(404).json({
-              message: 'No existen menus activos'
+              message: 'No existen meses activos'
             }));
 
           case 9:
@@ -189,19 +189,20 @@ menuController.getAllByActivos = /*#__PURE__*/function () {
   };
 }();
 
-menuController.createOne = /*#__PURE__*/function () {
+mesController.createOne = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body, name, icon, estado, obj, query;
+    var _req$body, name, abreviatura, numero, estado, obj, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, icon = _req$body.icon, estado = _req$body.estado;
+            _req$body = req.body, name = _req$body.name, abreviatura = _req$body.abreviatura, numero = _req$body.numero, estado = _req$body.estado;
             _context4.prev = 1;
-            obj = new _MenuG.default({
+            obj = new _Mes.default({
               name: name,
-              icon: icon,
+              abreviatura: abreviatura,
+              numero: numero,
               estado: estado
             });
             _context4.next = 5;
@@ -212,7 +213,7 @@ menuController.createOne = /*#__PURE__*/function () {
 
             if (query) {
               res.json({
-                message: 'Menú creado con éxito'
+                message: 'Mes creado con éxito'
               });
             }
 
@@ -240,20 +241,22 @@ menuController.createOne = /*#__PURE__*/function () {
   };
 }();
 
-menuController.updateOneById = /*#__PURE__*/function () {
+mesController.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, estado, itemId, query;
+    var _req$body2, name, abreviatura, numero, estado, itemId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
+            _req$body2 = req.body, name = _req$body2.name, abreviatura = _req$body2.abreviatura, numero = _req$body2.numero, estado = _req$body2.estado;
             itemId = req.params.itemId;
             _context5.prev = 2;
             _context5.next = 5;
-            return _MenuG.default.findByIdAndUpdate(itemId, {
+            return _Mes.default.findByIdAndUpdate(itemId, {
               name: name,
+              abreviatura: abreviatura,
+              numero: numero,
               estado: estado
             });
 
@@ -266,14 +269,14 @@ menuController.updateOneById = /*#__PURE__*/function () {
             }
 
             res.json({
-              message: 'Menú actualizado con éxito'
+              message: 'Mes actualizado con éxito'
             });
             _context5.next = 11;
             break;
 
           case 10:
             return _context5.abrupt("return", res.status(404).json({
-              message: 'No existe menú a eliminar'
+              message: 'No existe mes a actualizar'
             }));
 
           case 11:
@@ -301,7 +304,7 @@ menuController.updateOneById = /*#__PURE__*/function () {
   };
 }();
 
-menuController.deleteOneById = /*#__PURE__*/function () {
+mesController.deleteOneById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
     var itemId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
@@ -311,7 +314,7 @@ menuController.deleteOneById = /*#__PURE__*/function () {
             itemId = req.params.itemId;
             _context6.prev = 1;
             _context6.next = 4;
-            return _MenuG.default.findByIdAndDelete(itemId);
+            return _Mes.default.findByIdAndDelete(itemId);
 
           case 4:
             query = _context6.sent;
@@ -322,14 +325,14 @@ menuController.deleteOneById = /*#__PURE__*/function () {
             }
 
             res.json({
-              message: 'Menú eliminado con éxito'
+              message: 'Mes eliminado con éxito'
             });
             _context6.next = 10;
             break;
 
           case 9:
             return _context6.abrupt("return", res.status(404).json({
-              message: 'No existe menú a eliminar'
+              message: 'No existe mes a eliminar'
             }));
 
           case 10:
@@ -357,6 +360,6 @@ menuController.deleteOneById = /*#__PURE__*/function () {
   };
 }();
 
-var _default = menuController;
+var _default = mesController;
 exports.default = _default;
-//# sourceMappingURL=menuG.controller.js.map
+//# sourceMappingURL=mes.controller.js.map

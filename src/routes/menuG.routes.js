@@ -8,12 +8,12 @@ router.get('/', menuCtrl.getAll);
 
 router.get('/activos', menuCtrl.getAllByActivos);
 
-router.get('/:anioId', menuCtrl.getOneById);
+router.get('/:itemId', menuCtrl.getOneById);
 
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateMenuG], menuCtrl.createOne);
 
-router.patch('/:anioId', [authJwt.verifyToken, authJwt.isAdmin], menuCtrl.updateOneById);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], menuCtrl.updateOneById);
 
-router.delete('/:anioId', [authJwt.verifyToken, authJwt.isAdmin], menuCtrl.deleteOneById);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], menuCtrl.deleteOneById);
 
 export default router;

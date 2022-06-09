@@ -1,4 +1,3 @@
-import { query } from "express";
 import ModuloG from "../models/ModuloG";
 import SubmoduloG from "../models/SubmoduloG";
 
