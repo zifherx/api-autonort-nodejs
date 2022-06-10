@@ -145,6 +145,8 @@ var _tipoProducto = _interopRequireDefault(require("./tipoProducto.routes"));
 
 var _mes = _interopRequireDefault(require("./mes.routes"));
 
+var _resultado = _interopRequireDefault(require("./resultado.routes"));
+
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
   res.send('Api Swagger');
@@ -213,7 +215,8 @@ router.use('/helper', _helper.default);
 router.use('/documento-identidad', _tipoDocumento.default);
 router.use('/permisos', _permiso.default);
 router.use('/tipo-producto', _tipoProducto.default);
-router.use('/mes', _mes.default); //Modulos
+router.use('/mes', _mes.default);
+router.use('/resultado', _resultado.default); //Modulos
 
 router.use('/menuG', _menuG.default);
 router.use('/moduloG', _moduloG.default);

@@ -12,22 +12,36 @@ var resultadoSchema = new _mongoose.Schema({
     type: String
   },
   tipoProducto: {
+    type: String
+  },
+  tipoProductoE: {
     type: _mongoose.Schema.Types.ObjectId,
-    ref: ''
+    ref: 'TipoProducto'
   },
   fecha: {
     type: Date
   },
   anio: {
-    type: Number
+    type: String
   },
   mes: {
-    type: Number
+    type: String
   },
-  sucursalE: [{
+  anioE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Anio'
+  },
+  mesE: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Mes'
+  },
+  sucursal: {
+    type: String
+  },
+  sucursalE: {
     type: _mongoose.Schema.Types.ObjectId,
     ref: 'Sucursal'
-  }],
+  },
   meta: {
     type: Number,
     default: 0
@@ -37,8 +51,8 @@ var resultadoSchema = new _mongoose.Schema({
     default: 0
   },
   createdBy: {
-    ref: 'User',
-    type: _mongoose.Schema.Types.ObjectId
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 }, {
   timestamps: true,
