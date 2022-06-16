@@ -120,10 +120,10 @@ fileController.getAll = async (req, res) => {
 };
 
 fileController.getOneById = async (req, res) => {
-     const { filesId } = req.params;
+     const { itemId } = req.params;
 
      try {
-          const query = await Sale.findById(filesId)
+          const query = await Sale.findById(itemId)
                .populate({
                     path: "vendedor",
                     select: "name sucursal",
@@ -474,7 +474,7 @@ fileController.createOne = async (req, res) => {
 };
 
 fileController.updateOneById = async (req, res) => {
-     const { filesId } = req.params;
+     const { itemId } = req.params;
      const {
           vendedor,
           cliente,
@@ -663,7 +663,7 @@ fileController.updateOneById = async (req, res) => {
                facturacionNull = facturacionFound._id;
           }
 
-          const query = await Sale.findByIdAndUpdate(filesId, {
+          const query = await Sale.findByIdAndUpdate(itemId, {
                serie_tdp,
                precio,
                ubicacion_vehiculo,
@@ -720,10 +720,10 @@ fileController.updateOneById = async (req, res) => {
 };
 
 fileController.deleteOneById = async (req, res) => {
-     const { filesId } = req.params;
+     const { itemId } = req.params;
 
      try {
-          const query = await Sale.findByIdAndDelete(filesId);
+          const query = await Sale.findByIdAndDelete(itemId);
 
           if (query) {
                res.json({ message: "Expediente eliminado con éxito" });
@@ -961,13 +961,14 @@ fileController.groupFilesByEstado = async (req, res) => {
 };
 
 fileController.conteoFilesByEstado = async (req, res) => {
-     const { estado, ubicacion, isEntregado, start, end } = req.body;
+     const { estado, ubicacion, isEntregado, sucursalE,start, end } = req.body;
      let query = null;
 
      try {
           if (isEntregado) {
                query = await Sale.find({
                     ubicacion_vehiculo: { $regex: ".*" + ubicacion + ".*" },
+                    sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
                     fecha_entrega: {
                          $gte: new Date(start),
                          $lte: new Date(end),
@@ -976,6 +977,7 @@ fileController.conteoFilesByEstado = async (req, res) => {
           } else {
                query = await Sale.find({
                     estatus_venta: { $regex: ".*" + estado + ".*" },
+                    sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
                     fecha_cancelacion: {
                          $gte: new Date(start),
                          $lte: new Date(end),
@@ -1200,5 +1202,85 @@ fileController.rankingFilesBySeller = async (req, res) => {
           return res.status(503).json({ message: err.message });
      }
 };
+
+fileController.getFilesByToyotaValue = async (req, res) => {
+     const {sucursalE,isToyotaValue, start, end} = req.body;
+
+     try {
+          const query = await Sale.find({
+               sucursal_venta: { $regex: '.*' + sucursalE + '.*'},
+               isToyotaValue,
+               fecha_cancelacion: {$gte: new Date(start), $lte: new Date(end)}
+          })
+          .select('vendedor cliente auto serie_tdp isToyotaValue arrayToyotaValues sucursalE')
+          .populate({
+               path: 'vendedor',
+               select: 'name avatar'
+          })
+          .populate({
+               path: 'cliente',
+               select: 'name document'
+          })
+          .populate({
+               path: 'sucursalE',
+               select: 'name'
+          })
+          .populate({
+               path: 'auto',
+               select: 'model cod_tdp',
+               populate: {
+                    path: 'model',
+                    select: 'name avatar marca',
+                    populate: {
+                         path: 'marca',
+                         select: 'name avatar'
+                    }
+               }
+          });
+
+          if(query.length > 0){
+               res.json({total: query.length, all: query});
+          }else{
+               return res.status(404).json({message: `No existen expedientes con toyota value`});
+          }
+     } catch (err) {
+          console.log(err);
+          return res.status(503).json({ message: err.message });
+     }
+}
+
+fileController.getFilesByImporteAccesorios = async (req, res) => {
+     const { sucursalE, start, end } = req.body;
+
+     try {
+          const query = await Sale.find({
+               $expr: { $gt: [{$size: {$ifNull: ["$accesoriosE", []]}},0]},
+               sucursal_venta: { $regex: '.*' + sucursalE + '.*'},
+               fecha_cancelacion: {$gte: new Date(start), $lte: new Date(end)},
+          })
+          .select('accesoriosE vendedor cliente sucursalE sucursal_venta')
+          .populate({
+               path: 'accesoriosE',
+               select: 'name precio'
+          })
+          .populate({
+               path: 'vendedor',
+               select: 'name avatar'
+          })
+          .populate({
+               path: 'cliente',
+               select: 'name document'
+          });
+
+          if(query.length > 0){
+               res.json({total: query.length, all: query});
+          }else{
+               return res.status(404).json({message: 'No existe expedientes con accesorios'});
+          }
+     } catch (err) {
+          console.log(err);
+          return res.status(503).json({ message: err.message });
+     }
+}
 
 export default fileController;

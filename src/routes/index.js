@@ -71,6 +71,8 @@ import submoduloGRoutes from './submoduloG.routes';
 import tProductoRoutes from './tipoProducto.routes';
 import mesRoutes from './mes.routes';
 import resultadoRoutes from './resultado.routes';
+import accesorioStockRoutes from './stockAccesorio.routes';
+import accesriosVentasRoutes from './ventasAccesorio.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -142,6 +144,8 @@ router.use('/permisos',permisoRoutes);
 router.use('/tipo-producto', tProductoRoutes);
 router.use('/mes', mesRoutes);
 router.use('/resultado', resultadoRoutes);
+router.use('/accesorio-stock', accesorioStockRoutes);
+router.use('/accesorio-stock-ventas', accesriosVentasRoutes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);

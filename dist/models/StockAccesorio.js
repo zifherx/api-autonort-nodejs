@@ -7,16 +7,19 @@ exports.default = void 0;
 
 var _mongoose = require("mongoose");
 
-var resultadoSchema = new _mongoose.Schema({
+var stockSchema = new _mongoose.Schema({
   cod_interno: {
     type: String
   },
-  tipoProducto: {
+  temporada: {
     type: String
   },
-  tipoProductoE: {
+  sucursal: {
+    type: String
+  },
+  sucursalE: {
     type: _mongoose.Schema.Types.ObjectId,
-    ref: 'TipoProducto'
+    ref: 'Sucursal'
   },
   fecha: {
     type: Date
@@ -24,32 +27,19 @@ var resultadoSchema = new _mongoose.Schema({
   anio: {
     type: String
   },
-  mes: {
-    type: String
-  },
   anioE: {
     type: _mongoose.Schema.Types.ObjectId,
     ref: 'Anio'
+  },
+  mes: {
+    type: String
   },
   mesE: {
     type: _mongoose.Schema.Types.ObjectId,
     ref: 'Mes'
   },
-  sucursal: {
-    type: String
-  },
-  sucursalE: {
-    type: _mongoose.Schema.Types.ObjectId,
-    ref: 'Sucursal',
-    default: null
-  },
-  meta: {
-    type: Number,
-    default: 0
-  },
-  valor: {
-    type: Number,
-    default: 0
+  importe: {
+    type: Number
   },
   createdBy: {
     type: _mongoose.Schema.Types.ObjectId,
@@ -60,7 +50,7 @@ var resultadoSchema = new _mongoose.Schema({
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('Resultado', resultadoSchema);
+var _default = (0, _mongoose.model)('StockAccesorio', stockSchema);
 
 exports.default = _default;
-//# sourceMappingURL=Resultado.js.map
+//# sourceMappingURL=StockAccesorio.js.map

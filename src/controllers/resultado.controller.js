@@ -107,9 +107,13 @@ resultadoCtrl.createOne = async (req, res) => {
           if (!mesFound) return res.status(404).json({ message: `Mes ${mesE} no encontrado` });
           newObj.mesE = mesFound._id;
 
-          const sucursalFound = await Sucursal.findOne({ name: sucursalE });
-          if (!sucursalFound) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrado` });
-          newObj.sucursalE = sucursalFound._id;
+          if(sucursalE == null || sucursalE == undefined){
+               newObj.sucursalE == null;
+          }else{
+               const sucursalFound = await Sucursal.findOne({ name: sucursalE });
+               if (!sucursalFound) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrado` });
+               newObj.sucursalE = sucursalFound._id;
+          }
 
           const userFound = await User.findOne({ username: createdBy });
           if (!userFound) return res.status(404).json({ message: `Usuario ${createdBy} no encontrado` });

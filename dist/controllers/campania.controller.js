@@ -346,25 +346,43 @@ campaniaCtrl.createOne = /*#__PURE__*/function () {
 
 campaniaCtrl.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, descripcion, startDate, endDate, model, versiones, oferta, estado, campaniaId, modelFound, query;
+    var _req$body2, descripcion, startDate, endDate, tipo, model, versiones, oferta, estado, campaniaId, tipoCFound, modelFound, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body2 = req.body, descripcion = _req$body2.descripcion, startDate = _req$body2.startDate, endDate = _req$body2.endDate, model = _req$body2.model, versiones = _req$body2.versiones, oferta = _req$body2.oferta, estado = _req$body2.estado;
+            _req$body2 = req.body, descripcion = _req$body2.descripcion, startDate = _req$body2.startDate, endDate = _req$body2.endDate, tipo = _req$body2.tipo, model = _req$body2.model, versiones = _req$body2.versiones, oferta = _req$body2.oferta, estado = _req$body2.estado;
             campaniaId = req.params.campaniaId;
             _context5.prev = 2;
             _context5.next = 5;
+            return _TipoCampania.default.findOne({
+              name: tipo
+            });
+
+          case 5:
+            tipoCFound = _context5.sent;
+
+            if (tipoCFound) {
+              _context5.next = 8;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Tipo de campa\xF1a ".concat(tipo, " no encontrado")
+            }));
+
+          case 8:
+            _context5.next = 10;
             return _ModeloTasaciones.default.findOne({
               name: model
             });
 
-          case 5:
+          case 10:
             modelFound = _context5.sent;
 
             if (modelFound) {
-              _context5.next = 8;
+              _context5.next = 13;
               break;
             }
 
@@ -372,55 +390,56 @@ campaniaCtrl.updateOneById = /*#__PURE__*/function () {
               message: "Modelo ".concat(model, " no encontrado")
             }));
 
-          case 8:
-            _context5.next = 10;
+          case 13:
+            _context5.next = 15;
             return _Campania.default.findByIdAndUpdate(campaniaId, {
               descripcion: descripcion,
               startDate: startDate,
               endDate: endDate,
+              tipo: tipoCFound._id,
               model: modelFound._id,
               versiones: versiones,
               oferta: oferta,
               estado: estado
             });
 
-          case 10:
+          case 15:
             query = _context5.sent;
 
             if (!query) {
-              _context5.next = 15;
+              _context5.next = 20;
               break;
             }
 
             res.json({
               message: "Campaña actualizada con éxito"
             });
-            _context5.next = 16;
+            _context5.next = 21;
             break;
 
-          case 15:
+          case 20:
             return _context5.abrupt("return", res.status(404).json({
               message: "No existe campaña a actualizar"
             }));
 
-          case 16:
-            _context5.next = 22;
+          case 21:
+            _context5.next = 27;
             break;
 
-          case 18:
-            _context5.prev = 18;
+          case 23:
+            _context5.prev = 23;
             _context5.t0 = _context5["catch"](2);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 22:
+          case 27:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[2, 18]]);
+    }, _callee5, null, [[2, 23]]);
   }));
 
   return function (_x9, _x10) {

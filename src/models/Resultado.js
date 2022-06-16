@@ -10,7 +10,7 @@ const resultadoSchema = new Schema({
     anioE: { type: Schema.Types.ObjectId, ref: 'Anio' },
     mesE: { type: Schema.Types.ObjectId, ref: 'Mes' },
     sucursal: { type: String },
-    sucursalE: { type: Schema.Types.ObjectId, ref: 'Sucursal' },
+    sucursalE: { type: Schema.Types.ObjectId, ref: 'Sucursal', default: null },
     meta: { type: Number, default: 0 },
     valor: { type: Number, default: 0 },
     createdBy: { type: Schema.Types.ObjectId, ref: 'User' }

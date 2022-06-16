@@ -141,10 +141,14 @@ campaniaCtrl.createOne = async (req, res) => {
 };
 
 campaniaCtrl.updateOneById = async (req, res) => {
-    const { descripcion, startDate, endDate, model, versiones, oferta, estado } = req.body;
+    const { descripcion, startDate, endDate, tipo,model, versiones, oferta, estado } = req.body;
     const { campaniaId } = req.params;
 
     try {
+
+        const tipoCFound = await TipoCampania.findOne({ name: tipo });
+        if (!tipoCFound) return res.status(404).json({ message: `Tipo de campaña ${tipo} no encontrado` });
+
         const modelFound = await ModeloTasaciones.findOne({ name: model });
         if (!modelFound) return res.status(404).json({ message: `Modelo ${model} no encontrado` });
 
@@ -152,6 +156,7 @@ campaniaCtrl.updateOneById = async (req, res) => {
             descripcion,
             startDate,
             endDate,
+            tipo: tipoCFound._id,
             model: modelFound._id,
             versiones,
             oferta,

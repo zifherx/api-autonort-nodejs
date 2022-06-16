@@ -147,6 +147,10 @@ var _mes = _interopRequireDefault(require("./mes.routes"));
 
 var _resultado = _interopRequireDefault(require("./resultado.routes"));
 
+var _stockAccesorio = _interopRequireDefault(require("./stockAccesorio.routes"));
+
+var _ventasAccesorio = _interopRequireDefault(require("./ventasAccesorio.routes"));
+
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
   res.send('Api Swagger');
@@ -216,7 +220,9 @@ router.use('/documento-identidad', _tipoDocumento.default);
 router.use('/permisos', _permiso.default);
 router.use('/tipo-producto', _tipoProducto.default);
 router.use('/mes', _mes.default);
-router.use('/resultado', _resultado.default); //Modulos
+router.use('/resultado', _resultado.default);
+router.use('/accesorio-stock', _stockAccesorio.default);
+router.use('/accesorio-stock-ventas', _ventasAccesorio.default); //Modulos
 
 router.use('/menuG', _menuG.default);
 router.use('/moduloG', _moduloG.default);

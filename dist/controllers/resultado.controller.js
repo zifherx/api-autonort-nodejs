@@ -246,16 +246,27 @@ resultadoCtrl.createOne = /*#__PURE__*/function () {
 
           case 20:
             newObj.mesE = mesFound._id;
-            _context3.next = 23;
+
+            if (!(sucursalE == null || sucursalE == undefined)) {
+              _context3.next = 25;
+              break;
+            }
+
+            newObj.sucursalE == null;
+            _context3.next = 31;
+            break;
+
+          case 25:
+            _context3.next = 27;
             return _Sucursal.default.findOne({
               name: sucursalE
             });
 
-          case 23:
+          case 27:
             sucursalFound = _context3.sent;
 
             if (sucursalFound) {
-              _context3.next = 26;
+              _context3.next = 30;
               break;
             }
 
@@ -263,18 +274,20 @@ resultadoCtrl.createOne = /*#__PURE__*/function () {
               message: "Sucursal ".concat(sucursalE, " no encontrado")
             }));
 
-          case 26:
+          case 30:
             newObj.sucursalE = sucursalFound._id;
-            _context3.next = 29;
+
+          case 31:
+            _context3.next = 33;
             return _User.default.findOne({
               username: createdBy
             });
 
-          case 29:
+          case 33:
             userFound = _context3.sent;
 
             if (userFound) {
-              _context3.next = 32;
+              _context3.next = 36;
               break;
             }
 
@@ -282,12 +295,12 @@ resultadoCtrl.createOne = /*#__PURE__*/function () {
               message: "Usuario ".concat(createdBy, " no encontrado")
             }));
 
-          case 32:
+          case 36:
             newObj.createdBy = userFound._id;
-            _context3.next = 35;
+            _context3.next = 39;
             return newObj.save();
 
-          case 35:
+          case 39:
             query = _context3.sent;
 
             if (query) {
@@ -296,23 +309,23 @@ resultadoCtrl.createOne = /*#__PURE__*/function () {
               });
             }
 
-            _context3.next = 43;
+            _context3.next = 47;
             break;
 
-          case 39:
-            _context3.prev = 39;
+          case 43:
+            _context3.prev = 43;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
             return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
             }));
 
-          case 43:
+          case 47:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 39]]);
+    }, _callee3, null, [[1, 43]]);
   }));
 
   return function (_x5, _x6) {

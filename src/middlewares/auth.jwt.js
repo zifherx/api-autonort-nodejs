@@ -284,11 +284,11 @@ export const isJefeDigitalJefePlaneamientoAdmin = async(req, res, next) => {
     const roles = await Role.find({ _id: { $in: user.roles } });
 
     for(let i = 0; i < roles.length; i++){
-        if(roles[i].name === 'Jefe-Digital' || roles[i].name === 'Jefe-Planeamiento-Comercial' || roles[i].name === 'Administrador'){
+        if(roles[i].name === 'Jefe-Digital' || roles[i].name === 'Jefe-Planeamiento-Comercial' || roles[i].name === 'Administrador' || roles[i].name === 'Asistente-Comercial'){
             next();
             return;
         }
     }
 
-    return res.status(403).json({message: 'Requiere permiso de Jefe-Digital || Jefe-Planeamiento-Comercial || Administrador'})
+    return res.status(403).json({message: 'Requiere permiso de Jefe-Digital || Jefe-Planeamiento-Comercial || Administrador || Asistente-Comercial'})
 }

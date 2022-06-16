@@ -1306,7 +1306,7 @@ var isJefeDigitalJefePlaneamientoAdmin = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Jefe-Digital' || roles[i].name === 'Jefe-Planeamiento-Comercial' || roles[i].name === 'Administrador')) {
+            if (!(roles[i].name === 'Jefe-Digital' || roles[i].name === 'Jefe-Planeamiento-Comercial' || roles[i].name === 'Administrador' || roles[i].name === 'Asistente-Comercial')) {
               _context21.next = 11;
               break;
             }
@@ -1321,7 +1321,7 @@ var isJefeDigitalJefePlaneamientoAdmin = /*#__PURE__*/function () {
 
           case 14:
             return _context21.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso de Jefe-Digital || Jefe-Planeamiento-Comercial || Administrador'
+              message: 'Requiere permiso de Jefe-Digital || Jefe-Planeamiento-Comercial || Administrador || Asistente-Comercial'
             }));
 
           case 15:

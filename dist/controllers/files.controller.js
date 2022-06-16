@@ -173,15 +173,15 @@ fileController.getAll = /*#__PURE__*/function () {
 
 fileController.getOneById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var filesId, query;
+    var itemId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            filesId = req.params.filesId;
+            itemId = req.params.itemId;
             _context2.prev = 1;
             _context2.next = 4;
-            return _Sale.default.findById(filesId).populate({
+            return _Sale.default.findById(itemId).populate({
               path: "vendedor",
               select: "name sucursal"
             }).populate({
@@ -930,13 +930,13 @@ fileController.createOne = /*#__PURE__*/function () {
 
 fileController.updateOneById = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var filesId, _req$body2, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, ubicacion_vehiculo, estadoVehiculoE, estatus_vehiculo, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, observacion_adv, accesoriosE, condicion_accesorios, condicionAccesorioE, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, fecha_cancelacion, estatus_venta, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, colorNull, anioFNull, anioMNull, ubicacionNull, financiamientoNull, bancoNull, solicitudNull, condicionAccNull, comprobanteNull, facturacionNull, sellerFound, customerFound, autoFound, estadoVehicularFound, operacionFound, sucursalFound, situacionFound, colorFound, anioFound, _anioFound, ubicacionFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, accesoriosFound, condicionFound, comprobanteFound, facturacionFound, query;
+    var itemId, _req$body2, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, ubicacion_vehiculo, estadoVehiculoE, estatus_vehiculo, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, observacion_adv, accesoriosE, condicion_accesorios, condicionAccesorioE, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, fecha_cancelacion, estatus_venta, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, colorNull, anioFNull, anioMNull, ubicacionNull, financiamientoNull, bancoNull, solicitudNull, condicionAccNull, comprobanteNull, facturacionNull, sellerFound, customerFound, autoFound, estadoVehicularFound, operacionFound, sucursalFound, situacionFound, colorFound, anioFound, _anioFound, ubicacionFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, accesoriosFound, condicionFound, comprobanteFound, facturacionFound, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            filesId = req.params.filesId;
+            itemId = req.params.itemId;
             _req$body2 = req.body, vendedor = _req$body2.vendedor, cliente = _req$body2.cliente, auto = _req$body2.auto, serie_tdp = _req$body2.serie_tdp, colorE = _req$body2.colorE, precio = _req$body2.precio, anioFabricacionE = _req$body2.anioFabricacionE, anioModeloE = _req$body2.anioModeloE, ubicacionVehiculoE = _req$body2.ubicacionVehiculoE, ubicacion_vehiculo = _req$body2.ubicacion_vehiculo, estadoVehiculoE = _req$body2.estadoVehiculoE, estatus_vehiculo = _req$body2.estatus_vehiculo, fecha_ciguena = _req$body2.fecha_ciguena, fecha_entrega = _req$body2.fecha_entrega, financiamientoE = _req$body2.financiamientoE, bancoE = _req$body2.bancoE, solicitudMAF = _req$body2.solicitudMAF, adelantosE = _req$body2.adelantosE, campaniasTDPE = _req$body2.campaniasTDPE, ofertaTDPE = _req$body2.ofertaTDPE, campaniasMafE = _req$body2.campaniasMafE, ofertaMafE = _req$body2.ofertaMafE, isToyotaValue = _req$body2.isToyotaValue, arrayToyotaValues = _req$body2.arrayToyotaValues, descuento_autonort = _req$body2.descuento_autonort, acuerdoTDP = _req$body2.acuerdoTDP, observacion_adv = _req$body2.observacion_adv, accesoriosE = _req$body2.accesoriosE, condicion_accesorios = _req$body2.condicion_accesorios, condicionAccesorioE = _req$body2.condicionAccesorioE, tipoOperacionE = _req$body2.tipoOperacionE, tipoComprobanteE = _req$body2.tipoComprobanteE, nro_comprobante = _req$body2.nro_comprobante, fecha_comprobante = _req$body2.fecha_comprobante, sucursal_venta = _req$body2.sucursal_venta, sucursalE = _req$body2.sucursalE, estadoVentaE = _req$body2.estadoVentaE, fecha_cancelacion = _req$body2.fecha_cancelacion, estatus_venta = _req$body2.estatus_venta, fecha_facturacion_tdp = _req$body2.fecha_facturacion_tdp, estadoFacturacionE = _req$body2.estadoFacturacionE, monto_facturado = _req$body2.monto_facturado; // Opcionales
 
             colorNull = null;
@@ -1447,7 +1447,7 @@ fileController.updateOneById = /*#__PURE__*/function () {
 
           case 163:
             _context4.next = 165;
-            return _Sale.default.findByIdAndUpdate(filesId, {
+            return _Sale.default.findByIdAndUpdate(itemId, {
               serie_tdp: serie_tdp,
               precio: precio,
               ubicacion_vehiculo: ubicacion_vehiculo,
@@ -1544,15 +1544,15 @@ fileController.updateOneById = /*#__PURE__*/function () {
 
 fileController.deleteOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var filesId, query;
+    var itemId, query;
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            filesId = req.params.filesId;
+            itemId = req.params.itemId;
             _context5.prev = 1;
             _context5.next = 4;
-            return _Sale.default.findByIdAndDelete(filesId);
+            return _Sale.default.findByIdAndDelete(itemId);
 
           case 4:
             query = _context5.sent;
@@ -1886,13 +1886,13 @@ fileController.groupFilesByEstado = /*#__PURE__*/function () {
 
 fileController.conteoFilesByEstado = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res) {
-    var _req$body5, estado, ubicacion, isEntregado, start, end, query;
+    var _req$body5, estado, ubicacion, isEntregado, sucursalE, start, end, query;
 
     return _regenerator.default.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
-            _req$body5 = req.body, estado = _req$body5.estado, ubicacion = _req$body5.ubicacion, isEntregado = _req$body5.isEntregado, start = _req$body5.start, end = _req$body5.end;
+            _req$body5 = req.body, estado = _req$body5.estado, ubicacion = _req$body5.ubicacion, isEntregado = _req$body5.isEntregado, sucursalE = _req$body5.sucursalE, start = _req$body5.start, end = _req$body5.end;
             query = null;
             _context8.prev = 2;
 
@@ -1905,6 +1905,9 @@ fileController.conteoFilesByEstado = /*#__PURE__*/function () {
             return _Sale.default.find({
               ubicacion_vehiculo: {
                 $regex: ".*" + ubicacion + ".*"
+              },
+              sucursal_venta: {
+                $regex: ".*" + sucursalE + ".*"
               },
               fecha_entrega: {
                 $gte: new Date(start),
@@ -1922,6 +1925,9 @@ fileController.conteoFilesByEstado = /*#__PURE__*/function () {
             return _Sale.default.find({
               estatus_venta: {
                 $regex: ".*" + estado + ".*"
+              },
+              sucursal_venta: {
+                $regex: ".*" + sucursalE + ".*"
               },
               fecha_cancelacion: {
                 $gte: new Date(start),
@@ -2291,6 +2297,175 @@ fileController.rankingFilesBySeller = /*#__PURE__*/function () {
 
   return function (_x23, _x24) {
     return _ref12.apply(this, arguments);
+  };
+}();
+
+fileController.getFilesByToyotaValue = /*#__PURE__*/function () {
+  var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res) {
+    var _req$body10, sucursalE, isToyotaValue, start, end, query;
+
+    return _regenerator.default.wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+            _req$body10 = req.body, sucursalE = _req$body10.sucursalE, isToyotaValue = _req$body10.isToyotaValue, start = _req$body10.start, end = _req$body10.end;
+            _context13.prev = 1;
+            _context13.next = 4;
+            return _Sale.default.find({
+              sucursal_venta: {
+                $regex: '.*' + sucursalE + '.*'
+              },
+              isToyotaValue: isToyotaValue,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            }).select('vendedor cliente auto serie_tdp isToyotaValue arrayToyotaValues sucursalE').populate({
+              path: 'vendedor',
+              select: 'name avatar'
+            }).populate({
+              path: 'cliente',
+              select: 'name document'
+            }).populate({
+              path: 'sucursalE',
+              select: 'name'
+            }).populate({
+              path: 'auto',
+              select: 'model cod_tdp',
+              populate: {
+                path: 'model',
+                select: 'name avatar marca',
+                populate: {
+                  path: 'marca',
+                  select: 'name avatar'
+                }
+              }
+            });
+
+          case 4:
+            query = _context13.sent;
+
+            if (!(query.length > 0)) {
+              _context13.next = 9;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              all: query
+            });
+            _context13.next = 10;
+            break;
+
+          case 9:
+            return _context13.abrupt("return", res.status(404).json({
+              message: "No existen expedientes con toyota value"
+            }));
+
+          case 10:
+            _context13.next = 16;
+            break;
+
+          case 12:
+            _context13.prev = 12;
+            _context13.t0 = _context13["catch"](1);
+            console.log(_context13.t0);
+            return _context13.abrupt("return", res.status(503).json({
+              message: _context13.t0.message
+            }));
+
+          case 16:
+          case "end":
+            return _context13.stop();
+        }
+      }
+    }, _callee13, null, [[1, 12]]);
+  }));
+
+  return function (_x25, _x26) {
+    return _ref13.apply(this, arguments);
+  };
+}();
+
+fileController.getFilesByImporteAccesorios = /*#__PURE__*/function () {
+  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res) {
+    var _req$body11, sucursalE, start, end, query;
+
+    return _regenerator.default.wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            _req$body11 = req.body, sucursalE = _req$body11.sucursalE, start = _req$body11.start, end = _req$body11.end;
+            _context14.prev = 1;
+            _context14.next = 4;
+            return _Sale.default.find({
+              $expr: {
+                $gt: [{
+                  $size: {
+                    $ifNull: ["$accesoriosE", []]
+                  }
+                }, 0]
+              },
+              sucursal_venta: {
+                $regex: '.*' + sucursalE + '.*'
+              },
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            }).select('accesoriosE vendedor cliente sucursalE sucursal_venta').populate({
+              path: 'accesoriosE',
+              select: 'name precio'
+            }).populate({
+              path: 'vendedor',
+              select: 'name avatar'
+            }).populate({
+              path: 'cliente',
+              select: 'name document'
+            });
+
+          case 4:
+            query = _context14.sent;
+
+            if (!(query.length > 0)) {
+              _context14.next = 9;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              all: query
+            });
+            _context14.next = 10;
+            break;
+
+          case 9:
+            return _context14.abrupt("return", res.status(404).json({
+              message: 'No existe expedientes con accesorios'
+            }));
+
+          case 10:
+            _context14.next = 16;
+            break;
+
+          case 12:
+            _context14.prev = 12;
+            _context14.t0 = _context14["catch"](1);
+            console.log(_context14.t0);
+            return _context14.abrupt("return", res.status(503).json({
+              message: _context14.t0.message
+            }));
+
+          case 16:
+          case "end":
+            return _context14.stop();
+        }
+      }
+    }, _callee14, null, [[1, 12]]);
+  }));
+
+  return function (_x27, _x28) {
+    return _ref14.apply(this, arguments);
   };
 }();
 
