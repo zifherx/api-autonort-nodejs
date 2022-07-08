@@ -244,11 +244,11 @@ fileController.getOneById = /*#__PURE__*/function () {
                 select: "name"
               }
             }).populate({
-              path: 'accesoriosE',
-              select: 'cod_interno name model precio',
+              path: "accesoriosE",
+              select: "cod_interno name model precio",
               populate: {
-                path: 'model',
-                select: 'name'
+                path: "model",
+                select: "name"
               }
             }).populate({
               path: "condicionAccesorioE",
@@ -2157,17 +2157,20 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
 
 fileController.rankingFilesByModelo = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res) {
-    var _req$body8, estado, start, end, query;
+    var _req$body8, sucursalE, estado, start, end, query;
 
     return _regenerator.default.wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
-            _req$body8 = req.body, estado = _req$body8.estado, start = _req$body8.start, end = _req$body8.end;
+            _req$body8 = req.body, sucursalE = _req$body8.sucursalE, estado = _req$body8.estado, start = _req$body8.start, end = _req$body8.end;
             _context11.prev = 1;
             _context11.next = 4;
             return _Sale.default.aggregate([{
               $match: {
+                sucursal_venta: {
+                  $regex: ".*" + sucursalE + ".*"
+                },
                 estatus_venta: estado,
                 fecha_cancelacion: {
                   $gte: new Date(start),
@@ -2235,8 +2238,12 @@ fileController.rankingFilesBySeller = /*#__PURE__*/function () {
             _context12.next = 4;
             return _Sale.default.aggregate([{
               $match: {
-                sucursal_venta: sucursalE,
-                estatus_venta: estadoE,
+                sucursal_venta: {
+                  $regex: ".*" + sucursalE + ".*"
+                },
+                estatus_venta: {
+                  $regex: ".*" + estadoE + ".*"
+                },
                 fecha_cancelacion: {
                   $gte: new Date(start),
                   $lte: new Date(end)
@@ -2313,31 +2320,31 @@ fileController.getFilesByToyotaValue = /*#__PURE__*/function () {
             _context13.next = 4;
             return _Sale.default.find({
               sucursal_venta: {
-                $regex: '.*' + sucursalE + '.*'
+                $regex: ".*" + sucursalE + ".*"
               },
               isToyotaValue: isToyotaValue,
               fecha_cancelacion: {
                 $gte: new Date(start),
                 $lte: new Date(end)
               }
-            }).select('vendedor cliente auto serie_tdp isToyotaValue arrayToyotaValues sucursalE').populate({
-              path: 'vendedor',
-              select: 'name avatar'
+            }).select("vendedor cliente auto serie_tdp isToyotaValue arrayToyotaValues sucursalE").populate({
+              path: "vendedor",
+              select: "name avatar"
             }).populate({
-              path: 'cliente',
-              select: 'name document'
+              path: "cliente",
+              select: "name document"
             }).populate({
-              path: 'sucursalE',
-              select: 'name'
+              path: "sucursalE",
+              select: "name"
             }).populate({
-              path: 'auto',
-              select: 'model cod_tdp',
+              path: "auto",
+              select: "model cod_tdp",
               populate: {
-                path: 'model',
-                select: 'name avatar marca',
+                path: "model",
+                select: "name avatar marca",
                 populate: {
-                  path: 'marca',
-                  select: 'name avatar'
+                  path: "marca",
+                  select: "name avatar"
                 }
               }
             });
@@ -2407,21 +2414,21 @@ fileController.getFilesByImporteAccesorios = /*#__PURE__*/function () {
                 }, 0]
               },
               sucursal_venta: {
-                $regex: '.*' + sucursalE + '.*'
+                $regex: ".*" + sucursalE + ".*"
               },
               fecha_cancelacion: {
                 $gte: new Date(start),
                 $lte: new Date(end)
               }
-            }).select('accesoriosE vendedor cliente sucursalE sucursal_venta').populate({
-              path: 'accesoriosE',
-              select: 'name precio'
+            }).select("accesoriosE vendedor cliente sucursalE sucursal_venta").populate({
+              path: "accesoriosE",
+              select: "name precio"
             }).populate({
-              path: 'vendedor',
-              select: 'name avatar'
+              path: "vendedor",
+              select: "name avatar"
             }).populate({
-              path: 'cliente',
-              select: 'name document'
+              path: "cliente",
+              select: "name document"
             });
 
           case 4:
@@ -2441,7 +2448,7 @@ fileController.getFilesByImporteAccesorios = /*#__PURE__*/function () {
 
           case 9:
             return _context14.abrupt("return", res.status(404).json({
-              message: 'No existe expedientes con accesorios'
+              message: "No existe expedientes con accesorios"
             }));
 
           case 10:

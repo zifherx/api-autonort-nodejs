@@ -26,8 +26,8 @@ router.post("/ranking/by-modelo", _files.default.rankingFilesByModelo);
 router.post("/ranking/by-seller", _files.default.rankingFilesBySeller);
 router.post("/ranking/entregas", _files.default.rankingFilesByUbicacion);
 router.post("/", [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdminorAsistantADVorChiefPlaneamiento], _files.default.createOne);
-router.patch("/:itemId", [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdminorAsistantADV], _files.default.updateOneById);
-router.delete("/:itemId", [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdmin], _files.default.deleteOneById);
+router.patch("/:itemId", [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefAdvorAdminorAsistantADVorChiefPlaneamiento], _files.default.updateOneById);
+router.delete("/:itemId", [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _files.default.deleteOneById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=files.routes.js.map

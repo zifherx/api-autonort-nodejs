@@ -51,6 +51,7 @@ import ModuloG from '../models/ModuloG'
 import SubmoduloG from '../models/SubmoduloG'
 import TipoProducto from '../models/TipoProducto';
 import Mes from '../models/Mes';
+import EstadoListaEspera from '../models/EstadoListaEspera'
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -174,6 +175,14 @@ export const checkDuplicateUbicacion = async(req, res, next) => {
     const encontrado = await Ubicacion.findOne({ name: name });
 
     if (encontrado) return res.status(201).json({ message: 'La Ubicacion ya existe' });
+
+    next();
+}
+export const checkDuplicateEstadoListaEspera = async(req, res, next) => {
+    const { name } = req.body;
+    const encontrado = await EstadoListaEspera.findOne({ name: name });
+
+    if (encontrado) return res.status(201).json({ message: 'El estado ya existe' });
 
     next();
 }

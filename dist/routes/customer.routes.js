@@ -21,9 +21,9 @@ router.get('/:customerId', _customer.default.getOneById); //Obtener Cliente por 
 
 router.post('/find', _customer.default.getClienteByDNI); //Crear Cliente
 
-router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosOrADVOrVendedorOrEPDPOrAdmin, _middlewares.verifyDuplicate.checkDuplicateCliente], _customer.default.createOne); //Actualizar Cliente
+router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin, _middlewares.verifyDuplicate.checkDuplicateCliente], _customer.default.createOne); //Actualizar Cliente
 
-router.patch('/:customerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosOrADVOrVendedorOrEPDPOrAdmin], _customer.default.updateOneById); //Remover Cliente
+router.patch('/:customerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin], _customer.default.updateOneById); //Remover Cliente
 
 router.delete('/:customerId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _customer.default.deleteOneById);
 var _default = router;

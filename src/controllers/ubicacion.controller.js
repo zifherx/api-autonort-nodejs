@@ -48,7 +48,7 @@ ubicacionController.getAllActivos = async(req, res) => {
 ubicacionController.createOne = async(req, res) => {
     const { name,valor, estado } = req.body;
     try {
-        const objeto = new Ubicacion({ name, value, estado });
+        const objeto = new Ubicacion({ name, valor, estado });
         const query = await objeto.save();
         if (query) {
             res.json({ message: 'Ubicación creada con éxito' })

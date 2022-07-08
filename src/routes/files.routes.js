@@ -16,7 +16,7 @@ router.post("/ranking/by-modelo", filesCtrl.rankingFilesByModelo);
 router.post("/ranking/by-seller", filesCtrl.rankingFilesBySeller);
 router.post("/ranking/entregas", filesCtrl.rankingFilesByUbicacion);
 router.post("/", [authJwt.verifyToken, authJwt.isChiefAdvorAdminorAsistantADVorChiefPlaneamiento], filesCtrl.createOne);
-router.patch("/:itemId", [authJwt.verifyToken, authJwt.isChiefAdvorAdminorAsistantADV], filesCtrl.updateOneById);
-router.delete("/:itemId", [authJwt.verifyToken, authJwt.isChiefAdvorAdmin], filesCtrl.deleteOneById);
+router.patch("/:itemId", [authJwt.verifyToken, authJwt.isChiefAdvorAdminorAsistantADVorChiefPlaneamiento], filesCtrl.updateOneById);
+router.delete("/:itemId", [authJwt.verifyToken, authJwt.isAdmin], filesCtrl.deleteOneById);
 
 export default router;

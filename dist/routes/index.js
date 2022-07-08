@@ -151,6 +151,10 @@ var _stockAccesorio = _interopRequireDefault(require("./stockAccesorio.routes"))
 
 var _ventasAccesorio = _interopRequireDefault(require("./ventasAccesorio.routes"));
 
+var _listaEspera = _interopRequireDefault(require("./listaEspera.routes"));
+
+var _estadoListaEspera = _interopRequireDefault(require("./estadoListaEspera.routes"));
+
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
   res.send('Api Swagger');
@@ -222,7 +226,9 @@ router.use('/tipo-producto', _tipoProducto.default);
 router.use('/mes', _mes.default);
 router.use('/resultado', _resultado.default);
 router.use('/accesorio-stock', _stockAccesorio.default);
-router.use('/accesorio-stock-ventas', _ventasAccesorio.default); //Modulos
+router.use('/accesorio-stock-ventas', _ventasAccesorio.default);
+router.use('/lista-espera', _listaEspera.default);
+router.use('/estado-lespera', _estadoListaEspera.default); //Modulos
 
 router.use('/menuG', _menuG.default);
 router.use('/moduloG', _moduloG.default);

@@ -73,6 +73,8 @@ import mesRoutes from './mes.routes';
 import resultadoRoutes from './resultado.routes';
 import accesorioStockRoutes from './stockAccesorio.routes';
 import accesriosVentasRoutes from './ventasAccesorio.routes';
+import listaEsperaRoutes from './listaEspera.routes';
+import estadoLERoutes from './estadoListaEspera.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -146,6 +148,8 @@ router.use('/mes', mesRoutes);
 router.use('/resultado', resultadoRoutes);
 router.use('/accesorio-stock', accesorioStockRoutes);
 router.use('/accesorio-stock-ventas', accesriosVentasRoutes);
+router.use('/lista-espera', listaEsperaRoutes);
+router.use('/estado-lespera', estadoLERoutes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);

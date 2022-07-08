@@ -201,6 +201,19 @@ export const isConexosOrADVOrVendedorOrEPDPOrAdmin = async(req, res, next) => {
     return res.status(403).json({ message: 'Requiere permiso del Asistente-Conexos || Jefe-ADV || Vendedor || Administrador || Jefe-EPDP || Tasador' })
 }
 
+export const isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin = async(req, res, next) => {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } })
+
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'Asistente-Conexos' || roles[i].name === 'Jefe-ADV' || roles[i].name === 'Asistente-ADV' || roles[i].name === 'Vendedor' || roles[i].name === 'Administrador' || roles[i].name === 'Jefe-EPDP' || roles[i].name === 'Tasador' || roles[i].name === 'Jefe-Planeamiento-Comercial') {
+            next();
+            return;
+        }
+    }
+    return res.status(403).json({ message: 'Requiere permiso del Asistente-Conexos || Jefe-ADV || Vendedor || Administrador || Jefe-EPDP || Tasador || Jefe-Planeamiento-Comercial' })
+}
+
 export const isTasadororChiefEPDP = async(req, res, next) => {
     const user = await User.findById(req.userId);
     const roles = await Role.find({ _id: { $in: user.roles } })
@@ -279,16 +292,30 @@ export const isExecutiveMaf = async(req, res, next) => {
     return res.status(403).json({ message: 'Requiere permiso del Ejecutivo MAF' })
 }
 
-export const isJefeDigitalJefePlaneamientoAdmin = async(req, res, next) => {
+export const isChiefADVOrChiefPlaneamientoOrAdministrador = async(req, res, next) => {
     const user = await User.findById(req.userId);
     const roles = await Role.find({ _id: { $in: user.roles } });
 
     for(let i = 0; i < roles.length; i++){
-        if(roles[i].name === 'Jefe-Digital' || roles[i].name === 'Jefe-Planeamiento-Comercial' || roles[i].name === 'Administrador' || roles[i].name === 'Asistente-Comercial'){
+        if(roles[i].name === 'Jefe-ADV' || roles[i].name === 'Jefe-Planeamiento-Comercial' || roles[i].name === 'Administrador'){
             next();
             return;
         }
     }
 
-    return res.status(403).json({message: 'Requiere permiso de Jefe-Digital || Jefe-Planeamiento-Comercial || Administrador || Asistente-Comercial'})
+    return res.status(403).json({message: 'Requiere permiso de Jefe-ADV || Jefe-Planeamiento-Comercial || Administrador'})
+}
+
+export const isAdministradorOrAsistantComercial = async(req, res, next) => {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    for(let i = 0; i < roles.length; i++){
+        if(roles[i].name === 'Asistente-Comercial' || roles[i].name === 'Administrador'){
+            next();
+            return;
+        }
+    }
+
+    return res.status(403).json({message: 'Requiere permiso de Asistente Comercial || Administrador'})
 }

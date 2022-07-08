@@ -11,11 +11,11 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _Ubicacion = _interopRequireDefault(require("../models/Ubicacion"));
+var _EstadoListaEspera = _interopRequireDefault(require("../models/EstadoListaEspera"));
 
-var ubicacionController = {};
+var estadoController = {};
 
-ubicacionController.getAll = /*#__PURE__*/function () {
+estadoController.getAll = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee$(_context) {
@@ -24,7 +24,7 @@ ubicacionController.getAll = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _Ubicacion.default.find().sort({
+            return _EstadoListaEspera.default.find().sort({
               valor: 1
             });
 
@@ -45,7 +45,7 @@ ubicacionController.getAll = /*#__PURE__*/function () {
 
           case 8:
             return _context.abrupt("return", res.status(404).json({
-              message: 'No existen Ubicaciones'
+              message: 'No existen estados'
             }));
 
           case 9:
@@ -73,17 +73,17 @@ ubicacionController.getAll = /*#__PURE__*/function () {
   };
 }();
 
-ubicacionController.getOneById = /*#__PURE__*/function () {
+estadoController.getOneById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res) {
-    var ubicacionId, query;
+    var itemId, query;
     return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            ubicacionId = req.params.ubicacionId;
+            itemId = req.params.itemId;
             _context2.prev = 1;
             _context2.next = 4;
-            return _Ubicacion.default.findById(ubicacionId);
+            return _EstadoListaEspera.default.findById(itemId);
 
           case 4:
             query = _context2.sent;
@@ -101,7 +101,7 @@ ubicacionController.getOneById = /*#__PURE__*/function () {
 
           case 9:
             return _context2.abrupt("return", res.status(404).json({
-              message: 'No existe Ubicación'
+              message: 'No existe estado'
             }));
 
           case 10:
@@ -129,7 +129,7 @@ ubicacionController.getOneById = /*#__PURE__*/function () {
   };
 }();
 
-ubicacionController.getAllActivos = /*#__PURE__*/function () {
+estadoController.getAllActivos = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
     var query;
     return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -138,7 +138,7 @@ ubicacionController.getAllActivos = /*#__PURE__*/function () {
           case 0:
             _context3.prev = 0;
             _context3.next = 3;
-            return _Ubicacion.default.find({
+            return _EstadoListaEspera.default.find({
               estado: true
             }).sort({
               valor: 1
@@ -161,7 +161,7 @@ ubicacionController.getAllActivos = /*#__PURE__*/function () {
 
           case 8:
             return _context3.abrupt("return", res.status(404).json({
-              message: 'No hay Ubicaciones Activas'
+              message: 'No hay estados activos'
             }));
 
           case 9:
@@ -189,7 +189,7 @@ ubicacionController.getAllActivos = /*#__PURE__*/function () {
   };
 }();
 
-ubicacionController.createOne = /*#__PURE__*/function () {
+estadoController.createOne = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
     var _req$body, name, valor, estado, objeto, query;
 
@@ -199,7 +199,7 @@ ubicacionController.createOne = /*#__PURE__*/function () {
           case 0:
             _req$body = req.body, name = _req$body.name, valor = _req$body.valor, estado = _req$body.estado;
             _context4.prev = 1;
-            objeto = new _Ubicacion.default({
+            objeto = new _EstadoListaEspera.default({
               name: name,
               valor: valor,
               estado: estado
@@ -212,7 +212,7 @@ ubicacionController.createOne = /*#__PURE__*/function () {
 
             if (query) {
               res.json({
-                message: 'Ubicación creada con éxito'
+                message: 'Estado creado con éxito'
               });
             }
 
@@ -240,19 +240,19 @@ ubicacionController.createOne = /*#__PURE__*/function () {
   };
 }();
 
-ubicacionController.updateOneById = /*#__PURE__*/function () {
+estadoController.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res) {
-    var _req$body2, name, valor, estado, ubicacionId, query;
+    var _req$body2, name, valor, estado, itemId, query;
 
     return _regenerator.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _req$body2 = req.body, name = _req$body2.name, valor = _req$body2.valor, estado = _req$body2.estado;
-            ubicacionId = req.params.ubicacionId;
+            itemId = req.params.itemId;
             _context5.prev = 2;
             _context5.next = 5;
-            return _Ubicacion.default.findByIdAndUpdate(ubicacionId, {
+            return _EstadoListaEspera.default.findByIdAndUpdate(itemId, {
               name: name,
               valor: valor,
               estado: estado
@@ -267,14 +267,14 @@ ubicacionController.updateOneById = /*#__PURE__*/function () {
             }
 
             res.json({
-              message: 'Ubicación actualizada con éxito'
+              message: 'Estado actualizada con éxito'
             });
             _context5.next = 11;
             break;
 
           case 10:
             return _context5.abrupt("return", res.status(404).json({
-              message: 'No existe Ubicación a actualizar'
+              message: 'No existe estado a actualizar'
             }));
 
           case 11:
@@ -302,17 +302,17 @@ ubicacionController.updateOneById = /*#__PURE__*/function () {
   };
 }();
 
-ubicacionController.deleteOneById = /*#__PURE__*/function () {
+estadoController.deleteOneById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res) {
-    var ubicacionId, query;
+    var itemId, query;
     return _regenerator.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            ubicacionId = req.params.ubicacionId;
+            itemId = req.params.itemId;
             _context6.prev = 1;
             _context6.next = 4;
-            return _Ubicacion.default.findByIdAndDelete(ubicacionId);
+            return _EstadoListaEspera.default.findByIdAndDelete(itemId);
 
           case 4:
             query = _context6.sent;
@@ -323,14 +323,14 @@ ubicacionController.deleteOneById = /*#__PURE__*/function () {
             }
 
             res.json({
-              message: 'Ubicación eliminada con éxito'
+              message: 'Estado eliminado con éxito'
             });
             _context6.next = 10;
             break;
 
           case 9:
             return _context6.abrupt("return", res.status(404).json({
-              message: 'No existe Ubicación a eliminar'
+              message: 'No existe estado a eliminar'
             }));
 
           case 10:
@@ -358,6 +358,6 @@ ubicacionController.deleteOneById = /*#__PURE__*/function () {
   };
 }();
 
-var _default = ubicacionController;
+var _default = estadoController;
 exports.default = _default;
-//# sourceMappingURL=ubicacion.controller.js.map
+//# sourceMappingURL=estadoListaEspera.controller.js.map
