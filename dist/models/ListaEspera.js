@@ -111,8 +111,7 @@ var listaEsperaSchema = new _mongoose.Schema({
   },
   updatedBy: [{
     who: {
-      type: _mongoose.Schema.Types.ObjectId,
-      ref: "User"
+      type: String
     },
     when: {
       type: Date

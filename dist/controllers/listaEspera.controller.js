@@ -74,9 +74,6 @@ listaEsperaController.getAll = /*#__PURE__*/function () {
               path: "cliente",
               select: "name document cellphone email"
             }).populate({
-              path: "estadoE",
-              select: "name valor"
-            }).populate({
               path: "anio_primer_abono",
               select: "name"
             }).populate({
@@ -215,9 +212,6 @@ listaEsperaController.getOneById = /*#__PURE__*/function () {
               path: "cliente",
               select: "name document cellphone email"
             }).populate({
-              path: "estadoE",
-              select: "name valor"
-            }).populate({
               path: "anio_primer_abono",
               select: "name"
             }).populate({
@@ -323,20 +317,21 @@ listaEsperaController.getOneById = /*#__PURE__*/function () {
 
 listaEsperaController.createOne = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res) {
-    var _req$body, cod_interno, sucursal, sucursalE, vehiculo, colorE, cantidad, estado, estadoE, orden, cliente, anio_primer_abono, mes_primer_abono, grupo_abonos, precio_venta_final, tipo_venta, financiera, plan_maf, fecha_carta_aprobacion, inicial, solicitudMAF, cuenta_epdp, avance_pago_contado, avance_pago_credito, cumple_politica, createdBy, obj, sucursalFound, vehiculoFound, colorFound, customerFound, estadoFound, anioFound, mesFound, tipoVentaFound, financieraFound, planMAFFound, solicitudMAFFound, userFound, query;
+    var _req$body, cod_interno, sucursal, sucursalE, vehiculo, colorE, cantidad, orden, cliente, anio_primer_abono, mes_primer_abono, grupo_abonos, precio_venta_final, tipo_venta, financiera, plan_maf, fecha_carta_aprobacion, inicial, solicitudMAF, cuenta_epdp, avance_pago_contado, avance_pago_credito, cumple_politica, createdBy, obj, sucursalFound, vehiculoFound, colorFound, customerFound, anioFound, mesFound, tipoVentaFound, financieraFound, planMAFFound, solicitudMAFFound, userFound, query;
 
     return _regenerator.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _req$body = req.body, cod_interno = _req$body.cod_interno, sucursal = _req$body.sucursal, sucursalE = _req$body.sucursalE, vehiculo = _req$body.vehiculo, colorE = _req$body.colorE, cantidad = _req$body.cantidad, estado = _req$body.estado, estadoE = _req$body.estadoE, orden = _req$body.orden, cliente = _req$body.cliente, anio_primer_abono = _req$body.anio_primer_abono, mes_primer_abono = _req$body.mes_primer_abono, grupo_abonos = _req$body.grupo_abonos, precio_venta_final = _req$body.precio_venta_final, tipo_venta = _req$body.tipo_venta, financiera = _req$body.financiera, plan_maf = _req$body.plan_maf, fecha_carta_aprobacion = _req$body.fecha_carta_aprobacion, inicial = _req$body.inicial, solicitudMAF = _req$body.solicitudMAF, cuenta_epdp = _req$body.cuenta_epdp, avance_pago_contado = _req$body.avance_pago_contado, avance_pago_credito = _req$body.avance_pago_credito, cumple_politica = _req$body.cumple_politica, createdBy = _req$body.createdBy;
+            _req$body = req.body, cod_interno = _req$body.cod_interno, sucursal = _req$body.sucursal, sucursalE = _req$body.sucursalE, vehiculo = _req$body.vehiculo, colorE = _req$body.colorE, cantidad = _req$body.cantidad, orden = _req$body.orden, cliente = _req$body.cliente, anio_primer_abono = _req$body.anio_primer_abono, mes_primer_abono = _req$body.mes_primer_abono, grupo_abonos = _req$body.grupo_abonos, precio_venta_final = _req$body.precio_venta_final, tipo_venta = _req$body.tipo_venta, financiera = _req$body.financiera, plan_maf = _req$body.plan_maf, fecha_carta_aprobacion = _req$body.fecha_carta_aprobacion, inicial = _req$body.inicial, solicitudMAF = _req$body.solicitudMAF, cuenta_epdp = _req$body.cuenta_epdp, avance_pago_contado = _req$body.avance_pago_contado, avance_pago_credito = _req$body.avance_pago_credito, cumple_politica = _req$body.cumple_politica, createdBy = _req$body.createdBy;
             _context3.prev = 1;
+            // const codTdpFound = Vehicle.findOne({cod_tdp: vehiculo});
+            // const countOrder = ListaEspera.find({vehicle: codTdpFound._id}).countDocuments();
             obj = new _ListaEspera.default({
               cod_interno: cod_interno,
               sucursal: sucursal,
               cantidad: cantidad,
               orden: orden,
-              estado: estado,
               grupo_abonos: grupo_abonos,
               precio_venta_final: precio_venta_final,
               fecha_carta_aprobacion: fecha_carta_aprobacion,
@@ -427,34 +422,15 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
           case 26:
             obj.cliente = customerFound._id;
             _context3.next = 29;
-            return _EstadoListaEspera.default.findOne({
-              name: estadoE
-            });
-
-          case 29:
-            estadoFound = _context3.sent;
-
-            if (estadoFound) {
-              _context3.next = 32;
-              break;
-            }
-
-            return _context3.abrupt("return", res.status(404).json({
-              message: "Estado ".concat(estadoE, " no encontrado")
-            }));
-
-          case 32:
-            obj.estadoE = estadoFound._id;
-            _context3.next = 35;
             return _Anio.default.findOne({
               name: anio_primer_abono
             });
 
-          case 35:
+          case 29:
             anioFound = _context3.sent;
 
             if (anioFound) {
-              _context3.next = 38;
+              _context3.next = 32;
               break;
             }
 
@@ -462,18 +438,18 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Anio ".concat(anio_primer_abono, " no encontrado")
             }));
 
-          case 38:
+          case 32:
             obj.anio_primer_abono = anioFound._id;
-            _context3.next = 41;
+            _context3.next = 35;
             return _Mes.default.findOne({
               name: mes_primer_abono
             });
 
-          case 41:
+          case 35:
             mesFound = _context3.sent;
 
             if (mesFound) {
-              _context3.next = 44;
+              _context3.next = 38;
               break;
             }
 
@@ -481,18 +457,18 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Mes ".concat(mes_primer_abono, " no encontrado")
             }));
 
-          case 44:
+          case 38:
             obj.mes_primer_abono = mesFound._id;
-            _context3.next = 47;
+            _context3.next = 41;
             return _Financiamiento.default.findOne({
               name: tipo_venta
             });
 
-          case 47:
+          case 41:
             tipoVentaFound = _context3.sent;
 
             if (tipoVentaFound) {
-              _context3.next = 50;
+              _context3.next = 44;
               break;
             }
 
@@ -500,29 +476,29 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Tipo Venta ".concat(tipo_venta, " no encontrado")
             }));
 
-          case 50:
+          case 44:
             obj.tipo_venta = tipoVentaFound._id;
 
             if (!(financiera == null || financiera == undefined)) {
-              _context3.next = 55;
+              _context3.next = 49;
               break;
             }
 
             obj.financiera = null;
-            _context3.next = 61;
+            _context3.next = 55;
             break;
 
-          case 55:
-            _context3.next = 57;
+          case 49:
+            _context3.next = 51;
             return _Banco.default.findOne({
               name: financiera
             });
 
-          case 57:
+          case 51:
             financieraFound = _context3.sent;
 
             if (financieraFound) {
-              _context3.next = 60;
+              _context3.next = 54;
               break;
             }
 
@@ -530,30 +506,30 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Financiera ".concat(financiera, " no encontrada")
             }));
 
-          case 60:
+          case 54:
             obj.financiera = financieraFound._id;
 
-          case 61:
+          case 55:
             if (!(plan_maf == null || plan_maf == undefined)) {
-              _context3.next = 65;
+              _context3.next = 59;
               break;
             }
 
             obj.plan_maf = null;
-            _context3.next = 71;
+            _context3.next = 65;
             break;
 
-          case 65:
-            _context3.next = 67;
+          case 59:
+            _context3.next = 61;
             return _PlanMAF.default.findOne({
               name: plan_maf
             });
 
-          case 67:
+          case 61:
             planMAFFound = _context3.sent;
 
             if (planMAFFound) {
-              _context3.next = 70;
+              _context3.next = 64;
               break;
             }
 
@@ -561,30 +537,30 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Plan MAF ".concat(plan_maf, " no encontrado")
             }));
 
-          case 70:
+          case 64:
             obj.plan_maf = planMAFFound._id;
 
-          case 71:
+          case 65:
             if (!(solicitudMAF == null || solicitudMAF == undefined)) {
-              _context3.next = 75;
+              _context3.next = 69;
               break;
             }
 
             obj.solicitudMAF = null;
-            _context3.next = 81;
+            _context3.next = 75;
             break;
 
-          case 75:
-            _context3.next = 77;
+          case 69:
+            _context3.next = 71;
             return _Maf.default.findOne({
               name: solicitudMAF
             });
 
-          case 77:
+          case 71:
             solicitudMAFFound = _context3.sent;
 
             if (solicitudMAFFound) {
-              _context3.next = 80;
+              _context3.next = 74;
               break;
             }
 
@@ -592,20 +568,20 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Solicitud MAF ".concat(solicitudMAF, " no encontrada")
             }));
 
-          case 80:
+          case 74:
             obj.solicitudMAF = solicitudMAFFound._id;
 
-          case 81:
-            _context3.next = 83;
+          case 75:
+            _context3.next = 77;
             return _User.default.findOne({
               username: createdBy
             });
 
-          case 83:
+          case 77:
             userFound = _context3.sent;
 
             if (userFound) {
-              _context3.next = 86;
+              _context3.next = 80;
               break;
             }
 
@@ -613,12 +589,12 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Usuario ".concat(createdBy, " no encontrado")
             }));
 
-          case 86:
+          case 80:
             obj.createdBy = userFound._id;
-            _context3.next = 89;
+            _context3.next = 83;
             return obj.save();
 
-          case 89:
+          case 83:
             query = _context3.sent;
 
             if (query) {
@@ -627,23 +603,23 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               });
             }
 
-            _context3.next = 97;
+            _context3.next = 91;
             break;
 
-          case 93:
-            _context3.prev = 93;
+          case 87:
+            _context3.prev = 87;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
             return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
             }));
 
-          case 97:
+          case 91:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 93]]);
+    }, _callee3, null, [[1, 87]]);
   }));
 
   return function (_x5, _x6) {
@@ -653,25 +629,27 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
 
 listaEsperaController.updateOneById = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body2, sucursal, sucursalE, orden, estado, estadoE, cliente, vehiculo, cantidad, grupo_abonos, itemId, sucursalFound, vehiculoFound, customerFound, estadoFound, query;
+    var _req$body2, sucursal, sucursalE, orden, cliente, vehiculo, cantidad, precio_venta_final, tipo_venta, financiera, plan_maf, fecha_carta_aprobacion, inicial, grupo_abonos, cuenta_epdp, avance_pago_contado, avance_pago_credito, cumple_politica, itemId, itemNullF, itemNullPM, sucursalFound, vehiculoFound, customerFound, tipoVentaFound, financieraFound, planMAFFound, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body2 = req.body, sucursal = _req$body2.sucursal, sucursalE = _req$body2.sucursalE, orden = _req$body2.orden, estado = _req$body2.estado, estadoE = _req$body2.estadoE, cliente = _req$body2.cliente, vehiculo = _req$body2.vehiculo, cantidad = _req$body2.cantidad, grupo_abonos = _req$body2.grupo_abonos;
+            _req$body2 = req.body, sucursal = _req$body2.sucursal, sucursalE = _req$body2.sucursalE, orden = _req$body2.orden, cliente = _req$body2.cliente, vehiculo = _req$body2.vehiculo, cantidad = _req$body2.cantidad, precio_venta_final = _req$body2.precio_venta_final, tipo_venta = _req$body2.tipo_venta, financiera = _req$body2.financiera, plan_maf = _req$body2.plan_maf, fecha_carta_aprobacion = _req$body2.fecha_carta_aprobacion, inicial = _req$body2.inicial, grupo_abonos = _req$body2.grupo_abonos, cuenta_epdp = _req$body2.cuenta_epdp, avance_pago_contado = _req$body2.avance_pago_contado, avance_pago_credito = _req$body2.avance_pago_credito, cumple_politica = _req$body2.cumple_politica;
             itemId = req.params.itemId;
-            _context4.prev = 2;
-            _context4.next = 5;
+            itemNullF = null;
+            itemNullPM = null;
+            _context4.prev = 4;
+            _context4.next = 7;
             return _Sucursal.default.findOne({
               name: sucursalE
             });
 
-          case 5:
+          case 7:
             sucursalFound = _context4.sent;
 
             if (sucursalFound) {
-              _context4.next = 8;
+              _context4.next = 10;
               break;
             }
 
@@ -679,17 +657,17 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Sucursal ".concat(sucursalE, " no encontrada")
             }));
 
-          case 8:
-            _context4.next = 10;
+          case 10:
+            _context4.next = 12;
             return _Vehicle.default.findOne({
               cod_tdp: vehiculo
             });
 
-          case 10:
+          case 12:
             vehiculoFound = _context4.sent;
 
             if (vehiculoFound) {
-              _context4.next = 13;
+              _context4.next = 15;
               break;
             }
 
@@ -697,17 +675,17 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Veh\xEDculo ".concat(vehiculo, " no encontrado")
             }));
 
-          case 13:
-            _context4.next = 15;
+          case 15:
+            _context4.next = 17;
             return _Customer.default.findOne({
               name: cliente
             });
 
-          case 15:
+          case 17:
             customerFound = _context4.sent;
 
             if (customerFound) {
-              _context4.next = 18;
+              _context4.next = 20;
               break;
             }
 
@@ -715,68 +693,138 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Cliente ".concat(cliente, " no encontrado")
             }));
 
-          case 18:
-            _context4.next = 20;
-            return _EstadoListaEspera.default.findOne({
-              name: estadoE
+          case 20:
+            _context4.next = 22;
+            return _Financiamiento.default.findOne({
+              name: tipo_venta
             });
 
-          case 20:
-            estadoFound = _context4.sent;
+          case 22:
+            tipoVentaFound = _context4.sent;
 
-            if (estadoFound) {
-              _context4.next = 23;
+            if (tipoVentaFound) {
+              _context4.next = 25;
               break;
             }
 
             return _context4.abrupt("return", res.status(404).json({
-              message: "Estado ".concat(estadoE, " no encontrado")
+              message: "Tipo Venta ".concat(tipo_venta, " no encontrado")
             }));
 
-          case 23:
-            _context4.next = 25;
+          case 25:
+            if (!(financiera == null || financiera == undefined)) {
+              _context4.next = 29;
+              break;
+            }
+
+            itemNullF = null;
+            _context4.next = 35;
+            break;
+
+          case 29:
+            _context4.next = 31;
+            return _Banco.default.findOne({
+              name: financiera
+            });
+
+          case 31:
+            financieraFound = _context4.sent;
+
+            if (financieraFound) {
+              _context4.next = 34;
+              break;
+            }
+
+            return _context4.abrupt("return", res.status(404).json({
+              message: "Financiera ".concat(financiera, " no encontrada")
+            }));
+
+          case 34:
+            itemNullF = financieraFound._id;
+
+          case 35:
+            if (!(plan_maf == null || plan_maf == undefined)) {
+              _context4.next = 39;
+              break;
+            }
+
+            itemNullPM = null;
+            _context4.next = 45;
+            break;
+
+          case 39:
+            _context4.next = 41;
+            return _PlanMAF.default.findOne({
+              name: plan_maf
+            });
+
+          case 41:
+            planMAFFound = _context4.sent;
+
+            if (planMAFFound) {
+              _context4.next = 44;
+              break;
+            }
+
+            return _context4.abrupt("return", res.status(404).json({
+              message: "Plan MAF ".concat(plan_maf, " no encontrado")
+            }));
+
+          case 44:
+            itemNullPM = planMAFFound._id;
+
+          case 45:
+            _context4.next = 47;
             return _ListaEspera.default.findByIdAndUpdate(itemId, {
               sucursal: sucursal,
               sucursalE: sucursalFound._id,
               orden: orden,
-              estado: estado,
-              estadoE: estadoFound._id,
               cliente: customerFound._id,
               vehiculo: vehiculoFound._id,
               cantidad: cantidad,
-              grupo_abonos: grupo_abonos
+              precio_venta_final: precio_venta_final,
+              tipo_venta: tipoVentaFound._id,
+              financiera: itemNullF,
+              fecha_carta_aprobacion: fecha_carta_aprobacion,
+              inicial: inicial,
+              plan_maf: itemNullPM,
+              grupo_abonos: grupo_abonos,
+              cuenta_epdp: cuenta_epdp,
+              avance_pago_contado: avance_pago_contado,
+              avance_pago_credito: avance_pago_credito,
+              cumple_politica: cumple_politica
             });
 
-          case 25:
+          case 47:
             query = _context4.sent;
 
             if (query) {
               res.json({
-                message: 'Cliente actualizado!'
+                message: "Cliente actualizado!"
               });
             } else {
               res.status(404).json({
-                message: 'No se encontró el cliente a actualizar'
+                message: "No se encontró el cliente a actualizar"
               });
             }
 
-            _context4.next = 33;
+            _context4.next = 55;
             break;
 
-          case 29:
-            _context4.prev = 29;
-            _context4.t0 = _context4["catch"](2);
+          case 51:
+            _context4.prev = 51;
+            _context4.t0 = _context4["catch"](4);
             console.log(_context4.t0);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
             }));
 
-          case 33:
+          case 55:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 29]]);
+    }, _callee4, null, [[4, 51]]);
   }));
 
   return function (_x7, _x8) {
@@ -902,6 +950,71 @@ listaEsperaController.getCountByEstado = /*#__PURE__*/function () {
 
   return function (_x11, _x12) {
     return _ref6.apply(this, arguments);
+  };
+}();
+
+listaEsperaController.getCountClientByVehicle = /*#__PURE__*/function () {
+  var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res) {
+    var cod_tdp, vehicleFound, clientsFound;
+    return _regenerator.default.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            cod_tdp = req.body.cod_tdp;
+            _context7.prev = 1;
+            _context7.next = 4;
+            return _Vehicle.default.findOne({
+              cod_tdp: cod_tdp
+            });
+
+          case 4:
+            vehicleFound = _context7.sent;
+
+            if (vehicleFound) {
+              _context7.next = 7;
+              break;
+            }
+
+            return _context7.abrupt("return", res.status(404).json({
+              message: "C\xF3digo ".concat(cod_tdp, " no encontrado")
+            }));
+
+          case 7:
+            _context7.next = 9;
+            return _ListaEspera.default.find({
+              vehiculo: vehicleFound._id
+            }).countDocuments();
+
+          case 9:
+            clientsFound = _context7.sent;
+
+            if (clientsFound >= 0) {
+              res.json({
+                total: clientsFound
+              });
+            }
+
+            _context7.next = 17;
+            break;
+
+          case 13:
+            _context7.prev = 13;
+            _context7.t0 = _context7["catch"](1);
+            console.log(_context7.t0);
+            return _context7.abrupt("return", res.status(503).json({
+              message: _context7.t0.message
+            }));
+
+          case 17:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, null, [[1, 13]]);
+  }));
+
+  return function (_x13, _x14) {
+    return _ref7.apply(this, arguments);
   };
 }();
 

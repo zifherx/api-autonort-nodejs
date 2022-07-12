@@ -34,7 +34,7 @@ const listaEsperaSchema = new Schema(
         createdBy: { type: Schema.Types.ObjectId, ref: "User" },
         updatedBy: [
             {
-                who: { type: Schema.Types.ObjectId, ref: "User" },
+                who: { type: String },
                 when: { type: Date },
             },
         ],
