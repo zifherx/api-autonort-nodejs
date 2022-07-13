@@ -629,27 +629,28 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
 
 listaEsperaController.updateOneById = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res) {
-    var _req$body2, sucursal, sucursalE, orden, cliente, vehiculo, cantidad, precio_venta_final, tipo_venta, financiera, plan_maf, fecha_carta_aprobacion, inicial, grupo_abonos, cuenta_epdp, avance_pago_contado, avance_pago_credito, cumple_politica, itemId, itemNullF, itemNullPM, sucursalFound, vehiculoFound, customerFound, tipoVentaFound, financieraFound, planMAFFound, query;
+    var _req$body2, sucursal, sucursalE, orden, cliente, vehiculo, cantidad, colorE, precio_venta_final, tipo_venta, financiera, plan_maf, fecha_carta_aprobacion, inicial, grupo_abonos, cuenta_epdp, avance_pago_contado, avance_pago_credito, cumple_politica, itemId, itemNullF, itemNullPM, sucursalFound, vehiculoFound, customerFound, tipoVentaFound, colorFound, financieraFound, planMAFFound, query;
 
     return _regenerator.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body2 = req.body, sucursal = _req$body2.sucursal, sucursalE = _req$body2.sucursalE, orden = _req$body2.orden, cliente = _req$body2.cliente, vehiculo = _req$body2.vehiculo, cantidad = _req$body2.cantidad, precio_venta_final = _req$body2.precio_venta_final, tipo_venta = _req$body2.tipo_venta, financiera = _req$body2.financiera, plan_maf = _req$body2.plan_maf, fecha_carta_aprobacion = _req$body2.fecha_carta_aprobacion, inicial = _req$body2.inicial, grupo_abonos = _req$body2.grupo_abonos, cuenta_epdp = _req$body2.cuenta_epdp, avance_pago_contado = _req$body2.avance_pago_contado, avance_pago_credito = _req$body2.avance_pago_credito, cumple_politica = _req$body2.cumple_politica;
+            _req$body2 = req.body, sucursal = _req$body2.sucursal, sucursalE = _req$body2.sucursalE, orden = _req$body2.orden, cliente = _req$body2.cliente, vehiculo = _req$body2.vehiculo, cantidad = _req$body2.cantidad, colorE = _req$body2.colorE, precio_venta_final = _req$body2.precio_venta_final, tipo_venta = _req$body2.tipo_venta, financiera = _req$body2.financiera, plan_maf = _req$body2.plan_maf, fecha_carta_aprobacion = _req$body2.fecha_carta_aprobacion, inicial = _req$body2.inicial, grupo_abonos = _req$body2.grupo_abonos, cuenta_epdp = _req$body2.cuenta_epdp, avance_pago_contado = _req$body2.avance_pago_contado, avance_pago_credito = _req$body2.avance_pago_credito, cumple_politica = _req$body2.cumple_politica;
             itemId = req.params.itemId;
             itemNullF = null;
             itemNullPM = null;
-            _context4.prev = 4;
-            _context4.next = 7;
+            console.log(req.body);
+            _context4.prev = 5;
+            _context4.next = 8;
             return _Sucursal.default.findOne({
               name: sucursalE
             });
 
-          case 7:
+          case 8:
             sucursalFound = _context4.sent;
 
             if (sucursalFound) {
-              _context4.next = 10;
+              _context4.next = 11;
               break;
             }
 
@@ -657,17 +658,17 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Sucursal ".concat(sucursalE, " no encontrada")
             }));
 
-          case 10:
-            _context4.next = 12;
+          case 11:
+            _context4.next = 13;
             return _Vehicle.default.findOne({
               cod_tdp: vehiculo
             });
 
-          case 12:
+          case 13:
             vehiculoFound = _context4.sent;
 
             if (vehiculoFound) {
-              _context4.next = 15;
+              _context4.next = 16;
               break;
             }
 
@@ -675,17 +676,17 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Veh\xEDculo ".concat(vehiculo, " no encontrado")
             }));
 
-          case 15:
-            _context4.next = 17;
+          case 16:
+            _context4.next = 18;
             return _Customer.default.findOne({
               name: cliente
             });
 
-          case 17:
+          case 18:
             customerFound = _context4.sent;
 
             if (customerFound) {
-              _context4.next = 20;
+              _context4.next = 21;
               break;
             }
 
@@ -693,17 +694,17 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Cliente ".concat(cliente, " no encontrado")
             }));
 
-          case 20:
-            _context4.next = 22;
+          case 21:
+            _context4.next = 23;
             return _Financiamiento.default.findOne({
               name: tipo_venta
             });
 
-          case 22:
+          case 23:
             tipoVentaFound = _context4.sent;
 
             if (tipoVentaFound) {
-              _context4.next = 25;
+              _context4.next = 26;
               break;
             }
 
@@ -711,27 +712,47 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Tipo Venta ".concat(tipo_venta, " no encontrado")
             }));
 
-          case 25:
+          case 26:
+            _context4.next = 28;
+            return _Colores.default.find({
+              name: {
+                $in: colorE
+              }
+            });
+
+          case 28:
+            colorFound = _context4.sent;
+
+            if (colorFound) {
+              _context4.next = 31;
+              break;
+            }
+
+            return _context4.abrupt("return", res.status(404).json({
+              message: "Color ".concat(colorE, " no encontrado")
+            }));
+
+          case 31:
             if (!(financiera == null || financiera == undefined)) {
-              _context4.next = 29;
+              _context4.next = 35;
               break;
             }
 
             itemNullF = null;
-            _context4.next = 35;
+            _context4.next = 41;
             break;
 
-          case 29:
-            _context4.next = 31;
+          case 35:
+            _context4.next = 37;
             return _Banco.default.findOne({
               name: financiera
             });
 
-          case 31:
+          case 37:
             financieraFound = _context4.sent;
 
             if (financieraFound) {
-              _context4.next = 34;
+              _context4.next = 40;
               break;
             }
 
@@ -739,30 +760,30 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Financiera ".concat(financiera, " no encontrada")
             }));
 
-          case 34:
+          case 40:
             itemNullF = financieraFound._id;
 
-          case 35:
+          case 41:
             if (!(plan_maf == null || plan_maf == undefined)) {
-              _context4.next = 39;
+              _context4.next = 45;
               break;
             }
 
             itemNullPM = null;
-            _context4.next = 45;
+            _context4.next = 51;
             break;
 
-          case 39:
-            _context4.next = 41;
+          case 45:
+            _context4.next = 47;
             return _PlanMAF.default.findOne({
               name: plan_maf
             });
 
-          case 41:
+          case 47:
             planMAFFound = _context4.sent;
 
             if (planMAFFound) {
-              _context4.next = 44;
+              _context4.next = 50;
               break;
             }
 
@@ -770,11 +791,11 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Plan MAF ".concat(plan_maf, " no encontrado")
             }));
 
-          case 44:
+          case 50:
             itemNullPM = planMAFFound._id;
 
-          case 45:
-            _context4.next = 47;
+          case 51:
+            _context4.next = 53;
             return _ListaEspera.default.findByIdAndUpdate(itemId, {
               sucursal: sucursal,
               sucursalE: sucursalFound._id,
@@ -782,6 +803,9 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               cliente: customerFound._id,
               vehiculo: vehiculoFound._id,
               cantidad: cantidad,
+              colorE: colorFound.map(function (a) {
+                return a._id;
+              }),
               precio_venta_final: precio_venta_final,
               tipo_venta: tipoVentaFound._id,
               financiera: itemNullF,
@@ -795,7 +819,7 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               cumple_politica: cumple_politica
             });
 
-          case 47:
+          case 53:
             query = _context4.sent;
 
             if (query) {
@@ -808,23 +832,23 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 55;
+            _context4.next = 61;
             break;
 
-          case 51:
-            _context4.prev = 51;
-            _context4.t0 = _context4["catch"](4);
+          case 57:
+            _context4.prev = 57;
+            _context4.t0 = _context4["catch"](5);
             console.log(_context4.t0);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
             }));
 
-          case 55:
+          case 61:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[4, 51]]);
+    }, _callee4, null, [[5, 57]]);
   }));
 
   return function (_x7, _x8) {
@@ -982,7 +1006,10 @@ listaEsperaController.getCountClientByVehicle = /*#__PURE__*/function () {
           case 7:
             _context7.next = 9;
             return _ListaEspera.default.find({
-              vehiculo: vehicleFound._id
+              vehiculo: vehicleFound._id,
+              orden: {
+                $ne: 0
+              }
             }).countDocuments();
 
           case 9:

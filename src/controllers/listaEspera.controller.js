@@ -384,6 +384,7 @@ listaEsperaController.updateOneById = async (req, res) => {
         cliente,
         vehiculo,
         cantidad,
+        colorE,
         precio_venta_final,
         tipo_venta,
         financiera,
@@ -400,6 +401,8 @@ listaEsperaController.updateOneById = async (req, res) => {
     let itemNullF = null;
     let itemNullPM = null;
 
+    console.log(req.body);
+
     try {
         const sucursalFound = await Sucursal.findOne({ name: sucursalE });
         if (!sucursalFound) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrada` });
@@ -412,6 +415,9 @@ listaEsperaController.updateOneById = async (req, res) => {
 
         const tipoVentaFound = await Financiamiento.findOne({ name: tipo_venta });
         if (!tipoVentaFound) return res.status(404).json({ message: `Tipo Venta ${tipo_venta} no encontrado` });
+
+        const colorFound = await Colores.find({ name: { $in: colorE } });
+        if (!colorFound) return res.status(404).json({ message: `Color ${colorE} no encontrado` });
 
         if (financiera == null || financiera == undefined) {
             itemNullF = null;
@@ -436,6 +442,7 @@ listaEsperaController.updateOneById = async (req, res) => {
             cliente: customerFound._id,
             vehiculo: vehiculoFound._id,
             cantidad,
+            colorE: colorFound.map((a) => a._id),
             precio_venta_final,
             tipo_venta: tipoVentaFound._id,
             financiera: itemNullF,
@@ -502,7 +509,7 @@ listaEsperaController.getCountClientByVehicle = async (req, res) => {
         const vehicleFound = await Vehicle.findOne({ cod_tdp });
         if (!vehicleFound) return res.status(404).json({ message: `Código ${cod_tdp} no encontrado` });
 
-        const clientsFound = await ListaEspera.find({ vehiculo: vehicleFound._id }).countDocuments();
+        const clientsFound = await ListaEspera.find({ vehiculo: vehicleFound._id, orden: { $ne: 0} }).countDocuments();
 
         if (clientsFound >= 0) {
             res.json({ total: clientsFound });
