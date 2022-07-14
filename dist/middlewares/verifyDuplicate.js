@@ -2,12 +2,12 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
+var _typeof = require("@babel/runtime/helpers/typeof");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.checkDuplicateVendedor = exports.checkDuplicateVehiculo = exports.checkDuplicateUser = exports.checkDuplicateUbicacion = exports.checkDuplicateTramite = exports.checkDuplicateTipoUso = exports.checkDuplicateTipoProducto = exports.checkDuplicateTipoDocumento = exports.checkDuplicateTipoCampania = exports.checkDuplicateTecnico = exports.checkDuplicateSustento = exports.checkDuplicateSucursal = exports.checkDuplicateSubmoduloG = exports.checkDuplicateStatusTasacion = exports.checkDuplicateStatusRP = exports.checkDuplicateStatusMafRequest = exports.checkDuplicateStatusFile = exports.checkDuplicateStatusFacturacion = exports.checkDuplicateStatusEntrega = exports.checkDuplicateStatusAAP = exports.checkDuplicateSituacion = exports.checkDuplicateSectorista = exports.checkDuplicateRole = exports.checkDuplicatePlanMAF = exports.checkDuplicateMotivoRechazo = exports.checkDuplicateModuloG = exports.checkDuplicateModeloT = exports.checkDuplicateModelo = exports.checkDuplicateMes = exports.checkDuplicateMenuG = exports.checkDuplicateMarcaT = exports.checkDuplicateMarca = exports.checkDuplicateFinanciamiento = exports.checkDuplicateFiltroMaf = exports.checkDuplicateExpediente = exports.checkDuplicateEstadoSeguro = exports.checkDuplicateEstadoListaEspera = exports.checkDuplicateEstadoCivil = exports.checkDuplicateEndoso = exports.checkDuplicateConexo = exports.checkDuplicateCondicionAccesorio = exports.checkDuplicateCondicion = exports.checkDuplicateComprobante = exports.checkDuplicateColor = exports.checkDuplicateCliente = exports.checkDuplicateChasis = exports.checkDuplicateCampania = exports.checkDuplicateBanco = exports.checkDuplicateAseguradora = exports.checkDuplicateArea = exports.checkDuplicateAnio = exports.checkDuplicateAdicional = exports.checkDuplicateAccesorio = exports.checkDuplicateAServicios = void 0;
-
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
@@ -119,10 +119,12 @@ var _Mes = _interopRequireDefault(require("../models/Mes"));
 
 var _EstadoListaEspera = _interopRequireDefault(require("../models/EstadoListaEspera"));
 
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator.return && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, catch: function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+
 var checkDuplicateRole = /*#__PURE__*/function () {
-  var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(req, res, next) {
+  var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res, next) {
     var name, roleEncontrado;
-    return _regenerator.default.wrap(function _callee$(_context) {
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -163,9 +165,9 @@ var checkDuplicateRole = /*#__PURE__*/function () {
 exports.checkDuplicateRole = checkDuplicateRole;
 
 var checkDuplicateUser = /*#__PURE__*/function () {
-  var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(req, res, next) {
+  var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res, next) {
     var username, usuarioEncontrado;
-    return _regenerator.default.wrap(function _callee2$(_context2) {
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
@@ -206,9 +208,9 @@ var checkDuplicateUser = /*#__PURE__*/function () {
 exports.checkDuplicateUser = checkDuplicateUser;
 
 var checkDuplicateModelo = /*#__PURE__*/function () {
-  var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(req, res, next) {
+  var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res, next) {
     var name, modeloEncontrado;
-    return _regenerator.default.wrap(function _callee3$(_context3) {
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
@@ -249,9 +251,9 @@ var checkDuplicateModelo = /*#__PURE__*/function () {
 exports.checkDuplicateModelo = checkDuplicateModelo;
 
 var checkDuplicateColor = /*#__PURE__*/function () {
-  var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4(req, res, next) {
+  var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res, next) {
     var name, colorEncontrado;
-    return _regenerator.default.wrap(function _callee4$(_context4) {
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
@@ -292,9 +294,9 @@ var checkDuplicateColor = /*#__PURE__*/function () {
 exports.checkDuplicateColor = checkDuplicateColor;
 
 var checkDuplicateBanco = /*#__PURE__*/function () {
-  var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(req, res, next) {
+  var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res, next) {
     var name, bancoEncontrado;
-    return _regenerator.default.wrap(function _callee5$(_context5) {
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
@@ -335,9 +337,9 @@ var checkDuplicateBanco = /*#__PURE__*/function () {
 exports.checkDuplicateBanco = checkDuplicateBanco;
 
 var checkDuplicateAseguradora = /*#__PURE__*/function () {
-  var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6(req, res, next) {
+  var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee6$(_context6) {
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
@@ -378,9 +380,9 @@ var checkDuplicateAseguradora = /*#__PURE__*/function () {
 exports.checkDuplicateAseguradora = checkDuplicateAseguradora;
 
 var checkDuplicateSectorista = /*#__PURE__*/function () {
-  var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee7(req, res, next) {
+  var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee7$(_context7) {
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
@@ -421,9 +423,9 @@ var checkDuplicateSectorista = /*#__PURE__*/function () {
 exports.checkDuplicateSectorista = checkDuplicateSectorista;
 
 var checkDuplicateMarca = /*#__PURE__*/function () {
-  var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8(req, res, next) {
+  var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee8$(_context8) {
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
@@ -464,9 +466,9 @@ var checkDuplicateMarca = /*#__PURE__*/function () {
 exports.checkDuplicateMarca = checkDuplicateMarca;
 
 var checkDuplicateCondicion = /*#__PURE__*/function () {
-  var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee9(req, res, next) {
+  var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee9$(_context9) {
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
@@ -507,9 +509,9 @@ var checkDuplicateCondicion = /*#__PURE__*/function () {
 exports.checkDuplicateCondicion = checkDuplicateCondicion;
 
 var checkDuplicateSituacion = /*#__PURE__*/function () {
-  var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee10(req, res, next) {
+  var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee10$(_context10) {
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
@@ -550,9 +552,9 @@ var checkDuplicateSituacion = /*#__PURE__*/function () {
 exports.checkDuplicateSituacion = checkDuplicateSituacion;
 
 var checkDuplicateSucursal = /*#__PURE__*/function () {
-  var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee11(req, res, next) {
+  var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee11$(_context11) {
+    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
@@ -593,9 +595,9 @@ var checkDuplicateSucursal = /*#__PURE__*/function () {
 exports.checkDuplicateSucursal = checkDuplicateSucursal;
 
 var checkDuplicateSustento = /*#__PURE__*/function () {
-  var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee12(req, res, next) {
+  var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee12$(_context12) {
+    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
@@ -636,9 +638,9 @@ var checkDuplicateSustento = /*#__PURE__*/function () {
 exports.checkDuplicateSustento = checkDuplicateSustento;
 
 var checkDuplicateFinanciamiento = /*#__PURE__*/function () {
-  var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee13(req, res, next) {
+  var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee13$(_context13) {
+    return _regeneratorRuntime().wrap(function _callee13$(_context13) {
       while (1) {
         switch (_context13.prev = _context13.next) {
           case 0:
@@ -679,9 +681,9 @@ var checkDuplicateFinanciamiento = /*#__PURE__*/function () {
 exports.checkDuplicateFinanciamiento = checkDuplicateFinanciamiento;
 
 var checkDuplicateUbicacion = /*#__PURE__*/function () {
-  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee14(req, res, next) {
+  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee14$(_context14) {
+    return _regeneratorRuntime().wrap(function _callee14$(_context14) {
       while (1) {
         switch (_context14.prev = _context14.next) {
           case 0:
@@ -722,9 +724,9 @@ var checkDuplicateUbicacion = /*#__PURE__*/function () {
 exports.checkDuplicateUbicacion = checkDuplicateUbicacion;
 
 var checkDuplicateEstadoListaEspera = /*#__PURE__*/function () {
-  var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee15(req, res, next) {
+  var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee15$(_context15) {
+    return _regeneratorRuntime().wrap(function _callee15$(_context15) {
       while (1) {
         switch (_context15.prev = _context15.next) {
           case 0:
@@ -765,9 +767,9 @@ var checkDuplicateEstadoListaEspera = /*#__PURE__*/function () {
 exports.checkDuplicateEstadoListaEspera = checkDuplicateEstadoListaEspera;
 
 var checkDuplicateChasis = /*#__PURE__*/function () {
-  var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee16(req, res, next) {
+  var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee16(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee16$(_context16) {
+    return _regeneratorRuntime().wrap(function _callee16$(_context16) {
       while (1) {
         switch (_context16.prev = _context16.next) {
           case 0:
@@ -808,9 +810,9 @@ var checkDuplicateChasis = /*#__PURE__*/function () {
 exports.checkDuplicateChasis = checkDuplicateChasis;
 
 var checkDuplicateAnio = /*#__PURE__*/function () {
-  var _ref17 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee17(req, res, next) {
+  var _ref17 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee17(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee17$(_context17) {
+    return _regeneratorRuntime().wrap(function _callee17$(_context17) {
       while (1) {
         switch (_context17.prev = _context17.next) {
           case 0:
@@ -851,9 +853,9 @@ var checkDuplicateAnio = /*#__PURE__*/function () {
 exports.checkDuplicateAnio = checkDuplicateAnio;
 
 var checkDuplicateTipoUso = /*#__PURE__*/function () {
-  var _ref18 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee18(req, res, next) {
+  var _ref18 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee18(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee18$(_context18) {
+    return _regeneratorRuntime().wrap(function _callee18$(_context18) {
       while (1) {
         switch (_context18.prev = _context18.next) {
           case 0:
@@ -894,9 +896,9 @@ var checkDuplicateTipoUso = /*#__PURE__*/function () {
 exports.checkDuplicateTipoUso = checkDuplicateTipoUso;
 
 var checkDuplicateConexo = /*#__PURE__*/function () {
-  var _ref19 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee19(req, res, next) {
+  var _ref19 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee19(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee19$(_context19) {
+    return _regeneratorRuntime().wrap(function _callee19$(_context19) {
       while (1) {
         switch (_context19.prev = _context19.next) {
           case 0:
@@ -937,9 +939,9 @@ var checkDuplicateConexo = /*#__PURE__*/function () {
 exports.checkDuplicateConexo = checkDuplicateConexo;
 
 var checkDuplicateEndoso = /*#__PURE__*/function () {
-  var _ref20 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee20(req, res, next) {
+  var _ref20 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee20(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee20$(_context20) {
+    return _regeneratorRuntime().wrap(function _callee20$(_context20) {
       while (1) {
         switch (_context20.prev = _context20.next) {
           case 0:
@@ -980,10 +982,10 @@ var checkDuplicateEndoso = /*#__PURE__*/function () {
 exports.checkDuplicateEndoso = checkDuplicateEndoso;
 
 var checkDuplicateVendedor = /*#__PURE__*/function () {
-  var _ref21 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee21(req, res, next) {
+  var _ref21 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee21(req, res, next) {
     var _req$body, name, document, encontrado, encontrado1;
 
-    return _regenerator.default.wrap(function _callee21$(_context21) {
+    return _regeneratorRuntime().wrap(function _callee21$(_context21) {
       while (1) {
         switch (_context21.prev = _context21.next) {
           case 0:
@@ -1041,10 +1043,10 @@ var checkDuplicateVendedor = /*#__PURE__*/function () {
 exports.checkDuplicateVendedor = checkDuplicateVendedor;
 
 var checkDuplicateCliente = /*#__PURE__*/function () {
-  var _ref22 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee22(req, res, next) {
+  var _ref22 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee22(req, res, next) {
     var _req$body2, name, document, encontrado, encontrado1;
 
-    return _regenerator.default.wrap(function _callee22$(_context22) {
+    return _regeneratorRuntime().wrap(function _callee22$(_context22) {
       while (1) {
         switch (_context22.prev = _context22.next) {
           case 0:
@@ -1102,9 +1104,9 @@ var checkDuplicateCliente = /*#__PURE__*/function () {
 exports.checkDuplicateCliente = checkDuplicateCliente;
 
 var checkDuplicateCampania = /*#__PURE__*/function () {
-  var _ref23 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee23(req, res, next) {
+  var _ref23 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee23(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee23$(_context23) {
+    return _regeneratorRuntime().wrap(function _callee23$(_context23) {
       while (1) {
         switch (_context23.prev = _context23.next) {
           case 0:
@@ -1145,9 +1147,9 @@ var checkDuplicateCampania = /*#__PURE__*/function () {
 exports.checkDuplicateCampania = checkDuplicateCampania;
 
 var checkDuplicateArea = /*#__PURE__*/function () {
-  var _ref24 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee24(req, res, next) {
+  var _ref24 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee24(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee24$(_context24) {
+    return _regeneratorRuntime().wrap(function _callee24$(_context24) {
       while (1) {
         switch (_context24.prev = _context24.next) {
           case 0:
@@ -1188,9 +1190,9 @@ var checkDuplicateArea = /*#__PURE__*/function () {
 exports.checkDuplicateArea = checkDuplicateArea;
 
 var checkDuplicateAdicional = /*#__PURE__*/function () {
-  var _ref25 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee25(req, res, next) {
+  var _ref25 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee25(req, res, next) {
     var name, encontrado;
-    return _regenerator.default.wrap(function _callee25$(_context25) {
+    return _regeneratorRuntime().wrap(function _callee25$(_context25) {
       while (1) {
         switch (_context25.prev = _context25.next) {
           case 0:
@@ -1231,10 +1233,10 @@ var checkDuplicateAdicional = /*#__PURE__*/function () {
 exports.checkDuplicateAdicional = checkDuplicateAdicional;
 
 var checkDuplicateVehiculo = /*#__PURE__*/function () {
-  var _ref26 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee26(req, res, next) {
+  var _ref26 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee26(req, res, next) {
     var _req$body3, cod_tdp, version, encontrado, encontrado1;
 
-    return _regenerator.default.wrap(function _callee26$(_context26) {
+    return _regeneratorRuntime().wrap(function _callee26$(_context26) {
       while (1) {
         switch (_context26.prev = _context26.next) {
           case 0:
@@ -1292,9 +1294,9 @@ var checkDuplicateVehiculo = /*#__PURE__*/function () {
 exports.checkDuplicateVehiculo = checkDuplicateVehiculo;
 
 var checkDuplicateTramite = /*#__PURE__*/function () {
-  var _ref27 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee27(req, res, next) {
+  var _ref27 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee27(req, res, next) {
     var sales, expediente, cod_exp, encontrado;
-    return _regenerator.default.wrap(function _callee27$(_context27) {
+    return _regeneratorRuntime().wrap(function _callee27$(_context27) {
       while (1) {
         switch (_context27.prev = _context27.next) {
           case 0:
@@ -1343,9 +1345,9 @@ var checkDuplicateTramite = /*#__PURE__*/function () {
 exports.checkDuplicateTramite = checkDuplicateTramite;
 
 var checkDuplicateExpediente = /*#__PURE__*/function () {
-  var _ref28 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee28(req, res, next) {
+  var _ref28 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee28(req, res, next) {
     var serie_tdp, encontrado;
-    return _regenerator.default.wrap(function _callee28$(_context28) {
+    return _regeneratorRuntime().wrap(function _callee28$(_context28) {
       while (1) {
         switch (_context28.prev = _context28.next) {
           case 0:
@@ -1397,9 +1399,9 @@ var checkDuplicateExpediente = /*#__PURE__*/function () {
 exports.checkDuplicateExpediente = checkDuplicateExpediente;
 
 var checkDuplicateStatusFile = /*#__PURE__*/function () {
-  var _ref29 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee29(req, res, next) {
+  var _ref29 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee29(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee29$(_context29) {
+    return _regeneratorRuntime().wrap(function _callee29$(_context29) {
       while (1) {
         switch (_context29.prev = _context29.next) {
           case 0:
@@ -1440,9 +1442,9 @@ var checkDuplicateStatusFile = /*#__PURE__*/function () {
 exports.checkDuplicateStatusFile = checkDuplicateStatusFile;
 
 var checkDuplicateStatusAAP = /*#__PURE__*/function () {
-  var _ref30 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee30(req, res, next) {
+  var _ref30 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee30(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee30$(_context30) {
+    return _regeneratorRuntime().wrap(function _callee30$(_context30) {
       while (1) {
         switch (_context30.prev = _context30.next) {
           case 0:
@@ -1483,9 +1485,9 @@ var checkDuplicateStatusAAP = /*#__PURE__*/function () {
 exports.checkDuplicateStatusAAP = checkDuplicateStatusAAP;
 
 var checkDuplicateStatusRP = /*#__PURE__*/function () {
-  var _ref31 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee31(req, res, next) {
+  var _ref31 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee31(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee31$(_context31) {
+    return _regeneratorRuntime().wrap(function _callee31$(_context31) {
       while (1) {
         switch (_context31.prev = _context31.next) {
           case 0:
@@ -1526,9 +1528,9 @@ var checkDuplicateStatusRP = /*#__PURE__*/function () {
 exports.checkDuplicateStatusRP = checkDuplicateStatusRP;
 
 var checkDuplicateStatusTasacion = /*#__PURE__*/function () {
-  var _ref32 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee32(req, res, next) {
+  var _ref32 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee32(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee32$(_context32) {
+    return _regeneratorRuntime().wrap(function _callee32$(_context32) {
       while (1) {
         switch (_context32.prev = _context32.next) {
           case 0:
@@ -1569,9 +1571,9 @@ var checkDuplicateStatusTasacion = /*#__PURE__*/function () {
 exports.checkDuplicateStatusTasacion = checkDuplicateStatusTasacion;
 
 var checkDuplicateStatusMafRequest = /*#__PURE__*/function () {
-  var _ref33 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee33(req, res, next) {
+  var _ref33 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee33(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee33$(_context33) {
+    return _regeneratorRuntime().wrap(function _callee33$(_context33) {
       while (1) {
         switch (_context33.prev = _context33.next) {
           case 0:
@@ -1612,9 +1614,9 @@ var checkDuplicateStatusMafRequest = /*#__PURE__*/function () {
 exports.checkDuplicateStatusMafRequest = checkDuplicateStatusMafRequest;
 
 var checkDuplicateTecnico = /*#__PURE__*/function () {
-  var _ref34 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee34(req, res, next) {
+  var _ref34 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee34(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee34$(_context34) {
+    return _regeneratorRuntime().wrap(function _callee34$(_context34) {
       while (1) {
         switch (_context34.prev = _context34.next) {
           case 0:
@@ -1655,9 +1657,9 @@ var checkDuplicateTecnico = /*#__PURE__*/function () {
 exports.checkDuplicateTecnico = checkDuplicateTecnico;
 
 var checkDuplicateAServicios = /*#__PURE__*/function () {
-  var _ref35 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee35(req, res, next) {
+  var _ref35 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee35(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee35$(_context35) {
+    return _regeneratorRuntime().wrap(function _callee35$(_context35) {
       while (1) {
         switch (_context35.prev = _context35.next) {
           case 0:
@@ -1698,9 +1700,9 @@ var checkDuplicateAServicios = /*#__PURE__*/function () {
 exports.checkDuplicateAServicios = checkDuplicateAServicios;
 
 var checkDuplicateMarcaT = /*#__PURE__*/function () {
-  var _ref36 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee36(req, res, next) {
+  var _ref36 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee36(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee36$(_context36) {
+    return _regeneratorRuntime().wrap(function _callee36$(_context36) {
       while (1) {
         switch (_context36.prev = _context36.next) {
           case 0:
@@ -1741,9 +1743,9 @@ var checkDuplicateMarcaT = /*#__PURE__*/function () {
 exports.checkDuplicateMarcaT = checkDuplicateMarcaT;
 
 var checkDuplicateModeloT = /*#__PURE__*/function () {
-  var _ref37 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee37(req, res, next) {
+  var _ref37 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee37(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee37$(_context37) {
+    return _regeneratorRuntime().wrap(function _callee37$(_context37) {
       while (1) {
         switch (_context37.prev = _context37.next) {
           case 0:
@@ -1784,9 +1786,9 @@ var checkDuplicateModeloT = /*#__PURE__*/function () {
 exports.checkDuplicateModeloT = checkDuplicateModeloT;
 
 var checkDuplicateComprobante = /*#__PURE__*/function () {
-  var _ref38 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee38(req, res, next) {
+  var _ref38 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee38(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee38$(_context38) {
+    return _regeneratorRuntime().wrap(function _callee38$(_context38) {
       while (1) {
         switch (_context38.prev = _context38.next) {
           case 0:
@@ -1827,9 +1829,9 @@ var checkDuplicateComprobante = /*#__PURE__*/function () {
 exports.checkDuplicateComprobante = checkDuplicateComprobante;
 
 var checkDuplicateMotivoRechazo = /*#__PURE__*/function () {
-  var _ref39 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee39(req, res, next) {
+  var _ref39 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee39(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee39$(_context39) {
+    return _regeneratorRuntime().wrap(function _callee39$(_context39) {
       while (1) {
         switch (_context39.prev = _context39.next) {
           case 0:
@@ -1870,9 +1872,9 @@ var checkDuplicateMotivoRechazo = /*#__PURE__*/function () {
 exports.checkDuplicateMotivoRechazo = checkDuplicateMotivoRechazo;
 
 var checkDuplicateStatusFacturacion = /*#__PURE__*/function () {
-  var _ref40 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee40(req, res, next) {
+  var _ref40 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee40(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee40$(_context40) {
+    return _regeneratorRuntime().wrap(function _callee40$(_context40) {
       while (1) {
         switch (_context40.prev = _context40.next) {
           case 0:
@@ -1913,9 +1915,9 @@ var checkDuplicateStatusFacturacion = /*#__PURE__*/function () {
 exports.checkDuplicateStatusFacturacion = checkDuplicateStatusFacturacion;
 
 var checkDuplicateStatusEntrega = /*#__PURE__*/function () {
-  var _ref41 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee41(req, res, next) {
+  var _ref41 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee41(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee41$(_context41) {
+    return _regeneratorRuntime().wrap(function _callee41$(_context41) {
       while (1) {
         switch (_context41.prev = _context41.next) {
           case 0:
@@ -1956,9 +1958,9 @@ var checkDuplicateStatusEntrega = /*#__PURE__*/function () {
 exports.checkDuplicateStatusEntrega = checkDuplicateStatusEntrega;
 
 var checkDuplicateTipoCampania = /*#__PURE__*/function () {
-  var _ref42 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee42(req, res, next) {
+  var _ref42 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee42(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee42$(_context42) {
+    return _regeneratorRuntime().wrap(function _callee42$(_context42) {
       while (1) {
         switch (_context42.prev = _context42.next) {
           case 0:
@@ -1999,9 +2001,9 @@ var checkDuplicateTipoCampania = /*#__PURE__*/function () {
 exports.checkDuplicateTipoCampania = checkDuplicateTipoCampania;
 
 var checkDuplicateAccesorio = /*#__PURE__*/function () {
-  var _ref43 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee43(req, res, next) {
+  var _ref43 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee43(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee43$(_context43) {
+    return _regeneratorRuntime().wrap(function _callee43$(_context43) {
       while (1) {
         switch (_context43.prev = _context43.next) {
           case 0:
@@ -2042,9 +2044,9 @@ var checkDuplicateAccesorio = /*#__PURE__*/function () {
 exports.checkDuplicateAccesorio = checkDuplicateAccesorio;
 
 var checkDuplicateCondicionAccesorio = /*#__PURE__*/function () {
-  var _ref44 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee44(req, res, next) {
+  var _ref44 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee44(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee44$(_context44) {
+    return _regeneratorRuntime().wrap(function _callee44$(_context44) {
       while (1) {
         switch (_context44.prev = _context44.next) {
           case 0:
@@ -2085,9 +2087,9 @@ var checkDuplicateCondicionAccesorio = /*#__PURE__*/function () {
 exports.checkDuplicateCondicionAccesorio = checkDuplicateCondicionAccesorio;
 
 var checkDuplicateEstadoSeguro = /*#__PURE__*/function () {
-  var _ref45 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee45(req, res, next) {
+  var _ref45 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee45(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee45$(_context45) {
+    return _regeneratorRuntime().wrap(function _callee45$(_context45) {
       while (1) {
         switch (_context45.prev = _context45.next) {
           case 0:
@@ -2128,9 +2130,9 @@ var checkDuplicateEstadoSeguro = /*#__PURE__*/function () {
 exports.checkDuplicateEstadoSeguro = checkDuplicateEstadoSeguro;
 
 var checkDuplicateEstadoCivil = /*#__PURE__*/function () {
-  var _ref46 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee46(req, res, next) {
+  var _ref46 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee46(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee46$(_context46) {
+    return _regeneratorRuntime().wrap(function _callee46$(_context46) {
       while (1) {
         switch (_context46.prev = _context46.next) {
           case 0:
@@ -2171,9 +2173,9 @@ var checkDuplicateEstadoCivil = /*#__PURE__*/function () {
 exports.checkDuplicateEstadoCivil = checkDuplicateEstadoCivil;
 
 var checkDuplicatePlanMAF = /*#__PURE__*/function () {
-  var _ref47 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee47(req, res, next) {
+  var _ref47 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee47(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee47$(_context47) {
+    return _regeneratorRuntime().wrap(function _callee47$(_context47) {
       while (1) {
         switch (_context47.prev = _context47.next) {
           case 0:
@@ -2214,9 +2216,9 @@ var checkDuplicatePlanMAF = /*#__PURE__*/function () {
 exports.checkDuplicatePlanMAF = checkDuplicatePlanMAF;
 
 var checkDuplicateFiltroMaf = /*#__PURE__*/function () {
-  var _ref48 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee48(req, res, next) {
+  var _ref48 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee48(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee48$(_context48) {
+    return _regeneratorRuntime().wrap(function _callee48$(_context48) {
       while (1) {
         switch (_context48.prev = _context48.next) {
           case 0:
@@ -2257,9 +2259,9 @@ var checkDuplicateFiltroMaf = /*#__PURE__*/function () {
 exports.checkDuplicateFiltroMaf = checkDuplicateFiltroMaf;
 
 var checkDuplicateTipoDocumento = /*#__PURE__*/function () {
-  var _ref49 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee49(req, res, next) {
+  var _ref49 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee49(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee49$(_context49) {
+    return _regeneratorRuntime().wrap(function _callee49$(_context49) {
       while (1) {
         switch (_context49.prev = _context49.next) {
           case 0:
@@ -2300,9 +2302,9 @@ var checkDuplicateTipoDocumento = /*#__PURE__*/function () {
 exports.checkDuplicateTipoDocumento = checkDuplicateTipoDocumento;
 
 var checkDuplicateMenuG = /*#__PURE__*/function () {
-  var _ref50 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee50(req, res, next) {
+  var _ref50 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee50(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee50$(_context50) {
+    return _regeneratorRuntime().wrap(function _callee50$(_context50) {
       while (1) {
         switch (_context50.prev = _context50.next) {
           case 0:
@@ -2343,9 +2345,9 @@ var checkDuplicateMenuG = /*#__PURE__*/function () {
 exports.checkDuplicateMenuG = checkDuplicateMenuG;
 
 var checkDuplicateModuloG = /*#__PURE__*/function () {
-  var _ref51 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee51(req, res, next) {
+  var _ref51 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee51(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee51$(_context51) {
+    return _regeneratorRuntime().wrap(function _callee51$(_context51) {
       while (1) {
         switch (_context51.prev = _context51.next) {
           case 0:
@@ -2386,9 +2388,9 @@ var checkDuplicateModuloG = /*#__PURE__*/function () {
 exports.checkDuplicateModuloG = checkDuplicateModuloG;
 
 var checkDuplicateSubmoduloG = /*#__PURE__*/function () {
-  var _ref52 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee52(req, res, next) {
+  var _ref52 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee52(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee52$(_context52) {
+    return _regeneratorRuntime().wrap(function _callee52$(_context52) {
       while (1) {
         switch (_context52.prev = _context52.next) {
           case 0:
@@ -2429,9 +2431,9 @@ var checkDuplicateSubmoduloG = /*#__PURE__*/function () {
 exports.checkDuplicateSubmoduloG = checkDuplicateSubmoduloG;
 
 var checkDuplicateTipoProducto = /*#__PURE__*/function () {
-  var _ref53 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee53(req, res, next) {
+  var _ref53 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee53(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee53$(_context53) {
+    return _regeneratorRuntime().wrap(function _callee53$(_context53) {
       while (1) {
         switch (_context53.prev = _context53.next) {
           case 0:
@@ -2472,9 +2474,9 @@ var checkDuplicateTipoProducto = /*#__PURE__*/function () {
 exports.checkDuplicateTipoProducto = checkDuplicateTipoProducto;
 
 var checkDuplicateMes = /*#__PURE__*/function () {
-  var _ref54 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee54(req, res, next) {
+  var _ref54 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee54(req, res, next) {
     var name, query;
-    return _regenerator.default.wrap(function _callee54$(_context54) {
+    return _regeneratorRuntime().wrap(function _callee54$(_context54) {
       while (1) {
         switch (_context54.prev = _context54.next) {
           case 0:

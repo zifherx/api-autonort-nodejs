@@ -1246,7 +1246,7 @@ mafController.getAllSolicitudesAprobadas = async (req, res) => {
         if (query.length > 0) {
             res.json({ total: query.length, all: query });
         } else {
-            return res.status(404).json({ message: "No se encontraron solicitudes" });
+            return res.status(404).json({ message:  `El cliente ${customer} no cuenta con solicitudes MAF`});
         }
     } catch (err) {
         console.log(err);
