@@ -10,6 +10,6 @@ router.post('/by-estado',listaEsperaCtrl.getCountByEstado);
 router.post('/by-vehicle',listaEsperaCtrl.getCountClientByVehicle);
 router.post('/', [ authJwt.verifyToken, authJwt.isChiefADVOrChiefPlaneamientoOrAdministrador] ,listaEsperaCtrl.createOne);
 router.patch('/:itemId', [authJwt.verifyToken, authJwt.isChiefADVOrChiefPlaneamientoOrAdministrador] ,listaEsperaCtrl.updateOneById);
-router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin] ,listaEsperaCtrl.deleteOneById);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isChiefPlaneamientorAdmin] ,listaEsperaCtrl.deleteOneById);
 
 export default router;

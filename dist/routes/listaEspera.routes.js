@@ -20,7 +20,7 @@ router.post('/by-estado', _listaEspera.default.getCountByEstado);
 router.post('/by-vehicle', _listaEspera.default.getCountClientByVehicle);
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefADVOrChiefPlaneamientoOrAdministrador], _listaEspera.default.createOne);
 router.patch('/:itemId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefADVOrChiefPlaneamientoOrAdministrador], _listaEspera.default.updateOneById);
-router.delete('/:itemId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdmin], _listaEspera.default.deleteOneById);
+router.delete('/:itemId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefPlaneamientorAdmin], _listaEspera.default.deleteOneById);
 var _default = router;
 exports.default = _default;
 //# sourceMappingURL=listaEspera.routes.js.map
