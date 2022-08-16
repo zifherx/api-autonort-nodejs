@@ -434,8 +434,10 @@ recordController.getAllBySucursal = /*#__PURE__*/function () {
             query = null;
             _context4.prev = 2;
             _context4.next = 5;
-            return _Sucursal.default.findOne({
-              name: sucursalE
+            return _Sucursal.default.find({
+              name: {
+                $in: sucursalE
+              }
             });
 
           case 5:
@@ -449,7 +451,15 @@ recordController.getAllBySucursal = /*#__PURE__*/function () {
             _context4.next = 9;
             return _Record.default.find({
               $or: [{
-                sucursalE: sucursalFound._id
+                sucursal_tramite: {
+                  $in: sucursalE
+                }
+              }, {
+                sucursalE: {
+                  $in: sucursalFound.map(function (a) {
+                    return a._id;
+                  })
+                }
               }, {
                 sucursal_tramite: {
                   $regex: ".*" + sucursalE + ".*"

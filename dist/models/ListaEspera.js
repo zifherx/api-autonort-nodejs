@@ -43,6 +43,10 @@ var listaEsperaSchema = new _mongoose.Schema({
     type: _mongoose.Schema.Types.ObjectId,
     ref: "Customer"
   },
+  vendedor: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Seller'
+  },
   anio_primer_abono: {
     type: _mongoose.Schema.Types.ObjectId,
     ref: "Anio"

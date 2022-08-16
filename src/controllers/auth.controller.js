@@ -11,7 +11,7 @@ export const signIn = async(req, res) => {
 
     if (!userFound.status) return res.status(403).json({ message: 'Usuario inactivo' });
 
-    if (userFound.online) return res.status(401).json({ message: 'Usuario ya se encuentra logueado' });
+    // if (userFound.online) return res.status(401).json({ message: 'Usuario ya se encuentra logueado' });
 
     const matchPassword = await User.comparePassword(password, userFound.password);
 

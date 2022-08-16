@@ -922,6 +922,103 @@ fileController.getFilesBySucursalyFecha = async (req, res) => {
     }
 };
 
+fileController.getFilesByVendedor = async (req, res) => {
+    const { seller } = req.body;
+
+    try {
+        const sellerFound = await Seller.findOne({ name: seller });
+        if (!sellerFound) return res.status(404).json({ message: `Vendedor ${seller} no encontrado` });
+        const query = await Sale.find({
+            vendedor: sellerFound._id,
+        })
+            .sort({ fecha_cancelacion: -1 })
+            .populate({
+                path: "vendedor",
+                select: "name sucursal",
+            })
+            .populate({
+                path: "auto",
+                select: "model version cod_tdp",
+                populate: {
+                    path: "model",
+                    select: "marca name avatar",
+                    populate: {
+                        path: "marca",
+                        select: "name avatar",
+                    },
+                },
+            })
+            .populate({
+                path: "sucursalE",
+                select: "name",
+            })
+            .populate({
+                path: "colorE",
+                select: "name",
+            })
+            .populate({
+                path: "anioFabricacionE",
+                select: "name",
+            })
+            .populate({
+                path: "anioModeloE",
+                select: "name",
+            })
+            .populate({
+                path: "ubicacionVehiculoE",
+                select: "name",
+            })
+            .populate({
+                path: "estadoVehiculoE",
+                select: "name",
+            })
+            .populate({
+                path: "financiamientoE",
+                select: "name",
+            })
+            .populate({
+                path: "bancoE",
+                select: "name",
+            })
+            .populate({
+                path: "cliente",
+                select: "name document",
+            })
+            .populate({
+                path: "tipoOperacionE",
+                select: "name document",
+            })
+            .populate({
+                path: "tipoComprobanteE",
+                select: "name document",
+            })
+            .populate({
+                path: "estadoVentaE",
+                select: "name document",
+            })
+            .populate({
+                path: "estadoFacturacionE",
+                select: "name document",
+            })
+            .populate("campanias")
+            .populate("adicional")
+            .populate("accesorios")
+            .populate({
+                path: "empleado",
+                select: "name username",
+            });
+
+        if (query.length > 0) {
+            res.json({ total: query.length, all: query });
+        } else {
+            return res.status(404).json({ message: `El vendedor ${seller} no cuenta con expedientes` });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
 fileController.groupFilesByEstado = async (req, res) => {
     const { sucursalE, start, end } = req.body;
 

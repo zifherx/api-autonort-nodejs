@@ -15,6 +15,7 @@ var _middlewares = require("../middlewares");
 
 var router = (0, _express.Router)();
 router.get('/', _permiso.default.getAll);
+router.post('/by-codigo', _permiso.default.findByCodigo);
 router.post('/by-submodule', _permiso.default.findBySubmodule);
 router.post('/', _permiso.default.createOne);
 router.patch('/:permisoId', _permiso.default.updateOneById);

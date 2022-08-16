@@ -176,91 +176,63 @@ permisoController.findBySubmodule = /*#__PURE__*/function () {
   };
 }();
 
-permisoController.createOne = /*#__PURE__*/function () {
+permisoController.findByCodigo = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var _req$body, cod_interno, submoduloG, rolesPermitidos, estado, obj, submoduleFound, roleFound, query;
-
+    var codigo, query;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _req$body = req.body, cod_interno = _req$body.cod_interno, submoduloG = _req$body.submoduloG, rolesPermitidos = _req$body.rolesPermitidos, estado = _req$body.estado;
+            codigo = req.body.codigo;
             _context3.prev = 1;
-            obj = new _Permiso.default({
-              cod_interno: cod_interno,
-              estado: estado
-            });
-            _context3.next = 5;
-            return _SubmoduloG.default.findOne({
-              name: submoduloG
-            });
-
-          case 5:
-            submoduleFound = _context3.sent;
-
-            if (submoduleFound) {
-              _context3.next = 8;
-              break;
-            }
-
-            return _context3.abrupt("return", res.status(404).json({
-              message: "Subm\xF3dulo ".concat(submoduloG, " no encontrado")
-            }));
-
-          case 8:
-            obj.submoduloG = submoduleFound._id;
-            _context3.next = 11;
-            return _Role.default.find({
-              name: {
-                $in: rolesPermitidos
-              }
+            _context3.next = 4;
+            return _Permiso.default.findOne({
+              cod_interno: codigo
+            }).populate({
+              path: 'submoduloG',
+              select: 'name'
+            }).populate({
+              path: 'rolesPermitidos',
+              select: 'name descripcion'
             });
 
-          case 11:
-            roleFound = _context3.sent;
-
-            if (roleFound) {
-              _context3.next = 14;
-              break;
-            }
-
-            return _context3.abrupt("return", res.status(404).json({
-              message: "Rol ".concat(rolesPermitidos, " no encontrado")
-            }));
-
-          case 14:
-            obj.rolesPermitidos = roleFound.map(function (a) {
-              return a.id;
-            });
-            _context3.next = 17;
-            return obj.save();
-
-          case 17:
+          case 4:
             query = _context3.sent;
 
-            if (query) {
-              res.json({
-                message: 'Permiso creado con éxito'
-              });
+            if (!query) {
+              _context3.next = 9;
+              break;
             }
 
-            _context3.next = 25;
+            res.json({
+              one: query
+            });
+            _context3.next = 10;
             break;
 
-          case 21:
-            _context3.prev = 21;
+          case 9:
+            return _context3.abrupt("return", res.status(404).json({
+              message: 'No existen permisos'
+            }));
+
+          case 10:
+            _context3.next = 16;
+            break;
+
+          case 12:
+            _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
             return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
             }));
 
-          case 25:
+          case 16:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 21]]);
+    }, _callee3, null, [[1, 12]]);
   }));
 
   return function (_x5, _x6) {
@@ -268,47 +240,30 @@ permisoController.createOne = /*#__PURE__*/function () {
   };
 }();
 
-permisoController.updateOneById = /*#__PURE__*/function () {
+permisoController.createOne = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var _req$body2, cod_interno, submoduloG, rolesPermitidos, estado, permisoId, roleFound, subModuleFound, query;
+    var _req$body, cod_interno, submoduloG, rolesPermitidos, estado, obj, submoduleFound, roleFound, query;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body2 = req.body, cod_interno = _req$body2.cod_interno, submoduloG = _req$body2.submoduloG, rolesPermitidos = _req$body2.rolesPermitidos, estado = _req$body2.estado;
-            permisoId = req.params.permisoId;
-            _context4.prev = 2;
-            _context4.next = 5;
-            return _Role.default.find({
-              name: {
-                $in: rolesPermitidos
-              }
+            _req$body = req.body, cod_interno = _req$body.cod_interno, submoduloG = _req$body.submoduloG, rolesPermitidos = _req$body.rolesPermitidos, estado = _req$body.estado;
+            _context4.prev = 1;
+            obj = new _Permiso.default({
+              cod_interno: cod_interno,
+              estado: estado
             });
-
-          case 5:
-            roleFound = _context4.sent;
-
-            if (roleFound) {
-              _context4.next = 8;
-              break;
-            }
-
-            return _context4.abrupt("return", res.status(404).json({
-              message: "No se encontr\xF3 el rol ".concat(rolesPermitidos)
-            }));
-
-          case 8:
-            _context4.next = 10;
+            _context4.next = 5;
             return _SubmoduloG.default.findOne({
               name: submoduloG
             });
 
-          case 10:
-            subModuleFound = _context4.sent;
+          case 5:
+            submoduleFound = _context4.sent;
 
-            if (subModuleFound) {
-              _context4.next = 13;
+            if (submoduleFound) {
+              _context4.next = 8;
               break;
             }
 
@@ -316,8 +271,117 @@ permisoController.updateOneById = /*#__PURE__*/function () {
               message: "Subm\xF3dulo ".concat(submoduloG, " no encontrado")
             }));
 
+          case 8:
+            obj.submoduloG = submoduleFound._id;
+            _context4.next = 11;
+            return _Role.default.find({
+              name: {
+                $in: rolesPermitidos
+              }
+            });
+
+          case 11:
+            roleFound = _context4.sent;
+
+            if (roleFound) {
+              _context4.next = 14;
+              break;
+            }
+
+            return _context4.abrupt("return", res.status(404).json({
+              message: "Rol ".concat(rolesPermitidos, " no encontrado")
+            }));
+
+          case 14:
+            obj.rolesPermitidos = roleFound.map(function (a) {
+              return a.id;
+            });
+            _context4.next = 17;
+            return obj.save();
+
+          case 17:
+            query = _context4.sent;
+
+            if (query) {
+              res.json({
+                message: 'Permiso creado con éxito'
+              });
+            }
+
+            _context4.next = 25;
+            break;
+
+          case 21:
+            _context4.prev = 21;
+            _context4.t0 = _context4["catch"](1);
+            console.log(_context4.t0);
+            return _context4.abrupt("return", res.status(503).json({
+              message: _context4.t0.message
+            }));
+
+          case 25:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[1, 21]]);
+  }));
+
+  return function (_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+permisoController.updateOneById = /*#__PURE__*/function () {
+  var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+    var _req$body2, cod_interno, submoduloG, rolesPermitidos, estado, permisoId, roleFound, subModuleFound, query;
+
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _req$body2 = req.body, cod_interno = _req$body2.cod_interno, submoduloG = _req$body2.submoduloG, rolesPermitidos = _req$body2.rolesPermitidos, estado = _req$body2.estado;
+            permisoId = req.params.permisoId;
+            _context5.prev = 2;
+            _context5.next = 5;
+            return _Role.default.find({
+              name: {
+                $in: rolesPermitidos
+              }
+            });
+
+          case 5:
+            roleFound = _context5.sent;
+
+            if (roleFound) {
+              _context5.next = 8;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "No se encontr\xF3 el rol ".concat(rolesPermitidos)
+            }));
+
+          case 8:
+            _context5.next = 10;
+            return _SubmoduloG.default.findOne({
+              name: submoduloG
+            });
+
+          case 10:
+            subModuleFound = _context5.sent;
+
+            if (subModuleFound) {
+              _context5.next = 13;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Subm\xF3dulo ".concat(submoduloG, " no encontrado")
+            }));
+
           case 13:
-            _context4.next = 15;
+            _context5.next = 15;
             return _Permiso.default.findByIdAndUpdate(permisoId, {
               cod_interno: cod_interno,
               submoduloG: subModuleFound._id,
@@ -328,102 +392,102 @@ permisoController.updateOneById = /*#__PURE__*/function () {
             });
 
           case 15:
-            query = _context4.sent;
+            query = _context5.sent;
 
             if (!query) {
-              _context4.next = 20;
+              _context5.next = 20;
               break;
             }
 
             res.json({
               message: 'Permiso actualizado con éxito'
             });
-            _context4.next = 21;
+            _context5.next = 21;
             break;
 
           case 20:
-            return _context4.abrupt("return", res.status(404).json({
+            return _context5.abrupt("return", res.status(404).json({
               message: 'No existe permiso a actualizar'
             }));
 
           case 21:
-            _context4.next = 27;
+            _context5.next = 27;
             break;
 
           case 23:
-            _context4.prev = 23;
-            _context4.t0 = _context4["catch"](2);
-            console.log(_context4.t0);
-            return _context4.abrupt("return", res.status(503).json({
-              message: _context4.t0.message
+            _context5.prev = 23;
+            _context5.t0 = _context5["catch"](2);
+            console.log(_context5.t0);
+            return _context5.abrupt("return", res.status(503).json({
+              message: _context5.t0.message
             }));
 
           case 27:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
       }
-    }, _callee4, null, [[2, 23]]);
+    }, _callee5, null, [[2, 23]]);
   }));
 
-  return function (_x7, _x8) {
-    return _ref4.apply(this, arguments);
+  return function (_x9, _x10) {
+    return _ref5.apply(this, arguments);
   };
 }();
 
 permisoController.deleteOneById = /*#__PURE__*/function () {
-  var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+  var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
     var permisoId, query;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
             permisoId = req.params.permisoId;
-            _context5.prev = 1;
-            _context5.next = 4;
+            _context6.prev = 1;
+            _context6.next = 4;
             return _Permiso.default.findByIdAndDelete(permisoId);
 
           case 4:
-            query = _context5.sent;
+            query = _context6.sent;
 
             if (!query) {
-              _context5.next = 9;
+              _context6.next = 9;
               break;
             }
 
             res.json({
               message: 'Permiso eliminado con éxito'
             });
-            _context5.next = 10;
+            _context6.next = 10;
             break;
 
           case 9:
-            return _context5.abrupt("return", res.status(404).json({
+            return _context6.abrupt("return", res.status(404).json({
               message: 'No existe permiso a eliminar'
             }));
 
           case 10:
-            _context5.next = 16;
+            _context6.next = 16;
             break;
 
           case 12:
-            _context5.prev = 12;
-            _context5.t0 = _context5["catch"](1);
-            console.log(_context5.t0);
-            return _context5.abrupt("return", res.status(503).json({
-              message: _context5.t0.message
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](1);
+            console.log(_context6.t0);
+            return _context6.abrupt("return", res.status(503).json({
+              message: _context6.t0.message
             }));
 
           case 16:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5, null, [[1, 12]]);
+    }, _callee6, null, [[1, 12]]);
   }));
 
-  return function (_x9, _x10) {
-    return _ref5.apply(this, arguments);
+  return function (_x11, _x12) {
+    return _ref6.apply(this, arguments);
   };
 }();
 

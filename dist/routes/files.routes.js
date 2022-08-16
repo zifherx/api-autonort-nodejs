@@ -17,6 +17,7 @@ var router = (0, _express.Router)();
 router.get("/", _files.default.getAll);
 router.get("/:itemId", _files.default.getOneById);
 router.post("/by-estado", _files.default.getFilesByEstado);
+router.post("/by-seller", _files.default.getFilesByVendedor);
 router.post("/by-sucursal", _files.default.getFilesBySucursalyFecha);
 router.post('/by-tvalue', _files.default.getFilesByToyotaValue);
 router.post('/by-accesorios', _files.default.getFilesByImporteAccesorios);

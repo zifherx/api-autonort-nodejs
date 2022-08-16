@@ -232,12 +232,16 @@ recordController.getAllBySucursal = async (req, res) => {
      let query = null;
 
      try {
-          const sucursalFound = await Sucursal.findOne({ name: sucursalE });
+          const sucursalFound = await Sucursal.find({ name: {$in: sucursalE} });
           // if (!sucursalFound) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrada` });
 
           if (start == null || start == undefined || start == "") {
                query = await Record.find({
-                    $or: [{ sucursalE: sucursalFound._id }, { sucursal_tramite: { $regex: ".*" + sucursalE + ".*" } }],
+                    $or: [
+                         { sucursal_tramite: {$in: sucursalE }},
+                         { sucursalE: {$in: sucursalFound.map(a => a._id)} },
+                         { sucursal_tramite: { $regex: ".*" + sucursalE + ".*" } }
+                    ],
                })
                     .sort({ fecha_recepcion: -1 })
                     .populate({

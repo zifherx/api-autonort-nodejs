@@ -12,6 +12,7 @@ const listaEsperaSchema = new Schema(
         estado: { type: String },
         estadoE: { type: Schema.Types.ObjectId, ref: 'EstadoListaEspera' },
         cliente: { type: Schema.Types.ObjectId, ref: "Customer" },
+        vendedor: { type: Schema.Types.ObjectId, ref: 'Seller'},
         anio_primer_abono: { type: Schema.Types.ObjectId, ref: "Anio" },
         mes_primer_abono: { type: Schema.Types.ObjectId, ref: "Mes" },
         grupo_abonos: [

@@ -36,6 +36,9 @@ userController.getAll = /*#__PURE__*/function () {
               path: 'roles',
               select: 'name'
             }).populate({
+              path: 'sedeAcargo',
+              select: 'name'
+            }).populate({
               path: 'sucursalE',
               select: 'name'
             });
@@ -102,6 +105,9 @@ userController.getAllActivos = /*#__PURE__*/function () {
               path: 'roles',
               select: 'name'
             }).populate({
+              path: 'sedeAcargo',
+              select: 'name'
+            }).populate({
               path: 'sucursalE',
               select: 'name'
             });
@@ -165,6 +171,9 @@ userController.getOneById = /*#__PURE__*/function () {
               path: 'roles',
               select: 'name'
             }).populate({
+              path: 'sedeAcargo',
+              select: 'name'
+            }).populate({
               path: 'sucursalE',
               select: 'name'
             });
@@ -215,23 +224,22 @@ userController.getOneById = /*#__PURE__*/function () {
 
 userController.createOne = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var _req$body, name, username, password, sucursal, sucursalE, roles, estado, newUser, sucursalFound, foundRoles, role, query;
+    var _req$body, name, username, password, sucursal, sucursalE, sedeAcargo, roles, estado, newUser, sucursalFound, cargoFound, foundRoles, role, query;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body = req.body, name = _req$body.name, username = _req$body.username, password = _req$body.password, sucursal = _req$body.sucursal, sucursalE = _req$body.sucursalE, roles = _req$body.roles, estado = _req$body.estado;
-            console.log(req.body);
-            _context4.prev = 2;
+            _req$body = req.body, name = _req$body.name, username = _req$body.username, password = _req$body.password, sucursal = _req$body.sucursal, sucursalE = _req$body.sucursalE, sedeAcargo = _req$body.sedeAcargo, roles = _req$body.roles, estado = _req$body.estado;
+            _context4.prev = 1;
             _context4.t0 = _User.default;
             _context4.t1 = name;
             _context4.t2 = username;
             _context4.t3 = sucursal;
-            _context4.next = 9;
+            _context4.next = 8;
             return _User.default.encryptPassword(password);
 
-          case 9:
+          case 8:
             _context4.t4 = _context4.sent;
             _context4.t5 = estado;
             _context4.t6 = {
@@ -242,17 +250,16 @@ userController.createOne = /*#__PURE__*/function () {
               estado: _context4.t5
             };
             newUser = new _context4.t0(_context4.t6);
-            _context4.next = 15;
+            _context4.next = 14;
             return _Sucursal.default.findOne({
               name: sucursalE
             });
 
-          case 15:
+          case 14:
             sucursalFound = _context4.sent;
-            console.log('Sucursal Found:', sucursalFound);
 
             if (sucursalFound) {
-              _context4.next = 19;
+              _context4.next = 17;
               break;
             }
 
@@ -260,44 +267,67 @@ userController.createOne = /*#__PURE__*/function () {
               message: "Sucursal ".concat(sucursalE, " no encontrada")
             }));
 
-          case 19:
+          case 17:
             newUser.sucursalE = sucursalFound._id;
+            _context4.next = 20;
+            return _Sucursal.default.find({
+              name: {
+                $in: sedeAcargo
+              }
+            });
 
-            if (!roles) {
-              _context4.next = 27;
+          case 20:
+            cargoFound = _context4.sent;
+
+            if (cargoFound) {
+              _context4.next = 23;
               break;
             }
 
-            _context4.next = 23;
+            return _context4.abrupt("return", res.status(404).json({
+              message: "Sede ".concat(sedeAcargo, " no encontrada")
+            }));
+
+          case 23:
+            newUser.sedeAcargo = cargoFound.map(function (a) {
+              return a._id;
+            });
+
+            if (!roles) {
+              _context4.next = 31;
+              break;
+            }
+
+            _context4.next = 27;
             return _Role.default.find({
               name: {
                 $in: roles
               }
             });
 
-          case 23:
+          case 27:
             foundRoles = _context4.sent;
             newUser.roles = foundRoles.map(function (role) {
               return role._id;
             });
-            _context4.next = 31;
+            _context4.next = 35;
             break;
 
-          case 27:
-            _context4.next = 29;
+          case 31:
+            _context4.next = 33;
             return _Role.default.findOne({
               name: "Usuario"
             });
 
-          case 29:
+          case 33:
             role = _context4.sent;
             newUser.roles = [role._id];
 
-          case 31:
-            _context4.next = 33;
+          case 35:
+            _context4.next = 37;
             return newUser.save();
 
-          case 33:
+          case 37:
             query = _context4.sent;
 
             if (query) {
@@ -306,23 +336,23 @@ userController.createOne = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 41;
+            _context4.next = 45;
             break;
 
-          case 37:
-            _context4.prev = 37;
-            _context4.t7 = _context4["catch"](2);
+          case 41:
+            _context4.prev = 41;
+            _context4.t7 = _context4["catch"](1);
             console.log(_context4.t7);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t7.message
             }));
 
-          case 41:
+          case 45:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 37]]);
+    }, _callee4, null, [[1, 41]]);
   }));
 
   return function (_x7, _x8) {
@@ -332,16 +362,15 @@ userController.createOne = /*#__PURE__*/function () {
 
 userController.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var userId, _req$body2, name, username, sucursalE, email, phone, roles, estado, avatar, query, sucursalFound, roleFound;
+    var userId, _req$body2, name, username, sucursalE, email, phone, sedeAcargo, roles, estado, avatar, query, sucursalFound, cargoFound, roleFound;
 
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             userId = req.params.userId;
-            _req$body2 = req.body, name = _req$body2.name, username = _req$body2.username, sucursalE = _req$body2.sucursalE, email = _req$body2.email, phone = _req$body2.phone, roles = _req$body2.roles, estado = _req$body2.estado;
-            avatar = req.file; // console.log(req.body);
-
+            _req$body2 = req.body, name = _req$body2.name, username = _req$body2.username, sucursalE = _req$body2.sucursalE, email = _req$body2.email, phone = _req$body2.phone, sedeAcargo = _req$body2.sedeAcargo, roles = _req$body2.roles, estado = _req$body2.estado;
+            avatar = req.file;
             _context5.prev = 3;
             query = null;
             _context5.next = 7;
@@ -363,17 +392,37 @@ userController.updateOneById = /*#__PURE__*/function () {
 
           case 10:
             _context5.next = 12;
+            return _Sucursal.default.find({
+              name: {
+                $in: sedeAcargo
+              }
+            });
+
+          case 12:
+            cargoFound = _context5.sent;
+
+            if (cargoFound) {
+              _context5.next = 15;
+              break;
+            }
+
+            return _context5.abrupt("return", res.status(404).json({
+              message: "Sede ".concat(sedeAcargo, " no encontrada")
+            }));
+
+          case 15:
+            _context5.next = 17;
             return _Role.default.find({
               name: {
                 $in: roles
               }
             });
 
-          case 12:
+          case 17:
             roleFound = _context5.sent;
 
             if (roleFound) {
-              _context5.next = 15;
+              _context5.next = 20;
               break;
             }
 
@@ -381,13 +430,13 @@ userController.updateOneById = /*#__PURE__*/function () {
               message: "Rol ".concat(roles, " no encontrado")
             }));
 
-          case 15:
+          case 20:
             if (!(avatar == null || avatar == undefined)) {
-              _context5.next = 21;
+              _context5.next = 26;
               break;
             }
 
-            _context5.next = 18;
+            _context5.next = 23;
             return _User.default.findByIdAndUpdate(userId, {
               username: username,
               name: name,
@@ -395,22 +444,28 @@ userController.updateOneById = /*#__PURE__*/function () {
               roles: roleFound.map(function (a) {
                 return a._id;
               }),
+              sedeAcargo: cargoFound.map(function (a) {
+                return a._id;
+              }),
               email: email,
               phone: phone,
               estado: estado
             });
 
-          case 18:
+          case 23:
             query = _context5.sent;
-            _context5.next = 24;
+            _context5.next = 29;
             break;
 
-          case 21:
-            _context5.next = 23;
+          case 26:
+            _context5.next = 28;
             return _User.default.findByIdAndUpdate(userId, {
               username: username,
               name: name,
               sucursalE: sucursalFound._id,
+              sedeAcargo: cargoFound.map(function (a) {
+                return a._id;
+              }),
               roles: roleFound.map(function (a) {
                 return a._id;
               }),
@@ -420,44 +475,44 @@ userController.updateOneById = /*#__PURE__*/function () {
               estado: estado
             });
 
-          case 23:
+          case 28:
             query = _context5.sent;
 
-          case 24:
+          case 29:
             if (!query) {
-              _context5.next = 28;
+              _context5.next = 33;
               break;
             }
 
             res.json({
               message: 'Usuario actualizado con éxito'
             });
-            _context5.next = 29;
+            _context5.next = 34;
             break;
 
-          case 28:
+          case 33:
             return _context5.abrupt("return", res.status(404).json({
               messsage: 'No existe usuario a actualizar'
             }));
 
-          case 29:
-            _context5.next = 35;
+          case 34:
+            _context5.next = 40;
             break;
 
-          case 31:
-            _context5.prev = 31;
+          case 36:
+            _context5.prev = 36;
             _context5.t0 = _context5["catch"](3);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 35:
+          case 40:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[3, 31]]);
+    }, _callee5, null, [[3, 36]]);
   }));
 
   return function (_x9, _x10) {

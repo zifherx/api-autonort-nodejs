@@ -56,24 +56,14 @@ var signIn = /*#__PURE__*/function () {
             }));
 
           case 8:
-            if (!userFound.online) {
-              _context.next = 10;
-              break;
-            }
-
-            return _context.abrupt("return", res.status(401).json({
-              message: 'Usuario ya se encuentra logueado'
-            }));
-
-          case 10:
-            _context.next = 12;
+            _context.next = 10;
             return _User.default.comparePassword(password, userFound.password);
 
-          case 12:
+          case 10:
             matchPassword = _context.sent;
 
             if (matchPassword) {
-              _context.next = 15;
+              _context.next = 13;
               break;
             }
 
@@ -82,26 +72,26 @@ var signIn = /*#__PURE__*/function () {
               message: 'Contraseña Errónea'
             }));
 
-          case 15:
+          case 13:
             token = _jsonwebtoken.default.sign({
               id: userFound._id
             }, _config.default.SECRET, {
               expiresIn: '48h'
             }); //Cambio de estado a online
 
-            _context.next = 18;
+            _context.next = 16;
             return _User.default.findByIdAndUpdate(userFound._id, {
               online: true
             });
 
-          case 18:
+          case 16:
             console.log('Token:', token);
             res.json({
               token: token,
               codigo: userFound._id
             });
 
-          case 20:
+          case 18:
           case "end":
             return _context.stop();
         }

@@ -43,6 +43,10 @@ var userSchema = new _mongoose.Schema({
     type: _mongoose.Schema.Types.ObjectId,
     ref: 'Sucursal'
   },
+  sedeAcargo: [{
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
+  }],
   direccion: {
     type: String
   },

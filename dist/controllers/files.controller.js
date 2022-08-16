@@ -1807,17 +1807,152 @@ fileController.getFilesBySucursalyFecha = /*#__PURE__*/function () {
   };
 }();
 
-fileController.groupFilesByEstado = /*#__PURE__*/function () {
+fileController.getFilesByVendedor = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
-    var _req$body4, sucursalE, start, end, query;
-
+    var seller, sellerFound, query;
     return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            _req$body4 = req.body, sucursalE = _req$body4.sucursalE, start = _req$body4.start, end = _req$body4.end;
+            seller = req.body.seller;
             _context7.prev = 1;
             _context7.next = 4;
+            return _Seller.default.findOne({
+              name: seller
+            });
+
+          case 4:
+            sellerFound = _context7.sent;
+
+            if (sellerFound) {
+              _context7.next = 7;
+              break;
+            }
+
+            return _context7.abrupt("return", res.status(404).json({
+              message: "Vendedor ".concat(seller, " no encontrado")
+            }));
+
+          case 7:
+            _context7.next = 9;
+            return _Sale.default.find({
+              vendedor: sellerFound._id
+            }).sort({
+              fecha_cancelacion: -1
+            }).populate({
+              path: "vendedor",
+              select: "name sucursal"
+            }).populate({
+              path: "auto",
+              select: "model version cod_tdp",
+              populate: {
+                path: "model",
+                select: "marca name avatar",
+                populate: {
+                  path: "marca",
+                  select: "name avatar"
+                }
+              }
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "colorE",
+              select: "name"
+            }).populate({
+              path: "anioFabricacionE",
+              select: "name"
+            }).populate({
+              path: "anioModeloE",
+              select: "name"
+            }).populate({
+              path: "ubicacionVehiculoE",
+              select: "name"
+            }).populate({
+              path: "estadoVehiculoE",
+              select: "name"
+            }).populate({
+              path: "financiamientoE",
+              select: "name"
+            }).populate({
+              path: "bancoE",
+              select: "name"
+            }).populate({
+              path: "cliente",
+              select: "name document"
+            }).populate({
+              path: "tipoOperacionE",
+              select: "name document"
+            }).populate({
+              path: "tipoComprobanteE",
+              select: "name document"
+            }).populate({
+              path: "estadoVentaE",
+              select: "name document"
+            }).populate({
+              path: "estadoFacturacionE",
+              select: "name document"
+            }).populate("campanias").populate("adicional").populate("accesorios").populate({
+              path: "empleado",
+              select: "name username"
+            });
+
+          case 9:
+            query = _context7.sent;
+
+            if (!(query.length > 0)) {
+              _context7.next = 14;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              all: query
+            });
+            _context7.next = 15;
+            break;
+
+          case 14:
+            return _context7.abrupt("return", res.status(404).json({
+              message: "El vendedor ".concat(seller, " no cuenta con expedientes")
+            }));
+
+          case 15:
+            _context7.next = 21;
+            break;
+
+          case 17:
+            _context7.prev = 17;
+            _context7.t0 = _context7["catch"](1);
+            console.log(_context7.t0);
+            return _context7.abrupt("return", res.status(503).json({
+              message: _context7.t0.message
+            }));
+
+          case 21:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, null, [[1, 17]]);
+  }));
+
+  return function (_x13, _x14) {
+    return _ref7.apply(this, arguments);
+  };
+}();
+
+fileController.groupFilesByEstado = /*#__PURE__*/function () {
+  var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+    var _req$body4, sucursalE, start, end, query;
+
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _req$body4 = req.body, sucursalE = _req$body4.sucursalE, start = _req$body4.start, end = _req$body4.end;
+            _context8.prev = 1;
+            _context8.next = 4;
             return _Sale.default.aggregate([{
               $match: {
                 sucursal_venta: sucursalE,
@@ -1842,10 +1977,10 @@ fileController.groupFilesByEstado = /*#__PURE__*/function () {
             }]);
 
           case 4:
-            query = _context7.sent;
+            query = _context8.sent;
 
             if (!(query.length > 0)) {
-              _context7.next = 9;
+              _context8.next = 9;
               break;
             }
 
@@ -1853,57 +1988,57 @@ fileController.groupFilesByEstado = /*#__PURE__*/function () {
               total: query.length,
               ranking: query
             });
-            _context7.next = 10;
+            _context8.next = 10;
             break;
 
           case 9:
-            return _context7.abrupt("return", res.status(404).json({
+            return _context8.abrupt("return", res.status(404).json({
               message: "No existen expedientes"
             }));
 
           case 10:
-            _context7.next = 16;
+            _context8.next = 16;
             break;
 
           case 12:
-            _context7.prev = 12;
-            _context7.t0 = _context7["catch"](1);
-            console.log(_context7.t0);
-            return _context7.abrupt("return", res.status(503).json({
-              message: _context7.t0.message
+            _context8.prev = 12;
+            _context8.t0 = _context8["catch"](1);
+            console.log(_context8.t0);
+            return _context8.abrupt("return", res.status(503).json({
+              message: _context8.t0.message
             }));
 
           case 16:
           case "end":
-            return _context7.stop();
+            return _context8.stop();
         }
       }
-    }, _callee7, null, [[1, 12]]);
+    }, _callee8, null, [[1, 12]]);
   }));
 
-  return function (_x13, _x14) {
-    return _ref7.apply(this, arguments);
+  return function (_x15, _x16) {
+    return _ref8.apply(this, arguments);
   };
 }();
 
 fileController.conteoFilesByEstado = /*#__PURE__*/function () {
-  var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+  var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
     var _req$body5, estado, ubicacion, isEntregado, sucursalE, start, end, query;
 
-    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) {
-        switch (_context8.prev = _context8.next) {
+        switch (_context9.prev = _context9.next) {
           case 0:
             _req$body5 = req.body, estado = _req$body5.estado, ubicacion = _req$body5.ubicacion, isEntregado = _req$body5.isEntregado, sucursalE = _req$body5.sucursalE, start = _req$body5.start, end = _req$body5.end;
             query = null;
-            _context8.prev = 2;
+            _context9.prev = 2;
 
             if (!isEntregado) {
-              _context8.next = 9;
+              _context9.next = 9;
               break;
             }
 
-            _context8.next = 6;
+            _context9.next = 6;
             return _Sale.default.find({
               ubicacion_vehiculo: {
                 $regex: ".*" + ubicacion + ".*"
@@ -1918,12 +2053,12 @@ fileController.conteoFilesByEstado = /*#__PURE__*/function () {
             }).countDocuments();
 
           case 6:
-            query = _context8.sent;
-            _context8.next = 12;
+            query = _context9.sent;
+            _context9.next = 12;
             break;
 
           case 9:
-            _context8.next = 11;
+            _context9.next = 11;
             return _Sale.default.find({
               estatus_venta: {
                 $regex: ".*" + estado + ".*"
@@ -1938,7 +2073,7 @@ fileController.conteoFilesByEstado = /*#__PURE__*/function () {
             }).countDocuments();
 
           case 11:
-            query = _context8.sent;
+            query = _context9.sent;
 
           case 12:
             if (query >= 0) {
@@ -1947,41 +2082,41 @@ fileController.conteoFilesByEstado = /*#__PURE__*/function () {
               });
             }
 
-            _context8.next = 19;
+            _context9.next = 19;
             break;
 
           case 15:
-            _context8.prev = 15;
-            _context8.t0 = _context8["catch"](2);
-            console.log(_context8.t0);
-            return _context8.abrupt("return", res.status(503).json({
-              message: _context8.t0.message
+            _context9.prev = 15;
+            _context9.t0 = _context9["catch"](2);
+            console.log(_context9.t0);
+            return _context9.abrupt("return", res.status(503).json({
+              message: _context9.t0.message
             }));
 
           case 19:
           case "end":
-            return _context8.stop();
+            return _context9.stop();
         }
       }
-    }, _callee8, null, [[2, 15]]);
+    }, _callee9, null, [[2, 15]]);
   }));
 
-  return function (_x15, _x16) {
-    return _ref8.apply(this, arguments);
+  return function (_x17, _x18) {
+    return _ref9.apply(this, arguments);
   };
 }();
 
 fileController.rankingFilesByUbicacion = /*#__PURE__*/function () {
-  var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
+  var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res) {
     var _req$body6, ubicacion, start, end, query;
 
-    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
       while (1) {
-        switch (_context9.prev = _context9.next) {
+        switch (_context10.prev = _context10.next) {
           case 0:
             _req$body6 = req.body, ubicacion = _req$body6.ubicacion, start = _req$body6.start, end = _req$body6.end;
-            _context9.prev = 1;
-            _context9.next = 4;
+            _context10.prev = 1;
+            _context10.next = 4;
             return _Sale.default.aggregate([{
               $match: {
                 ubicacion_vehiculo: ubicacion,
@@ -2000,7 +2135,7 @@ fileController.rankingFilesByUbicacion = /*#__PURE__*/function () {
             }]);
 
           case 4:
-            query = _context9.sent;
+            query = _context10.sent;
 
             if (query.length > 0) {
               res.json({
@@ -2009,41 +2144,41 @@ fileController.rankingFilesByUbicacion = /*#__PURE__*/function () {
               });
             }
 
-            _context9.next = 12;
+            _context10.next = 12;
             break;
 
           case 8:
-            _context9.prev = 8;
-            _context9.t0 = _context9["catch"](1);
-            console.log(_context9.t0);
-            return _context9.abrupt("return", res.status(503).json({
-              message: _context9.t0.message
+            _context10.prev = 8;
+            _context10.t0 = _context10["catch"](1);
+            console.log(_context10.t0);
+            return _context10.abrupt("return", res.status(503).json({
+              message: _context10.t0.message
             }));
 
           case 12:
           case "end":
-            return _context9.stop();
+            return _context10.stop();
         }
       }
-    }, _callee9, null, [[1, 8]]);
+    }, _callee10, null, [[1, 8]]);
   }));
 
-  return function (_x17, _x18) {
-    return _ref9.apply(this, arguments);
+  return function (_x19, _x20) {
+    return _ref10.apply(this, arguments);
   };
 }();
 
 fileController.getFilesByEstado = /*#__PURE__*/function () {
-  var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res) {
+  var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res) {
     var _req$body7, estado, tramite, sucursalE, query;
 
-    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
       while (1) {
-        switch (_context10.prev = _context10.next) {
+        switch (_context11.prev = _context11.next) {
           case 0:
             _req$body7 = req.body, estado = _req$body7.estado, tramite = _req$body7.tramite, sucursalE = _req$body7.sucursalE;
-            _context10.prev = 1;
-            _context10.next = 4;
+            _context11.prev = 1;
+            _context11.next = 4;
             return _Sale.default.find({
               estatus_venta: {
                 $regex: ".*" + estado + ".*"
@@ -2113,10 +2248,10 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
             });
 
           case 4:
-            query = _context10.sent;
+            query = _context11.sent;
 
             if (!(query.length > 0)) {
-              _context10.next = 9;
+              _context11.next = 9;
               break;
             }
 
@@ -2124,50 +2259,50 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
               total: query.length,
               all: query
             });
-            _context10.next = 10;
+            _context11.next = 10;
             break;
 
           case 9:
-            return _context10.abrupt("return", res.status(404).json({
+            return _context11.abrupt("return", res.status(404).json({
               message: "Expedientes ".concat(estado, " no existen en ").concat(sucursalE)
             }));
 
           case 10:
-            _context10.next = 16;
+            _context11.next = 16;
             break;
 
           case 12:
-            _context10.prev = 12;
-            _context10.t0 = _context10["catch"](1);
-            console.log(_context10.t0);
-            return _context10.abrupt("return", res.status(503).json({
-              message: _context10.t0.message
+            _context11.prev = 12;
+            _context11.t0 = _context11["catch"](1);
+            console.log(_context11.t0);
+            return _context11.abrupt("return", res.status(503).json({
+              message: _context11.t0.message
             }));
 
           case 16:
           case "end":
-            return _context10.stop();
+            return _context11.stop();
         }
       }
-    }, _callee10, null, [[1, 12]]);
+    }, _callee11, null, [[1, 12]]);
   }));
 
-  return function (_x19, _x20) {
-    return _ref10.apply(this, arguments);
+  return function (_x21, _x22) {
+    return _ref11.apply(this, arguments);
   };
 }();
 
 fileController.rankingFilesByModelo = /*#__PURE__*/function () {
-  var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res) {
+  var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(req, res) {
     var _req$body8, sucursalE, estado, start, end, query;
 
-    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
       while (1) {
-        switch (_context11.prev = _context11.next) {
+        switch (_context12.prev = _context12.next) {
           case 0:
             _req$body8 = req.body, sucursalE = _req$body8.sucursalE, estado = _req$body8.estado, start = _req$body8.start, end = _req$body8.end;
-            _context11.prev = 1;
-            _context11.next = 4;
+            _context12.prev = 1;
+            _context12.next = 4;
             return _Sale.default.aggregate([{
               $match: {
                 sucursal_venta: {
@@ -2193,7 +2328,7 @@ fileController.rankingFilesByModelo = /*#__PURE__*/function () {
             }]);
 
           case 4:
-            query = _context11.sent;
+            query = _context12.sent;
 
             if (query.length > 0) {
               res.json({
@@ -2202,42 +2337,42 @@ fileController.rankingFilesByModelo = /*#__PURE__*/function () {
               });
             }
 
-            _context11.next = 12;
+            _context12.next = 12;
             break;
 
           case 8:
-            _context11.prev = 8;
-            _context11.t0 = _context11["catch"](1);
-            console.log(_context11.t0);
-            return _context11.abrupt("return", res.status(503).json({
-              message: _context11.t0.message
+            _context12.prev = 8;
+            _context12.t0 = _context12["catch"](1);
+            console.log(_context12.t0);
+            return _context12.abrupt("return", res.status(503).json({
+              message: _context12.t0.message
             }));
 
           case 12:
           case "end":
-            return _context11.stop();
+            return _context12.stop();
         }
       }
-    }, _callee11, null, [[1, 8]]);
+    }, _callee12, null, [[1, 8]]);
   }));
 
-  return function (_x21, _x22) {
-    return _ref11.apply(this, arguments);
+  return function (_x23, _x24) {
+    return _ref12.apply(this, arguments);
   };
 }();
 
 fileController.rankingFilesBySeller = /*#__PURE__*/function () {
-  var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(req, res) {
+  var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(req, res) {
     var _req$body9, sucursalE, estadoE, start, end, query;
 
-    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+    return _regeneratorRuntime().wrap(function _callee13$(_context13) {
       while (1) {
-        switch (_context12.prev = _context12.next) {
+        switch (_context13.prev = _context13.next) {
           case 0:
             _req$body9 = req.body, sucursalE = _req$body9.sucursalE, estadoE = _req$body9.estadoE, start = _req$body9.start, end = _req$body9.end; // console.log(req.body);
 
-            _context12.prev = 1;
-            _context12.next = 4;
+            _context13.prev = 1;
+            _context13.next = 4;
             return _Sale.default.aggregate([{
               $match: {
                 sucursal_venta: {
@@ -2265,10 +2400,10 @@ fileController.rankingFilesBySeller = /*#__PURE__*/function () {
             }]);
 
           case 4:
-            query = _context12.sent;
+            query = _context13.sent;
 
             if (!(query.length > 0)) {
-              _context12.next = 9;
+              _context13.next = 9;
               break;
             }
 
@@ -2276,50 +2411,50 @@ fileController.rankingFilesBySeller = /*#__PURE__*/function () {
               total: query.length,
               ranking: query
             });
-            _context12.next = 10;
+            _context13.next = 10;
             break;
 
           case 9:
-            return _context12.abrupt("return", res.status(201).json({
+            return _context13.abrupt("return", res.status(201).json({
               message: "No existen ventas"
             }));
 
           case 10:
-            _context12.next = 16;
+            _context13.next = 16;
             break;
 
           case 12:
-            _context12.prev = 12;
-            _context12.t0 = _context12["catch"](1);
-            console.log(_context12.t0);
-            return _context12.abrupt("return", res.status(503).json({
-              message: _context12.t0.message
+            _context13.prev = 12;
+            _context13.t0 = _context13["catch"](1);
+            console.log(_context13.t0);
+            return _context13.abrupt("return", res.status(503).json({
+              message: _context13.t0.message
             }));
 
           case 16:
           case "end":
-            return _context12.stop();
+            return _context13.stop();
         }
       }
-    }, _callee12, null, [[1, 12]]);
+    }, _callee13, null, [[1, 12]]);
   }));
 
-  return function (_x23, _x24) {
-    return _ref12.apply(this, arguments);
+  return function (_x25, _x26) {
+    return _ref13.apply(this, arguments);
   };
 }();
 
 fileController.getFilesByToyotaValue = /*#__PURE__*/function () {
-  var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(req, res) {
+  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(req, res) {
     var _req$body10, sucursalE, isToyotaValue, start, end, query;
 
-    return _regeneratorRuntime().wrap(function _callee13$(_context13) {
+    return _regeneratorRuntime().wrap(function _callee14$(_context14) {
       while (1) {
-        switch (_context13.prev = _context13.next) {
+        switch (_context14.prev = _context14.next) {
           case 0:
             _req$body10 = req.body, sucursalE = _req$body10.sucursalE, isToyotaValue = _req$body10.isToyotaValue, start = _req$body10.start, end = _req$body10.end;
-            _context13.prev = 1;
-            _context13.next = 4;
+            _context14.prev = 1;
+            _context14.next = 4;
             return _Sale.default.find({
               sucursal_venta: {
                 $regex: ".*" + sucursalE + ".*"
@@ -2352,10 +2487,10 @@ fileController.getFilesByToyotaValue = /*#__PURE__*/function () {
             });
 
           case 4:
-            query = _context13.sent;
+            query = _context14.sent;
 
             if (!(query.length > 0)) {
-              _context13.next = 9;
+              _context14.next = 9;
               break;
             }
 
@@ -2363,50 +2498,50 @@ fileController.getFilesByToyotaValue = /*#__PURE__*/function () {
               total: query.length,
               all: query
             });
-            _context13.next = 10;
+            _context14.next = 10;
             break;
 
           case 9:
-            return _context13.abrupt("return", res.status(404).json({
+            return _context14.abrupt("return", res.status(404).json({
               message: "No existen expedientes con toyota value"
             }));
 
           case 10:
-            _context13.next = 16;
+            _context14.next = 16;
             break;
 
           case 12:
-            _context13.prev = 12;
-            _context13.t0 = _context13["catch"](1);
-            console.log(_context13.t0);
-            return _context13.abrupt("return", res.status(503).json({
-              message: _context13.t0.message
+            _context14.prev = 12;
+            _context14.t0 = _context14["catch"](1);
+            console.log(_context14.t0);
+            return _context14.abrupt("return", res.status(503).json({
+              message: _context14.t0.message
             }));
 
           case 16:
           case "end":
-            return _context13.stop();
+            return _context14.stop();
         }
       }
-    }, _callee13, null, [[1, 12]]);
+    }, _callee14, null, [[1, 12]]);
   }));
 
-  return function (_x25, _x26) {
-    return _ref13.apply(this, arguments);
+  return function (_x27, _x28) {
+    return _ref14.apply(this, arguments);
   };
 }();
 
 fileController.getFilesByImporteAccesorios = /*#__PURE__*/function () {
-  var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(req, res) {
+  var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15(req, res) {
     var _req$body11, sucursalE, start, end, query;
 
-    return _regeneratorRuntime().wrap(function _callee14$(_context14) {
+    return _regeneratorRuntime().wrap(function _callee15$(_context15) {
       while (1) {
-        switch (_context14.prev = _context14.next) {
+        switch (_context15.prev = _context15.next) {
           case 0:
             _req$body11 = req.body, sucursalE = _req$body11.sucursalE, start = _req$body11.start, end = _req$body11.end;
-            _context14.prev = 1;
-            _context14.next = 4;
+            _context15.prev = 1;
+            _context15.next = 4;
             return _Sale.default.find({
               $expr: {
                 $gt: [{
@@ -2434,10 +2569,10 @@ fileController.getFilesByImporteAccesorios = /*#__PURE__*/function () {
             });
 
           case 4:
-            query = _context14.sent;
+            query = _context15.sent;
 
             if (!(query.length > 0)) {
-              _context14.next = 9;
+              _context15.next = 9;
               break;
             }
 
@@ -2445,36 +2580,36 @@ fileController.getFilesByImporteAccesorios = /*#__PURE__*/function () {
               total: query.length,
               all: query
             });
-            _context14.next = 10;
+            _context15.next = 10;
             break;
 
           case 9:
-            return _context14.abrupt("return", res.status(404).json({
+            return _context15.abrupt("return", res.status(404).json({
               message: "No existe expedientes con accesorios"
             }));
 
           case 10:
-            _context14.next = 16;
+            _context15.next = 16;
             break;
 
           case 12:
-            _context14.prev = 12;
-            _context14.t0 = _context14["catch"](1);
-            console.log(_context14.t0);
-            return _context14.abrupt("return", res.status(503).json({
-              message: _context14.t0.message
+            _context15.prev = 12;
+            _context15.t0 = _context15["catch"](1);
+            console.log(_context15.t0);
+            return _context15.abrupt("return", res.status(503).json({
+              message: _context15.t0.message
             }));
 
           case 16:
           case "end":
-            return _context14.stop();
+            return _context15.stop();
         }
       }
-    }, _callee14, null, [[1, 12]]);
+    }, _callee15, null, [[1, 12]]);
   }));
 
-  return function (_x27, _x28) {
-    return _ref14.apply(this, arguments);
+  return function (_x29, _x30) {
+    return _ref15.apply(this, arguments);
   };
 }();
 

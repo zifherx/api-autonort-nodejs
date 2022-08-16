@@ -37,6 +37,8 @@ var _User = _interopRequireDefault(require("../models/User"));
 
 var _EstadoListaEspera = _interopRequireDefault(require("../models/EstadoListaEspera"));
 
+var _Seller = _interopRequireDefault(require("../models/Seller"));
+
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator.return && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, catch: function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
 
 var listaEsperaController = {};
@@ -75,6 +77,9 @@ listaEsperaController.getAll = /*#__PURE__*/function () {
             }).populate({
               path: "cliente",
               select: "name document cellphone email"
+            }).populate({
+              path: "vendedor",
+              select: "name document avatar"
             }).populate({
               path: "anio_primer_abono",
               select: "name"
@@ -214,6 +219,9 @@ listaEsperaController.getOneById = /*#__PURE__*/function () {
               path: "cliente",
               select: "name document cellphone email"
             }).populate({
+              path: "vendedor",
+              select: "name document avatar"
+            }).populate({
               path: "anio_primer_abono",
               select: "name"
             }).populate({
@@ -319,13 +327,13 @@ listaEsperaController.getOneById = /*#__PURE__*/function () {
 
 listaEsperaController.createOne = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var _req$body, cod_interno, sucursal, sucursalE, vehiculo, colorE, cantidad, orden, cliente, anio_primer_abono, mes_primer_abono, grupo_abonos, precio_venta_final, tipo_venta, financiera, plan_maf, fecha_carta_aprobacion, inicial, solicitudMAF, cuenta_epdp, avance_pago_contado, avance_pago_credito, cumple_politica, createdBy, obj, sucursalFound, vehiculoFound, colorFound, customerFound, anioFound, mesFound, tipoVentaFound, financieraFound, planMAFFound, solicitudMAFFound, userFound, query;
+    var _req$body, cod_interno, sucursal, sucursalE, vehiculo, colorE, cantidad, orden, cliente, vendedor, anio_primer_abono, mes_primer_abono, grupo_abonos, precio_venta_final, tipo_venta, financiera, plan_maf, fecha_carta_aprobacion, inicial, solicitudMAF, cuenta_epdp, avance_pago_contado, avance_pago_credito, cumple_politica, createdBy, obj, sucursalFound, vehiculoFound, colorFound, customerFound, sellerFound, anioFound, mesFound, tipoVentaFound, financieraFound, planMAFFound, solicitudMAFFound, userFound, query;
 
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _req$body = req.body, cod_interno = _req$body.cod_interno, sucursal = _req$body.sucursal, sucursalE = _req$body.sucursalE, vehiculo = _req$body.vehiculo, colorE = _req$body.colorE, cantidad = _req$body.cantidad, orden = _req$body.orden, cliente = _req$body.cliente, anio_primer_abono = _req$body.anio_primer_abono, mes_primer_abono = _req$body.mes_primer_abono, grupo_abonos = _req$body.grupo_abonos, precio_venta_final = _req$body.precio_venta_final, tipo_venta = _req$body.tipo_venta, financiera = _req$body.financiera, plan_maf = _req$body.plan_maf, fecha_carta_aprobacion = _req$body.fecha_carta_aprobacion, inicial = _req$body.inicial, solicitudMAF = _req$body.solicitudMAF, cuenta_epdp = _req$body.cuenta_epdp, avance_pago_contado = _req$body.avance_pago_contado, avance_pago_credito = _req$body.avance_pago_credito, cumple_politica = _req$body.cumple_politica, createdBy = _req$body.createdBy;
+            _req$body = req.body, cod_interno = _req$body.cod_interno, sucursal = _req$body.sucursal, sucursalE = _req$body.sucursalE, vehiculo = _req$body.vehiculo, colorE = _req$body.colorE, cantidad = _req$body.cantidad, orden = _req$body.orden, cliente = _req$body.cliente, vendedor = _req$body.vendedor, anio_primer_abono = _req$body.anio_primer_abono, mes_primer_abono = _req$body.mes_primer_abono, grupo_abonos = _req$body.grupo_abonos, precio_venta_final = _req$body.precio_venta_final, tipo_venta = _req$body.tipo_venta, financiera = _req$body.financiera, plan_maf = _req$body.plan_maf, fecha_carta_aprobacion = _req$body.fecha_carta_aprobacion, inicial = _req$body.inicial, solicitudMAF = _req$body.solicitudMAF, cuenta_epdp = _req$body.cuenta_epdp, avance_pago_contado = _req$body.avance_pago_contado, avance_pago_credito = _req$body.avance_pago_credito, cumple_politica = _req$body.cumple_politica, createdBy = _req$body.createdBy;
             _context3.prev = 1;
             // const codTdpFound = Vehicle.findOne({cod_tdp: vehiculo});
             // const countOrder = ListaEspera.find({vehicle: codTdpFound._id}).countDocuments();
@@ -424,15 +432,34 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
           case 26:
             obj.cliente = customerFound._id;
             _context3.next = 29;
+            return _Seller.default.findOne({
+              name: vendedor
+            });
+
+          case 29:
+            sellerFound = _context3.sent;
+
+            if (sellerFound) {
+              _context3.next = 32;
+              break;
+            }
+
+            return _context3.abrupt("return", res.status(404).json({
+              message: "Vendedor ".concat(vendedor, " no encontrado")
+            }));
+
+          case 32:
+            obj.vendedor = sellerFound._id;
+            _context3.next = 35;
             return _Anio.default.findOne({
               name: anio_primer_abono
             });
 
-          case 29:
+          case 35:
             anioFound = _context3.sent;
 
             if (anioFound) {
-              _context3.next = 32;
+              _context3.next = 38;
               break;
             }
 
@@ -440,18 +467,18 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Anio ".concat(anio_primer_abono, " no encontrado")
             }));
 
-          case 32:
+          case 38:
             obj.anio_primer_abono = anioFound._id;
-            _context3.next = 35;
+            _context3.next = 41;
             return _Mes.default.findOne({
               name: mes_primer_abono
             });
 
-          case 35:
+          case 41:
             mesFound = _context3.sent;
 
             if (mesFound) {
-              _context3.next = 38;
+              _context3.next = 44;
               break;
             }
 
@@ -459,18 +486,18 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Mes ".concat(mes_primer_abono, " no encontrado")
             }));
 
-          case 38:
+          case 44:
             obj.mes_primer_abono = mesFound._id;
-            _context3.next = 41;
+            _context3.next = 47;
             return _Financiamiento.default.findOne({
               name: tipo_venta
             });
 
-          case 41:
+          case 47:
             tipoVentaFound = _context3.sent;
 
             if (tipoVentaFound) {
-              _context3.next = 44;
+              _context3.next = 50;
               break;
             }
 
@@ -478,29 +505,29 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Tipo Venta ".concat(tipo_venta, " no encontrado")
             }));
 
-          case 44:
+          case 50:
             obj.tipo_venta = tipoVentaFound._id;
 
             if (!(financiera == null || financiera == undefined)) {
-              _context3.next = 49;
+              _context3.next = 55;
               break;
             }
 
             obj.financiera = null;
-            _context3.next = 55;
+            _context3.next = 61;
             break;
 
-          case 49:
-            _context3.next = 51;
+          case 55:
+            _context3.next = 57;
             return _Banco.default.findOne({
               name: financiera
             });
 
-          case 51:
+          case 57:
             financieraFound = _context3.sent;
 
             if (financieraFound) {
-              _context3.next = 54;
+              _context3.next = 60;
               break;
             }
 
@@ -508,30 +535,30 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Financiera ".concat(financiera, " no encontrada")
             }));
 
-          case 54:
+          case 60:
             obj.financiera = financieraFound._id;
 
-          case 55:
+          case 61:
             if (!(plan_maf == null || plan_maf == undefined)) {
-              _context3.next = 59;
+              _context3.next = 65;
               break;
             }
 
             obj.plan_maf = null;
-            _context3.next = 65;
+            _context3.next = 71;
             break;
 
-          case 59:
-            _context3.next = 61;
+          case 65:
+            _context3.next = 67;
             return _PlanMAF.default.findOne({
               name: plan_maf
             });
 
-          case 61:
+          case 67:
             planMAFFound = _context3.sent;
 
             if (planMAFFound) {
-              _context3.next = 64;
+              _context3.next = 70;
               break;
             }
 
@@ -539,30 +566,30 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Plan MAF ".concat(plan_maf, " no encontrado")
             }));
 
-          case 64:
+          case 70:
             obj.plan_maf = planMAFFound._id;
 
-          case 65:
+          case 71:
             if (!(solicitudMAF == null || solicitudMAF == undefined)) {
-              _context3.next = 69;
+              _context3.next = 75;
               break;
             }
 
             obj.solicitudMAF = null;
-            _context3.next = 75;
+            _context3.next = 81;
             break;
 
-          case 69:
-            _context3.next = 71;
+          case 75:
+            _context3.next = 77;
             return _Maf.default.findOne({
               name: solicitudMAF
             });
 
-          case 71:
+          case 77:
             solicitudMAFFound = _context3.sent;
 
             if (solicitudMAFFound) {
-              _context3.next = 74;
+              _context3.next = 80;
               break;
             }
 
@@ -570,20 +597,20 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Solicitud MAF ".concat(solicitudMAF, " no encontrada")
             }));
 
-          case 74:
+          case 80:
             obj.solicitudMAF = solicitudMAFFound._id;
 
-          case 75:
-            _context3.next = 77;
+          case 81:
+            _context3.next = 83;
             return _User.default.findOne({
               username: createdBy
             });
 
-          case 77:
+          case 83:
             userFound = _context3.sent;
 
             if (userFound) {
-              _context3.next = 80;
+              _context3.next = 86;
               break;
             }
 
@@ -591,12 +618,12 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               message: "Usuario ".concat(createdBy, " no encontrado")
             }));
 
-          case 80:
+          case 86:
             obj.createdBy = userFound._id;
-            _context3.next = 83;
+            _context3.next = 89;
             return obj.save();
 
-          case 83:
+          case 89:
             query = _context3.sent;
 
             if (query) {
@@ -605,23 +632,23 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
               });
             }
 
-            _context3.next = 91;
+            _context3.next = 97;
             break;
 
-          case 87:
-            _context3.prev = 87;
+          case 93:
+            _context3.prev = 93;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
             return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
             }));
 
-          case 91:
+          case 97:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 87]]);
+    }, _callee3, null, [[1, 93]]);
   }));
 
   return function (_x5, _x6) {
@@ -631,13 +658,13 @@ listaEsperaController.createOne = /*#__PURE__*/function () {
 
 listaEsperaController.updateOneById = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var _req$body2, sucursal, sucursalE, orden, cliente, vehiculo, cantidad, colorE, precio_venta_final, tipo_venta, financiera, plan_maf, fecha_carta_aprobacion, inicial, grupo_abonos, cuenta_epdp, avance_pago_contado, avance_pago_credito, cumple_politica, itemId, itemNullF, itemNullPM, sucursalFound, vehiculoFound, customerFound, tipoVentaFound, colorFound, financieraFound, planMAFFound, query;
+    var _req$body2, sucursal, sucursalE, orden, cliente, vendedor, vehiculo, cantidad, colorE, precio_venta_final, tipo_venta, financiera, plan_maf, fecha_carta_aprobacion, inicial, grupo_abonos, cuenta_epdp, avance_pago_contado, avance_pago_credito, cumple_politica, itemId, itemNullF, itemNullPM, sucursalFound, vehiculoFound, customerFound, sellerFound, tipoVentaFound, colorFound, financieraFound, planMAFFound, query;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body2 = req.body, sucursal = _req$body2.sucursal, sucursalE = _req$body2.sucursalE, orden = _req$body2.orden, cliente = _req$body2.cliente, vehiculo = _req$body2.vehiculo, cantidad = _req$body2.cantidad, colorE = _req$body2.colorE, precio_venta_final = _req$body2.precio_venta_final, tipo_venta = _req$body2.tipo_venta, financiera = _req$body2.financiera, plan_maf = _req$body2.plan_maf, fecha_carta_aprobacion = _req$body2.fecha_carta_aprobacion, inicial = _req$body2.inicial, grupo_abonos = _req$body2.grupo_abonos, cuenta_epdp = _req$body2.cuenta_epdp, avance_pago_contado = _req$body2.avance_pago_contado, avance_pago_credito = _req$body2.avance_pago_credito, cumple_politica = _req$body2.cumple_politica;
+            _req$body2 = req.body, sucursal = _req$body2.sucursal, sucursalE = _req$body2.sucursalE, orden = _req$body2.orden, cliente = _req$body2.cliente, vendedor = _req$body2.vendedor, vehiculo = _req$body2.vehiculo, cantidad = _req$body2.cantidad, colorE = _req$body2.colorE, precio_venta_final = _req$body2.precio_venta_final, tipo_venta = _req$body2.tipo_venta, financiera = _req$body2.financiera, plan_maf = _req$body2.plan_maf, fecha_carta_aprobacion = _req$body2.fecha_carta_aprobacion, inicial = _req$body2.inicial, grupo_abonos = _req$body2.grupo_abonos, cuenta_epdp = _req$body2.cuenta_epdp, avance_pago_contado = _req$body2.avance_pago_contado, avance_pago_credito = _req$body2.avance_pago_credito, cumple_politica = _req$body2.cumple_politica;
             itemId = req.params.itemId;
             itemNullF = null;
             itemNullPM = null;
@@ -698,15 +725,33 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
 
           case 21:
             _context4.next = 23;
+            return _Seller.default.findOne({
+              name: vendedor
+            });
+
+          case 23:
+            sellerFound = _context4.sent;
+
+            if (sellerFound) {
+              _context4.next = 26;
+              break;
+            }
+
+            return _context4.abrupt("return", res.status(404).json({
+              message: "Vendedor ".concat(vendedor, " no encontrado")
+            }));
+
+          case 26:
+            _context4.next = 28;
             return _Financiamiento.default.findOne({
               name: tipo_venta
             });
 
-          case 23:
+          case 28:
             tipoVentaFound = _context4.sent;
 
             if (tipoVentaFound) {
-              _context4.next = 26;
+              _context4.next = 31;
               break;
             }
 
@@ -714,19 +759,19 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Tipo Venta ".concat(tipo_venta, " no encontrado")
             }));
 
-          case 26:
-            _context4.next = 28;
+          case 31:
+            _context4.next = 33;
             return _Colores.default.find({
               name: {
                 $in: colorE
               }
             });
 
-          case 28:
+          case 33:
             colorFound = _context4.sent;
 
             if (colorFound) {
-              _context4.next = 31;
+              _context4.next = 36;
               break;
             }
 
@@ -734,27 +779,27 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Color ".concat(colorE, " no encontrado")
             }));
 
-          case 31:
+          case 36:
             if (!(financiera == null || financiera == undefined)) {
-              _context4.next = 35;
+              _context4.next = 40;
               break;
             }
 
             itemNullF = null;
-            _context4.next = 41;
+            _context4.next = 46;
             break;
 
-          case 35:
-            _context4.next = 37;
+          case 40:
+            _context4.next = 42;
             return _Banco.default.findOne({
               name: financiera
             });
 
-          case 37:
+          case 42:
             financieraFound = _context4.sent;
 
             if (financieraFound) {
-              _context4.next = 40;
+              _context4.next = 45;
               break;
             }
 
@@ -762,30 +807,30 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Financiera ".concat(financiera, " no encontrada")
             }));
 
-          case 40:
+          case 45:
             itemNullF = financieraFound._id;
 
-          case 41:
+          case 46:
             if (!(plan_maf == null || plan_maf == undefined)) {
-              _context4.next = 45;
+              _context4.next = 50;
               break;
             }
 
             itemNullPM = null;
-            _context4.next = 51;
+            _context4.next = 56;
             break;
 
-          case 45:
-            _context4.next = 47;
+          case 50:
+            _context4.next = 52;
             return _PlanMAF.default.findOne({
               name: plan_maf
             });
 
-          case 47:
+          case 52:
             planMAFFound = _context4.sent;
 
             if (planMAFFound) {
-              _context4.next = 50;
+              _context4.next = 55;
               break;
             }
 
@@ -793,16 +838,17 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Plan MAF ".concat(plan_maf, " no encontrado")
             }));
 
-          case 50:
+          case 55:
             itemNullPM = planMAFFound._id;
 
-          case 51:
-            _context4.next = 53;
+          case 56:
+            _context4.next = 58;
             return _ListaEspera.default.findByIdAndUpdate(itemId, {
               sucursal: sucursal,
               sucursalE: sucursalFound._id,
               orden: orden,
               cliente: customerFound._id,
+              vendedor: sellerFound._id,
               vehiculo: vehiculoFound._id,
               cantidad: cantidad,
               colorE: colorFound.map(function (a) {
@@ -821,7 +867,7 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               cumple_politica: cumple_politica
             });
 
-          case 53:
+          case 58:
             query = _context4.sent;
 
             if (query) {
@@ -834,23 +880,23 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 61;
+            _context4.next = 66;
             break;
 
-          case 57:
-            _context4.prev = 57;
+          case 62:
+            _context4.prev = 62;
             _context4.t0 = _context4["catch"](5);
             console.log(_context4.t0);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
             }));
 
-          case 61:
+          case 66:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[5, 57]]);
+    }, _callee4, null, [[5, 62]]);
   }));
 
   return function (_x7, _x8) {
@@ -1044,6 +1090,169 @@ listaEsperaController.getCountClientByVehicle = /*#__PURE__*/function () {
 
   return function (_x13, _x14) {
     return _ref7.apply(this, arguments);
+  };
+}();
+
+listaEsperaController.getListaBySeller = /*#__PURE__*/function () {
+  var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+    var vendedor, sellerFound, query;
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            vendedor = req.body.vendedor;
+            _context8.prev = 1;
+            _context8.next = 4;
+            return _Seller.default.findOne({
+              name: vendedor
+            });
+
+          case 4:
+            sellerFound = _context8.sent;
+
+            if (sellerFound) {
+              _context8.next = 7;
+              break;
+            }
+
+            return _context8.abrupt("return", res.status(404).json({
+              message: "Vendedor ".concat(vendedor, " no encontrado")
+            }));
+
+          case 7:
+            _context8.next = 9;
+            return _ListaEspera.default.find({
+              vendedor: sellerFound._id
+            }).sort({
+              mes_primer_abono: -1
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "vehiculo",
+              select: "chasis model cod_tdp version",
+              populate: [{
+                path: "chasis",
+                select: "name"
+              }, {
+                path: "model",
+                select: "name avatar marca",
+                populate: {
+                  path: "marca",
+                  select: "name avatar"
+                }
+              }]
+            }).populate({
+              path: "colorE",
+              select: "name"
+            }).populate({
+              path: "cliente",
+              select: "name document cellphone email"
+            }).populate({
+              path: "vendedor",
+              select: "name document avatar"
+            }).populate({
+              path: "anio_primer_abono",
+              select: "name"
+            }).populate({
+              path: "mes_primer_abono",
+              select: "name"
+            }).populate({
+              path: "tipo_venta",
+              select: "name"
+            }).populate({
+              path: "financiera",
+              select: "name avatar"
+            }).populate({
+              path: "plan_maf",
+              select: "name"
+            }).populate({
+              path: "solicitudMAF",
+              select: "nro_solicitud fecha_ingreso sucursalE customer cuota_inicial seller car estadoSolicitudMAF fecha_aprobacion carta_evidencia",
+              populate: [{
+                path: "sucursalE",
+                select: "name"
+              }, {
+                path: "customer",
+                select: "name document cellphone email"
+              }, {
+                path: "seller",
+                select: "name document sucursalE marcaE",
+                populate: [{
+                  path: "sucursalE",
+                  select: "name"
+                }, {
+                  path: "marcaE",
+                  select: "name avatar"
+                }]
+              }, {
+                path: "car",
+                select: "chasis model cod_tdp version",
+                populate: [{
+                  path: "chasis",
+                  select: "name"
+                }, {
+                  path: "model",
+                  select: "name avatar marca",
+                  populate: {
+                    path: "marca",
+                    select: "name avatar"
+                  }
+                }]
+              }, {
+                path: "estadoSolicitudMAF",
+                select: "name"
+              }]
+            }).populate({
+              path: "createdBy",
+              select: "name username"
+            }).populate({
+              path: "updatedBy",
+              select: "name username"
+            });
+
+          case 9:
+            query = _context8.sent;
+
+            if (!(query.length > 0)) {
+              _context8.next = 14;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              all: query
+            });
+            _context8.next = 15;
+            break;
+
+          case 14:
+            return _context8.abrupt("return", res.status(404).json({
+              message: "Vendedor ".concat(vendedor, " no cuenta con lista de espera")
+            }));
+
+          case 15:
+            _context8.next = 21;
+            break;
+
+          case 17:
+            _context8.prev = 17;
+            _context8.t0 = _context8["catch"](1);
+            console.log(_context8.t0);
+            return _context8.abrupt("return", res.status(503).json({
+              message: _context8.t0.message
+            }));
+
+          case 21:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8, null, [[1, 17]]);
+  }));
+
+  return function (_x15, _x16) {
+    return _ref8.apply(this, arguments);
   };
 }();
 

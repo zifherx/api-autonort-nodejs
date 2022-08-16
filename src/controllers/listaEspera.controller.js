@@ -11,6 +11,7 @@ import PlanMAF from "../models/PlanMAF";
 import Maf from "../models/Maf";
 import User from "../models/User";
 import EstadoListaEspera from "../models/EstadoListaEspera";
+import Seller from "../models/Seller";
 
 const listaEsperaController = {};
 
@@ -47,6 +48,10 @@ listaEsperaController.getAll = async (req, res) => {
             .populate({
                 path: "cliente",
                 select: "name document cellphone email",
+            })
+            .populate({
+                path: "vendedor",
+                select: "name document avatar",
             })
             .populate({
                 path: "anio_primer_abono",
@@ -174,6 +179,10 @@ listaEsperaController.getOneById = async (req, res) => {
                 select: "name document cellphone email",
             })
             .populate({
+                path: "vendedor",
+                select: "name document avatar",
+            })
+            .populate({
                 path: "anio_primer_abono",
                 select: "name",
             })
@@ -273,6 +282,7 @@ listaEsperaController.createOne = async (req, res) => {
         cantidad,
         orden,
         cliente,
+        vendedor,
         anio_primer_abono,
         mes_primer_abono,
         grupo_abonos,
@@ -324,6 +334,10 @@ listaEsperaController.createOne = async (req, res) => {
         const customerFound = await Customer.findOne({ name: cliente });
         if (!customerFound) return res.status(404).json({ message: `Cliente ${cliente} no encontrado` });
         obj.cliente = customerFound._id;
+
+        const sellerFound = await Seller.findOne({ name: vendedor });
+        if (!sellerFound) return res.status(404).json({ message: `Vendedor ${vendedor} no encontrado` });
+        obj.vendedor = sellerFound._id;
 
         const anioFound = await Anio.findOne({ name: anio_primer_abono });
         if (!anioFound) return res.status(404).json({ message: `Anio ${anio_primer_abono} no encontrado` });
@@ -382,6 +396,7 @@ listaEsperaController.updateOneById = async (req, res) => {
         sucursalE,
         orden,
         cliente,
+        vendedor,
         vehiculo,
         cantidad,
         colorE,
@@ -413,6 +428,9 @@ listaEsperaController.updateOneById = async (req, res) => {
         const customerFound = await Customer.findOne({ name: cliente });
         if (!customerFound) return res.status(404).json({ message: `Cliente ${cliente} no encontrado` });
 
+        const sellerFound = await Seller.findOne({ name: vendedor });
+        if (!sellerFound) return res.status(404).json({ message: `Vendedor ${vendedor} no encontrado` });
+
         const tipoVentaFound = await Financiamiento.findOne({ name: tipo_venta });
         if (!tipoVentaFound) return res.status(404).json({ message: `Tipo Venta ${tipo_venta} no encontrado` });
 
@@ -440,6 +458,7 @@ listaEsperaController.updateOneById = async (req, res) => {
             sucursalE: sucursalFound._id,
             orden,
             cliente: customerFound._id,
+            vendedor: sellerFound._id,
             vehiculo: vehiculoFound._id,
             cantidad,
             colorE: colorFound.map((a) => a._id),
@@ -453,7 +472,7 @@ listaEsperaController.updateOneById = async (req, res) => {
             cuenta_epdp,
             avance_pago_contado,
             avance_pago_credito,
-            cumple_politica
+            cumple_politica,
         });
 
         if (query) {
@@ -509,10 +528,143 @@ listaEsperaController.getCountClientByVehicle = async (req, res) => {
         const vehicleFound = await Vehicle.findOne({ cod_tdp });
         if (!vehicleFound) return res.status(404).json({ message: `Código ${cod_tdp} no encontrado` });
 
-        const clientsFound = await ListaEspera.find({ vehiculo: vehicleFound._id, orden: { $ne: 0} }).countDocuments();
+        const clientsFound = await ListaEspera.find({ vehiculo: vehicleFound._id, orden: { $ne: 0 } }).countDocuments();
 
         if (clientsFound >= 0) {
             res.json({ total: clientsFound });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+listaEsperaController.getListaBySeller = async (req, res) => {
+    const { vendedor } = req.body;
+
+    try {
+        const sellerFound = await Seller.findOne({ name: vendedor });
+        if (!sellerFound) return res.status(404).json({ message: `Vendedor ${vendedor} no encontrado` });
+
+        const query = await ListaEspera.find({ vendedor: sellerFound._id })
+            .sort({ mes_primer_abono: -1 })
+            .populate({
+                path: "sucursalE",
+                select: "name",
+            })
+            .populate({
+                path: "vehiculo",
+                select: "chasis model cod_tdp version",
+                populate: [
+                    {
+                        path: "chasis",
+                        select: "name",
+                    },
+                    {
+                        path: "model",
+                        select: "name avatar marca",
+                        populate: {
+                            path: "marca",
+                            select: "name avatar",
+                        },
+                    },
+                ],
+            })
+            .populate({
+                path: "colorE",
+                select: "name",
+            })
+            .populate({
+                path: "cliente",
+                select: "name document cellphone email",
+            })
+            .populate({
+                path: "vendedor",
+                select: "name document avatar",
+            })
+            .populate({
+                path: "anio_primer_abono",
+                select: "name",
+            })
+            .populate({
+                path: "mes_primer_abono",
+                select: "name",
+            })
+            .populate({
+                path: "tipo_venta",
+                select: "name",
+            })
+            .populate({
+                path: "financiera",
+                select: "name avatar",
+            })
+            .populate({
+                path: "plan_maf",
+                select: "name",
+            })
+            .populate({
+                path: "solicitudMAF",
+                select: "nro_solicitud fecha_ingreso sucursalE customer cuota_inicial seller car estadoSolicitudMAF fecha_aprobacion carta_evidencia",
+                populate: [
+                    {
+                        path: "sucursalE",
+                        select: "name",
+                    },
+                    {
+                        path: "customer",
+                        select: "name document cellphone email",
+                    },
+                    {
+                        path: "seller",
+                        select: "name document sucursalE marcaE",
+                        populate: [
+                            {
+                                path: "sucursalE",
+                                select: "name",
+                            },
+                            {
+                                path: "marcaE",
+                                select: "name avatar",
+                            },
+                        ],
+                    },
+                    {
+                        path: "car",
+                        select: "chasis model cod_tdp version",
+                        populate: [
+                            {
+                                path: "chasis",
+                                select: "name",
+                            },
+                            {
+                                path: "model",
+                                select: "name avatar marca",
+                                populate: {
+                                    path: "marca",
+                                    select: "name avatar",
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        path: "estadoSolicitudMAF",
+                        select: "name",
+                    },
+                ],
+            })
+            .populate({
+                path: "createdBy",
+                select: "name username",
+            })
+            .populate({
+                path: "updatedBy",
+                select: "name username",
+            });
+
+        if (query.length > 0) {
+            res.json({ total: query.length, all: query });
+        } else {
+            return res.status(404).json({ message: `Vendedor ${vendedor} no cuenta con lista de espera` });
         }
     } catch (err) {
         console.log(err);

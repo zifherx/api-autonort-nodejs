@@ -9,6 +9,7 @@ const userSchema = new Schema({
     password: { type: String, required: true },
     sucursal: { type: String },
     sucursalE: { type: Schema.Types.ObjectId, ref: 'Sucursal'},
+    sedeAcargo: [ {type: Schema.Types.ObjectId, ref: 'Sucursal'}],
     direccion: { type: String },
     pais: { type: String },
     codigo_postal: { type: String },

@@ -7,6 +7,7 @@ const router = Router();
 router.get("/", filesCtrl.getAll);
 router.get("/:itemId", filesCtrl.getOneById);
 router.post("/by-estado", filesCtrl.getFilesByEstado);
+router.post("/by-seller", filesCtrl.getFilesByVendedor);
 router.post("/by-sucursal", filesCtrl.getFilesBySucursalyFecha);
 router.post('/by-tvalue', filesCtrl.getFilesByToyotaValue);
 router.post('/by-accesorios', filesCtrl.getFilesByImporteAccesorios);

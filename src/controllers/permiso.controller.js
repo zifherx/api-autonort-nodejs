@@ -65,6 +65,31 @@ permisoController.findBySubmodule = async (req, res) => {
     }
 }
 
+permisoController.findByCodigo = async (req, res) => {
+    const {codigo} = req.body;
+    try {
+
+        const query = await Permiso.findOne({cod_interno: codigo})
+        .populate({
+            path: 'submoduloG',
+            select: 'name'
+        })
+        .populate({
+            path: 'rolesPermitidos',
+            select: 'name descripcion'
+        });
+
+        if(query){
+            res.json({one: query});
+        }else{
+            return res.status(404).json({message: 'No existen permisos'});
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({message: err.message});   
+    }
+}
+
 permisoController.createOne = async(req, res) => {
     const {cod_interno, submoduloG, rolesPermitidos,estado} = req.body;
 

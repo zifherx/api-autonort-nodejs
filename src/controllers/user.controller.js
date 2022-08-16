@@ -14,6 +14,10 @@ userController.getAll = async(req, res) => {
                 select: 'name'
             })
             .populate({
+                path: 'sedeAcargo',
+                select: 'name'
+            })
+            .populate({
                 path: 'sucursalE',
                 select: 'name'
             });
@@ -36,6 +40,10 @@ userController.getAllActivos = async(req, res) => {
             .sort({ name: 1 })
             .populate({
                 path: 'roles',
+                select: 'name'
+            })
+            .populate({
+                path: 'sedeAcargo',
                 select: 'name'
             })
             .populate({
@@ -65,6 +73,10 @@ userController.getOneById = async(req, res) => {
             select: 'name'
         })
         .populate({
+            path: 'sedeAcargo',
+            select: 'name'
+        })
+        .populate({
             path: 'sucursalE',
             select: 'name'
         });
@@ -82,8 +94,7 @@ userController.getOneById = async(req, res) => {
 }
 
 userController.createOne = async(req, res) => {
-    const { name, username, password,sucursal, sucursalE, roles, estado } = req.body;
-    console.log(req.body);
+    const { name, username, password,sucursal, sucursalE,sedeAcargo, roles, estado } = req.body;
 
     try {
         const newUser = new User({
@@ -95,10 +106,12 @@ userController.createOne = async(req, res) => {
         });
 
         const sucursalFound = await Sucursal.findOne({name: sucursalE});
-        console.log('Sucursal Found:', sucursalFound);
         if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
-
         newUser.sucursalE = sucursalFound._id;
+        
+        const cargoFound = await Sucursal.find({name: {$in: sedeAcargo}});
+        if(!cargoFound) return res.status(404).json({message: `Sede ${sedeAcargo} no encontrada`});
+        newUser.sedeAcargo = cargoFound.map(a => a._id);
 
         if (roles) {
             const foundRoles = await Role.find({ name: { $in: roles } });
@@ -121,10 +134,8 @@ userController.createOne = async(req, res) => {
 
 userController.updateOneById = async(req, res) => {
     const { userId } = req.params;
-    const { name, username, sucursalE, email, phone, roles, estado } = req.body;
+    const { name, username, sucursalE, email, phone,sedeAcargo, roles, estado } = req.body;
     const avatar = req.file;
-
-    // console.log(req.body);
 
     try {
 
@@ -133,6 +144,9 @@ userController.updateOneById = async(req, res) => {
         const sucursalFound = await Sucursal.findOne({name: sucursalE});
         if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
         
+        const cargoFound = await Sucursal.find({name: {$in: sedeAcargo}});
+        if(!cargoFound) return res.status(404).json({message: `Sede ${sedeAcargo} no encontrada`});
+
         const roleFound = await Role.find({ name: { $in: roles } });
         if(!roleFound) return res.status(404).json({message: `Rol ${roles} no encontrado`});
 
@@ -142,6 +156,7 @@ userController.updateOneById = async(req, res) => {
                 name,
                 sucursalE: sucursalFound._id,
                 roles: roleFound.map(a => a._id),
+                sedeAcargo: cargoFound.map(a => a._id),
                 email, 
                 phone,
                 estado
@@ -151,6 +166,7 @@ userController.updateOneById = async(req, res) => {
                 username,
                 name,
                 sucursalE: sucursalFound._id,
+                sedeAcargo: cargoFound.map(a => a._id),
                 roles: roleFound.map(a => a._id),
                 avatar: avatar.location,
                 email, 
