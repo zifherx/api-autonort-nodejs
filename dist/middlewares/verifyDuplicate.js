@@ -1308,7 +1308,8 @@ var checkDuplicateTramite = /*#__PURE__*/function () {
 
           case 3:
             expediente = _context27.sent;
-            cod_exp = expediente._id;
+            cod_exp = expediente._id; // console.log('Expediente:', cod_exp);
+
             _context27.next = 7;
             return _Record.default.findOne({
               sales: cod_exp

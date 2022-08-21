@@ -304,6 +304,7 @@ export const checkDuplicateTramite = async(req, res, next) => {
 
     const expediente = await Sale.findOne({ nro_comprobante: sales });
     let cod_exp = expediente._id;
+    // console.log('Expediente:', cod_exp);
 
     const encontrado = await Record.findOne({ sales: cod_exp });
 
