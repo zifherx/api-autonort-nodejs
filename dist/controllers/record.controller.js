@@ -600,14 +600,14 @@ recordController.getAllBySucursal = /*#__PURE__*/function () {
 
 recordController.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var recordId, _req$body3, statusFile, estadoFileE, observaciones_file, isPendienteFirma, fechaPendienteFirma, isFirmado, fechaFirmado, isLegalizado, fechaLegalizado, isFinalizado, fechaFinalizado, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones_registros, motivo_observacion, num_placa, status_tarjeta, estadoRPE, fecha_entrega_file_recepcion, fecha_tramite_placa, status_placa, estadoAAPE, fecha_entrega_placa_recepcion, estadoRPNull, estadoAAPNull, query, estadoFileFound, estadoRPFound, estadoAAPFound;
+    var recordId, _req$body3, statusFile, estadoFileE, observaciones_file, isPendienteFirma, fechaPendienteFirma, isFirmado, fechaFirmado, isLegalizado, fechaLegalizado, isFinalizado, fechaFinalizado, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones_registros, motivo_observacion, num_placa, status_tarjeta, estadoRPE, fecha_entrega_file_recepcion, fecha_entrega_tarjeta_recepcion, fecha_entrega_tarjeta_cliente, fecha_tramite_placa, fecha_entrega_placa_recepcion, fecha_entrega_placa_cliente, status_placa, estadoAAPE, estadoRPNull, estadoAAPNull, query, estadoFileFound, estadoRPFound, estadoAAPFound;
 
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             recordId = req.params.recordId;
-            _req$body3 = req.body, statusFile = _req$body3.statusFile, estadoFileE = _req$body3.estadoFileE, observaciones_file = _req$body3.observaciones_file, isPendienteFirma = _req$body3.isPendienteFirma, fechaPendienteFirma = _req$body3.fechaPendienteFirma, isFirmado = _req$body3.isFirmado, fechaFirmado = _req$body3.fechaFirmado, isLegalizado = _req$body3.isLegalizado, fechaLegalizado = _req$body3.fechaLegalizado, isFinalizado = _req$body3.isFinalizado, fechaFinalizado = _req$body3.fechaFinalizado, fecha_ingreso_file = _req$body3.fecha_ingreso_file, hora_ingreso_file = _req$body3.hora_ingreso_file, num_titulo = _req$body3.num_titulo, codigo_verificacion = _req$body3.codigo_verificacion, observaciones_registros = _req$body3.observaciones_registros, motivo_observacion = _req$body3.motivo_observacion, num_placa = _req$body3.num_placa, status_tarjeta = _req$body3.status_tarjeta, estadoRPE = _req$body3.estadoRPE, fecha_entrega_file_recepcion = _req$body3.fecha_entrega_file_recepcion, fecha_tramite_placa = _req$body3.fecha_tramite_placa, status_placa = _req$body3.status_placa, estadoAAPE = _req$body3.estadoAAPE, fecha_entrega_placa_recepcion = _req$body3.fecha_entrega_placa_recepcion;
+            _req$body3 = req.body, statusFile = _req$body3.statusFile, estadoFileE = _req$body3.estadoFileE, observaciones_file = _req$body3.observaciones_file, isPendienteFirma = _req$body3.isPendienteFirma, fechaPendienteFirma = _req$body3.fechaPendienteFirma, isFirmado = _req$body3.isFirmado, fechaFirmado = _req$body3.fechaFirmado, isLegalizado = _req$body3.isLegalizado, fechaLegalizado = _req$body3.fechaLegalizado, isFinalizado = _req$body3.isFinalizado, fechaFinalizado = _req$body3.fechaFinalizado, fecha_ingreso_file = _req$body3.fecha_ingreso_file, hora_ingreso_file = _req$body3.hora_ingreso_file, num_titulo = _req$body3.num_titulo, codigo_verificacion = _req$body3.codigo_verificacion, observaciones_registros = _req$body3.observaciones_registros, motivo_observacion = _req$body3.motivo_observacion, num_placa = _req$body3.num_placa, status_tarjeta = _req$body3.status_tarjeta, estadoRPE = _req$body3.estadoRPE, fecha_entrega_file_recepcion = _req$body3.fecha_entrega_file_recepcion, fecha_entrega_tarjeta_recepcion = _req$body3.fecha_entrega_tarjeta_recepcion, fecha_entrega_tarjeta_cliente = _req$body3.fecha_entrega_tarjeta_cliente, fecha_tramite_placa = _req$body3.fecha_tramite_placa, fecha_entrega_placa_recepcion = _req$body3.fecha_entrega_placa_recepcion, fecha_entrega_placa_cliente = _req$body3.fecha_entrega_placa_cliente, status_placa = _req$body3.status_placa, estadoAAPE = _req$body3.estadoAAPE;
             estadoRPNull = null;
             estadoAAPNull = null;
             query = null;
@@ -714,10 +714,13 @@ recordController.updateOneById = /*#__PURE__*/function () {
               status_tarjeta: status_tarjeta,
               estadoRPE: estadoRPNull,
               fecha_entrega_file_recepcion: fecha_entrega_file_recepcion,
+              fecha_entrega_tarjeta_recepcion: fecha_entrega_tarjeta_recepcion,
+              fecha_entrega_tarjeta_cliente: fecha_entrega_tarjeta_cliente,
               fecha_tramite_placa: fecha_tramite_placa,
               status_placa: status_placa,
               estadoAAPE: estadoAAPNull,
-              fecha_entrega_placa_recepcion: fecha_entrega_placa_recepcion
+              fecha_entrega_placa_recepcion: fecha_entrega_placa_recepcion,
+              fecha_entrega_placa_cliente: fecha_entrega_placa_cliente
             });
 
           case 34:
@@ -1025,11 +1028,35 @@ recordController.countAllByStatus = /*#__PURE__*/function () {
         switch (_context8.prev = _context8.next) {
           case 0:
             _req$body5 = req.body, estado = _req$body5.estado, sucursalE = _req$body5.sucursalE, start = _req$body5.start, end = _req$body5.end;
-            _context8.prev = 1;
-            _context8.next = 4;
+            query = null;
+            _context8.prev = 2;
+
+            if (!(start == null || start == undefined || start == "")) {
+              _context8.next = 9;
+              break;
+            }
+
+            _context8.next = 6;
             return _Record.default.find({
               statusFile: {
-                $regex: '.*' + estado + '.*'
+                $regex: ".*" + estado + ".*"
+              },
+              sucursal_tramite: {
+                $regex: ".*" + sucursalE + ".*"
+              } // fecha_recepcion: { $gte: new Date(start), $lte: new Date(end) },
+
+            }).countDocuments();
+
+          case 6:
+            query = _context8.sent;
+            _context8.next = 12;
+            break;
+
+          case 9:
+            _context8.next = 11;
+            return _Record.default.find({
+              statusFile: {
+                $regex: ".*" + estado + ".*"
               },
               sucursal_tramite: {
                 $regex: ".*" + sucursalE + ".*"
@@ -1040,28 +1067,30 @@ recordController.countAllByStatus = /*#__PURE__*/function () {
               }
             }).countDocuments();
 
-          case 4:
+          case 11:
             query = _context8.sent;
+
+          case 12:
             if (query >= 0) res.json({
               total: query
             });
-            _context8.next = 12;
+            _context8.next = 19;
             break;
 
-          case 8:
-            _context8.prev = 8;
-            _context8.t0 = _context8["catch"](1);
+          case 15:
+            _context8.prev = 15;
+            _context8.t0 = _context8["catch"](2);
             console.log(_context8.t0);
             return _context8.abrupt("return", res.status(503).json({
               message: _context8.t0.message
             }));
 
-          case 12:
+          case 19:
           case "end":
             return _context8.stop();
         }
       }
-    }, _callee8, null, [[1, 8]]);
+    }, _callee8, null, [[2, 15]]);
   }));
 
   return function (_x15, _x16) {

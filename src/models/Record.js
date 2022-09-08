@@ -35,11 +35,14 @@ const recordSchema = new Schema(
 		observaciones_registros: { type: String },
 		motivo_observacion: { type: String },
 		num_placa: { type: String },
-		fecha_entrega_file_recepcion: { type: Date },
+		fecha_entrega_tarjeta_recepcion: { type: Date },
+		fecha_entrega_tarjeta_cliente: { type: Date },
+		estadoPlacaRotativa: {type: String},
 		//AAP
 		fecha_tramite_placa: { type: Date },
 		status_placa: { type: String },
 		fecha_entrega_placa_recepcion: { type: Date },
+		fecha_entrega_placa_cliente: { type: Date },
 		observaciones_aap: {type: String },
 		//Empleado
 		empleado: { ref: "User", type: Schema.Types.ObjectId },

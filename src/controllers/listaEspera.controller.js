@@ -416,7 +416,7 @@ listaEsperaController.updateOneById = async (req, res) => {
     let itemNullF = null;
     let itemNullPM = null;
 
-    console.log(req.body);
+    // console.log(req.body);
 
     try {
         const sucursalFound = await Sucursal.findOne({ name: sucursalE });
@@ -543,7 +543,7 @@ listaEsperaController.getListaBySeller = async (req, res) => {
     const { vendedor } = req.body;
 
     try {
-        const sellerFound = await Seller.findOne({ name: vendedor });
+        const sellerFound = await Seller.findOne({ username: vendedor });
         if (!sellerFound) return res.status(404).json({ message: `Vendedor ${vendedor} no encontrado` });
 
         const query = await ListaEspera.find({ vendedor: sellerFound._id })
@@ -665,6 +665,142 @@ listaEsperaController.getListaBySeller = async (req, res) => {
             res.json({ total: query.length, all: query });
         } else {
             return res.status(404).json({ message: `Vendedor ${vendedor} no cuenta con lista de espera` });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+listaEsperaController.getListaBySucursal = async (req, res) => {
+    const { sucursal } = req.body;
+    console.log(sucursal);
+
+    try {
+        const sucursalFound = await Sucursal.findOne({ name: sucursal });
+        console.log(sucursalFound);
+
+        const query = await ListaEspera.find({
+            $or: [{ sucursal: { $regex: ".*" + sucursal + ".*" } }, { sucursalE: sucursalFound._id }],
+        })
+            .sort({ mes_primer_abono: -1 })
+            .populate({
+                path: "sucursalE",
+                select: "name",
+            })
+            .populate({
+                path: "vehiculo",
+                select: "chasis model cod_tdp version",
+                populate: [
+                    {
+                        path: "chasis",
+                        select: "name",
+                    },
+                    {
+                        path: "model",
+                        select: "name avatar marca",
+                        populate: {
+                            path: "marca",
+                            select: "name avatar",
+                        },
+                    },
+                ],
+            })
+            .populate({
+                path: "colorE",
+                select: "name",
+            })
+            .populate({
+                path: "cliente",
+                select: "name document cellphone email",
+            })
+            .populate({
+                path: "vendedor",
+                select: "name document avatar",
+            })
+            .populate({
+                path: "anio_primer_abono",
+                select: "name",
+            })
+            .populate({
+                path: "mes_primer_abono",
+                select: "name",
+            })
+            .populate({
+                path: "tipo_venta",
+                select: "name",
+            })
+            .populate({
+                path: "financiera",
+                select: "name avatar",
+            })
+            .populate({
+                path: "plan_maf",
+                select: "name",
+            })
+            .populate({
+                path: "solicitudMAF",
+                select: "nro_solicitud fecha_ingreso sucursalE customer cuota_inicial seller car estadoSolicitudMAF fecha_aprobacion carta_evidencia",
+                populate: [
+                    {
+                        path: "sucursalE",
+                        select: "name",
+                    },
+                    {
+                        path: "customer",
+                        select: "name document cellphone email",
+                    },
+                    {
+                        path: "seller",
+                        select: "name document sucursalE marcaE",
+                        populate: [
+                            {
+                                path: "sucursalE",
+                                select: "name",
+                            },
+                            {
+                                path: "marcaE",
+                                select: "name avatar",
+                            },
+                        ],
+                    },
+                    {
+                        path: "car",
+                        select: "chasis model cod_tdp version",
+                        populate: [
+                            {
+                                path: "chasis",
+                                select: "name",
+                            },
+                            {
+                                path: "model",
+                                select: "name avatar marca",
+                                populate: {
+                                    path: "marca",
+                                    select: "name avatar",
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        path: "estadoSolicitudMAF",
+                        select: "name",
+                    },
+                ],
+            })
+            .populate({
+                path: "createdBy",
+                select: "name username",
+            })
+            .populate({
+                path: "updatedBy",
+                select: "name username",
+            });
+
+        if (query.length > 0) {
+            res.json({ total: query.length, all: query });
+        } else {
+            return res.status(404).json({ message: `Sucursal ${sucursal} no cuenta con lista de espera` });
         }
     } catch (err) {
         console.log(err);

@@ -110,8 +110,14 @@ var recordSchema = new _mongoose.Schema({
   num_placa: {
     type: String
   },
-  fecha_entrega_file_recepcion: {
+  fecha_entrega_tarjeta_recepcion: {
     type: Date
+  },
+  fecha_entrega_tarjeta_cliente: {
+    type: Date
+  },
+  estadoPlacaRotativa: {
+    type: String
   },
   //AAP
   fecha_tramite_placa: {
@@ -121,6 +127,9 @@ var recordSchema = new _mongoose.Schema({
     type: String
   },
   fecha_entrega_placa_recepcion: {
+    type: Date
+  },
+  fecha_entrega_placa_cliente: {
     type: Date
   },
   observaciones_aap: {

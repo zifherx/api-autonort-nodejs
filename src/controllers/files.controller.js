@@ -1125,89 +1125,173 @@ fileController.rankingFilesByUbicacion = async (req, res) => {
 
 fileController.getFilesByEstado = async (req, res) => {
     const { estado, tramite, sucursalE } = req.body;
+    let query = null;
 
     try {
-        const query = await Sale.find({
-            estatus_venta: { $regex: ".*" + estado + ".*" },
-            pasoaTramite: tramite,
-            sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
-        })
-            .sort({ fecha_cancelacion: -1 })
-            .populate({
-                path: "vendedor",
-                select: "name sucursal avatar",
+        if (tramite == null || tramite == undefined || tramite == "") {
+            query = await Sale.find({
+                estatus_venta: { $regex: ".*" + estado + ".*" },
+                sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
             })
-            .populate({
-                path: "auto",
-                select: "model version cod_tdp",
-                populate: {
-                    path: "model",
-                    select: "marca name avatar",
+                .sort({ fecha_cancelacion: -1 })
+                .populate({
+                    path: "vendedor",
+                    select: "name sucursal avatar",
+                })
+                .populate({
+                    path: "auto",
+                    select: "model version cod_tdp",
                     populate: {
-                        path: "marca",
-                        select: "name avatar",
+                        path: "model",
+                        select: "marca name avatar",
+                        populate: {
+                            path: "marca",
+                            select: "name avatar",
+                        },
                     },
-                },
+                })
+                .populate({
+                    path: "sucursalE",
+                    select: "name",
+                })
+                .populate({
+                    path: "colorE",
+                    select: "name",
+                })
+                .populate({
+                    path: "anioFabricacionE",
+                    select: "name",
+                })
+                .populate({
+                    path: "anioModeloE",
+                    select: "name",
+                })
+                .populate({
+                    path: "ubicacionVehiculoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "estadoVehiculoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "financiamientoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "bancoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "cliente",
+                    select: "name document",
+                })
+                .populate({
+                    path: "tipoOperacionE",
+                    select: "name document",
+                })
+                .populate({
+                    path: "tipoComprobanteE",
+                    select: "name document",
+                })
+                .populate({
+                    path: "estadoVentaE",
+                    select: "name document",
+                })
+                .populate({
+                    path: "estadoFacturacionE",
+                    select: "name document",
+                })
+                .populate("campanias")
+                .populate("adicional")
+                .populate("accesorios")
+                .populate({
+                    path: "empleado",
+                    select: "name username",
+                });
+        } else {
+            query = await Sale.find({
+                estatus_venta: { $regex: ".*" + estado + ".*" },
+                pasoaTramite: tramite,
+                sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
             })
-            .populate({
-                path: "sucursalE",
-                select: "name",
-            })
-            .populate({
-                path: "colorE",
-                select: "name",
-            })
-            .populate({
-                path: "anioFabricacionE",
-                select: "name",
-            })
-            .populate({
-                path: "anioModeloE",
-                select: "name",
-            })
-            .populate({
-                path: "ubicacionVehiculoE",
-                select: "name",
-            })
-            .populate({
-                path: "estadoVehiculoE",
-                select: "name",
-            })
-            .populate({
-                path: "financiamientoE",
-                select: "name",
-            })
-            .populate({
-                path: "bancoE",
-                select: "name",
-            })
-            .populate({
-                path: "cliente",
-                select: "name document",
-            })
-            .populate({
-                path: "tipoOperacionE",
-                select: "name document",
-            })
-            .populate({
-                path: "tipoComprobanteE",
-                select: "name document",
-            })
-            .populate({
-                path: "estadoVentaE",
-                select: "name document",
-            })
-            .populate({
-                path: "estadoFacturacionE",
-                select: "name document",
-            })
-            .populate("campanias")
-            .populate("adicional")
-            .populate("accesorios")
-            .populate({
-                path: "empleado",
-                select: "name username",
-            });
+                .sort({ fecha_cancelacion: -1 })
+                .populate({
+                    path: "vendedor",
+                    select: "name sucursal avatar",
+                })
+                .populate({
+                    path: "auto",
+                    select: "model version cod_tdp",
+                    populate: {
+                        path: "model",
+                        select: "marca name avatar",
+                        populate: {
+                            path: "marca",
+                            select: "name avatar",
+                        },
+                    },
+                })
+                .populate({
+                    path: "sucursalE",
+                    select: "name",
+                })
+                .populate({
+                    path: "colorE",
+                    select: "name",
+                })
+                .populate({
+                    path: "anioFabricacionE",
+                    select: "name",
+                })
+                .populate({
+                    path: "anioModeloE",
+                    select: "name",
+                })
+                .populate({
+                    path: "ubicacionVehiculoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "estadoVehiculoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "financiamientoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "bancoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "cliente",
+                    select: "name document",
+                })
+                .populate({
+                    path: "tipoOperacionE",
+                    select: "name document",
+                })
+                .populate({
+                    path: "tipoComprobanteE",
+                    select: "name document",
+                })
+                .populate({
+                    path: "estadoVentaE",
+                    select: "name document",
+                })
+                .populate({
+                    path: "estadoFacturacionE",
+                    select: "name document",
+                })
+                .populate("campanias")
+                .populate("adicional")
+                .populate("accesorios")
+                .populate({
+                    path: "empleado",
+                    select: "name username",
+                });
+        }
 
         if (query.length > 0) {
             res.json({ total: query.length, all: query });

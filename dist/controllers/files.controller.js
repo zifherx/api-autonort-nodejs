@@ -2177,8 +2177,89 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
         switch (_context11.prev = _context11.next) {
           case 0:
             _req$body7 = req.body, estado = _req$body7.estado, tramite = _req$body7.tramite, sucursalE = _req$body7.sucursalE;
-            _context11.prev = 1;
-            _context11.next = 4;
+            query = null;
+            _context11.prev = 2;
+
+            if (!(tramite == null || tramite == undefined || tramite == "")) {
+              _context11.next = 9;
+              break;
+            }
+
+            _context11.next = 6;
+            return _Sale.default.find({
+              estatus_venta: {
+                $regex: ".*" + estado + ".*"
+              },
+              sucursal_venta: {
+                $regex: ".*" + sucursalE + ".*"
+              }
+            }).sort({
+              fecha_cancelacion: -1
+            }).populate({
+              path: "vendedor",
+              select: "name sucursal avatar"
+            }).populate({
+              path: "auto",
+              select: "model version cod_tdp",
+              populate: {
+                path: "model",
+                select: "marca name avatar",
+                populate: {
+                  path: "marca",
+                  select: "name avatar"
+                }
+              }
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "colorE",
+              select: "name"
+            }).populate({
+              path: "anioFabricacionE",
+              select: "name"
+            }).populate({
+              path: "anioModeloE",
+              select: "name"
+            }).populate({
+              path: "ubicacionVehiculoE",
+              select: "name"
+            }).populate({
+              path: "estadoVehiculoE",
+              select: "name"
+            }).populate({
+              path: "financiamientoE",
+              select: "name"
+            }).populate({
+              path: "bancoE",
+              select: "name"
+            }).populate({
+              path: "cliente",
+              select: "name document"
+            }).populate({
+              path: "tipoOperacionE",
+              select: "name document"
+            }).populate({
+              path: "tipoComprobanteE",
+              select: "name document"
+            }).populate({
+              path: "estadoVentaE",
+              select: "name document"
+            }).populate({
+              path: "estadoFacturacionE",
+              select: "name document"
+            }).populate("campanias").populate("adicional").populate("accesorios").populate({
+              path: "empleado",
+              select: "name username"
+            });
+
+          case 6:
+            query = _context11.sent;
+            _context11.next = 12;
+            break;
+
+          case 9:
+            _context11.next = 11;
             return _Sale.default.find({
               estatus_venta: {
                 $regex: ".*" + estado + ".*"
@@ -2247,11 +2328,12 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
               select: "name username"
             });
 
-          case 4:
+          case 11:
             query = _context11.sent;
 
+          case 12:
             if (!(query.length > 0)) {
-              _context11.next = 9;
+              _context11.next = 16;
               break;
             }
 
@@ -2259,32 +2341,32 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
               total: query.length,
               all: query
             });
-            _context11.next = 10;
+            _context11.next = 17;
             break;
 
-          case 9:
+          case 16:
             return _context11.abrupt("return", res.status(404).json({
               message: "Expedientes ".concat(estado, " no existen en ").concat(sucursalE)
             }));
 
-          case 10:
-            _context11.next = 16;
+          case 17:
+            _context11.next = 23;
             break;
 
-          case 12:
-            _context11.prev = 12;
-            _context11.t0 = _context11["catch"](1);
+          case 19:
+            _context11.prev = 19;
+            _context11.t0 = _context11["catch"](2);
             console.log(_context11.t0);
             return _context11.abrupt("return", res.status(503).json({
               message: _context11.t0.message
             }));
 
-          case 16:
+          case 23:
           case "end":
             return _context11.stop();
         }
       }
-    }, _callee11, null, [[1, 12]]);
+    }, _callee11, null, [[2, 19]]);
   }));
 
   return function (_x21, _x22) {

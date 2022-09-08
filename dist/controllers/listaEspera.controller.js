@@ -667,19 +667,19 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
             _req$body2 = req.body, sucursal = _req$body2.sucursal, sucursalE = _req$body2.sucursalE, orden = _req$body2.orden, cliente = _req$body2.cliente, vendedor = _req$body2.vendedor, vehiculo = _req$body2.vehiculo, cantidad = _req$body2.cantidad, colorE = _req$body2.colorE, precio_venta_final = _req$body2.precio_venta_final, tipo_venta = _req$body2.tipo_venta, financiera = _req$body2.financiera, plan_maf = _req$body2.plan_maf, fecha_carta_aprobacion = _req$body2.fecha_carta_aprobacion, inicial = _req$body2.inicial, grupo_abonos = _req$body2.grupo_abonos, cuenta_epdp = _req$body2.cuenta_epdp, avance_pago_contado = _req$body2.avance_pago_contado, avance_pago_credito = _req$body2.avance_pago_credito, cumple_politica = _req$body2.cumple_politica;
             itemId = req.params.itemId;
             itemNullF = null;
-            itemNullPM = null;
-            console.log(req.body);
-            _context4.prev = 5;
-            _context4.next = 8;
+            itemNullPM = null; // console.log(req.body);
+
+            _context4.prev = 4;
+            _context4.next = 7;
             return _Sucursal.default.findOne({
               name: sucursalE
             });
 
-          case 8:
+          case 7:
             sucursalFound = _context4.sent;
 
             if (sucursalFound) {
-              _context4.next = 11;
+              _context4.next = 10;
               break;
             }
 
@@ -687,17 +687,17 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Sucursal ".concat(sucursalE, " no encontrada")
             }));
 
-          case 11:
-            _context4.next = 13;
+          case 10:
+            _context4.next = 12;
             return _Vehicle.default.findOne({
               cod_tdp: vehiculo
             });
 
-          case 13:
+          case 12:
             vehiculoFound = _context4.sent;
 
             if (vehiculoFound) {
-              _context4.next = 16;
+              _context4.next = 15;
               break;
             }
 
@@ -705,17 +705,17 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Veh\xEDculo ".concat(vehiculo, " no encontrado")
             }));
 
-          case 16:
-            _context4.next = 18;
+          case 15:
+            _context4.next = 17;
             return _Customer.default.findOne({
               name: cliente
             });
 
-          case 18:
+          case 17:
             customerFound = _context4.sent;
 
             if (customerFound) {
-              _context4.next = 21;
+              _context4.next = 20;
               break;
             }
 
@@ -723,17 +723,17 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Cliente ".concat(cliente, " no encontrado")
             }));
 
-          case 21:
-            _context4.next = 23;
+          case 20:
+            _context4.next = 22;
             return _Seller.default.findOne({
               name: vendedor
             });
 
-          case 23:
+          case 22:
             sellerFound = _context4.sent;
 
             if (sellerFound) {
-              _context4.next = 26;
+              _context4.next = 25;
               break;
             }
 
@@ -741,17 +741,17 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Vendedor ".concat(vendedor, " no encontrado")
             }));
 
-          case 26:
-            _context4.next = 28;
+          case 25:
+            _context4.next = 27;
             return _Financiamiento.default.findOne({
               name: tipo_venta
             });
 
-          case 28:
+          case 27:
             tipoVentaFound = _context4.sent;
 
             if (tipoVentaFound) {
-              _context4.next = 31;
+              _context4.next = 30;
               break;
             }
 
@@ -759,19 +759,19 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Tipo Venta ".concat(tipo_venta, " no encontrado")
             }));
 
-          case 31:
-            _context4.next = 33;
+          case 30:
+            _context4.next = 32;
             return _Colores.default.find({
               name: {
                 $in: colorE
               }
             });
 
-          case 33:
+          case 32:
             colorFound = _context4.sent;
 
             if (colorFound) {
-              _context4.next = 36;
+              _context4.next = 35;
               break;
             }
 
@@ -779,27 +779,27 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Color ".concat(colorE, " no encontrado")
             }));
 
-          case 36:
+          case 35:
             if (!(financiera == null || financiera == undefined)) {
-              _context4.next = 40;
+              _context4.next = 39;
               break;
             }
 
             itemNullF = null;
-            _context4.next = 46;
+            _context4.next = 45;
             break;
 
-          case 40:
-            _context4.next = 42;
+          case 39:
+            _context4.next = 41;
             return _Banco.default.findOne({
               name: financiera
             });
 
-          case 42:
+          case 41:
             financieraFound = _context4.sent;
 
             if (financieraFound) {
-              _context4.next = 45;
+              _context4.next = 44;
               break;
             }
 
@@ -807,30 +807,30 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Financiera ".concat(financiera, " no encontrada")
             }));
 
-          case 45:
+          case 44:
             itemNullF = financieraFound._id;
 
-          case 46:
+          case 45:
             if (!(plan_maf == null || plan_maf == undefined)) {
-              _context4.next = 50;
+              _context4.next = 49;
               break;
             }
 
             itemNullPM = null;
-            _context4.next = 56;
+            _context4.next = 55;
             break;
 
-          case 50:
-            _context4.next = 52;
+          case 49:
+            _context4.next = 51;
             return _PlanMAF.default.findOne({
               name: plan_maf
             });
 
-          case 52:
+          case 51:
             planMAFFound = _context4.sent;
 
             if (planMAFFound) {
-              _context4.next = 55;
+              _context4.next = 54;
               break;
             }
 
@@ -838,11 +838,11 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               message: "Plan MAF ".concat(plan_maf, " no encontrado")
             }));
 
-          case 55:
+          case 54:
             itemNullPM = planMAFFound._id;
 
-          case 56:
-            _context4.next = 58;
+          case 55:
+            _context4.next = 57;
             return _ListaEspera.default.findByIdAndUpdate(itemId, {
               sucursal: sucursal,
               sucursalE: sucursalFound._id,
@@ -867,7 +867,7 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               cumple_politica: cumple_politica
             });
 
-          case 58:
+          case 57:
             query = _context4.sent;
 
             if (query) {
@@ -880,23 +880,23 @@ listaEsperaController.updateOneById = /*#__PURE__*/function () {
               });
             }
 
-            _context4.next = 66;
+            _context4.next = 65;
             break;
 
-          case 62:
-            _context4.prev = 62;
-            _context4.t0 = _context4["catch"](5);
+          case 61:
+            _context4.prev = 61;
+            _context4.t0 = _context4["catch"](4);
             console.log(_context4.t0);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
             }));
 
-          case 66:
+          case 65:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[5, 62]]);
+    }, _callee4, null, [[4, 61]]);
   }));
 
   return function (_x7, _x8) {
@@ -1104,7 +1104,7 @@ listaEsperaController.getListaBySeller = /*#__PURE__*/function () {
             _context8.prev = 1;
             _context8.next = 4;
             return _Seller.default.findOne({
-              name: vendedor
+              username: vendedor
             });
 
           case 4:
@@ -1253,6 +1253,166 @@ listaEsperaController.getListaBySeller = /*#__PURE__*/function () {
 
   return function (_x15, _x16) {
     return _ref8.apply(this, arguments);
+  };
+}();
+
+listaEsperaController.getListaBySucursal = /*#__PURE__*/function () {
+  var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
+    var sucursal, sucursalFound, query;
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            sucursal = req.body.sucursal;
+            console.log(sucursal);
+            _context9.prev = 2;
+            _context9.next = 5;
+            return _Sucursal.default.findOne({
+              name: sucursal
+            });
+
+          case 5:
+            sucursalFound = _context9.sent;
+            console.log(sucursalFound);
+            _context9.next = 9;
+            return _ListaEspera.default.find({
+              $or: [{
+                sucursal: {
+                  $regex: ".*" + sucursal + ".*"
+                }
+              }, {
+                sucursalE: sucursalFound._id
+              }]
+            }).sort({
+              mes_primer_abono: -1
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "vehiculo",
+              select: "chasis model cod_tdp version",
+              populate: [{
+                path: "chasis",
+                select: "name"
+              }, {
+                path: "model",
+                select: "name avatar marca",
+                populate: {
+                  path: "marca",
+                  select: "name avatar"
+                }
+              }]
+            }).populate({
+              path: "colorE",
+              select: "name"
+            }).populate({
+              path: "cliente",
+              select: "name document cellphone email"
+            }).populate({
+              path: "vendedor",
+              select: "name document avatar"
+            }).populate({
+              path: "anio_primer_abono",
+              select: "name"
+            }).populate({
+              path: "mes_primer_abono",
+              select: "name"
+            }).populate({
+              path: "tipo_venta",
+              select: "name"
+            }).populate({
+              path: "financiera",
+              select: "name avatar"
+            }).populate({
+              path: "plan_maf",
+              select: "name"
+            }).populate({
+              path: "solicitudMAF",
+              select: "nro_solicitud fecha_ingreso sucursalE customer cuota_inicial seller car estadoSolicitudMAF fecha_aprobacion carta_evidencia",
+              populate: [{
+                path: "sucursalE",
+                select: "name"
+              }, {
+                path: "customer",
+                select: "name document cellphone email"
+              }, {
+                path: "seller",
+                select: "name document sucursalE marcaE",
+                populate: [{
+                  path: "sucursalE",
+                  select: "name"
+                }, {
+                  path: "marcaE",
+                  select: "name avatar"
+                }]
+              }, {
+                path: "car",
+                select: "chasis model cod_tdp version",
+                populate: [{
+                  path: "chasis",
+                  select: "name"
+                }, {
+                  path: "model",
+                  select: "name avatar marca",
+                  populate: {
+                    path: "marca",
+                    select: "name avatar"
+                  }
+                }]
+              }, {
+                path: "estadoSolicitudMAF",
+                select: "name"
+              }]
+            }).populate({
+              path: "createdBy",
+              select: "name username"
+            }).populate({
+              path: "updatedBy",
+              select: "name username"
+            });
+
+          case 9:
+            query = _context9.sent;
+
+            if (!(query.length > 0)) {
+              _context9.next = 14;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              all: query
+            });
+            _context9.next = 15;
+            break;
+
+          case 14:
+            return _context9.abrupt("return", res.status(404).json({
+              message: "Sucursal ".concat(sucursal, " no cuenta con lista de espera")
+            }));
+
+          case 15:
+            _context9.next = 21;
+            break;
+
+          case 17:
+            _context9.prev = 17;
+            _context9.t0 = _context9["catch"](2);
+            console.log(_context9.t0);
+            return _context9.abrupt("return", res.status(503).json({
+              message: _context9.t0.message
+            }));
+
+          case 21:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9, null, [[2, 17]]);
+  }));
+
+  return function (_x17, _x18) {
+    return _ref9.apply(this, arguments);
   };
 }();
 

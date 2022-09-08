@@ -18,6 +18,7 @@ router.get('/', _listaEspera.default.getAll);
 router.get('/:itemId', _listaEspera.default.getOneById);
 router.post('/by-estado', _listaEspera.default.getCountByEstado);
 router.post('/by-seller', _listaEspera.default.getListaBySeller);
+router.post('/by-sucursal', _listaEspera.default.getListaBySucursal);
 router.post('/by-vehicle', _listaEspera.default.getCountClientByVehicle);
 router.post('/', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefADVOrChiefPlaneamientoOrAdministrador], _listaEspera.default.createOne);
 router.patch('/:itemId', [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isChiefADVOrChiefPlaneamientoOrAdministrador], _listaEspera.default.updateOneById);
