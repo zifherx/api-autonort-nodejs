@@ -155,6 +155,8 @@ var _listaEspera = _interopRequireDefault(require("./listaEspera.routes"));
 
 var _estadoListaEspera = _interopRequireDefault(require("./estadoListaEspera.routes"));
 
+var _nMas = _interopRequireDefault(require("./nMas2.routes"));
+
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
   res.send('Api Swagger');
@@ -228,7 +230,8 @@ router.use('/resultado', _resultado.default);
 router.use('/accesorio-stock', _stockAccesorio.default);
 router.use('/accesorio-stock-ventas', _ventasAccesorio.default);
 router.use('/lista-espera', _listaEspera.default);
-router.use('/estado-lespera', _estadoListaEspera.default); //Modulos
+router.use('/estado-lespera', _estadoListaEspera.default);
+router.use('/n2', _nMas.default); //Modulos
 
 router.use('/menuG', _menuG.default);
 router.use('/moduloG', _moduloG.default);

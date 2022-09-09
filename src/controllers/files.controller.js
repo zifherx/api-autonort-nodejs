@@ -1128,9 +1128,12 @@ fileController.getFilesByEstado = async (req, res) => {
     let query = null;
 
     try {
-        if (tramite == null || tramite == undefined || tramite == "") {
+        // if (tramite == null || tramite == undefined || tramite == "") {
+        if (tramite === 0) {
+            console.log("Tramite 0");
             query = await Sale.find({
                 estatus_venta: { $regex: ".*" + estado + ".*" },
+                pasoaTramite: tramite,
                 sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
             })
                 .sort({ fecha_cancelacion: -1 })
@@ -1210,9 +1213,9 @@ fileController.getFilesByEstado = async (req, res) => {
                     select: "name username",
                 });
         } else {
+            console.log("Tramite null");
             query = await Sale.find({
                 estatus_venta: { $regex: ".*" + estado + ".*" },
-                pasoaTramite: tramite,
                 sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
             })
                 .sort({ fecha_cancelacion: -1 })

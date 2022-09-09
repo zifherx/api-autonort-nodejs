@@ -75,6 +75,7 @@ import accesorioStockRoutes from './stockAccesorio.routes';
 import accesriosVentasRoutes from './ventasAccesorio.routes';
 import listaEsperaRoutes from './listaEspera.routes';
 import estadoLERoutes from './estadoListaEspera.routes';
+import nMas2Routes from './nMas2.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -150,6 +151,7 @@ router.use('/accesorio-stock', accesorioStockRoutes);
 router.use('/accesorio-stock-ventas', accesriosVentasRoutes);
 router.use('/lista-espera', listaEsperaRoutes);
 router.use('/estado-lespera', estadoLERoutes);
+router.use('/n2', nMas2Routes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);

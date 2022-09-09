@@ -2180,86 +2180,13 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
             query = null;
             _context11.prev = 2;
 
-            if (!(tramite == null || tramite == undefined || tramite == "")) {
-              _context11.next = 9;
+            if (!(tramite === 0)) {
+              _context11.next = 10;
               break;
             }
 
-            _context11.next = 6;
-            return _Sale.default.find({
-              estatus_venta: {
-                $regex: ".*" + estado + ".*"
-              },
-              sucursal_venta: {
-                $regex: ".*" + sucursalE + ".*"
-              }
-            }).sort({
-              fecha_cancelacion: -1
-            }).populate({
-              path: "vendedor",
-              select: "name sucursal avatar"
-            }).populate({
-              path: "auto",
-              select: "model version cod_tdp",
-              populate: {
-                path: "model",
-                select: "marca name avatar",
-                populate: {
-                  path: "marca",
-                  select: "name avatar"
-                }
-              }
-            }).populate({
-              path: "sucursalE",
-              select: "name"
-            }).populate({
-              path: "colorE",
-              select: "name"
-            }).populate({
-              path: "anioFabricacionE",
-              select: "name"
-            }).populate({
-              path: "anioModeloE",
-              select: "name"
-            }).populate({
-              path: "ubicacionVehiculoE",
-              select: "name"
-            }).populate({
-              path: "estadoVehiculoE",
-              select: "name"
-            }).populate({
-              path: "financiamientoE",
-              select: "name"
-            }).populate({
-              path: "bancoE",
-              select: "name"
-            }).populate({
-              path: "cliente",
-              select: "name document"
-            }).populate({
-              path: "tipoOperacionE",
-              select: "name document"
-            }).populate({
-              path: "tipoComprobanteE",
-              select: "name document"
-            }).populate({
-              path: "estadoVentaE",
-              select: "name document"
-            }).populate({
-              path: "estadoFacturacionE",
-              select: "name document"
-            }).populate("campanias").populate("adicional").populate("accesorios").populate({
-              path: "empleado",
-              select: "name username"
-            });
-
-          case 6:
-            query = _context11.sent;
-            _context11.next = 12;
-            break;
-
-          case 9:
-            _context11.next = 11;
+            console.log("Tramite 0");
+            _context11.next = 7;
             return _Sale.default.find({
               estatus_venta: {
                 $regex: ".*" + estado + ".*"
@@ -2328,12 +2255,87 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
               select: "name username"
             });
 
-          case 11:
+          case 7:
+            query = _context11.sent;
+            _context11.next = 14;
+            break;
+
+          case 10:
+            console.log("Tramite null");
+            _context11.next = 13;
+            return _Sale.default.find({
+              estatus_venta: {
+                $regex: ".*" + estado + ".*"
+              },
+              sucursal_venta: {
+                $regex: ".*" + sucursalE + ".*"
+              }
+            }).sort({
+              fecha_cancelacion: -1
+            }).populate({
+              path: "vendedor",
+              select: "name sucursal avatar"
+            }).populate({
+              path: "auto",
+              select: "model version cod_tdp",
+              populate: {
+                path: "model",
+                select: "marca name avatar",
+                populate: {
+                  path: "marca",
+                  select: "name avatar"
+                }
+              }
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "colorE",
+              select: "name"
+            }).populate({
+              path: "anioFabricacionE",
+              select: "name"
+            }).populate({
+              path: "anioModeloE",
+              select: "name"
+            }).populate({
+              path: "ubicacionVehiculoE",
+              select: "name"
+            }).populate({
+              path: "estadoVehiculoE",
+              select: "name"
+            }).populate({
+              path: "financiamientoE",
+              select: "name"
+            }).populate({
+              path: "bancoE",
+              select: "name"
+            }).populate({
+              path: "cliente",
+              select: "name document"
+            }).populate({
+              path: "tipoOperacionE",
+              select: "name document"
+            }).populate({
+              path: "tipoComprobanteE",
+              select: "name document"
+            }).populate({
+              path: "estadoVentaE",
+              select: "name document"
+            }).populate({
+              path: "estadoFacturacionE",
+              select: "name document"
+            }).populate("campanias").populate("adicional").populate("accesorios").populate({
+              path: "empleado",
+              select: "name username"
+            });
+
+          case 13:
             query = _context11.sent;
 
-          case 12:
+          case 14:
             if (!(query.length > 0)) {
-              _context11.next = 16;
+              _context11.next = 18;
               break;
             }
 
@@ -2341,32 +2343,32 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
               total: query.length,
               all: query
             });
-            _context11.next = 17;
+            _context11.next = 19;
             break;
 
-          case 16:
+          case 18:
             return _context11.abrupt("return", res.status(404).json({
               message: "Expedientes ".concat(estado, " no existen en ").concat(sucursalE)
             }));
 
-          case 17:
-            _context11.next = 23;
+          case 19:
+            _context11.next = 25;
             break;
 
-          case 19:
-            _context11.prev = 19;
+          case 21:
+            _context11.prev = 21;
             _context11.t0 = _context11["catch"](2);
             console.log(_context11.t0);
             return _context11.abrupt("return", res.status(503).json({
               message: _context11.t0.message
             }));
 
-          case 23:
+          case 25:
           case "end":
             return _context11.stop();
         }
       }
-    }, _callee11, null, [[2, 19]]);
+    }, _callee11, null, [[2, 21]]);
   }));
 
   return function (_x21, _x22) {
