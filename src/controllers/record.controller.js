@@ -374,6 +374,7 @@ recordController.updateOneById = async (req, res) => {
         fecha_entrega_placa_cliente,
         status_placa,
         estadoAAPE,
+        observaciones_aap,
     } = req.body;
 
     let estadoRPNull = null;
@@ -417,13 +418,14 @@ recordController.updateOneById = async (req, res) => {
                 status_tarjeta,
                 estadoRPE: estadoRPNull,
                 fecha_entrega_file_recepcion,
-                fecha_entrega_tarjeta_recepcion,
-                fecha_entrega_tarjeta_cliente,
                 fecha_tramite_placa,
                 status_placa,
                 estadoAAPE: estadoAAPNull,
+                fecha_entrega_tarjeta_recepcion,
+                fecha_entrega_tarjeta_cliente,
                 fecha_entrega_placa_recepcion,
                 fecha_entrega_placa_cliente,
+                observaciones_aap
             });
         } else if (estadoFileE == "Firmado") {
             query = await Record.findByIdAndUpdate(recordId, {
@@ -445,7 +447,11 @@ recordController.updateOneById = async (req, res) => {
                 fecha_tramite_placa,
                 status_placa,
                 estadoAAP: estadoAAPNull,
+                fecha_entrega_tarjeta_recepcion,
+                fecha_entrega_tarjeta_cliente,
                 fecha_entrega_placa_recepcion,
+                fecha_entrega_placa_cliente,
+                observaciones_aap
             });
         } else if (estadoFileE == "Legalizado") {
             query = await Record.findByIdAndUpdate(recordId, {
@@ -467,7 +473,11 @@ recordController.updateOneById = async (req, res) => {
                 fecha_tramite_placa,
                 status_placa,
                 estadoAAP: estadoAAPNull,
+                fecha_entrega_tarjeta_recepcion,
+                fecha_entrega_tarjeta_cliente,
                 fecha_entrega_placa_recepcion,
+                fecha_entrega_placa_cliente,
+                observaciones_aap
             });
         } else if (estadoFileE == "Finalizado") {
             query = await Record.findByIdAndUpdate(recordId, {
@@ -489,7 +499,11 @@ recordController.updateOneById = async (req, res) => {
                 fecha_tramite_placa,
                 status_placa,
                 estadoAAP: estadoAAPNull,
+                fecha_entrega_tarjeta_recepcion,
+                fecha_entrega_tarjeta_cliente,
                 fecha_entrega_placa_recepcion,
+                fecha_entrega_placa_cliente,
+                observaciones_aap
             });
         }
 

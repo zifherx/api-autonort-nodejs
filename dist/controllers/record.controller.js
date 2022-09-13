@@ -600,14 +600,14 @@ recordController.getAllBySucursal = /*#__PURE__*/function () {
 
 recordController.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var recordId, _req$body3, statusFile, estadoFileE, observaciones_file, isPendienteFirma, fechaPendienteFirma, isFirmado, fechaFirmado, isLegalizado, fechaLegalizado, isFinalizado, fechaFinalizado, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones_registros, motivo_observacion, num_placa, status_tarjeta, estadoRPE, fecha_entrega_file_recepcion, fecha_entrega_tarjeta_recepcion, fecha_entrega_tarjeta_cliente, fecha_tramite_placa, fecha_entrega_placa_recepcion, fecha_entrega_placa_cliente, status_placa, estadoAAPE, estadoRPNull, estadoAAPNull, query, estadoFileFound, estadoRPFound, estadoAAPFound;
+    var recordId, _req$body3, statusFile, estadoFileE, observaciones_file, isPendienteFirma, fechaPendienteFirma, isFirmado, fechaFirmado, isLegalizado, fechaLegalizado, isFinalizado, fechaFinalizado, fecha_ingreso_file, hora_ingreso_file, num_titulo, codigo_verificacion, observaciones_registros, motivo_observacion, num_placa, status_tarjeta, estadoRPE, fecha_entrega_file_recepcion, fecha_entrega_tarjeta_recepcion, fecha_entrega_tarjeta_cliente, fecha_tramite_placa, fecha_entrega_placa_recepcion, fecha_entrega_placa_cliente, status_placa, estadoAAPE, observaciones_aap, estadoRPNull, estadoAAPNull, query, estadoFileFound, estadoRPFound, estadoAAPFound;
 
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             recordId = req.params.recordId;
-            _req$body3 = req.body, statusFile = _req$body3.statusFile, estadoFileE = _req$body3.estadoFileE, observaciones_file = _req$body3.observaciones_file, isPendienteFirma = _req$body3.isPendienteFirma, fechaPendienteFirma = _req$body3.fechaPendienteFirma, isFirmado = _req$body3.isFirmado, fechaFirmado = _req$body3.fechaFirmado, isLegalizado = _req$body3.isLegalizado, fechaLegalizado = _req$body3.fechaLegalizado, isFinalizado = _req$body3.isFinalizado, fechaFinalizado = _req$body3.fechaFinalizado, fecha_ingreso_file = _req$body3.fecha_ingreso_file, hora_ingreso_file = _req$body3.hora_ingreso_file, num_titulo = _req$body3.num_titulo, codigo_verificacion = _req$body3.codigo_verificacion, observaciones_registros = _req$body3.observaciones_registros, motivo_observacion = _req$body3.motivo_observacion, num_placa = _req$body3.num_placa, status_tarjeta = _req$body3.status_tarjeta, estadoRPE = _req$body3.estadoRPE, fecha_entrega_file_recepcion = _req$body3.fecha_entrega_file_recepcion, fecha_entrega_tarjeta_recepcion = _req$body3.fecha_entrega_tarjeta_recepcion, fecha_entrega_tarjeta_cliente = _req$body3.fecha_entrega_tarjeta_cliente, fecha_tramite_placa = _req$body3.fecha_tramite_placa, fecha_entrega_placa_recepcion = _req$body3.fecha_entrega_placa_recepcion, fecha_entrega_placa_cliente = _req$body3.fecha_entrega_placa_cliente, status_placa = _req$body3.status_placa, estadoAAPE = _req$body3.estadoAAPE;
+            _req$body3 = req.body, statusFile = _req$body3.statusFile, estadoFileE = _req$body3.estadoFileE, observaciones_file = _req$body3.observaciones_file, isPendienteFirma = _req$body3.isPendienteFirma, fechaPendienteFirma = _req$body3.fechaPendienteFirma, isFirmado = _req$body3.isFirmado, fechaFirmado = _req$body3.fechaFirmado, isLegalizado = _req$body3.isLegalizado, fechaLegalizado = _req$body3.fechaLegalizado, isFinalizado = _req$body3.isFinalizado, fechaFinalizado = _req$body3.fechaFinalizado, fecha_ingreso_file = _req$body3.fecha_ingreso_file, hora_ingreso_file = _req$body3.hora_ingreso_file, num_titulo = _req$body3.num_titulo, codigo_verificacion = _req$body3.codigo_verificacion, observaciones_registros = _req$body3.observaciones_registros, motivo_observacion = _req$body3.motivo_observacion, num_placa = _req$body3.num_placa, status_tarjeta = _req$body3.status_tarjeta, estadoRPE = _req$body3.estadoRPE, fecha_entrega_file_recepcion = _req$body3.fecha_entrega_file_recepcion, fecha_entrega_tarjeta_recepcion = _req$body3.fecha_entrega_tarjeta_recepcion, fecha_entrega_tarjeta_cliente = _req$body3.fecha_entrega_tarjeta_cliente, fecha_tramite_placa = _req$body3.fecha_tramite_placa, fecha_entrega_placa_recepcion = _req$body3.fecha_entrega_placa_recepcion, fecha_entrega_placa_cliente = _req$body3.fecha_entrega_placa_cliente, status_placa = _req$body3.status_placa, estadoAAPE = _req$body3.estadoAAPE, observaciones_aap = _req$body3.observaciones_aap;
             estadoRPNull = null;
             estadoAAPNull = null;
             query = null;
@@ -714,13 +714,14 @@ recordController.updateOneById = /*#__PURE__*/function () {
               status_tarjeta: status_tarjeta,
               estadoRPE: estadoRPNull,
               fecha_entrega_file_recepcion: fecha_entrega_file_recepcion,
-              fecha_entrega_tarjeta_recepcion: fecha_entrega_tarjeta_recepcion,
-              fecha_entrega_tarjeta_cliente: fecha_entrega_tarjeta_cliente,
               fecha_tramite_placa: fecha_tramite_placa,
               status_placa: status_placa,
               estadoAAPE: estadoAAPNull,
+              fecha_entrega_tarjeta_recepcion: fecha_entrega_tarjeta_recepcion,
+              fecha_entrega_tarjeta_cliente: fecha_entrega_tarjeta_cliente,
               fecha_entrega_placa_recepcion: fecha_entrega_placa_recepcion,
-              fecha_entrega_placa_cliente: fecha_entrega_placa_cliente
+              fecha_entrega_placa_cliente: fecha_entrega_placa_cliente,
+              observaciones_aap: observaciones_aap
             });
 
           case 34:
@@ -754,7 +755,11 @@ recordController.updateOneById = /*#__PURE__*/function () {
               fecha_tramite_placa: fecha_tramite_placa,
               status_placa: status_placa,
               estadoAAP: estadoAAPNull,
-              fecha_entrega_placa_recepcion: fecha_entrega_placa_recepcion
+              fecha_entrega_tarjeta_recepcion: fecha_entrega_tarjeta_recepcion,
+              fecha_entrega_tarjeta_cliente: fecha_entrega_tarjeta_cliente,
+              fecha_entrega_placa_recepcion: fecha_entrega_placa_recepcion,
+              fecha_entrega_placa_cliente: fecha_entrega_placa_cliente,
+              observaciones_aap: observaciones_aap
             });
 
           case 40:
@@ -788,7 +793,11 @@ recordController.updateOneById = /*#__PURE__*/function () {
               fecha_tramite_placa: fecha_tramite_placa,
               status_placa: status_placa,
               estadoAAP: estadoAAPNull,
-              fecha_entrega_placa_recepcion: fecha_entrega_placa_recepcion
+              fecha_entrega_tarjeta_recepcion: fecha_entrega_tarjeta_recepcion,
+              fecha_entrega_tarjeta_cliente: fecha_entrega_tarjeta_cliente,
+              fecha_entrega_placa_recepcion: fecha_entrega_placa_recepcion,
+              fecha_entrega_placa_cliente: fecha_entrega_placa_cliente,
+              observaciones_aap: observaciones_aap
             });
 
           case 46:
@@ -822,7 +831,11 @@ recordController.updateOneById = /*#__PURE__*/function () {
               fecha_tramite_placa: fecha_tramite_placa,
               status_placa: status_placa,
               estadoAAP: estadoAAPNull,
-              fecha_entrega_placa_recepcion: fecha_entrega_placa_recepcion
+              fecha_entrega_tarjeta_recepcion: fecha_entrega_tarjeta_recepcion,
+              fecha_entrega_tarjeta_cliente: fecha_entrega_tarjeta_cliente,
+              fecha_entrega_placa_recepcion: fecha_entrega_placa_recepcion,
+              fecha_entrega_placa_cliente: fecha_entrega_placa_cliente,
+              observaciones_aap: observaciones_aap
             });
 
           case 52:
