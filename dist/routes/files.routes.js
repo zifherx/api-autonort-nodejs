@@ -15,6 +15,7 @@ var _middlewares = require("../middlewares");
 
 var router = (0, _express.Router)();
 router.get("/", _files.default.getAll);
+router.get("/logs", _files.default.getAllLogs);
 router.get("/:itemId", _files.default.getOneById);
 router.post("/by-estado", _files.default.getFilesByEstado);
 router.post("/by-seller", _files.default.getFilesByVendedor);

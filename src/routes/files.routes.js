@@ -5,6 +5,7 @@ import { authJwt, verifyDuplicate } from "../middlewares";
 const router = Router();
 
 router.get("/", filesCtrl.getAll);
+router.get("/logs", filesCtrl.getAllLogs);
 router.get("/:itemId", filesCtrl.getOneById);
 router.post("/by-estado", filesCtrl.getFilesByEstado);
 router.post("/by-seller", filesCtrl.getFilesByVendedor);

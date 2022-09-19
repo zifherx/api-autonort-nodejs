@@ -51,6 +51,8 @@ var _Anio = _interopRequireDefault(require("../models/Anio"));
 
 var _Condicion = _interopRequireDefault(require("../models/Condicion"));
 
+var _LogFile = _interopRequireDefault(require("../models/LogFile"));
+
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator.return && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, catch: function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
 
 var fileController = {};
@@ -68,7 +70,11 @@ fileController.getAll = /*#__PURE__*/function () {
               fecha_cancelacion: -1
             }).populate({
               path: "vendedor",
-              select: "name sucursal"
+              select: "name sucursal avatar sucursalE",
+              populate: {
+                path: 'sucursalE',
+                select: 'name'
+              }
             }).populate({
               path: "auto",
               select: "model version cod_tdp",
@@ -322,7 +328,7 @@ fileController.getOneById = /*#__PURE__*/function () {
 
 fileController.createOne = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var _req$body, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, estadoVehiculoE, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, observacion_adv, accesoriosE, condicionAccesorioE, condicion_accesorios, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, estatus_venta, fecha_cancelacion, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, createdBy, fechaCreacionS, newSale, sellerFound, carFound, customerFound, colorFound, anioFFound, anioMFound, ubicacionFound, estadoVehicularFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, operacionFound, userFound, comprobanteFound, condicionFound, sucursalFound, situacionFound, facturacionFound, accesorioFound, query;
+    var _req$body, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, estadoVehiculoE, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, observacion_adv, accesoriosE, condicionAccesorioE, condicion_accesorios, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, estatus_venta, fecha_cancelacion, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, createdBy, fechaCreacionS, newSale, sellerFound, carFound, customerFound, colorFound, anioFFound, anioMFound, ubicacionFound, estadoVehicularFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, operacionFound, userFound, comprobanteFound, condicionFound, sucursalFound, situacionFound, facturacionFound, accesorioFound, query, newLog, logQuery;
 
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
@@ -900,29 +906,49 @@ fileController.createOne = /*#__PURE__*/function () {
           case 171:
             query = _context3.sent;
 
-            if (query) {
-              res.json({
-                message: "Expediente creado con éxito"
-              });
+            if (!query) {
+              _context3.next = 180;
+              break;
             }
 
-            _context3.next = 179;
-            break;
+            _context3.next = 175;
+            return (0, _LogFile.default)({
+              cod_interno: new Date().getTime(),
+              file_id: query._id,
+              modifiedBy: query.createdBy,
+              action: "Usuario ".concat(createdBy, " ha creado nuevo expediente"),
+              timeAt: query.fechaCreacionS
+            });
 
           case 175:
-            _context3.prev = 175;
+            newLog = _context3.sent;
+            _context3.next = 178;
+            return newLog.save();
+
+          case 178:
+            logQuery = _context3.sent;
+            res.json({
+              message: "Expediente creado con éxito"
+            });
+
+          case 180:
+            _context3.next = 186;
+            break;
+
+          case 182:
+            _context3.prev = 182;
             _context3.t0 = _context3["catch"](1);
             console.log(_context3.t0);
             return _context3.abrupt("return", res.status(503).json({
               message: _context3.t0.message
             }));
 
-          case 179:
+          case 186:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 175]]);
+    }, _callee3, null, [[1, 182]]);
   }));
 
   return function (_x5, _x6) {
@@ -932,14 +958,14 @@ fileController.createOne = /*#__PURE__*/function () {
 
 fileController.updateOneById = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var itemId, _req$body2, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, ubicacion_vehiculo, estadoVehiculoE, estatus_vehiculo, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, observacion_adv, accesoriosE, condicion_accesorios, condicionAccesorioE, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, fecha_cancelacion, estatus_venta, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, colorNull, anioFNull, anioMNull, ubicacionNull, financiamientoNull, bancoNull, solicitudNull, condicionAccNull, comprobanteNull, facturacionNull, sellerFound, customerFound, autoFound, estadoVehicularFound, operacionFound, sucursalFound, situacionFound, colorFound, anioFound, _anioFound, ubicacionFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, accesoriosFound, condicionFound, comprobanteFound, facturacionFound, query;
+    var itemId, _req$body2, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, ubicacion_vehiculo, estadoVehiculoE, estatus_vehiculo, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, observacion_adv, accesoriosE, condicion_accesorios, condicionAccesorioE, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, fecha_cancelacion, estatus_venta, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, updatedBy, isLibreS, fechaLibreS, isDevolucionS, fechaDevolucionS, isCreditoS, fechaCreditoS, isTestDrive, fechaTestDriveS, isBloqueadoS, fechaBloqueadoS, isStandByS, fechaStandByS, isReservadoS, fechaReservadoS, isReservadoCS, fechaReservadoCS, isReservadoLS, fechaReservadoLS, isEsperaS, fechaEsperaS, isFacturadoS, fechaFacturadoS, isAnticipoS, fechaAnticipoS, isDesembolsarS, fechaDesembolsarS, isExhibicionS, fechaExhibicionS, isCanceladoS, fechaCanceladoS, isCanceladoPTS, fechaCanceladoPTS, isEPDPS, fechaEPDPS, colorNull, anioFNull, anioMNull, ubicacionNull, financiamientoNull, bancoNull, solicitudNull, condicionAccNull, comprobanteNull, facturacionNull, query, sellerFound, customerFound, autoFound, estadoVehicularFound, operacionFound, sucursalFound, situacionFound, userFound, colorFound, anioFound, _anioFound, ubicacionFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, accesoriosFound, condicionFound, comprobanteFound, facturacionFound, newLog, logQuery;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             itemId = req.params.itemId;
-            _req$body2 = req.body, vendedor = _req$body2.vendedor, cliente = _req$body2.cliente, auto = _req$body2.auto, serie_tdp = _req$body2.serie_tdp, colorE = _req$body2.colorE, precio = _req$body2.precio, anioFabricacionE = _req$body2.anioFabricacionE, anioModeloE = _req$body2.anioModeloE, ubicacionVehiculoE = _req$body2.ubicacionVehiculoE, ubicacion_vehiculo = _req$body2.ubicacion_vehiculo, estadoVehiculoE = _req$body2.estadoVehiculoE, estatus_vehiculo = _req$body2.estatus_vehiculo, fecha_ciguena = _req$body2.fecha_ciguena, fecha_entrega = _req$body2.fecha_entrega, financiamientoE = _req$body2.financiamientoE, bancoE = _req$body2.bancoE, solicitudMAF = _req$body2.solicitudMAF, adelantosE = _req$body2.adelantosE, campaniasTDPE = _req$body2.campaniasTDPE, ofertaTDPE = _req$body2.ofertaTDPE, campaniasMafE = _req$body2.campaniasMafE, ofertaMafE = _req$body2.ofertaMafE, isToyotaValue = _req$body2.isToyotaValue, arrayToyotaValues = _req$body2.arrayToyotaValues, descuento_autonort = _req$body2.descuento_autonort, acuerdoTDP = _req$body2.acuerdoTDP, observacion_adv = _req$body2.observacion_adv, accesoriosE = _req$body2.accesoriosE, condicion_accesorios = _req$body2.condicion_accesorios, condicionAccesorioE = _req$body2.condicionAccesorioE, tipoOperacionE = _req$body2.tipoOperacionE, tipoComprobanteE = _req$body2.tipoComprobanteE, nro_comprobante = _req$body2.nro_comprobante, fecha_comprobante = _req$body2.fecha_comprobante, sucursal_venta = _req$body2.sucursal_venta, sucursalE = _req$body2.sucursalE, estadoVentaE = _req$body2.estadoVentaE, fecha_cancelacion = _req$body2.fecha_cancelacion, estatus_venta = _req$body2.estatus_venta, fecha_facturacion_tdp = _req$body2.fecha_facturacion_tdp, estadoFacturacionE = _req$body2.estadoFacturacionE, monto_facturado = _req$body2.monto_facturado; // Opcionales
+            _req$body2 = req.body, vendedor = _req$body2.vendedor, cliente = _req$body2.cliente, auto = _req$body2.auto, serie_tdp = _req$body2.serie_tdp, colorE = _req$body2.colorE, precio = _req$body2.precio, anioFabricacionE = _req$body2.anioFabricacionE, anioModeloE = _req$body2.anioModeloE, ubicacionVehiculoE = _req$body2.ubicacionVehiculoE, ubicacion_vehiculo = _req$body2.ubicacion_vehiculo, estadoVehiculoE = _req$body2.estadoVehiculoE, estatus_vehiculo = _req$body2.estatus_vehiculo, fecha_ciguena = _req$body2.fecha_ciguena, fecha_entrega = _req$body2.fecha_entrega, financiamientoE = _req$body2.financiamientoE, bancoE = _req$body2.bancoE, solicitudMAF = _req$body2.solicitudMAF, adelantosE = _req$body2.adelantosE, campaniasTDPE = _req$body2.campaniasTDPE, ofertaTDPE = _req$body2.ofertaTDPE, campaniasMafE = _req$body2.campaniasMafE, ofertaMafE = _req$body2.ofertaMafE, isToyotaValue = _req$body2.isToyotaValue, arrayToyotaValues = _req$body2.arrayToyotaValues, descuento_autonort = _req$body2.descuento_autonort, acuerdoTDP = _req$body2.acuerdoTDP, observacion_adv = _req$body2.observacion_adv, accesoriosE = _req$body2.accesoriosE, condicion_accesorios = _req$body2.condicion_accesorios, condicionAccesorioE = _req$body2.condicionAccesorioE, tipoOperacionE = _req$body2.tipoOperacionE, tipoComprobanteE = _req$body2.tipoComprobanteE, nro_comprobante = _req$body2.nro_comprobante, fecha_comprobante = _req$body2.fecha_comprobante, sucursal_venta = _req$body2.sucursal_venta, sucursalE = _req$body2.sucursalE, estadoVentaE = _req$body2.estadoVentaE, fecha_cancelacion = _req$body2.fecha_cancelacion, estatus_venta = _req$body2.estatus_venta, fecha_facturacion_tdp = _req$body2.fecha_facturacion_tdp, estadoFacturacionE = _req$body2.estadoFacturacionE, monto_facturado = _req$body2.monto_facturado, updatedBy = _req$body2.updatedBy, isLibreS = _req$body2.isLibreS, fechaLibreS = _req$body2.fechaLibreS, isDevolucionS = _req$body2.isDevolucionS, fechaDevolucionS = _req$body2.fechaDevolucionS, isCreditoS = _req$body2.isCreditoS, fechaCreditoS = _req$body2.fechaCreditoS, isTestDrive = _req$body2.isTestDrive, fechaTestDriveS = _req$body2.fechaTestDriveS, isBloqueadoS = _req$body2.isBloqueadoS, fechaBloqueadoS = _req$body2.fechaBloqueadoS, isStandByS = _req$body2.isStandByS, fechaStandByS = _req$body2.fechaStandByS, isReservadoS = _req$body2.isReservadoS, fechaReservadoS = _req$body2.fechaReservadoS, isReservadoCS = _req$body2.isReservadoCS, fechaReservadoCS = _req$body2.fechaReservadoCS, isReservadoLS = _req$body2.isReservadoLS, fechaReservadoLS = _req$body2.fechaReservadoLS, isEsperaS = _req$body2.isEsperaS, fechaEsperaS = _req$body2.fechaEsperaS, isFacturadoS = _req$body2.isFacturadoS, fechaFacturadoS = _req$body2.fechaFacturadoS, isAnticipoS = _req$body2.isAnticipoS, fechaAnticipoS = _req$body2.fechaAnticipoS, isDesembolsarS = _req$body2.isDesembolsarS, fechaDesembolsarS = _req$body2.fechaDesembolsarS, isExhibicionS = _req$body2.isExhibicionS, fechaExhibicionS = _req$body2.fechaExhibicionS, isCanceladoS = _req$body2.isCanceladoS, fechaCanceladoS = _req$body2.fechaCanceladoS, isCanceladoPTS = _req$body2.isCanceladoPTS, fechaCanceladoPTS = _req$body2.fechaCanceladoPTS, isEPDPS = _req$body2.isEPDPS, fechaEPDPS = _req$body2.fechaEPDPS; // Opcionales
 
             colorNull = null;
             anioFNull = null;
@@ -951,17 +977,18 @@ fileController.updateOneById = /*#__PURE__*/function () {
             condicionAccNull = null;
             comprobanteNull = null;
             facturacionNull = null;
-            _context4.prev = 12;
-            _context4.next = 15;
+            query = null;
+            _context4.prev = 13;
+            _context4.next = 16;
             return _Seller.default.findOne({
               name: vendedor
             });
 
-          case 15:
+          case 16:
             sellerFound = _context4.sent;
 
             if (sellerFound) {
-              _context4.next = 18;
+              _context4.next = 19;
               break;
             }
 
@@ -969,17 +996,17 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Vendedor ".concat(vendedor, " no encontrado")
             }));
 
-          case 18:
-            _context4.next = 20;
+          case 19:
+            _context4.next = 21;
             return _Customer.default.findOne({
               document: cliente
             });
 
-          case 20:
+          case 21:
             customerFound = _context4.sent;
 
             if (customerFound) {
-              _context4.next = 23;
+              _context4.next = 24;
               break;
             }
 
@@ -987,17 +1014,17 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Cliente ".concat(cliente, " no encontrado")
             }));
 
-          case 23:
-            _context4.next = 25;
+          case 24:
+            _context4.next = 26;
             return _Vehicle.default.findOne({
               cod_tdp: auto
             });
 
-          case 25:
+          case 26:
             autoFound = _context4.sent;
 
             if (autoFound) {
-              _context4.next = 28;
+              _context4.next = 29;
               break;
             }
 
@@ -1005,17 +1032,17 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Veh\xEDculo ".concat(auto, " no encontrado")
             }));
 
-          case 28:
-            _context4.next = 30;
+          case 29:
+            _context4.next = 31;
             return _Condicion.default.findOne({
               name: estadoVehiculoE
             });
 
-          case 30:
+          case 31:
             estadoVehicularFound = _context4.sent;
 
             if (estadoVehicularFound) {
-              _context4.next = 33;
+              _context4.next = 34;
               break;
             }
 
@@ -1023,17 +1050,17 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Condici\xF3n ".concat(estadoVehiculoE, " no encontrado")
             }));
 
-          case 33:
-            _context4.next = 35;
+          case 34:
+            _context4.next = 36;
             return _Operacion.default.findOne({
               name: tipoOperacionE
             });
 
-          case 35:
+          case 36:
             operacionFound = _context4.sent;
 
             if (operacionFound) {
-              _context4.next = 38;
+              _context4.next = 39;
               break;
             }
 
@@ -1041,17 +1068,17 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Operaci\xF3n ".concat(tipoOperacionE, " no encontrado")
             }));
 
-          case 38:
-            _context4.next = 40;
+          case 39:
+            _context4.next = 41;
             return _Sucursal.default.findOne({
               name: sucursalE
             });
 
-          case 40:
+          case 41:
             sucursalFound = _context4.sent;
 
             if (sucursalFound) {
-              _context4.next = 43;
+              _context4.next = 44;
               break;
             }
 
@@ -1059,17 +1086,17 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Sucursal ".concat(sucursalE, " no encontrado")
             }));
 
-          case 43:
-            _context4.next = 45;
+          case 44:
+            _context4.next = 46;
             return _Situacion.default.findOne({
               name: estadoVentaE
             });
 
-          case 45:
+          case 46:
             situacionFound = _context4.sent;
 
             if (situacionFound) {
-              _context4.next = 48;
+              _context4.next = 49;
               break;
             }
 
@@ -1077,27 +1104,45 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Estado de venta ".concat(estadoVentaE, " no encontrado")
             }));
 
-          case 48:
+          case 49:
+            _context4.next = 51;
+            return _User.default.findOne({
+              username: updatedBy
+            });
+
+          case 51:
+            userFound = _context4.sent;
+
+            if (situacionFound) {
+              _context4.next = 54;
+              break;
+            }
+
+            return _context4.abrupt("return", res.status(404).json({
+              message: "Usuario ".concat(updatedBy, " no encontrado")
+            }));
+
+          case 54:
             if (!(colorE == null || colorE == undefined || colorE == "")) {
-              _context4.next = 52;
+              _context4.next = 58;
               break;
             }
 
             colorNull = null;
-            _context4.next = 58;
+            _context4.next = 64;
             break;
 
-          case 52:
-            _context4.next = 54;
+          case 58:
+            _context4.next = 60;
             return _Colores.default.findOne({
               name: colorE
             });
 
-          case 54:
+          case 60:
             colorFound = _context4.sent;
 
             if (colorFound) {
-              _context4.next = 57;
+              _context4.next = 63;
               break;
             }
 
@@ -1105,30 +1150,30 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Color ".concat(colorE, " no encontrado")
             }));
 
-          case 57:
+          case 63:
             colorNull = colorFound._id;
 
-          case 58:
+          case 64:
             if (!(anioFabricacionE == null || anioFabricacionE == undefined || anioFabricacionE == "")) {
-              _context4.next = 62;
+              _context4.next = 68;
               break;
             }
 
             anioFNull = null;
-            _context4.next = 68;
+            _context4.next = 74;
             break;
 
-          case 62:
-            _context4.next = 64;
+          case 68:
+            _context4.next = 70;
             return _Anio.default.findOne({
               name: anioFabricacionE
             });
 
-          case 64:
+          case 70:
             anioFound = _context4.sent;
 
             if (anioFound) {
-              _context4.next = 67;
+              _context4.next = 73;
               break;
             }
 
@@ -1136,30 +1181,30 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "A\xF1o ".concat(anioFabricacionE, " no encontrado")
             }));
 
-          case 67:
+          case 73:
             anioFNull = anioFound._id;
 
-          case 68:
+          case 74:
             if (!(anioModeloE == null || anioModeloE == undefined || anioModeloE == "")) {
-              _context4.next = 72;
+              _context4.next = 78;
               break;
             }
 
             anioMNull = null;
-            _context4.next = 78;
+            _context4.next = 84;
             break;
 
-          case 72:
-            _context4.next = 74;
+          case 78:
+            _context4.next = 80;
             return _Anio.default.findOne({
               name: anioModeloE
             });
 
-          case 74:
+          case 80:
             _anioFound = _context4.sent;
 
             if (_anioFound) {
-              _context4.next = 77;
+              _context4.next = 83;
               break;
             }
 
@@ -1167,30 +1212,30 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "A\xF1o ".concat(anioModeloE, " no encontrado")
             }));
 
-          case 77:
+          case 83:
             anioMNull = _anioFound._id;
 
-          case 78:
+          case 84:
             if (!(ubicacionVehiculoE == null || ubicacionVehiculoE == undefined || ubicacionVehiculoE == "")) {
-              _context4.next = 82;
+              _context4.next = 88;
               break;
             }
 
             ubicacionNull = null;
-            _context4.next = 88;
+            _context4.next = 94;
             break;
 
-          case 82:
-            _context4.next = 84;
+          case 88:
+            _context4.next = 90;
             return _Ubicacion.default.findOne({
               name: ubicacionVehiculoE
             });
 
-          case 84:
+          case 90:
             ubicacionFound = _context4.sent;
 
             if (ubicacionFound) {
-              _context4.next = 87;
+              _context4.next = 93;
               break;
             }
 
@@ -1198,30 +1243,30 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Ubicaci\xF3n ".concat(ubicacionVehiculoE, " no encontrada")
             }));
 
-          case 87:
+          case 93:
             ubicacionNull = ubicacionFound._id;
 
-          case 88:
+          case 94:
             if (!(financiamientoE == null || financiamientoE == undefined || financiamientoE == "")) {
-              _context4.next = 92;
+              _context4.next = 98;
               break;
             }
 
             financiamientoNull = null;
-            _context4.next = 98;
+            _context4.next = 104;
             break;
 
-          case 92:
-            _context4.next = 94;
+          case 98:
+            _context4.next = 100;
             return _Financiamiento.default.findOne({
               name: financiamientoE
             });
 
-          case 94:
+          case 100:
             financiamientoFound = _context4.sent;
 
             if (financiamientoFound) {
-              _context4.next = 97;
+              _context4.next = 103;
               break;
             }
 
@@ -1229,30 +1274,30 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Financiamiento ".concat(financiamientoE, " no encontrado")
             }));
 
-          case 97:
+          case 103:
             financiamientoNull = financiamientoFound._id;
 
-          case 98:
+          case 104:
             if (!(bancoE == null || bancoE == undefined || bancoE == "")) {
-              _context4.next = 102;
+              _context4.next = 108;
               break;
             }
 
             bancoNull = null;
-            _context4.next = 108;
+            _context4.next = 114;
             break;
 
-          case 102:
-            _context4.next = 104;
+          case 108:
+            _context4.next = 110;
             return _Banco.default.findOne({
               name: bancoE
             });
 
-          case 104:
+          case 110:
             bancoFound = _context4.sent;
 
             if (bancoFound) {
-              _context4.next = 107;
+              _context4.next = 113;
               break;
             }
 
@@ -1260,30 +1305,30 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Banco ".concat(bancoE, " no encontrado")
             }));
 
-          case 107:
+          case 113:
             bancoNull = bancoFound._id;
 
-          case 108:
+          case 114:
             if (!(solicitudMAF == null || solicitudMAF == undefined || solicitudMAF == "")) {
-              _context4.next = 112;
+              _context4.next = 118;
               break;
             }
 
             solicitudNull = null;
-            _context4.next = 118;
+            _context4.next = 124;
             break;
 
-          case 112:
-            _context4.next = 114;
+          case 118:
+            _context4.next = 120;
             return _Maf.default.findOne({
               nro_solicitud: solicitudMAF
             });
 
-          case 114:
+          case 120:
             mafFound = _context4.sent;
 
             if (mafFound) {
-              _context4.next = 117;
+              _context4.next = 123;
               break;
             }
 
@@ -1291,22 +1336,22 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Solicitud ".concat(solicitudMAF, " no encontrada")
             }));
 
-          case 117:
+          case 123:
             solicitudNull = mafFound._id;
 
-          case 118:
-            _context4.next = 120;
+          case 124:
+            _context4.next = 126;
             return _Campania.default.find({
               cod_interno: {
                 $in: campaniasTDPE
               }
             });
 
-          case 120:
+          case 126:
             campaniaTDPFound = _context4.sent;
 
             if (campaniaTDPFound) {
-              _context4.next = 123;
+              _context4.next = 129;
               break;
             }
 
@@ -1314,19 +1359,19 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Campa\xF1a TDP ".concat(campaniasTDPE, " no encontrada")
             }));
 
-          case 123:
-            _context4.next = 125;
+          case 129:
+            _context4.next = 131;
             return _Campania.default.find({
               cod_interno: {
                 $in: campaniasMafE
               }
             });
 
-          case 125:
+          case 131:
             campaniaMAFFound = _context4.sent;
 
             if (campaniaMAFFound) {
-              _context4.next = 128;
+              _context4.next = 134;
               break;
             }
 
@@ -1334,19 +1379,19 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Campa\xF1a TDP ".concat(campaniasMafE, " no encontrada")
             }));
 
-          case 128:
-            _context4.next = 130;
+          case 134:
+            _context4.next = 136;
             return _AccesorioE.default.find({
               cod_interno: {
                 $in: accesoriosE
               }
             });
 
-          case 130:
+          case 136:
             accesoriosFound = _context4.sent;
 
             if (accesoriosFound) {
-              _context4.next = 133;
+              _context4.next = 139;
               break;
             }
 
@@ -1354,27 +1399,27 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Accesorio ".concat(accesoriosE, " no encontrado")
             }));
 
-          case 133:
+          case 139:
             if (!(condicionAccesorioE == null || condicionAccesorioE == undefined || condicionAccesorioE == "")) {
-              _context4.next = 137;
+              _context4.next = 143;
               break;
             }
 
             condicionAccNull = null;
-            _context4.next = 143;
+            _context4.next = 149;
             break;
 
-          case 137:
-            _context4.next = 139;
+          case 143:
+            _context4.next = 145;
             return _CondicionAccesorio.default.findOne({
               name: condicionAccesorioE
             });
 
-          case 139:
+          case 145:
             condicionFound = _context4.sent;
 
             if (condicionFound) {
-              _context4.next = 142;
+              _context4.next = 148;
               break;
             }
 
@@ -1382,30 +1427,30 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Condici\xF3n accesorio ".concat(condicionAccesorioE, " no encontrada")
             }));
 
-          case 142:
+          case 148:
             condicionAccNull = condicionFound._id;
 
-          case 143:
+          case 149:
             if (!(tipoComprobanteE == null || tipoComprobanteE == undefined || tipoComprobanteE == "")) {
-              _context4.next = 147;
+              _context4.next = 153;
               break;
             }
 
             comprobanteNull = null;
-            _context4.next = 153;
+            _context4.next = 159;
             break;
 
-          case 147:
-            _context4.next = 149;
+          case 153:
+            _context4.next = 155;
             return _TipoComprobante.default.findOne({
               name: tipoComprobanteE
             });
 
-          case 149:
+          case 155:
             comprobanteFound = _context4.sent;
 
             if (comprobanteFound) {
-              _context4.next = 152;
+              _context4.next = 158;
               break;
             }
 
@@ -1413,30 +1458,30 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Tipo comprobante ".concat(tipoComprobanteE, " no encontrado")
             }));
 
-          case 152:
+          case 158:
             comprobanteNull = comprobanteFound._id;
 
-          case 153:
+          case 159:
             if (!(estadoFacturacionE == null || estadoFacturacionE == undefined || estadoFacturacionE == "")) {
-              _context4.next = 157;
+              _context4.next = 163;
               break;
             }
 
             facturacionNull = null;
-            _context4.next = 163;
+            _context4.next = 169;
             break;
 
-          case 157:
-            _context4.next = 159;
+          case 163:
+            _context4.next = 165;
             return _StatusFacturacion.default.findOne({
               name: estadoFacturacionE
             });
 
-          case 159:
+          case 165:
             facturacionFound = _context4.sent;
 
             if (facturacionFound) {
-              _context4.next = 162;
+              _context4.next = 168;
               break;
             }
 
@@ -1444,11 +1489,882 @@ fileController.updateOneById = /*#__PURE__*/function () {
               message: "Facturaci\xF3n ".concat(estadoFacturacionE, " no encontrado")
             }));
 
-          case 162:
+          case 168:
             facturacionNull = facturacionFound._id;
 
-          case 163:
-            _context4.next = 165;
+          case 169:
+            if (!(estadoVentaE == "Libre")) {
+              _context4.next = 175;
+              break;
+            }
+
+            _context4.next = 172;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isLibreS: isLibreS,
+              fechaLibreS: fechaLibreS
+            }, {
+              new: true
+            });
+
+          case 172:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 175:
+            if (!(estadoVentaE == "Credito")) {
+              _context4.next = 181;
+              break;
+            }
+
+            _context4.next = 178;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isCreditoS: isCreditoS,
+              fechaCreditoS: fechaCreditoS
+            }, {
+              new: true
+            });
+
+          case 178:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 181:
+            if (!(estadoVentaE == "Reservado")) {
+              _context4.next = 187;
+              break;
+            }
+
+            _context4.next = 184;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isReservadoS: isReservadoS,
+              fechaReservadoS: fechaReservadoS
+            }, {
+              new: true
+            });
+
+          case 184:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 187:
+            if (!(estadoVentaE == "Reservado C")) {
+              _context4.next = 193;
+              break;
+            }
+
+            _context4.next = 190;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isReservadoCS: isReservadoCS,
+              fechaReservadoCS: fechaReservadoCS
+            }, {
+              new: true
+            });
+
+          case 190:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 193:
+            if (!(estadoVentaE == "Reservado L")) {
+              _context4.next = 199;
+              break;
+            }
+
+            _context4.next = 196;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isReservadoLS: isReservadoLS,
+              fechaReservadoLS: fechaReservadoLS
+            }, {
+              new: true
+            });
+
+          case 196:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 199:
+            if (!(estadoVentaE == "En Espera")) {
+              _context4.next = 205;
+              break;
+            }
+
+            _context4.next = 202;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isEsperaS: isEsperaS,
+              fechaEsperaS: fechaEsperaS
+            }, {
+              new: true
+            });
+
+          case 202:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 205:
+            if (!(estadoVentaE == "Facturado")) {
+              _context4.next = 211;
+              break;
+            }
+
+            _context4.next = 208;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isFacturadoS: isFacturadoS,
+              fechaFacturadoS: fechaFacturadoS
+            }, {
+              new: true
+            });
+
+          case 208:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 211:
+            if (!(estadoVentaE == "Anticipo")) {
+              _context4.next = 217;
+              break;
+            }
+
+            _context4.next = 214;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isAnticipoS: isAnticipoS,
+              fechaAnticipoS: fechaAnticipoS
+            }, {
+              new: true
+            });
+
+          case 214:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 217:
+            if (!(estadoVentaE == "Cancelado")) {
+              _context4.next = 223;
+              break;
+            }
+
+            _context4.next = 220;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isCanceladoS: isCanceladoS,
+              fechaCanceladoS: fechaCanceladoS
+            }, {
+              new: true
+            });
+
+          case 220:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 223:
+            if (!(estadoVentaE == "Cancelado PT")) {
+              _context4.next = 229;
+              break;
+            }
+
+            _context4.next = 226;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isCanceladoPTS: isCanceladoPTS,
+              fechaCanceladoPTS: fechaCanceladoPTS
+            }, {
+              new: true
+            });
+
+          case 226:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 229:
+            if (!(estadoVentaE == "EPDP")) {
+              _context4.next = 235;
+              break;
+            }
+
+            _context4.next = 232;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isEPDPS: isEPDPS,
+              fechaEPDPS: fechaEPDPS
+            }, {
+              new: true
+            });
+
+          case 232:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 235:
+            if (!(estadoVentaE == "Por Desembolsar")) {
+              _context4.next = 241;
+              break;
+            }
+
+            _context4.next = 238;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isDesembolsarS: isDesembolsarS,
+              fechaDesembolsarS: fechaDesembolsarS
+            }, {
+              new: true
+            });
+
+          case 238:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 241:
+            if (!(estadoVentaE == "EXHIBICIÓN")) {
+              _context4.next = 247;
+              break;
+            }
+
+            _context4.next = 244;
+            return _Sale.default.findByIdAndUpdate(itemId, {
+              serie_tdp: serie_tdp,
+              precio: precio,
+              ubicacion_vehiculo: ubicacion_vehiculo,
+              estatus_vehiculo: estatus_vehiculo,
+              fecha_ciguena: fecha_ciguena,
+              fecha_entrega: fecha_entrega,
+              adelantosE: adelantosE,
+              isToyotaValue: isToyotaValue,
+              arrayToyotaValues: arrayToyotaValues,
+              descuento_autonort: descuento_autonort,
+              acuerdoTDP: acuerdoTDP,
+              observacion_adv: observacion_adv,
+              condicion_accesorios: condicion_accesorios,
+              nro_comprobante: nro_comprobante,
+              fecha_comprobante: fecha_comprobante,
+              sucursal_venta: sucursal_venta,
+              fecha_cancelacion: fecha_cancelacion,
+              estatus_venta: estatus_venta,
+              fecha_facturacion_tdp: fecha_facturacion_tdp,
+              monto_facturado: monto_facturado,
+              vendedor: sellerFound._id,
+              cliente: customerFound._id,
+              auto: autoFound._id,
+              estadoVehiculoE: estadoVehicularFound._id,
+              tipoOperacionE: operacionFound._id,
+              sucursalE: sucursalFound._id,
+              estadoVentaE: situacionFound._id,
+              colorE: colorNull,
+              anioFabricacionE: anioFNull,
+              anioModeloE: anioMNull,
+              ubicacionVehiculoE: ubicacionNull,
+              financiamientoE: financiamientoNull,
+              bancoE: bancoNull,
+              solicitudMAF: solicitudNull,
+              campaniasTDPE: campaniaTDPFound.map(function (a) {
+                return a.id;
+              }),
+              campaniasMafE: campaniaMAFFound.map(function (a) {
+                return a._id;
+              }),
+              accesoriosE: accesoriosFound.map(function (a) {
+                return a._id;
+              }),
+              condicionAccesorioE: condicionAccNull,
+              tipoComprobanteE: comprobanteNull,
+              ofertaTDPE: ofertaTDPE,
+              ofertaMafE: ofertaMafE,
+              estadoFacturacionE: facturacionNull,
+              isExhibicionS: isExhibicionS,
+              fechaExhibicionS: fechaExhibicionS
+            }, {
+              new: true
+            });
+
+          case 244:
+            query = _context4.sent;
+            _context4.next = 250;
+            break;
+
+          case 247:
+            _context4.next = 249;
             return _Sale.default.findByIdAndUpdate(itemId, {
               serie_tdp: serie_tdp,
               precio: precio,
@@ -1498,45 +2414,64 @@ fileController.updateOneById = /*#__PURE__*/function () {
               ofertaTDPE: ofertaTDPE,
               ofertaMafE: ofertaMafE,
               estadoFacturacionE: facturacionNull
+            }, {
+              new: true
             });
 
-          case 165:
+          case 249:
             query = _context4.sent;
 
+          case 250:
             if (!query) {
-              _context4.next = 170;
+              _context4.next = 260;
               break;
             }
 
+            _context4.next = 253;
+            return (0, _LogFile.default)({
+              cod_interno: new Date().getTime(),
+              file_id: query._id,
+              modifiedBy: userFound._id,
+              action: "Usuario ".concat(userFound.username, " ha modificado el expediente"),
+              timeAt: query.updatedAt
+            });
+
+          case 253:
+            newLog = _context4.sent;
+            _context4.next = 256;
+            return newLog.save();
+
+          case 256:
+            logQuery = _context4.sent;
             res.json({
               message: "Expediente actualizado con éxito"
             });
-            _context4.next = 171;
+            _context4.next = 261;
             break;
 
-          case 170:
+          case 260:
             return _context4.abrupt("return", res.status(404).json({
               message: "No existe expediente a actualizar"
             }));
 
-          case 171:
-            _context4.next = 177;
+          case 261:
+            _context4.next = 267;
             break;
 
-          case 173:
-            _context4.prev = 173;
-            _context4.t0 = _context4["catch"](12);
+          case 263:
+            _context4.prev = 263;
+            _context4.t0 = _context4["catch"](13);
             console.log(_context4.t0);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
             }));
 
-          case 177:
+          case 267:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[12, 173]]);
+    }, _callee4, null, [[13, 263]]);
   }));
 
   return function (_x7, _x8) {
@@ -1546,7 +2481,7 @@ fileController.updateOneById = /*#__PURE__*/function () {
 
 fileController.deleteOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var itemId, query;
+    var itemId, query, newLog, logQuery;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
@@ -1560,39 +2495,55 @@ fileController.deleteOneById = /*#__PURE__*/function () {
             query = _context5.sent;
 
             if (!query) {
-              _context5.next = 9;
+              _context5.next = 15;
               break;
             }
 
+            _context5.next = 8;
+            return (0, _LogFile.default)({
+              cod_interno: new Date().getTime(),
+              file_id: query._id,
+              modifiedBy: null,
+              action: "Usuario admin ha eliminado el expediente ".concat(query.serie_tdp),
+              timeAt: query.updatedAt
+            });
+
+          case 8:
+            newLog = _context5.sent;
+            _context5.next = 11;
+            return newLog.save();
+
+          case 11:
+            logQuery = _context5.sent;
             res.json({
               message: "Expediente eliminado con éxito"
             });
-            _context5.next = 10;
+            _context5.next = 16;
             break;
 
-          case 9:
+          case 15:
             return _context5.abrupt("return", res.status(404).json({
               message: "No existe Expediente a eliminar"
             }));
 
-          case 10:
-            _context5.next = 16;
+          case 16:
+            _context5.next = 22;
             break;
 
-          case 12:
-            _context5.prev = 12;
+          case 18:
+            _context5.prev = 18;
             _context5.t0 = _context5["catch"](1);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 16:
+          case 22:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[1, 12]]);
+    }, _callee5, null, [[1, 18]]);
   }));
 
   return function (_x9, _x10) {
@@ -2694,6 +3645,69 @@ fileController.getFilesByImporteAccesorios = /*#__PURE__*/function () {
 
   return function (_x29, _x30) {
     return _ref15.apply(this, arguments);
+  };
+}();
+
+fileController.getAllLogs = /*#__PURE__*/function () {
+  var _ref16 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee16(req, res) {
+    var query;
+    return _regeneratorRuntime().wrap(function _callee16$(_context16) {
+      while (1) {
+        switch (_context16.prev = _context16.next) {
+          case 0:
+            _context16.prev = 0;
+            _context16.next = 3;
+            return _LogFile.default.find().sort({
+              timeAt: -1
+            }).populate({
+              path: 'file_id',
+              select: 'serie_tdp'
+            }).populate({
+              path: 'modifiedBy',
+              select: 'name username avatar'
+            });
+
+          case 3:
+            query = _context16.sent;
+
+            if (!(query.length > 0)) {
+              _context16.next = 8;
+              break;
+            }
+
+            res.json({
+              total: query.length,
+              all: query
+            });
+            _context16.next = 9;
+            break;
+
+          case 8:
+            return _context16.abrupt("return", res.status(404).json({
+              message: "No existen logs de expedientes"
+            }));
+
+          case 9:
+            _context16.next = 14;
+            break;
+
+          case 11:
+            _context16.prev = 11;
+            _context16.t0 = _context16["catch"](0);
+            return _context16.abrupt("return", res.status(503).json({
+              message: _context16.t0.message
+            }));
+
+          case 14:
+          case "end":
+            return _context16.stop();
+        }
+      }
+    }, _callee16, null, [[0, 11]]);
+  }));
+
+  return function (_x31, _x32) {
+    return _ref16.apply(this, arguments);
   };
 }();
 

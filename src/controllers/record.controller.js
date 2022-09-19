@@ -377,6 +377,8 @@ recordController.updateOneById = async (req, res) => {
         observaciones_aap,
     } = req.body;
 
+    // console.log(recordId);
+
     let estadoRPNull = null;
     let estadoAAPNull = null;
     let query = null;
@@ -484,8 +486,6 @@ recordController.updateOneById = async (req, res) => {
                 statusFile,
                 estadoFileE: estadoFileFound._id,
                 observaciones_file,
-                isFinalizado,
-                fechaFinalizado,
                 fecha_ingreso_file,
                 hora_ingreso_file,
                 num_titulo,
@@ -505,6 +505,32 @@ recordController.updateOneById = async (req, res) => {
                 fecha_entrega_placa_cliente,
                 observaciones_aap
             });
+        }else{
+            query = await Record.findByIdAndUpdate(recordId, {
+                statusFile,
+                estadoFileE: estadoFileFound._id,
+                observaciones_file,
+                isPendienteFirma,
+                fechaPendienteFirma,
+                fecha_ingreso_file,
+                hora_ingreso_file,
+                num_titulo,
+                codigo_verificacion,
+                observaciones_registros,
+                motivo_observacion,
+                num_placa,
+                status_tarjeta,
+                estadoRPE: estadoRPNull,
+                fecha_entrega_file_recepcion,
+                fecha_tramite_placa,
+                status_placa,
+                estadoAAPE: estadoAAPNull,
+                fecha_entrega_tarjeta_recepcion,
+                fecha_entrega_tarjeta_cliente,
+                fecha_entrega_placa_recepcion,
+                fecha_entrega_placa_cliente,
+                observaciones_aap
+            })
         }
 
         if (query) {

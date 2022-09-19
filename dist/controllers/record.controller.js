@@ -607,7 +607,8 @@ recordController.updateOneById = /*#__PURE__*/function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             recordId = req.params.recordId;
-            _req$body3 = req.body, statusFile = _req$body3.statusFile, estadoFileE = _req$body3.estadoFileE, observaciones_file = _req$body3.observaciones_file, isPendienteFirma = _req$body3.isPendienteFirma, fechaPendienteFirma = _req$body3.fechaPendienteFirma, isFirmado = _req$body3.isFirmado, fechaFirmado = _req$body3.fechaFirmado, isLegalizado = _req$body3.isLegalizado, fechaLegalizado = _req$body3.fechaLegalizado, isFinalizado = _req$body3.isFinalizado, fechaFinalizado = _req$body3.fechaFinalizado, fecha_ingreso_file = _req$body3.fecha_ingreso_file, hora_ingreso_file = _req$body3.hora_ingreso_file, num_titulo = _req$body3.num_titulo, codigo_verificacion = _req$body3.codigo_verificacion, observaciones_registros = _req$body3.observaciones_registros, motivo_observacion = _req$body3.motivo_observacion, num_placa = _req$body3.num_placa, status_tarjeta = _req$body3.status_tarjeta, estadoRPE = _req$body3.estadoRPE, fecha_entrega_file_recepcion = _req$body3.fecha_entrega_file_recepcion, fecha_entrega_tarjeta_recepcion = _req$body3.fecha_entrega_tarjeta_recepcion, fecha_entrega_tarjeta_cliente = _req$body3.fecha_entrega_tarjeta_cliente, fecha_tramite_placa = _req$body3.fecha_tramite_placa, fecha_entrega_placa_recepcion = _req$body3.fecha_entrega_placa_recepcion, fecha_entrega_placa_cliente = _req$body3.fecha_entrega_placa_cliente, status_placa = _req$body3.status_placa, estadoAAPE = _req$body3.estadoAAPE, observaciones_aap = _req$body3.observaciones_aap;
+            _req$body3 = req.body, statusFile = _req$body3.statusFile, estadoFileE = _req$body3.estadoFileE, observaciones_file = _req$body3.observaciones_file, isPendienteFirma = _req$body3.isPendienteFirma, fechaPendienteFirma = _req$body3.fechaPendienteFirma, isFirmado = _req$body3.isFirmado, fechaFirmado = _req$body3.fechaFirmado, isLegalizado = _req$body3.isLegalizado, fechaLegalizado = _req$body3.fechaLegalizado, isFinalizado = _req$body3.isFinalizado, fechaFinalizado = _req$body3.fechaFinalizado, fecha_ingreso_file = _req$body3.fecha_ingreso_file, hora_ingreso_file = _req$body3.hora_ingreso_file, num_titulo = _req$body3.num_titulo, codigo_verificacion = _req$body3.codigo_verificacion, observaciones_registros = _req$body3.observaciones_registros, motivo_observacion = _req$body3.motivo_observacion, num_placa = _req$body3.num_placa, status_tarjeta = _req$body3.status_tarjeta, estadoRPE = _req$body3.estadoRPE, fecha_entrega_file_recepcion = _req$body3.fecha_entrega_file_recepcion, fecha_entrega_tarjeta_recepcion = _req$body3.fecha_entrega_tarjeta_recepcion, fecha_entrega_tarjeta_cliente = _req$body3.fecha_entrega_tarjeta_cliente, fecha_tramite_placa = _req$body3.fecha_tramite_placa, fecha_entrega_placa_recepcion = _req$body3.fecha_entrega_placa_recepcion, fecha_entrega_placa_cliente = _req$body3.fecha_entrega_placa_cliente, status_placa = _req$body3.status_placa, estadoAAPE = _req$body3.estadoAAPE, observaciones_aap = _req$body3.observaciones_aap; // console.log(recordId);
+
             estadoRPNull = null;
             estadoAAPNull = null;
             query = null;
@@ -726,7 +727,7 @@ recordController.updateOneById = /*#__PURE__*/function () {
 
           case 34:
             query = _context5.sent;
-            _context5.next = 53;
+            _context5.next = 58;
             break;
 
           case 37:
@@ -764,7 +765,7 @@ recordController.updateOneById = /*#__PURE__*/function () {
 
           case 40:
             query = _context5.sent;
-            _context5.next = 53;
+            _context5.next = 58;
             break;
 
           case 43:
@@ -802,12 +803,12 @@ recordController.updateOneById = /*#__PURE__*/function () {
 
           case 46:
             query = _context5.sent;
-            _context5.next = 53;
+            _context5.next = 58;
             break;
 
           case 49:
             if (!(estadoFileE == "Finalizado")) {
-              _context5.next = 53;
+              _context5.next = 55;
               break;
             }
 
@@ -816,8 +817,6 @@ recordController.updateOneById = /*#__PURE__*/function () {
               statusFile: statusFile,
               estadoFileE: estadoFileFound._id,
               observaciones_file: observaciones_file,
-              isFinalizado: isFinalizado,
-              fechaFinalizado: fechaFinalizado,
               fecha_ingreso_file: fecha_ingreso_file,
               hora_ingreso_file: hora_ingreso_file,
               num_titulo: num_titulo,
@@ -840,42 +839,75 @@ recordController.updateOneById = /*#__PURE__*/function () {
 
           case 52:
             query = _context5.sent;
+            _context5.next = 58;
+            break;
 
-          case 53:
+          case 55:
+            _context5.next = 57;
+            return _Record.default.findByIdAndUpdate(recordId, {
+              statusFile: statusFile,
+              estadoFileE: estadoFileFound._id,
+              observaciones_file: observaciones_file,
+              isPendienteFirma: isPendienteFirma,
+              fechaPendienteFirma: fechaPendienteFirma,
+              fecha_ingreso_file: fecha_ingreso_file,
+              hora_ingreso_file: hora_ingreso_file,
+              num_titulo: num_titulo,
+              codigo_verificacion: codigo_verificacion,
+              observaciones_registros: observaciones_registros,
+              motivo_observacion: motivo_observacion,
+              num_placa: num_placa,
+              status_tarjeta: status_tarjeta,
+              estadoRPE: estadoRPNull,
+              fecha_entrega_file_recepcion: fecha_entrega_file_recepcion,
+              fecha_tramite_placa: fecha_tramite_placa,
+              status_placa: status_placa,
+              estadoAAPE: estadoAAPNull,
+              fecha_entrega_tarjeta_recepcion: fecha_entrega_tarjeta_recepcion,
+              fecha_entrega_tarjeta_cliente: fecha_entrega_tarjeta_cliente,
+              fecha_entrega_placa_recepcion: fecha_entrega_placa_recepcion,
+              fecha_entrega_placa_cliente: fecha_entrega_placa_cliente,
+              observaciones_aap: observaciones_aap
+            });
+
+          case 57:
+            query = _context5.sent;
+
+          case 58:
             if (!query) {
-              _context5.next = 57;
+              _context5.next = 62;
               break;
             }
 
             res.json({
               message: "Trámite actualizado con éxito"
             });
-            _context5.next = 58;
+            _context5.next = 63;
             break;
 
-          case 57:
+          case 62:
             return _context5.abrupt("return", res.status(404).json({
               message: "No existe trámite a actualizar"
             }));
 
-          case 58:
-            _context5.next = 64;
+          case 63:
+            _context5.next = 69;
             break;
 
-          case 60:
-            _context5.prev = 60;
+          case 65:
+            _context5.prev = 65;
             _context5.t0 = _context5["catch"](5);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(503).json({
               message: _context5.t0.message
             }));
 
-          case 64:
+          case 69:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[5, 60]]);
+    }, _callee5, null, [[5, 65]]);
   }));
 
   return function (_x9, _x10) {

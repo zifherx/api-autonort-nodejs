@@ -906,7 +906,7 @@ saleController.deleteOneById = async (req, res) => {
 
 // Verificar hacía abajo
 
-/* saleController.getUnidadesBySucursalFecha = async (req, res) => {
+saleController.getUnidadesBySucursalFecha = async (req, res) => {
      const { sucursalE, start, end } = req.body;
 
      const filtro = {
@@ -940,9 +940,9 @@ saleController.deleteOneById = async (req, res) => {
           console.log(err);
           return res.status(503).json({ message: err.message });
      }
-}; */
+};
 
-/* saleController.getConteoUnidadesByEstado = async (req, res) => {
+saleController.getConteoUnidadesByEstado = async (req, res) => {
      const { estado, ubicacion, isEntregado, start, end } = req.body;
      let query = null;
 
@@ -971,9 +971,9 @@ saleController.deleteOneById = async (req, res) => {
           console.log(err);
           return res.status(503).json({ message: err.message });
      }
-}; */
+};
 
-/* saleController.getRankingUnidadesByUbicacion = async (req, res) => {
+saleController.getRankingUnidadesByUbicacion = async (req, res) => {
      const { ubicacion, start, end } = req.body;
 
      try {
@@ -1006,9 +1006,9 @@ saleController.deleteOneById = async (req, res) => {
           console.log(err);
           return res.status(503).json({ message: err.message });
      }
-}; */
+};
 
-/* saleController.UnidadesLibres = async (req, res) => {
+saleController.UnidadesLibres = async (req, res) => {
      const { estado, tramite } = req.body;
      try {
           const query = await Sale.find({
@@ -1038,9 +1038,9 @@ saleController.deleteOneById = async (req, res) => {
                message: err.message,
           });
      }
-}; */
+};
 
-/* saleController.UnidadesByStatus = async (req, res) => {
+saleController.UnidadesByStatus = async (req, res) => {
      const { estado, tramite, sucursal } = req.body;
      try {
           const query = await Sale.find({
@@ -1074,7 +1074,7 @@ saleController.deleteOneById = async (req, res) => {
                message: err.message,
           });
      }
-}; */
+};
 
 saleController.UnidadesBySucursalyFecha = async (req, res) => {
      const { sucursal, start, end } = req.body;
