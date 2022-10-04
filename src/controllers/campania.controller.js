@@ -8,7 +8,7 @@ const campaniaCtrl = {};
 campaniaCtrl.getAll = async (req, res) => {
     try {
         const query = await Campania.find()
-            .sort({ startDate: -1 })
+            .sort({ createdAt: -1 })
             .populate({
                 path: "tipo",
                 select: "name",

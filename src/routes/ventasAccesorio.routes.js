@@ -6,6 +6,7 @@ const router = Router();
 
 router.get('/', ventaCtrl.getAll);
 router.post('/', [authJwt.verifyToken, authJwt.isAdministradorOrAsistantComercial] ,ventaCtrl.createOne);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isAdministradorOrAsistantComercial], ventaCtrl.updateOneById);
 router.post('/by-sucursal', ventaCtrl.getAllBySucursalMes);
 
 export default router;

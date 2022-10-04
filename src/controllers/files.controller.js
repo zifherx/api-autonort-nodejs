@@ -18,7 +18,7 @@ import AccesorioE from "../models/AccesorioE";
 import CondicionAccesorio from "../models/CondicionAccesorio";
 import Anio from "../models/Anio";
 import Condicion from "../models/Condicion";
-import LogFile from '../models/LogFile';
+import LogFile from "../models/LogFile";
 
 const fileController = {};
 
@@ -32,9 +32,9 @@ fileController.getAll = async (req, res) => {
                 path: "vendedor",
                 select: "name sucursal avatar sucursalE",
                 populate: {
-                    path: 'sucursalE',
-                    select: 'name'
-                }
+                    path: "sucursalE",
+                    select: "name",
+                },
             })
             .populate({
                 path: "auto",
@@ -280,6 +280,8 @@ fileController.createOne = async (req, res) => {
         arrayToyotaValues,
         descuento_autonort,
         acuerdoTDP,
+        herramientas_tdp,
+        herramientas_maf,
         observacion_adv,
         accesoriosE,
         condicionAccesorioE,
@@ -296,6 +298,9 @@ fileController.createOne = async (req, res) => {
         fecha_facturacion_tdp,
         estadoFacturacionE,
         monto_facturado,
+        isReportado,
+        fechaReporte,
+        mesReportado,
         createdBy,
         fechaCreacionS,
     } = req.body;
@@ -313,10 +318,15 @@ fileController.createOne = async (req, res) => {
             arrayToyotaValues,
             descuento_autonort,
             acuerdoTDP,
+            herramientas_tdp,
+            herramientas_maf,
             observacion_adv,
             condicion_accesorios,
             fecha_facturacion_tdp,
             monto_facturado,
+            isReportado,
+            fechaReporte,
+            mesReportado,
             nro_comprobante,
             fecha_comprobante,
             fecha_cancelacion,
@@ -468,19 +478,18 @@ fileController.createOne = async (req, res) => {
         newSale.accesoriosE = accesorioFound.map((a) => a._id);
 
         const query = await newSale.save();
-            
+
         if (query) {
             const newLog = await LogFile({
                 cod_interno: new Date().getTime(),
-                file_id : query._id,
+                file_id: query._id,
                 modifiedBy: query.createdBy,
                 action: `Usuario ${createdBy} ha creado nuevo expediente`,
-                timeAt: query.fechaCreacionS
+                timeAt: query.fechaCreacionS,
             });
             // console.log('Query:',newLog);
             const logQuery = await newLog.save();
             res.json({ message: "Expediente creado con éxito" });
-
         }
     } catch (err) {
         console.log(err);
@@ -517,6 +526,8 @@ fileController.updateOneById = async (req, res) => {
         arrayToyotaValues,
         descuento_autonort,
         acuerdoTDP,
+        herramientas_tdp,
+        herramientas_maf,
         observacion_adv,
         accesoriosE,
         condicion_accesorios,
@@ -533,6 +544,9 @@ fileController.updateOneById = async (req, res) => {
         fecha_facturacion_tdp,
         estadoFacturacionE,
         monto_facturado,
+        isReportado,
+        fechaReporte,
+        mesReportado,
         updatedBy,
         // LOG
         isLibreS,
@@ -613,8 +627,8 @@ fileController.updateOneById = async (req, res) => {
         const situacionFound = await Situacion.findOne({ name: estadoVentaE });
         if (!situacionFound) return res.status(404).json({ message: `Estado de venta ${estadoVentaE} no encontrado` });
 
-        const userFound = await User.findOne({username: updatedBy});
-        if(!situacionFound) return res.status(404).json({message: `Usuario ${updatedBy} no encontrado`});
+        const userFound = await User.findOne({ username: updatedBy });
+        if (!situacionFound) return res.status(404).json({ message: `Usuario ${updatedBy} no encontrado` });
 
         // Color - Opcional
         if (colorE == null || colorE == undefined || colorE == "") {
@@ -719,673 +733,798 @@ fileController.updateOneById = async (req, res) => {
         }
 
         if (estadoVentaE == "Libre") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isLibreS,
-                fechaLibreS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isLibreS,
+                    fechaLibreS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "Credito") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isCreditoS,
-                fechaCreditoS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isCreditoS,
+                    fechaCreditoS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "Reservado") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isReservadoS,
-                fechaReservadoS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isReservadoS,
+                    fechaReservadoS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "Reservado C") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isReservadoCS,
-                fechaReservadoCS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isReservadoCS,
+                    fechaReservadoCS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "Reservado L") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isReservadoLS,
-                fechaReservadoLS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isReservadoLS,
+                    fechaReservadoLS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "En Espera") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isEsperaS,
-                fechaEsperaS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isEsperaS,
+                    fechaEsperaS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "Facturado") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isFacturadoS,
-                fechaFacturadoS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isFacturadoS,
+                    fechaFacturadoS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "Anticipo") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isAnticipoS,
-                fechaAnticipoS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isAnticipoS,
+                    fechaAnticipoS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "Cancelado") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isCanceladoS,
-                fechaCanceladoS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isCanceladoS,
+                    fechaCanceladoS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "Cancelado PT") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isCanceladoPTS,
-                fechaCanceladoPTS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isCanceladoPTS,
+                    fechaCanceladoPTS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "EPDP") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isEPDPS,
-                fechaEPDPS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isEPDPS,
+                    fechaEPDPS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "Por Desembolsar") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isDesembolsarS,
-                fechaDesembolsarS,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isDesembolsarS,
+                    fechaDesembolsarS,
+                },
+                { new: true }
+            );
         } else if (estadoVentaE == "EXHIBICIÓN") {
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-                isExhibicionS,
-                fechaExhibicionS,
-            }, {new: true});
-        }else{
-            query = await Sale.findByIdAndUpdate(itemId, {
-                serie_tdp,
-                precio,
-                ubicacion_vehiculo,
-                estatus_vehiculo,
-                fecha_ciguena,
-                fecha_entrega,
-                adelantosE,
-                isToyotaValue,
-                arrayToyotaValues,
-                descuento_autonort,
-                acuerdoTDP,
-                observacion_adv,
-                condicion_accesorios,
-                nro_comprobante,
-                fecha_comprobante,
-                sucursal_venta,
-                fecha_cancelacion,
-                estatus_venta,
-                fecha_facturacion_tdp,
-                monto_facturado,
-                vendedor: sellerFound._id,
-                cliente: customerFound._id,
-                auto: autoFound._id,
-                estadoVehiculoE: estadoVehicularFound._id,
-                tipoOperacionE: operacionFound._id,
-                sucursalE: sucursalFound._id,
-                estadoVentaE: situacionFound._id,
-                colorE: colorNull,
-                anioFabricacionE: anioFNull,
-                anioModeloE: anioMNull,
-                ubicacionVehiculoE: ubicacionNull,
-                financiamientoE: financiamientoNull,
-                bancoE: bancoNull,
-                solicitudMAF: solicitudNull,
-                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
-                campaniasMafE: campaniaMAFFound.map((a) => a._id),
-                accesoriosE: accesoriosFound.map((a) => a._id),
-                condicionAccesorioE: condicionAccNull,
-                tipoComprobanteE: comprobanteNull,
-                ofertaTDPE,
-                ofertaMafE,
-                estadoFacturacionE: facturacionNull,
-            }, {new: true});
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                    isExhibicionS,
+                    fechaExhibicionS,
+                },
+                { new: true }
+            );
+        } else {
+            query = await Sale.findByIdAndUpdate(
+                itemId,
+                {
+                    serie_tdp,
+                    precio,
+                    ubicacion_vehiculo,
+                    estatus_vehiculo,
+                    fecha_ciguena,
+                    fecha_entrega,
+                    adelantosE,
+                    isToyotaValue,
+                    arrayToyotaValues,
+                    descuento_autonort,
+                    acuerdoTDP,
+                    herramientas_tdp,
+                    herramientas_maf,
+                    observacion_adv,
+                    condicion_accesorios,
+                    nro_comprobante,
+                    fecha_comprobante,
+                    sucursal_venta,
+                    fecha_cancelacion,
+                    estatus_venta,
+                    fecha_facturacion_tdp,
+                    monto_facturado,
+                    isReportado,
+                    fechaReporte,
+                    mesReportado,
+                    vendedor: sellerFound._id,
+                    cliente: customerFound._id,
+                    auto: autoFound._id,
+                    estadoVehiculoE: estadoVehicularFound._id,
+                    tipoOperacionE: operacionFound._id,
+                    sucursalE: sucursalFound._id,
+                    estadoVentaE: situacionFound._id,
+                    colorE: colorNull,
+                    anioFabricacionE: anioFNull,
+                    anioModeloE: anioMNull,
+                    ubicacionVehiculoE: ubicacionNull,
+                    financiamientoE: financiamientoNull,
+                    bancoE: bancoNull,
+                    solicitudMAF: solicitudNull,
+                    campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                    campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                    accesoriosE: accesoriosFound.map((a) => a._id),
+                    condicionAccesorioE: condicionAccNull,
+                    tipoComprobanteE: comprobanteNull,
+                    ofertaTDPE,
+                    ofertaMafE,
+                    estadoFacturacionE: facturacionNull,
+                },
+                { new: true }
+            );
         }
 
         // console.log('Query Updated:',query);
 
-        
         if (query) {
             const newLog = await LogFile({
                 cod_interno: new Date().getTime(),
-                file_id : query._id,
+                file_id: query._id,
                 modifiedBy: userFound._id,
                 action: `Usuario ${userFound.username} ha modificado el expediente`,
-                timeAt: query.updatedAt
+                timeAt: query.updatedAt,
             });
             // console.log('Query:',newLog);
             const logQuery = await newLog.save();
@@ -1408,10 +1547,10 @@ fileController.deleteOneById = async (req, res) => {
         if (query) {
             const newLog = await LogFile({
                 cod_interno: new Date().getTime(),
-                file_id : query._id,
+                file_id: query._id,
                 modifiedBy: null,
                 action: `Usuario admin ha eliminado el expediente ${query.serie_tdp}`,
-                timeAt: query.updatedAt
+                timeAt: query.updatedAt,
             });
             // console.log('Query:',newLog);
             const logQuery = await newLog.save();
@@ -1612,90 +1751,115 @@ fileController.getFilesBySucursalyFecha = async (req, res) => {
 };
 
 fileController.getFilesByVendedor = async (req, res) => {
-    const { seller } = req.body;
+    const { seller, start, end } = req.body;
+    let query = null;
 
     try {
         const sellerFound = await Seller.findOne({ name: seller });
         if (!sellerFound) return res.status(404).json({ message: `Vendedor ${seller} no encontrado` });
-        const query = await Sale.find({
-            vendedor: sellerFound._id,
-        })
-            .sort({ fecha_cancelacion: -1 })
-            .populate({
-                path: "vendedor",
-                select: "name sucursal",
+
+        if (start == undefined || start == null || start == "") {
+            query = await Sale.find({
+                vendedor: sellerFound._id,
             })
-            .populate({
-                path: "auto",
-                select: "model version cod_tdp",
-                populate: {
-                    path: "model",
-                    select: "marca name avatar",
+                .sort({ fecha_cancelacion: -1 })
+                .populate({
+                    path: "vendedor",
+                    select: "name sucursal",
+                })
+                .populate({
+                    path: "auto",
+                    select: "model version cod_tdp",
                     populate: {
-                        path: "marca",
-                        select: "name avatar",
+                        path: "model",
+                        select: "marca name avatar",
+                        populate: {
+                            path: "marca",
+                            select: "name avatar",
+                        },
+                    },
+                })
+                .populate({
+                    path: "sucursalE",
+                    select: "name",
+                })
+                .populate({
+                    path: "colorE",
+                    select: "name",
+                })
+                .populate({
+                    path: "anioFabricacionE",
+                    select: "name",
+                })
+                .populate({
+                    path: "anioModeloE",
+                    select: "name",
+                })
+                .populate({
+                    path: "ubicacionVehiculoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "estadoVehiculoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "financiamientoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "bancoE",
+                    select: "name",
+                })
+                .populate({
+                    path: "cliente",
+                    select: "name document",
+                })
+                .populate({
+                    path: "tipoOperacionE",
+                    select: "name document",
+                })
+                .populate({
+                    path: "tipoComprobanteE",
+                    select: "name document",
+                })
+                .populate({
+                    path: "estadoVentaE",
+                    select: "name document",
+                })
+                .populate({
+                    path: "estadoFacturacionE",
+                    select: "name document",
+                })
+                .populate("campanias")
+                .populate("adicional")
+                .populate("accesorios")
+                .populate({
+                    path: "empleado",
+                    select: "name username",
+                });
+        } else {
+            query = await Sale.aggregate([
+                {
+                    $match: {
+                        vendedor: sellerFound._id,
+                        fecha_cancelacion: {
+                            $gte: new Date(start),
+                            $lte: new Date(end),
+                        },
                     },
                 },
-            })
-            .populate({
-                path: "sucursalE",
-                select: "name",
-            })
-            .populate({
-                path: "colorE",
-                select: "name",
-            })
-            .populate({
-                path: "anioFabricacionE",
-                select: "name",
-            })
-            .populate({
-                path: "anioModeloE",
-                select: "name",
-            })
-            .populate({
-                path: "ubicacionVehiculoE",
-                select: "name",
-            })
-            .populate({
-                path: "estadoVehiculoE",
-                select: "name",
-            })
-            .populate({
-                path: "financiamientoE",
-                select: "name",
-            })
-            .populate({
-                path: "bancoE",
-                select: "name",
-            })
-            .populate({
-                path: "cliente",
-                select: "name document",
-            })
-            .populate({
-                path: "tipoOperacionE",
-                select: "name document",
-            })
-            .populate({
-                path: "tipoComprobanteE",
-                select: "name document",
-            })
-            .populate({
-                path: "estadoVentaE",
-                select: "name document",
-            })
-            .populate({
-                path: "estadoFacturacionE",
-                select: "name document",
-            })
-            .populate("campanias")
-            .populate("adicional")
-            .populate("accesorios")
-            .populate({
-                path: "empleado",
-                select: "name username",
-            });
+                {
+                    $group: {
+                        _id: "$estatus_venta",
+                        qty: { $sum: 1 },
+                    },
+                },
+                {
+                    $sort: { qty: -1 },
+                },
+            ]);
+        }
 
         if (query.length > 0) {
             res.json({ total: query.length, all: query });
@@ -1997,34 +2161,67 @@ fileController.getFilesByEstado = async (req, res) => {
 };
 
 fileController.rankingFilesByModelo = async (req, res) => {
-    const { sucursalE, estado, start, end } = req.body;
+    const { sucursalE, seller, estado, start, end } = req.body;
+    let query = null;
 
     try {
-        const query = await Sale.aggregate([
-            {
-                $match: {
-                    sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
-                    estatus_venta: estado,
-                    fecha_cancelacion: {
-                        $gte: new Date(start),
-                        $lte: new Date(end),
+        if (seller == null || seller == undefined || seller == "") {
+            query = await Sale.aggregate([
+                {
+                    $match: {
+                        sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
+                        estatus_venta: estado,
+                        fecha_cancelacion: {
+                            $gte: new Date(start),
+                            $lte: new Date(end),
+                        },
                     },
                 },
-            },
-            {
-                $group: {
-                    _id: "$auto",
-                    num_ventas: {
-                        $sum: 1,
+                {
+                    $group: {
+                        _id: "$auto",
+                        num_ventas: {
+                            $sum: 1,
+                        },
                     },
                 },
-            },
-            {
-                $sort: {
-                    num_ventas: -1,
+                {
+                    $sort: {
+                        num_ventas: -1,
+                    },
                 },
-            },
-        ]);
+            ]);
+        } else {
+            const sellerFound = await Seller.findOne({ name: seller });
+            if (!sellerFound) return res.status(404).json({ message: `Asesor ${seller} no encontrado` });
+
+            query = await Sale.aggregate([
+                {
+                    $match: {
+                        sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
+                        vendedor: sellerFound._id,
+                        estatus_venta: { $regex: ".*" + estado + ".*" },
+                        fecha_cancelacion: {
+                            $gte: new Date(start),
+                            $lte: new Date(end),
+                        },
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$auto",
+                        num_ventas: {
+                            $sum: 1,
+                        },
+                    },
+                },
+                {
+                    $sort: {
+                        num_ventas: -1,
+                    },
+                },
+            ]);
+        }
 
         if (query.length > 0) {
             res.json({ total: query.length, ranking: query });
@@ -2078,39 +2275,77 @@ fileController.rankingFilesBySeller = async (req, res) => {
 };
 
 fileController.getFilesByToyotaValue = async (req, res) => {
-    const { sucursalE, isToyotaValue, start, end } = req.body;
+    const { sucursalE, isToyotaValue, seller, start, end } = req.body;
+    let query = null;
 
     try {
-        const query = await Sale.find({
-            sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
-            isToyotaValue,
-            fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) },
-        })
-            .select("vendedor cliente auto serie_tdp isToyotaValue arrayToyotaValues sucursalE")
-            .populate({
-                path: "vendedor",
-                select: "name avatar",
+        if (seller == undefined || seller == null || seller == "") {
+            query = await Sale.find({
+                sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
+                isToyotaValue,
+                fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) },
             })
-            .populate({
-                path: "cliente",
-                select: "name document",
-            })
-            .populate({
-                path: "sucursalE",
-                select: "name",
-            })
-            .populate({
-                path: "auto",
-                select: "model cod_tdp",
-                populate: {
-                    path: "model",
-                    select: "name avatar marca",
+                .select("vendedor cliente auto serie_tdp isToyotaValue arrayToyotaValues sucursalE")
+                .populate({
+                    path: "vendedor",
+                    select: "name avatar",
+                })
+                .populate({
+                    path: "cliente",
+                    select: "name document",
+                })
+                .populate({
+                    path: "sucursalE",
+                    select: "name",
+                })
+                .populate({
+                    path: "auto",
+                    select: "model cod_tdp",
                     populate: {
-                        path: "marca",
-                        select: "name avatar",
+                        path: "model",
+                        select: "name avatar marca",
+                        populate: {
+                            path: "marca",
+                            select: "name avatar",
+                        },
                     },
-                },
-            });
+                });
+        } else {
+            const sellerFound = await Seller.findOne({ name: seller });
+            if (!sellerFound) return res.status(404).json({ message: `Vendedor ${seller} no encontrado` });
+            
+            query = await Sale.find({
+                // sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
+                vendedor: sellerFound._id,
+                isToyotaValue,
+                fecha_cancelacion: { $gte: new Date(start), $lte: new Date(end) },
+            })
+                .select("vendedor cliente auto serie_tdp isToyotaValue arrayToyotaValues sucursalE")
+                .populate({
+                    path: "vendedor",
+                    select: "name avatar",
+                })
+                .populate({
+                    path: "cliente",
+                    select: "name document",
+                })
+                .populate({
+                    path: "sucursalE",
+                    select: "name",
+                })
+                .populate({
+                    path: "auto",
+                    select: "model cod_tdp",
+                    populate: {
+                        path: "model",
+                        select: "name avatar marca",
+                        populate: {
+                            path: "marca",
+                            select: "name avatar",
+                        },
+                    },
+                });
+        }
 
         if (query.length > 0) {
             res.json({ total: query.length, all: query });
@@ -2160,24 +2395,24 @@ fileController.getFilesByImporteAccesorios = async (req, res) => {
 fileController.getAllLogs = async (req, res) => {
     try {
         const query = await LogFile.find()
-        .sort({timeAt: -1})
-        .populate({
-            path: 'file_id',
-            select: 'serie_tdp',
-        })
-        .populate({
-            path: 'modifiedBy',
-            select: 'name username avatar'
-        });
+            .sort({ timeAt: -1 })
+            .populate({
+                path: "file_id",
+                select: "serie_tdp",
+            })
+            .populate({
+                path: "modifiedBy",
+                select: "name username avatar",
+            });
 
-        if(query.length > 0){
-            res.json({total: query.length, all: query});
-        }else{
-            return res.status(404).json({message: `No existen logs de expedientes` });
+        if (query.length > 0) {
+            res.json({ total: query.length, all: query });
+        } else {
+            return res.status(404).json({ message: `No existen logs de expedientes` });
         }
     } catch (err) {
-        return res.status(503).json({message: err.message});
+        return res.status(503).json({ message: err.message });
     }
-}
+};
 
 export default fileController;

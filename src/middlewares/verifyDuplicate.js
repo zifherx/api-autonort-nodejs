@@ -52,6 +52,7 @@ import SubmoduloG from '../models/SubmoduloG'
 import TipoProducto from '../models/TipoProducto';
 import Mes from '../models/Mes';
 import EstadoListaEspera from '../models/EstadoListaEspera'
+import EstadoUsados from '../models/EstadoUsados'
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -477,6 +478,15 @@ export const checkDuplicateEstadoSeguro = async (req, res, next) => {
     const { name } = req.body;
 
     const query = await EstadoSeguro.findOne({name});
+    if(query) return res.status(201).json({message: 'El estado ya existe'});
+
+    next();
+}
+
+export const checkDuplicateEstadoUsado = async (req, res, next) => {
+    const { name } = req.body;
+
+    const query = await EstadoUsados.findOne({name});
     if(query) return res.status(201).json({message: 'El estado ya existe'});
 
     next();

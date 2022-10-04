@@ -132,15 +132,19 @@ recordController.getAll = async (req, res) => {
             })
             .populate({
                 path: "sales",
-                select: "auto vendedor cliente",
+                select: "auto vendedor cliente serie_tdp",
                 populate: [
                     {
                         path: "auto",
-                        select: "cod_tdp version",
+                        select: "cod_tdp version model",
+                        populate: {
+                            path: "model",
+                            select: "name avatar",
+                        },
                     },
                     {
                         path: "vendedor",
-                        select: "name document",
+                        select: "name document avatar",
                     },
                     {
                         path: "cliente",
@@ -230,12 +234,14 @@ recordController.getOneById = async (req, res) => {
 recordController.getAllBySucursal = async (req, res) => {
     const { sucursalE, start, end } = req.body;
     let query = null;
+    // console.log(req.body);
 
     try {
         const sucursalFound = await Sucursal.find({ name: { $in: sucursalE } });
         // if (!sucursalFound) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrada` });
 
         if (start == null || start == undefined || start == "") {
+            // console.log('opcion01');
             query = await Record.find({
                 $or: [{ sucursal_tramite: { $in: sucursalE } }, { sucursalE: { $in: sucursalFound.map((a) => a._id) } }, { sucursal_tramite: { $regex: ".*" + sucursalE + ".*" } }],
             })
@@ -283,6 +289,7 @@ recordController.getAllBySucursal = async (req, res) => {
                     select: "name username",
                 });
         } else {
+            // console.log('opcion02');
             query = await Record.find({
                 sucursal_tramite: { $regex: ".*" + sucursalE + ".*" },
                 fecha_recepcion: { $gte: new Date(start), $lte: new Date(end) },
@@ -333,6 +340,7 @@ recordController.getAllBySucursal = async (req, res) => {
         }
 
         if (query.length > 0) {
+            console.log(query.length);
             res.json({ total: query.length, all: query });
         } else {
             return res.status(404).json({ message: "No existen Trámites" });

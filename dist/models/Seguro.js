@@ -8,6 +8,9 @@ exports.default = void 0;
 var _mongoose = require("mongoose");
 
 var seguroSchema = new _mongoose.Schema({
+  codigo_interno: {
+    type: String
+  },
   //Cliente
   cliente: {
     ref: 'Customer',

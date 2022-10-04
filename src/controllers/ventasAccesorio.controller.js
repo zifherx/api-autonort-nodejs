@@ -114,4 +114,40 @@ stockController.getAllBySucursalMes = async (req, res) => {
     }
 };
 
+stockController.updateOneById = async (req, res) => {
+    const { sucursal, sucursalE, anio, anioE, mes, mesE, stock, ventas } = req.body;
+    const { itemId } = req.params;
+
+    try {
+        const sucursalFound = await Sucursal.findOne({ name: sucursalE });
+        if (!sucursalFound) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrado` });
+
+        const anioFound = await Anio.findOne({ name: anioE });
+        if (!anioFound) return res.status(404).json({ message: `Año ${anioE} no encontrado` });
+
+        const mesFound = await Mes.findOne({ name: mesE });
+        if (!mesFound) return res.status(404).json({ message: `Mes ${mesE} no encontrado` });
+
+        const query = await VentasAccesorio.findByIdAndUpdate(itemId, {
+            sucursal,
+            sucursalE: sucursalFound._id,
+            anio,
+            anioE: anioFound._id,
+            mes,
+            mesE: mesFound._id,
+            stock,
+            ventas,
+        });
+
+        if (query) {
+            res.json({ message: "Registro actualizado con éxito" });
+        } else {
+            return res.status(404).json({ message: `No existe registro ${itemId}` });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
 export default stockController;

@@ -4,22 +4,16 @@ import { authJwt, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
-//Obtener Color
-router.get('/', colorCtrl.getColors);
+router.get('/', colorCtrl.getAll);
 
-//Obtener Color Activos
-router.get('/activos', colorCtrl.getColorByActivo);
+router.get('/activos', colorCtrl.getAllByActive);
 
-//Obtener Color por ID
-router.get('/:colorId', colorCtrl.getColorById);
+router.get('/:itemId', colorCtrl.getOneById);
 
-//Crear Color
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateColor], colorCtrl.createColor);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateColor], colorCtrl.createOne);
 
-//Actualizar Color
-router.patch('/:colorId', [authJwt.verifyToken, authJwt.isAdmin], colorCtrl.updateColor);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], colorCtrl.updateOneById);
 
-//Eliminar Color
-router.delete('/:colorId', [authJwt.verifyToken, authJwt.isAdmin], colorCtrl.deleteColor);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], colorCtrl.deleteOneById);
 
 export default router;

@@ -70,6 +70,8 @@ const saleSchema = new Schema(
 		campanias: [{ ref: "Campaign", type: Schema.Types.ObjectId }], //actualizado
 		adicional: [{ ref: "Adicional", type: Schema.Types.ObjectId }], //actualizado
 		descuento_autonort: { type: Number, default: 0 },
+		herramientas_tdp: { type: Number, default: 0 },
+		herramientas_maf: { type: Number, default: 0 },
 		acuerdoTDP: { type: Number, default: 0},
 		observacion_adv: { type: String },
 		//Accesorio

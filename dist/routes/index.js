@@ -117,6 +117,8 @@ var _condicionAccesorio = _interopRequireDefault(require("./condicionAccesorio.r
 
 var _estadoSeguro = _interopRequireDefault(require("./estadoSeguro.routes"));
 
+var _estadoUsados = _interopRequireDefault(require("./estadoUsados.routes"));
+
 var _tipoUso = _interopRequireDefault(require("./tipoUso.routes"));
 
 var _origenConcesionario = _interopRequireDefault(require("./origenConcesionario.routes"));
@@ -156,6 +158,8 @@ var _listaEspera = _interopRequireDefault(require("./listaEspera.routes"));
 var _estadoListaEspera = _interopRequireDefault(require("./estadoListaEspera.routes"));
 
 var _nMas = _interopRequireDefault(require("./nMas2.routes"));
+
+var _usados = _interopRequireDefault(require("./usados.routes"));
 
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
@@ -215,6 +219,7 @@ router.use('/status-entrega', _statusEntrega.default);
 router.use('/entregas', _entrega.default);
 router.use('/condicion-accesorio', _condicionAccesorio.default);
 router.use('/status-seguro', _estadoSeguro.default);
+router.use('/status-usados', _estadoUsados.default);
 router.use('/tipo-uso', _tipoUso.default);
 router.use('/origen-concesionario', _origenConcesionario.default);
 router.use('/metodo-atencion', _metodoAtencion.default);
@@ -231,7 +236,8 @@ router.use('/accesorio-stock', _stockAccesorio.default);
 router.use('/accesorio-stock-ventas', _ventasAccesorio.default);
 router.use('/lista-espera', _listaEspera.default);
 router.use('/estado-lespera', _estadoListaEspera.default);
-router.use('/n2', _nMas.default); //Modulos
+router.use('/n2', _nMas.default);
+router.use('/usados', _usados.default); //Modulos
 
 router.use('/menuG', _menuG.default);
 router.use('/moduloG', _moduloG.default);

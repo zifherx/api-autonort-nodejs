@@ -270,13 +270,17 @@ recordController.getAll = /*#__PURE__*/function () {
               select: "name"
             }).populate({
               path: "sales",
-              select: "auto vendedor cliente",
+              select: "auto vendedor cliente serie_tdp",
               populate: [{
                 path: "auto",
-                select: "cod_tdp version"
+                select: "cod_tdp version model",
+                populate: {
+                  path: "model",
+                  select: "name avatar"
+                }
               }, {
                 path: "vendedor",
-                select: "name document"
+                select: "name document avatar"
               }, {
                 path: "cliente",
                 select: "name document"
@@ -431,7 +435,8 @@ recordController.getAllBySucursal = /*#__PURE__*/function () {
         switch (_context4.prev = _context4.next) {
           case 0:
             _req$body2 = req.body, sucursalE = _req$body2.sucursalE, start = _req$body2.start, end = _req$body2.end;
-            query = null;
+            query = null; // console.log(req.body);
+
             _context4.prev = 2;
             _context4.next = 5;
             return _Sucursal.default.find({
@@ -557,40 +562,41 @@ recordController.getAllBySucursal = /*#__PURE__*/function () {
 
           case 15:
             if (!(query.length > 0)) {
-              _context4.next = 19;
+              _context4.next = 20;
               break;
             }
 
+            console.log(query.length);
             res.json({
               total: query.length,
               all: query
             });
-            _context4.next = 20;
+            _context4.next = 21;
             break;
 
-          case 19:
+          case 20:
             return _context4.abrupt("return", res.status(404).json({
               message: "No existen Trámites"
             }));
 
-          case 20:
-            _context4.next = 26;
+          case 21:
+            _context4.next = 27;
             break;
 
-          case 22:
-            _context4.prev = 22;
+          case 23:
+            _context4.prev = 23;
             _context4.t0 = _context4["catch"](2);
             console.log(_context4.t0);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
             }));
 
-          case 26:
+          case 27:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 22]]);
+    }, _callee4, null, [[2, 23]]);
   }));
 
   return function (_x7, _x8) {

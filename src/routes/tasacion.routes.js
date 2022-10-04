@@ -22,9 +22,10 @@ router.post('/vehicles-by-advisor', tasacionCtrl.getVehiclesByServicios);
 router.post('/by-sucursal', tasacionCtrl.getBySucursalFecha);
 router.post('/by-estado', [authJwt.verifyToken], tasacionCtrl.getAllByDatesyEstado);
 router.post('/by-tasador', [authJwt.verifyToken, authJwt.isTasadororChiefEPDP], tasacionCtrl.getAllByTasador);
-router.post('/', [authJwt.verifyToken, authJwt.isTasadororChiefEPDP], tasacionCtrl.createOne);
+router.post('/count/by-estado', [authJwt.verifyToken], tasacionCtrl.getCounterByEstado);
+router.post('/', [authJwt.verifyToken, authJwt.isTasadorOrChiefEDPDOrAdmin], tasacionCtrl.createOne);
 
-router.patch('/:tasacionId', [authJwt.verifyToken, authJwt.isTasadororChiefEPDP], tasacionCtrl.updatedOneById);
+router.patch('/:tasacionId', [authJwt.verifyToken, authJwt.isTasadorOrChiefEDPDOrAdmin], tasacionCtrl.updatedOneById);
 router.delete('/:tasacionId', [authJwt.verifyToken, authJwt.isChiefEPDPorAdmin], tasacionCtrl.deleteOneById);
 
 export default router;

@@ -56,6 +56,7 @@ import statusEntregasRoutes from './statusEntrega.routes';
 import entregasRoutes from './entrega.routes';
 import condicionARoutes from './condicionAccesorio.routes';
 import estadoSeguroRoutes from './estadoSeguro.routes';
+import estadoUsadosRoutes from './estadoUsados.routes';
 import usoRoutes from './tipoUso.routes';
 import origenRoutes from './origenConcesionario.routes';
 import metodoARoutes from './metodoAtencion.routes';
@@ -76,6 +77,7 @@ import accesriosVentasRoutes from './ventasAccesorio.routes';
 import listaEsperaRoutes from './listaEspera.routes';
 import estadoLERoutes from './estadoListaEspera.routes';
 import nMas2Routes from './nMas2.routes';
+import usadosRoutes from './usados.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -135,6 +137,7 @@ router.use('/status-entrega', statusEntregasRoutes)
 router.use('/entregas', entregasRoutes)
 router.use('/condicion-accesorio',condicionARoutes);
 router.use('/status-seguro', estadoSeguroRoutes);
+router.use('/status-usados', estadoUsadosRoutes);
 router.use('/tipo-uso',usoRoutes);
 router.use('/origen-concesionario',origenRoutes);
 router.use('/metodo-atencion',metodoARoutes);
@@ -152,6 +155,7 @@ router.use('/accesorio-stock-ventas', accesriosVentasRoutes);
 router.use('/lista-espera', listaEsperaRoutes);
 router.use('/estado-lespera', estadoLERoutes);
 router.use('/n2', nMas2Routes);
+router.use('/usados', usadosRoutes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);

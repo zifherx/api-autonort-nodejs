@@ -1,12 +1,12 @@
 import Colores from "../models/Colores";
 
-export const getColors = async(req, res) => {
+export const getAll = async(req, res) => {
     try {
         const query = await Colores.find().sort({ name: 'asc' });
         if (query.length > 0) {
             res.send({total: query.length, all: query});
         } else {
-            return res.status(404).json({ message: 'No existen Colores' })
+            return res.status(404).json({ message: 'No existen colores' })
         }
     } catch (err) {
         console.log(err);
@@ -14,13 +14,13 @@ export const getColors = async(req, res) => {
     }
 }
 
-export const getColorByActivo = async(req, res) => {
+export const getAllByActive = async(req, res) => {
     try {
         const query = await Colores.find({ estado: true }).sort({ name: 'asc' });
         if (query.length > 0) {
-            res.json({total_active: query.length, all_active: query});
+            res.json({total: query.length, all: query});
         } else {
-            return res.status(404).json({ message: 'No existen colores Activos' })
+            return res.status(404).json({ message: 'No existen colores activos' })
         }
     } catch (err) {
         console.log(err);
@@ -28,14 +28,14 @@ export const getColorByActivo = async(req, res) => {
     }
 }
 
-export const getColorById = async(req, res) => {
-    const { colorId } = req.params;
+export const getOneById = async(req, res) => {
+    const { itemId } = req.params;
     try {
-        const query = await Colores.findById(colorId);
+        const query = await Colores.findById(itemId);
         if (query) {
             res.json({one: query});
         } else {
-            return res.status(404).json({ message: 'No existe Color' })
+            return res.status(404).json({ message: 'No existe color' })
         }
     } catch (err) {
         console.log(err);
@@ -43,11 +43,11 @@ export const getColorById = async(req, res) => {
     }
 }
 
-export const createColor = async(req, res) => {
-    const { name, estado } = req.body;
+export const createOne = async(req, res) => {
+    const { name, codigo_toyota, hex,  estado } = req.body;
     try {
-        const newColor = new Colores({ name, estado });
-        const query = await newColor.save();
+        const newObj = new Colores({ name, codigo_toyota, hex, estado });
+        const query = await newObj.save();
         if (query) {
             res.json({ message: 'Color creado con éxito' })
         }
@@ -57,15 +57,15 @@ export const createColor = async(req, res) => {
     }
 }
 
-export const updateColor = async(req, res) => {
-    const { name, estado } = req.body;
-    const { colorId } = req.params;
+export const updateOneById = async(req, res) => {
+    const { name, codigo_toyota, hex,  estado } = req.body;
+    const { itemId } = req.params;
     try {
-        const query = await Colores.findByIdAndUpdate(colorId, { name, estado });
+        const query = await Colores.findByIdAndUpdate(itemId, { name, codigo_toyota, hex,  estado });
         if (query) {
             res.json({ message: 'Color actualizado con éxito' });
         } else {
-            return res.status(404).json({ message: 'No existe Color' });
+            return res.status(404).json({ message: `No existe color ${itemId}` });
         }
     } catch (err) {
         console.log(err);
@@ -73,14 +73,14 @@ export const updateColor = async(req, res) => {
     }
 }
 
-export const deleteColor = async(req, res) => {
-    const { colorId } = req.params;
+export const deleteOneById = async(req, res) => {
+    const { itemId } = req.params;
     try {
-        const query = await Colores.findByIdAndDelete(colorId);
+        const query = await Colores.findByIdAndDelete(itemId);
         if (query) {
             res.json({ message: 'Color eliminado con éxito' });
         } else {
-            return res.status(404).json({ message: 'No existe Color' });
+            return res.status(404).json({ message: `No existe color ${itemId}` });
         }
     } catch (err) {
         console.log(err);

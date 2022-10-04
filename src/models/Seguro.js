@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose'
 
 const seguroSchema = new Schema({
+    codigo_interno: { type: String },
     //Cliente
     cliente: { ref: 'Customer', type: Schema.Types.ObjectId, default: null },
     //Venta

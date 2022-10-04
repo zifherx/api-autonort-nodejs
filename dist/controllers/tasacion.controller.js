@@ -51,40 +51,40 @@ tasacionCtrl.getAll = /*#__PURE__*/function () {
             _context.prev = 0;
             _context.next = 3;
             return _Tasacion.default.find().sort({
-              name: 1
+              fecha_operacion: -1
             }).populate({
-              path: 'cliente',
-              select: 'name document'
+              path: "cliente",
+              select: "name document"
             }).populate({
-              path: 'colorE',
-              select: 'name'
+              path: "colorE",
+              select: "name"
             }).populate({
-              path: 'anioF',
-              select: 'name'
+              path: "anioF",
+              select: "name"
             }).populate({
-              path: 'estadoTasacionE',
-              select: 'name'
+              path: "estadoTasacionE",
+              select: "name"
             }).populate({
-              path: 'sucursalE',
-              select: 'name'
+              path: "sucursalE",
+              select: "name"
             }).populate({
-              path: 'origenTasacion',
-              select: 'name'
+              path: "origenTasacion",
+              select: "name"
             }).populate({
-              path: 'metodoTasacion',
-              select: 'name'
+              path: "metodoTasacion",
+              select: "name"
             }).populate({
-              path: 'asesor_venta',
-              select: 'name'
+              path: "asesor_venta",
+              select: "name"
             }).populate({
-              path: 'asesor_servicio',
-              select: 'name'
+              path: "asesor_servicio",
+              select: "name"
             }).populate({
-              path: 'tecnico_inspector',
-              select: 'name'
+              path: "tecnico_inspector",
+              select: "name"
             }).populate({
-              path: 'createdBy',
-              select: 'name username'
+              path: "createdBy",
+              select: "name username"
             });
 
           case 3:
@@ -104,7 +104,7 @@ tasacionCtrl.getAll = /*#__PURE__*/function () {
 
           case 8:
             return _context.abrupt("return", res.status(404).json({
-              message: 'No existen Tasaciones'
+              message: "No existen Tasaciones"
             }));
 
           case 9:
@@ -144,45 +144,45 @@ tasacionCtrl.getOneById = /*#__PURE__*/function () {
             return _Tasacion.default.findById(tasacionId).sort({
               fecha_operacion: -1
             }).populate({
-              path: 'cliente',
-              select: 'name document typeDocument email cellphone representanteLegal'
+              path: "cliente",
+              select: "name document typeDocument email cellphone representanteLegal"
             }).populate({
-              path: 'colorE',
-              select: 'name'
+              path: "colorE",
+              select: "name"
             }).populate({
-              path: 'auto',
-              select: 'name avatar marca',
+              path: "auto",
+              select: "name avatar marca",
               populate: {
-                path: 'marca',
-                select: 'avatar name'
+                path: "marca",
+                select: "avatar name"
               }
             }).populate({
-              path: 'anioF',
-              select: 'name'
+              path: "anioF",
+              select: "name"
             }).populate({
-              path: 'estadoTasacionE',
-              select: 'name'
+              path: "estadoTasacionE",
+              select: "name"
             }).populate({
-              path: 'sucursalE',
-              select: 'name'
+              path: "sucursalE",
+              select: "name"
             }).populate({
-              path: 'origenTasacion',
-              select: 'name'
+              path: "origenTasacion",
+              select: "name"
             }).populate({
-              path: 'metodoTasacion',
-              select: 'name'
+              path: "metodoTasacion",
+              select: "name"
             }).populate({
-              path: 'asesor_venta',
-              select: 'name'
+              path: "asesor_venta",
+              select: "name"
             }).populate({
-              path: 'asesor_servicio',
-              select: 'name'
+              path: "asesor_servicio",
+              select: "name"
             }).populate({
-              path: 'tecnico_inspector',
-              select: 'name'
+              path: "tecnico_inspector",
+              select: "name"
             }).populate({
-              path: 'createdBy',
-              select: 'name username'
+              path: "createdBy",
+              select: "name username"
             });
 
           case 4:
@@ -201,7 +201,7 @@ tasacionCtrl.getOneById = /*#__PURE__*/function () {
 
           case 9:
             return _context2.abrupt("return", res.status(404).json({
-              message: 'No existe la Tasación'
+              message: "No existe la Tasación"
             }));
 
           case 10:
@@ -259,44 +259,44 @@ tasacionCtrl.getAllByTasador = /*#__PURE__*/function () {
             _context3.next = 9;
             return _Tasacion.default.find({
               status_tasacion: {
-                $regex: '.*' + status_tasacion + '.*'
+                $regex: ".*" + status_tasacion + ".*"
               },
               createdBy: userFound._id
             }).sort({
               name: 1
             }).populate({
-              path: 'cliente',
-              select: 'name document'
+              path: "cliente",
+              select: "name document"
             }).populate({
-              path: 'colorE',
-              select: 'name'
+              path: "colorE",
+              select: "name"
             }).populate({
-              path: 'anioF',
-              select: 'name'
+              path: "anioF",
+              select: "name"
             }).populate({
-              path: 'estadoTasacionE',
-              select: 'name'
+              path: "estadoTasacionE",
+              select: "name"
             }).populate({
-              path: 'sucursalE',
-              select: 'name'
+              path: "sucursalE",
+              select: "name"
             }).populate({
-              path: 'origenTasacion',
-              select: 'name'
+              path: "origenTasacion",
+              select: "name"
             }).populate({
-              path: 'metodoTasacion',
-              select: 'name'
+              path: "metodoTasacion",
+              select: "name"
             }).populate({
-              path: 'asesor_venta',
-              select: 'name'
+              path: "asesor_venta",
+              select: "name"
             }).populate({
-              path: 'asesor_servicio',
-              select: 'name'
+              path: "asesor_servicio",
+              select: "name"
             }).populate({
-              path: 'tecnico_inspector',
-              select: 'name'
+              path: "tecnico_inspector",
+              select: "name"
             }).populate({
-              path: 'createdBy',
-              select: 'name username'
+              path: "createdBy",
+              select: "name username"
             });
 
           case 9:
@@ -345,15 +345,77 @@ tasacionCtrl.getAllByTasador = /*#__PURE__*/function () {
 
 tasacionCtrl.getAllByDatesyEstado = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var _req$body2, estado, start, end, query;
+    var _req$body2, estado, pendienteUsado, start, end, query;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$body2 = req.body, estado = _req$body2.estado, start = _req$body2.start, end = _req$body2.end;
-            _context4.prev = 1;
-            _context4.next = 4;
+            _req$body2 = req.body, estado = _req$body2.estado, pendienteUsado = _req$body2.pendienteUsado, start = _req$body2.start, end = _req$body2.end;
+            query = null;
+            _context4.prev = 2;
+
+            if (!(start == "" || start == undefined || start == null)) {
+              _context4.next = 9;
+              break;
+            }
+
+            _context4.next = 6;
+            return _Tasacion.default.find({
+              status_tasacion: estado,
+              pasoUsados: pendienteUsado // fecha_operacion: { $gte: new Date(start), $lte: new Date(end) },
+
+            }).sort({
+              fecha_operacion: -1
+            }).populate({
+              path: "cliente",
+              select: "name document"
+            }).populate({
+              path: "colorE",
+              select: "name"
+            }).populate({
+              path: "anioF",
+              select: "name"
+            }).populate({
+              path: "estadoTasacionE",
+              select: "name"
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "origenTasacion",
+              select: "name"
+            }).populate({
+              path: "metodoTasacion",
+              select: "name"
+            }).populate({
+              path: "asesor_venta",
+              select: "name"
+            }).populate({
+              path: "asesor_servicio",
+              select: "name"
+            }).populate({
+              path: "tecnico_inspector",
+              select: "name"
+            }).populate({
+              path: 'auto',
+              select: 'marca avatar name',
+              populate: {
+                path: 'marca',
+                select: 'name avatar'
+              }
+            }).populate({
+              path: "createdBy",
+              select: "name username"
+            });
+
+          case 6:
+            query = _context4.sent;
+            _context4.next = 12;
+            break;
+
+          case 9:
+            _context4.next = 11;
             return _Tasacion.default.find({
               status_tasacion: estado,
               fecha_operacion: {
@@ -363,45 +425,53 @@ tasacionCtrl.getAllByDatesyEstado = /*#__PURE__*/function () {
             }).sort({
               fecha_operacion: -1
             }).populate({
-              path: 'cliente',
-              select: 'name document'
+              path: "cliente",
+              select: "name document"
             }).populate({
-              path: 'colorE',
-              select: 'name'
+              path: "colorE",
+              select: "name"
             }).populate({
-              path: 'anioF',
-              select: 'name'
+              path: "anioF",
+              select: "name"
             }).populate({
-              path: 'estadoTasacionE',
-              select: 'name'
+              path: "estadoTasacionE",
+              select: "name"
             }).populate({
-              path: 'sucursalE',
-              select: 'name'
+              path: "sucursalE",
+              select: "name"
             }).populate({
-              path: 'origenTasacion',
-              select: 'name'
+              path: "origenTasacion",
+              select: "name"
             }).populate({
-              path: 'metodoTasacion',
-              select: 'name'
+              path: "metodoTasacion",
+              select: "name"
             }).populate({
-              path: 'asesor_venta',
-              select: 'name'
+              path: "asesor_venta",
+              select: "name"
             }).populate({
-              path: 'asesor_servicio',
-              select: 'name'
+              path: "asesor_servicio",
+              select: "name"
             }).populate({
-              path: 'tecnico_inspector',
-              select: 'name'
+              path: "tecnico_inspector",
+              select: "name"
             }).populate({
-              path: 'createdBy',
-              select: 'name username'
+              path: 'auto',
+              select: 'marca avatar name',
+              populate: {
+                path: 'marca',
+                select: 'name avatar'
+              }
+            }).populate({
+              path: "createdBy",
+              select: "name username"
             });
 
-          case 4:
+          case 11:
             query = _context4.sent;
 
+          case 12:
             if (!(query.length > 0)) {
-              _context4.next = 9;
+              _context4.next = 16;
               break;
             }
 
@@ -409,31 +479,31 @@ tasacionCtrl.getAllByDatesyEstado = /*#__PURE__*/function () {
               total: query.length,
               all: query
             });
-            _context4.next = 10;
+            _context4.next = 17;
             break;
 
-          case 9:
+          case 16:
             return _context4.abrupt("return", res.status(404).json({
               message: "No existen Tasaciones ".concat(estado)
             }));
 
-          case 10:
-            _context4.next = 15;
+          case 17:
+            _context4.next = 22;
             break;
 
-          case 12:
-            _context4.prev = 12;
-            _context4.t0 = _context4["catch"](1);
+          case 19:
+            _context4.prev = 19;
+            _context4.t0 = _context4["catch"](2);
             return _context4.abrupt("return", res.status(503).json({
               message: _context4.t0.message
             }));
 
-          case 15:
+          case 22:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[1, 12]]);
+    }, _callee4, null, [[2, 19]]);
   }));
 
   return function (_x7, _x8) {
@@ -443,15 +513,16 @@ tasacionCtrl.getAllByDatesyEstado = /*#__PURE__*/function () {
 
 tasacionCtrl.createOne = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var _req$body3, cliente, marca, modelo, version, auto, placa, colorE, anioF, kilometraje, tipo_transmision, num_propietarios, precio, observacion, empresa, sucursal, sucursalE, origenTasacion, metodoTasacion, fecha_operacion, fechaIngresado, comentario, status_tasacion, estadoTasacionE, ingresoPor, asesor_venta, asesor_servicio, inspeccion_tecnica, tecnico_inspector, createdBy, obj, customerFound, colorFound, anioFound, autoFound, sucursalFound, origenFound, metodoFound, estadoFound, sellerFound, servicesFound, tecnicoFound, userFound, query;
+    var _req$body3, codigo_interno, cliente, marca, modelo, version, auto, placa, colorE, anioF, kilometraje, tipo_transmision, num_propietarios, precio, observacion, empresa, sucursal, sucursalE, origenTasacion, metodoTasacion, fecha_operacion, fechaIngresado, comentario, status_tasacion, estadoTasacionE, ingresoPor, asesor_venta, asesor_servicio, inspeccion_tecnica, tecnico_inspector, createdBy, obj, customerFound, colorFound, anioFound, autoFound, sucursalFound, origenFound, metodoFound, estadoFound, sellerFound, servicesFound, tecnicoFound, userFound, query;
 
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _req$body3 = req.body, cliente = _req$body3.cliente, marca = _req$body3.marca, modelo = _req$body3.modelo, version = _req$body3.version, auto = _req$body3.auto, placa = _req$body3.placa, colorE = _req$body3.colorE, anioF = _req$body3.anioF, kilometraje = _req$body3.kilometraje, tipo_transmision = _req$body3.tipo_transmision, num_propietarios = _req$body3.num_propietarios, precio = _req$body3.precio, observacion = _req$body3.observacion, empresa = _req$body3.empresa, sucursal = _req$body3.sucursal, sucursalE = _req$body3.sucursalE, origenTasacion = _req$body3.origenTasacion, metodoTasacion = _req$body3.metodoTasacion, fecha_operacion = _req$body3.fecha_operacion, fechaIngresado = _req$body3.fechaIngresado, comentario = _req$body3.comentario, status_tasacion = _req$body3.status_tasacion, estadoTasacionE = _req$body3.estadoTasacionE, ingresoPor = _req$body3.ingresoPor, asesor_venta = _req$body3.asesor_venta, asesor_servicio = _req$body3.asesor_servicio, inspeccion_tecnica = _req$body3.inspeccion_tecnica, tecnico_inspector = _req$body3.tecnico_inspector, createdBy = _req$body3.createdBy;
+            _req$body3 = req.body, codigo_interno = _req$body3.codigo_interno, cliente = _req$body3.cliente, marca = _req$body3.marca, modelo = _req$body3.modelo, version = _req$body3.version, auto = _req$body3.auto, placa = _req$body3.placa, colorE = _req$body3.colorE, anioF = _req$body3.anioF, kilometraje = _req$body3.kilometraje, tipo_transmision = _req$body3.tipo_transmision, num_propietarios = _req$body3.num_propietarios, precio = _req$body3.precio, observacion = _req$body3.observacion, empresa = _req$body3.empresa, sucursal = _req$body3.sucursal, sucursalE = _req$body3.sucursalE, origenTasacion = _req$body3.origenTasacion, metodoTasacion = _req$body3.metodoTasacion, fecha_operacion = _req$body3.fecha_operacion, fechaIngresado = _req$body3.fechaIngresado, comentario = _req$body3.comentario, status_tasacion = _req$body3.status_tasacion, estadoTasacionE = _req$body3.estadoTasacionE, ingresoPor = _req$body3.ingresoPor, asesor_venta = _req$body3.asesor_venta, asesor_servicio = _req$body3.asesor_servicio, inspeccion_tecnica = _req$body3.inspeccion_tecnica, tecnico_inspector = _req$body3.tecnico_inspector, createdBy = _req$body3.createdBy;
             _context5.prev = 1;
             obj = new _Tasacion.default({
+              codigo_interno: codigo_interno,
               marca: marca,
               modelo: modelo,
               version: version,
@@ -741,7 +812,7 @@ tasacionCtrl.createOne = /*#__PURE__*/function () {
           case 89:
             query = _context5.sent;
             if (query) res.json({
-              message: 'Tasación creada con éxito'
+              message: "Tasación creada con éxito"
             });
             _context5.next = 97;
             break;
@@ -797,7 +868,7 @@ tasacionCtrl.updatedOneById = /*#__PURE__*/function () {
             }));
 
           case 9:
-            if (!(estadoTasacionE == 'EN PROCESO')) {
+            if (!(estadoTasacionE == "EN PROCESO")) {
               _context6.next = 15;
               break;
             }
@@ -817,7 +888,7 @@ tasacionCtrl.updatedOneById = /*#__PURE__*/function () {
             break;
 
           case 15:
-            if (!(estadoTasacionE == 'HOT')) {
+            if (!(estadoTasacionE == "HOT")) {
               _context6.next = 21;
               break;
             }
@@ -837,7 +908,7 @@ tasacionCtrl.updatedOneById = /*#__PURE__*/function () {
             break;
 
           case 21:
-            if (!(estadoTasacionE == 'RECHAZADO')) {
+            if (!(estadoTasacionE == "RECHAZADO")) {
               _context6.next = 27;
               break;
             }
@@ -857,7 +928,7 @@ tasacionCtrl.updatedOneById = /*#__PURE__*/function () {
             break;
 
           case 27:
-            if (!(estadoTasacionE == 'CERRADO')) {
+            if (!(estadoTasacionE == "CERRADO")) {
               _context6.next = 31;
               break;
             }
@@ -883,14 +954,14 @@ tasacionCtrl.updatedOneById = /*#__PURE__*/function () {
             }
 
             res.json({
-              message: 'Tasación actualizada con éxito'
+              message: "Tasación actualizada con éxito"
             });
             _context6.next = 36;
             break;
 
           case 35:
             return _context6.abrupt("return", res.status(404).json({
-              messsage: 'No existe tasación a actualizar'
+              messsage: "No existe tasación a actualizar"
             }));
 
           case 36:
@@ -938,14 +1009,14 @@ tasacionCtrl.deleteOneById = /*#__PURE__*/function () {
             }
 
             res.json({
-              message: 'Tasación eliminada con éxito'
+              message: "Tasación eliminada con éxito"
             });
             _context7.next = 10;
             break;
 
           case 9:
             return _context7.abrupt("return", res.status(404).json({
-              message: 'No existe la tasación a eliminar'
+              message: "No existe la tasación a eliminar"
             }));
 
           case 10:
@@ -986,7 +1057,7 @@ tasacionCtrl.getBySucursalFecha = /*#__PURE__*/function () {
             _context8.next = 4;
             return _Tasacion.default.find({
               sucursal: {
-                $regex: '.*' + sucursal + '.*'
+                $regex: ".*" + sucursal + ".*"
               },
               fecha_operacion: {
                 $gte: new Date(start),
@@ -995,38 +1066,38 @@ tasacionCtrl.getBySucursalFecha = /*#__PURE__*/function () {
             }).sort({
               fecha_operacion: -1
             }).populate({
-              path: 'cliente',
-              select: 'name document'
+              path: "cliente",
+              select: "name document"
             }).populate({
-              path: 'colorE',
-              select: 'name'
+              path: "colorE",
+              select: "name"
             }).populate({
-              path: 'anioF',
-              select: 'name'
+              path: "anioF",
+              select: "name"
             }).populate({
-              path: 'estadoTasacionE',
-              select: 'name'
+              path: "estadoTasacionE",
+              select: "name"
             }).populate({
-              path: 'sucursalE',
-              select: 'name'
+              path: "sucursalE",
+              select: "name"
             }).populate({
-              path: 'origenTasacion',
-              select: 'name'
+              path: "origenTasacion",
+              select: "name"
             }).populate({
-              path: 'metodoTasacion',
-              select: 'name'
+              path: "metodoTasacion",
+              select: "name"
             }).populate({
-              path: 'asesor_venta',
-              select: 'name'
+              path: "asesor_venta",
+              select: "name"
             }).populate({
-              path: 'asesor_servicio',
-              select: 'name'
+              path: "asesor_servicio",
+              select: "name"
             }).populate({
-              path: 'tecnico_inspector',
-              select: 'name'
+              path: "tecnico_inspector",
+              select: "name"
             }).populate({
-              path: 'createdBy',
-              select: 'name username'
+              path: "createdBy",
+              select: "name username"
             });
 
           case 4:
@@ -1084,7 +1155,7 @@ tasacionCtrl.getRankingByStatus = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$status_tasacion',
+                _id: "$status_tasacion",
                 num_tasaciones: {
                   $sum: 1
                 }
@@ -1112,7 +1183,7 @@ tasacionCtrl.getRankingByStatus = /*#__PURE__*/function () {
 
           case 10:
             return _context9.abrupt("return", res.status(201).json({
-              message: 'No existen Tasaciones aún'
+              message: "No existen Tasaciones aún"
             }));
 
           case 11:
@@ -1162,7 +1233,7 @@ tasacionCtrl.getCountByMetodo = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$metodo',
+                _id: "$metodo",
                 num_tasaciones: {
                   $sum: 1
                 }
@@ -1190,7 +1261,7 @@ tasacionCtrl.getCountByMetodo = /*#__PURE__*/function () {
 
           case 10:
             return _context10.abrupt("return", res.status(201).json({
-              message: 'No existen Tasaciones aún'
+              message: "No existen Tasaciones aún"
             }));
 
           case 11:
@@ -1240,7 +1311,7 @@ tasacionCtrl.getCountByOrigen = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$origen_operacion',
+                _id: "$origen_operacion",
                 num_tasaciones: {
                   $sum: 1
                 }
@@ -1268,7 +1339,7 @@ tasacionCtrl.getCountByOrigen = /*#__PURE__*/function () {
 
           case 10:
             return _context11.abrupt("return", res.status(201).json({
-              message: 'No existen Tasaciones aún'
+              message: "No existen Tasaciones aún"
             }));
 
           case 11:
@@ -1318,7 +1389,7 @@ tasacionCtrl.getRankingByIngreso = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$ingresoPor',
+                _id: "$ingresoPor",
                 num_tasaciones: {
                   $sum: 1
                 }
@@ -1346,7 +1417,7 @@ tasacionCtrl.getRankingByIngreso = /*#__PURE__*/function () {
 
           case 10:
             return _context12.abrupt("return", res.status(201).json({
-              message: 'No existen Tasaciones aún'
+              message: "No existen Tasaciones aún"
             }));
 
           case 11:
@@ -1405,7 +1476,7 @@ tasacionCtrl.getRankingByVendedor = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$asesor_venta',
+                _id: "$asesor_venta",
                 num_tasaciones: {
                   $sum: 1
                 }
@@ -1427,7 +1498,7 @@ tasacionCtrl.getRankingByVendedor = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$asesor_servicio',
+                _id: "$asesor_servicio",
                 num_tasaciones: {
                   $sum: 1
                 }
@@ -1456,7 +1527,7 @@ tasacionCtrl.getRankingByVendedor = /*#__PURE__*/function () {
 
           case 17:
             return _context13.abrupt("return", res.status(201).json({
-              message: 'No existen Tasaciones aún'
+              message: "No existen Tasaciones aún"
             }));
 
           case 18:
@@ -1508,7 +1579,7 @@ tasacionCtrl.getTasacionesBySeller = /*#__PURE__*/function () {
             }
 
             return _context14.abrupt("return", res.status(404).json({
-              message: 'No existe el vendedor'
+              message: "No existe el vendedor"
             }));
 
           case 7:
@@ -1524,7 +1595,7 @@ tasacionCtrl.getTasacionesBySeller = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$status_tasacion',
+                _id: "$status_tasacion",
                 qty: {
                   $sum: 1
                 }
@@ -1548,7 +1619,7 @@ tasacionCtrl.getTasacionesBySeller = /*#__PURE__*/function () {
 
           case 15:
             return _context14.abrupt("return", res.status(201).json({
-              message: 'Vendedor no ingresó ninguna tasación'
+              message: "Vendedor no ingresó ninguna tasación"
             }));
 
           case 16:
@@ -1600,7 +1671,7 @@ tasacionCtrl.getTasacionesByAdvisor = /*#__PURE__*/function () {
             }
 
             return _context15.abrupt("return", res.status(404).json({
-              message: 'No existe el asesor de servicios'
+              message: "No existe el asesor de servicios"
             }));
 
           case 7:
@@ -1616,7 +1687,7 @@ tasacionCtrl.getTasacionesByAdvisor = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$status_tasacion',
+                _id: "$status_tasacion",
                 qty: {
                   $sum: 1
                 }
@@ -1640,7 +1711,7 @@ tasacionCtrl.getTasacionesByAdvisor = /*#__PURE__*/function () {
 
           case 15:
             return _context15.abrupt("return", res.status(201).json({
-              message: 'Vendedor no ingresó ninguna tasación'
+              message: "Vendedor no ingresó ninguna tasación"
             }));
 
           case 16:
@@ -1692,7 +1763,7 @@ tasacionCtrl.getVehiclesByVentas = /*#__PURE__*/function () {
             }
 
             return _context16.abrupt("return", res.status(404).json({
-              message: 'No existe el vendedor'
+              message: "No existe el vendedor"
             }));
 
           case 7:
@@ -1709,7 +1780,7 @@ tasacionCtrl.getVehiclesByVentas = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$modelo',
+                _id: "$modelo",
                 qty: {
                   $sum: 1
                 }
@@ -1733,7 +1804,7 @@ tasacionCtrl.getVehiclesByVentas = /*#__PURE__*/function () {
 
           case 15:
             return _context16.abrupt("return", res.status(201).json({
-              message: 'Vendedor no ingresó ninguna solicitud'
+              message: "Vendedor no ingresó ninguna solicitud"
             }));
 
           case 16:
@@ -1785,7 +1856,7 @@ tasacionCtrl.getVehiclesByServicios = /*#__PURE__*/function () {
             }
 
             return _context17.abrupt("return", res.status(404).json({
-              message: 'No existe el asesor de servicios'
+              message: "No existe el asesor de servicios"
             }));
 
           case 7:
@@ -1802,7 +1873,7 @@ tasacionCtrl.getVehiclesByServicios = /*#__PURE__*/function () {
               $match: filtro
             }, {
               $group: {
-                _id: '$modelo',
+                _id: "$modelo",
                 qty: {
                   $sum: 1
                 }
@@ -1826,7 +1897,7 @@ tasacionCtrl.getVehiclesByServicios = /*#__PURE__*/function () {
 
           case 15:
             return _context17.abrupt("return", res.status(201).json({
-              message: 'Vendedor no ingresó ninguna solicitud'
+              message: "Vendedor no ingresó ninguna solicitud"
             }));
 
           case 16:
@@ -1851,6 +1922,50 @@ tasacionCtrl.getVehiclesByServicios = /*#__PURE__*/function () {
 
   return function (_x33, _x34) {
     return _ref17.apply(this, arguments);
+  };
+}(); //Nuevos
+
+
+tasacionCtrl.getCounterByEstado = /*#__PURE__*/function () {
+  var _ref18 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee18(req, res) {
+    var estado, query;
+    return _regeneratorRuntime().wrap(function _callee18$(_context18) {
+      while (1) {
+        switch (_context18.prev = _context18.next) {
+          case 0:
+            estado = req.body.estado;
+            _context18.prev = 1;
+            _context18.next = 4;
+            return _Tasacion.default.find({
+              status_tasacion: estado
+            }).countDocuments();
+
+          case 4:
+            query = _context18.sent;
+            if (query >= 0) res.json({
+              total: query
+            });
+            _context18.next = 12;
+            break;
+
+          case 8:
+            _context18.prev = 8;
+            _context18.t0 = _context18["catch"](1);
+            console.log(_context18.t0.message);
+            return _context18.abrupt("return", res.status(503).json({
+              message: _context18.t0.message
+            }));
+
+          case 12:
+          case "end":
+            return _context18.stop();
+        }
+      }
+    }, _callee18, null, [[1, 8]]);
+  }));
+
+  return function (_x35, _x36) {
+    return _ref18.apply(this, arguments);
   };
 }();
 

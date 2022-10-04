@@ -262,6 +262,14 @@ var saleSchema = new _mongoose.Schema((_Schema = {
     type: Number,
     default: 0
   },
+  herramientas_tdp: {
+    type: Number,
+    default: 0
+  },
+  herramientas_maf: {
+    type: Number,
+    default: 0
+  },
   acuerdoTDP: {
     type: Number,
     default: 0

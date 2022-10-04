@@ -120,6 +120,7 @@ seguroController.getOneById = async (req, res) => {
 
 seguroController.createOne = async (req, res) => {
     const {
+        codigo_interno,
         cliente,//---
         company,
         sucursal,
@@ -156,6 +157,7 @@ seguroController.createOne = async (req, res) => {
 
     try {
         const newObj = new Seguro({
+            codigo_interno,
             company,
             sucursal,
             status,

@@ -8,6 +8,9 @@ exports.default = void 0;
 var _mongoose = require("mongoose");
 
 var tasacionSchema = new _mongoose.Schema({
+  codigo_interno: {
+    type: String
+  },
   //Cliente
   cliente: {
     ref: "Customer",
@@ -106,6 +109,7 @@ var tasacionSchema = new _mongoose.Schema({
     type: _mongoose.Schema.Types.ObjectId,
     ref: 'StatusTasacion'
   },
+  // LOGS
   isIngresado: {
     type: Boolean,
     default: true
@@ -141,6 +145,7 @@ var tasacionSchema = new _mongoose.Schema({
   fechaCerrado: {
     type: Date
   },
+  //
   comentario: {
     type: String
   },
@@ -175,6 +180,10 @@ var tasacionSchema = new _mongoose.Schema({
   },
   inspeccion_tecnica: {
     type: Boolean
+  },
+  pasoUsados: {
+    type: Boolean,
+    default: false
   },
   //Empleado
   createdBy: {

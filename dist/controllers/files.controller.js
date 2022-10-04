@@ -72,8 +72,8 @@ fileController.getAll = /*#__PURE__*/function () {
               path: "vendedor",
               select: "name sucursal avatar sucursalE",
               populate: {
-                path: 'sucursalE',
-                select: 'name'
+                path: "sucursalE",
+                select: "name"
               }
             }).populate({
               path: "auto",
@@ -328,13 +328,13 @@ fileController.getOneById = /*#__PURE__*/function () {
 
 fileController.createOne = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var _req$body, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, estadoVehiculoE, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, observacion_adv, accesoriosE, condicionAccesorioE, condicion_accesorios, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, estatus_venta, fecha_cancelacion, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, createdBy, fechaCreacionS, newSale, sellerFound, carFound, customerFound, colorFound, anioFFound, anioMFound, ubicacionFound, estadoVehicularFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, operacionFound, userFound, comprobanteFound, condicionFound, sucursalFound, situacionFound, facturacionFound, accesorioFound, query, newLog, logQuery;
+    var _req$body, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, estadoVehiculoE, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, herramientas_tdp, herramientas_maf, observacion_adv, accesoriosE, condicionAccesorioE, condicion_accesorios, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, estatus_venta, fecha_cancelacion, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, isReportado, fechaReporte, mesReportado, createdBy, fechaCreacionS, newSale, sellerFound, carFound, customerFound, colorFound, anioFFound, anioMFound, ubicacionFound, estadoVehicularFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, operacionFound, userFound, comprobanteFound, condicionFound, sucursalFound, situacionFound, facturacionFound, accesorioFound, query, newLog, logQuery;
 
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _req$body = req.body, vendedor = _req$body.vendedor, cliente = _req$body.cliente, auto = _req$body.auto, serie_tdp = _req$body.serie_tdp, colorE = _req$body.colorE, precio = _req$body.precio, anioFabricacionE = _req$body.anioFabricacionE, anioModeloE = _req$body.anioModeloE, ubicacionVehiculoE = _req$body.ubicacionVehiculoE, estadoVehiculoE = _req$body.estadoVehiculoE, fecha_ciguena = _req$body.fecha_ciguena, fecha_entrega = _req$body.fecha_entrega, financiamientoE = _req$body.financiamientoE, bancoE = _req$body.bancoE, solicitudMAF = _req$body.solicitudMAF, adelantosE = _req$body.adelantosE, campaniasTDPE = _req$body.campaniasTDPE, ofertaTDPE = _req$body.ofertaTDPE, campaniasMafE = _req$body.campaniasMafE, ofertaMafE = _req$body.ofertaMafE, isToyotaValue = _req$body.isToyotaValue, arrayToyotaValues = _req$body.arrayToyotaValues, descuento_autonort = _req$body.descuento_autonort, acuerdoTDP = _req$body.acuerdoTDP, observacion_adv = _req$body.observacion_adv, accesoriosE = _req$body.accesoriosE, condicionAccesorioE = _req$body.condicionAccesorioE, condicion_accesorios = _req$body.condicion_accesorios, tipoOperacionE = _req$body.tipoOperacionE, tipoComprobanteE = _req$body.tipoComprobanteE, nro_comprobante = _req$body.nro_comprobante, fecha_comprobante = _req$body.fecha_comprobante, sucursal_venta = _req$body.sucursal_venta, sucursalE = _req$body.sucursalE, estadoVentaE = _req$body.estadoVentaE, estatus_venta = _req$body.estatus_venta, fecha_cancelacion = _req$body.fecha_cancelacion, fecha_facturacion_tdp = _req$body.fecha_facturacion_tdp, estadoFacturacionE = _req$body.estadoFacturacionE, monto_facturado = _req$body.monto_facturado, createdBy = _req$body.createdBy, fechaCreacionS = _req$body.fechaCreacionS;
+            _req$body = req.body, vendedor = _req$body.vendedor, cliente = _req$body.cliente, auto = _req$body.auto, serie_tdp = _req$body.serie_tdp, colorE = _req$body.colorE, precio = _req$body.precio, anioFabricacionE = _req$body.anioFabricacionE, anioModeloE = _req$body.anioModeloE, ubicacionVehiculoE = _req$body.ubicacionVehiculoE, estadoVehiculoE = _req$body.estadoVehiculoE, fecha_ciguena = _req$body.fecha_ciguena, fecha_entrega = _req$body.fecha_entrega, financiamientoE = _req$body.financiamientoE, bancoE = _req$body.bancoE, solicitudMAF = _req$body.solicitudMAF, adelantosE = _req$body.adelantosE, campaniasTDPE = _req$body.campaniasTDPE, ofertaTDPE = _req$body.ofertaTDPE, campaniasMafE = _req$body.campaniasMafE, ofertaMafE = _req$body.ofertaMafE, isToyotaValue = _req$body.isToyotaValue, arrayToyotaValues = _req$body.arrayToyotaValues, descuento_autonort = _req$body.descuento_autonort, acuerdoTDP = _req$body.acuerdoTDP, herramientas_tdp = _req$body.herramientas_tdp, herramientas_maf = _req$body.herramientas_maf, observacion_adv = _req$body.observacion_adv, accesoriosE = _req$body.accesoriosE, condicionAccesorioE = _req$body.condicionAccesorioE, condicion_accesorios = _req$body.condicion_accesorios, tipoOperacionE = _req$body.tipoOperacionE, tipoComprobanteE = _req$body.tipoComprobanteE, nro_comprobante = _req$body.nro_comprobante, fecha_comprobante = _req$body.fecha_comprobante, sucursal_venta = _req$body.sucursal_venta, sucursalE = _req$body.sucursalE, estadoVentaE = _req$body.estadoVentaE, estatus_venta = _req$body.estatus_venta, fecha_cancelacion = _req$body.fecha_cancelacion, fecha_facturacion_tdp = _req$body.fecha_facturacion_tdp, estadoFacturacionE = _req$body.estadoFacturacionE, monto_facturado = _req$body.monto_facturado, isReportado = _req$body.isReportado, fechaReporte = _req$body.fechaReporte, mesReportado = _req$body.mesReportado, createdBy = _req$body.createdBy, fechaCreacionS = _req$body.fechaCreacionS;
             _context3.prev = 1;
             newSale = new _Sale.default({
               serie_tdp: serie_tdp,
@@ -348,10 +348,15 @@ fileController.createOne = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               nro_comprobante: nro_comprobante,
               fecha_comprobante: fecha_comprobante,
               fecha_cancelacion: fecha_cancelacion,
@@ -958,14 +963,14 @@ fileController.createOne = /*#__PURE__*/function () {
 
 fileController.updateOneById = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var itemId, _req$body2, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, ubicacion_vehiculo, estadoVehiculoE, estatus_vehiculo, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, observacion_adv, accesoriosE, condicion_accesorios, condicionAccesorioE, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, fecha_cancelacion, estatus_venta, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, updatedBy, isLibreS, fechaLibreS, isDevolucionS, fechaDevolucionS, isCreditoS, fechaCreditoS, isTestDrive, fechaTestDriveS, isBloqueadoS, fechaBloqueadoS, isStandByS, fechaStandByS, isReservadoS, fechaReservadoS, isReservadoCS, fechaReservadoCS, isReservadoLS, fechaReservadoLS, isEsperaS, fechaEsperaS, isFacturadoS, fechaFacturadoS, isAnticipoS, fechaAnticipoS, isDesembolsarS, fechaDesembolsarS, isExhibicionS, fechaExhibicionS, isCanceladoS, fechaCanceladoS, isCanceladoPTS, fechaCanceladoPTS, isEPDPS, fechaEPDPS, colorNull, anioFNull, anioMNull, ubicacionNull, financiamientoNull, bancoNull, solicitudNull, condicionAccNull, comprobanteNull, facturacionNull, query, sellerFound, customerFound, autoFound, estadoVehicularFound, operacionFound, sucursalFound, situacionFound, userFound, colorFound, anioFound, _anioFound, ubicacionFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, accesoriosFound, condicionFound, comprobanteFound, facturacionFound, newLog, logQuery;
+    var itemId, _req$body2, vendedor, cliente, auto, serie_tdp, colorE, precio, anioFabricacionE, anioModeloE, ubicacionVehiculoE, ubicacion_vehiculo, estadoVehiculoE, estatus_vehiculo, fecha_ciguena, fecha_entrega, financiamientoE, bancoE, solicitudMAF, adelantosE, campaniasTDPE, ofertaTDPE, campaniasMafE, ofertaMafE, isToyotaValue, arrayToyotaValues, descuento_autonort, acuerdoTDP, herramientas_tdp, herramientas_maf, observacion_adv, accesoriosE, condicion_accesorios, condicionAccesorioE, tipoOperacionE, tipoComprobanteE, nro_comprobante, fecha_comprobante, sucursal_venta, sucursalE, estadoVentaE, fecha_cancelacion, estatus_venta, fecha_facturacion_tdp, estadoFacturacionE, monto_facturado, isReportado, fechaReporte, mesReportado, updatedBy, isLibreS, fechaLibreS, isDevolucionS, fechaDevolucionS, isCreditoS, fechaCreditoS, isTestDrive, fechaTestDriveS, isBloqueadoS, fechaBloqueadoS, isStandByS, fechaStandByS, isReservadoS, fechaReservadoS, isReservadoCS, fechaReservadoCS, isReservadoLS, fechaReservadoLS, isEsperaS, fechaEsperaS, isFacturadoS, fechaFacturadoS, isAnticipoS, fechaAnticipoS, isDesembolsarS, fechaDesembolsarS, isExhibicionS, fechaExhibicionS, isCanceladoS, fechaCanceladoS, isCanceladoPTS, fechaCanceladoPTS, isEPDPS, fechaEPDPS, colorNull, anioFNull, anioMNull, ubicacionNull, financiamientoNull, bancoNull, solicitudNull, condicionAccNull, comprobanteNull, facturacionNull, query, sellerFound, customerFound, autoFound, estadoVehicularFound, operacionFound, sucursalFound, situacionFound, userFound, colorFound, anioFound, _anioFound, ubicacionFound, financiamientoFound, bancoFound, mafFound, campaniaTDPFound, campaniaMAFFound, accesoriosFound, condicionFound, comprobanteFound, facturacionFound, newLog, logQuery;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             itemId = req.params.itemId;
-            _req$body2 = req.body, vendedor = _req$body2.vendedor, cliente = _req$body2.cliente, auto = _req$body2.auto, serie_tdp = _req$body2.serie_tdp, colorE = _req$body2.colorE, precio = _req$body2.precio, anioFabricacionE = _req$body2.anioFabricacionE, anioModeloE = _req$body2.anioModeloE, ubicacionVehiculoE = _req$body2.ubicacionVehiculoE, ubicacion_vehiculo = _req$body2.ubicacion_vehiculo, estadoVehiculoE = _req$body2.estadoVehiculoE, estatus_vehiculo = _req$body2.estatus_vehiculo, fecha_ciguena = _req$body2.fecha_ciguena, fecha_entrega = _req$body2.fecha_entrega, financiamientoE = _req$body2.financiamientoE, bancoE = _req$body2.bancoE, solicitudMAF = _req$body2.solicitudMAF, adelantosE = _req$body2.adelantosE, campaniasTDPE = _req$body2.campaniasTDPE, ofertaTDPE = _req$body2.ofertaTDPE, campaniasMafE = _req$body2.campaniasMafE, ofertaMafE = _req$body2.ofertaMafE, isToyotaValue = _req$body2.isToyotaValue, arrayToyotaValues = _req$body2.arrayToyotaValues, descuento_autonort = _req$body2.descuento_autonort, acuerdoTDP = _req$body2.acuerdoTDP, observacion_adv = _req$body2.observacion_adv, accesoriosE = _req$body2.accesoriosE, condicion_accesorios = _req$body2.condicion_accesorios, condicionAccesorioE = _req$body2.condicionAccesorioE, tipoOperacionE = _req$body2.tipoOperacionE, tipoComprobanteE = _req$body2.tipoComprobanteE, nro_comprobante = _req$body2.nro_comprobante, fecha_comprobante = _req$body2.fecha_comprobante, sucursal_venta = _req$body2.sucursal_venta, sucursalE = _req$body2.sucursalE, estadoVentaE = _req$body2.estadoVentaE, fecha_cancelacion = _req$body2.fecha_cancelacion, estatus_venta = _req$body2.estatus_venta, fecha_facturacion_tdp = _req$body2.fecha_facturacion_tdp, estadoFacturacionE = _req$body2.estadoFacturacionE, monto_facturado = _req$body2.monto_facturado, updatedBy = _req$body2.updatedBy, isLibreS = _req$body2.isLibreS, fechaLibreS = _req$body2.fechaLibreS, isDevolucionS = _req$body2.isDevolucionS, fechaDevolucionS = _req$body2.fechaDevolucionS, isCreditoS = _req$body2.isCreditoS, fechaCreditoS = _req$body2.fechaCreditoS, isTestDrive = _req$body2.isTestDrive, fechaTestDriveS = _req$body2.fechaTestDriveS, isBloqueadoS = _req$body2.isBloqueadoS, fechaBloqueadoS = _req$body2.fechaBloqueadoS, isStandByS = _req$body2.isStandByS, fechaStandByS = _req$body2.fechaStandByS, isReservadoS = _req$body2.isReservadoS, fechaReservadoS = _req$body2.fechaReservadoS, isReservadoCS = _req$body2.isReservadoCS, fechaReservadoCS = _req$body2.fechaReservadoCS, isReservadoLS = _req$body2.isReservadoLS, fechaReservadoLS = _req$body2.fechaReservadoLS, isEsperaS = _req$body2.isEsperaS, fechaEsperaS = _req$body2.fechaEsperaS, isFacturadoS = _req$body2.isFacturadoS, fechaFacturadoS = _req$body2.fechaFacturadoS, isAnticipoS = _req$body2.isAnticipoS, fechaAnticipoS = _req$body2.fechaAnticipoS, isDesembolsarS = _req$body2.isDesembolsarS, fechaDesembolsarS = _req$body2.fechaDesembolsarS, isExhibicionS = _req$body2.isExhibicionS, fechaExhibicionS = _req$body2.fechaExhibicionS, isCanceladoS = _req$body2.isCanceladoS, fechaCanceladoS = _req$body2.fechaCanceladoS, isCanceladoPTS = _req$body2.isCanceladoPTS, fechaCanceladoPTS = _req$body2.fechaCanceladoPTS, isEPDPS = _req$body2.isEPDPS, fechaEPDPS = _req$body2.fechaEPDPS; // Opcionales
+            _req$body2 = req.body, vendedor = _req$body2.vendedor, cliente = _req$body2.cliente, auto = _req$body2.auto, serie_tdp = _req$body2.serie_tdp, colorE = _req$body2.colorE, precio = _req$body2.precio, anioFabricacionE = _req$body2.anioFabricacionE, anioModeloE = _req$body2.anioModeloE, ubicacionVehiculoE = _req$body2.ubicacionVehiculoE, ubicacion_vehiculo = _req$body2.ubicacion_vehiculo, estadoVehiculoE = _req$body2.estadoVehiculoE, estatus_vehiculo = _req$body2.estatus_vehiculo, fecha_ciguena = _req$body2.fecha_ciguena, fecha_entrega = _req$body2.fecha_entrega, financiamientoE = _req$body2.financiamientoE, bancoE = _req$body2.bancoE, solicitudMAF = _req$body2.solicitudMAF, adelantosE = _req$body2.adelantosE, campaniasTDPE = _req$body2.campaniasTDPE, ofertaTDPE = _req$body2.ofertaTDPE, campaniasMafE = _req$body2.campaniasMafE, ofertaMafE = _req$body2.ofertaMafE, isToyotaValue = _req$body2.isToyotaValue, arrayToyotaValues = _req$body2.arrayToyotaValues, descuento_autonort = _req$body2.descuento_autonort, acuerdoTDP = _req$body2.acuerdoTDP, herramientas_tdp = _req$body2.herramientas_tdp, herramientas_maf = _req$body2.herramientas_maf, observacion_adv = _req$body2.observacion_adv, accesoriosE = _req$body2.accesoriosE, condicion_accesorios = _req$body2.condicion_accesorios, condicionAccesorioE = _req$body2.condicionAccesorioE, tipoOperacionE = _req$body2.tipoOperacionE, tipoComprobanteE = _req$body2.tipoComprobanteE, nro_comprobante = _req$body2.nro_comprobante, fecha_comprobante = _req$body2.fecha_comprobante, sucursal_venta = _req$body2.sucursal_venta, sucursalE = _req$body2.sucursalE, estadoVentaE = _req$body2.estadoVentaE, fecha_cancelacion = _req$body2.fecha_cancelacion, estatus_venta = _req$body2.estatus_venta, fecha_facturacion_tdp = _req$body2.fecha_facturacion_tdp, estadoFacturacionE = _req$body2.estadoFacturacionE, monto_facturado = _req$body2.monto_facturado, isReportado = _req$body2.isReportado, fechaReporte = _req$body2.fechaReporte, mesReportado = _req$body2.mesReportado, updatedBy = _req$body2.updatedBy, isLibreS = _req$body2.isLibreS, fechaLibreS = _req$body2.fechaLibreS, isDevolucionS = _req$body2.isDevolucionS, fechaDevolucionS = _req$body2.fechaDevolucionS, isCreditoS = _req$body2.isCreditoS, fechaCreditoS = _req$body2.fechaCreditoS, isTestDrive = _req$body2.isTestDrive, fechaTestDriveS = _req$body2.fechaTestDriveS, isBloqueadoS = _req$body2.isBloqueadoS, fechaBloqueadoS = _req$body2.fechaBloqueadoS, isStandByS = _req$body2.isStandByS, fechaStandByS = _req$body2.fechaStandByS, isReservadoS = _req$body2.isReservadoS, fechaReservadoS = _req$body2.fechaReservadoS, isReservadoCS = _req$body2.isReservadoCS, fechaReservadoCS = _req$body2.fechaReservadoCS, isReservadoLS = _req$body2.isReservadoLS, fechaReservadoLS = _req$body2.fechaReservadoLS, isEsperaS = _req$body2.isEsperaS, fechaEsperaS = _req$body2.fechaEsperaS, isFacturadoS = _req$body2.isFacturadoS, fechaFacturadoS = _req$body2.fechaFacturadoS, isAnticipoS = _req$body2.isAnticipoS, fechaAnticipoS = _req$body2.fechaAnticipoS, isDesembolsarS = _req$body2.isDesembolsarS, fechaDesembolsarS = _req$body2.fechaDesembolsarS, isExhibicionS = _req$body2.isExhibicionS, fechaExhibicionS = _req$body2.fechaExhibicionS, isCanceladoS = _req$body2.isCanceladoS, fechaCanceladoS = _req$body2.fechaCanceladoS, isCanceladoPTS = _req$body2.isCanceladoPTS, fechaCanceladoPTS = _req$body2.fechaCanceladoPTS, isEPDPS = _req$body2.isEPDPS, fechaEPDPS = _req$body2.fechaEPDPS; // Opcionales
 
             colorNull = null;
             anioFNull = null;
@@ -1511,6 +1516,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -1520,6 +1527,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -1578,6 +1588,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -1587,6 +1599,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -1645,6 +1660,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -1654,6 +1671,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -1712,6 +1732,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -1721,6 +1743,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -1779,6 +1804,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -1788,6 +1815,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -1846,6 +1876,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -1855,6 +1887,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -1913,6 +1948,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -1922,6 +1959,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -1980,6 +2020,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -1989,6 +2031,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -2047,6 +2092,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -2056,6 +2103,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -2114,6 +2164,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -2123,6 +2175,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -2181,6 +2236,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -2190,6 +2247,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -2248,6 +2308,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -2257,6 +2319,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -2315,6 +2380,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -2324,6 +2391,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -2377,6 +2447,8 @@ fileController.updateOneById = /*#__PURE__*/function () {
               arrayToyotaValues: arrayToyotaValues,
               descuento_autonort: descuento_autonort,
               acuerdoTDP: acuerdoTDP,
+              herramientas_tdp: herramientas_tdp,
+              herramientas_maf: herramientas_maf,
               observacion_adv: observacion_adv,
               condicion_accesorios: condicion_accesorios,
               nro_comprobante: nro_comprobante,
@@ -2386,6 +2458,9 @@ fileController.updateOneById = /*#__PURE__*/function () {
               estatus_venta: estatus_venta,
               fecha_facturacion_tdp: fecha_facturacion_tdp,
               monto_facturado: monto_facturado,
+              isReportado: isReportado,
+              fechaReporte: fechaReporte,
+              mesReportado: mesReportado,
               vendedor: sellerFound._id,
               cliente: customerFound._id,
               auto: autoFound._id,
@@ -2760,23 +2835,25 @@ fileController.getFilesBySucursalyFecha = /*#__PURE__*/function () {
 
 fileController.getFilesByVendedor = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
-    var seller, sellerFound, query;
+    var _req$body4, seller, start, end, query, sellerFound;
+
     return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            seller = req.body.seller;
-            _context7.prev = 1;
-            _context7.next = 4;
+            _req$body4 = req.body, seller = _req$body4.seller, start = _req$body4.start, end = _req$body4.end;
+            query = null;
+            _context7.prev = 2;
+            _context7.next = 5;
             return _Seller.default.findOne({
               name: seller
             });
 
-          case 4:
+          case 5:
             sellerFound = _context7.sent;
 
             if (sellerFound) {
-              _context7.next = 7;
+              _context7.next = 8;
               break;
             }
 
@@ -2784,8 +2861,13 @@ fileController.getFilesByVendedor = /*#__PURE__*/function () {
               message: "Vendedor ".concat(seller, " no encontrado")
             }));
 
-          case 7:
-            _context7.next = 9;
+          case 8:
+            if (!(start == undefined || start == null || start == "")) {
+              _context7.next = 14;
+              break;
+            }
+
+            _context7.next = 11;
             return _Sale.default.find({
               vendedor: sellerFound._id
             }).sort({
@@ -2848,11 +2930,40 @@ fileController.getFilesByVendedor = /*#__PURE__*/function () {
               select: "name username"
             });
 
-          case 9:
+          case 11:
+            query = _context7.sent;
+            _context7.next = 17;
+            break;
+
+          case 14:
+            _context7.next = 16;
+            return _Sale.default.aggregate([{
+              $match: {
+                vendedor: sellerFound._id,
+                fecha_cancelacion: {
+                  $gte: new Date(start),
+                  $lte: new Date(end)
+                }
+              }
+            }, {
+              $group: {
+                _id: "$estatus_venta",
+                qty: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                qty: -1
+              }
+            }]);
+
+          case 16:
             query = _context7.sent;
 
+          case 17:
             if (!(query.length > 0)) {
-              _context7.next = 14;
+              _context7.next = 21;
               break;
             }
 
@@ -2860,32 +2971,32 @@ fileController.getFilesByVendedor = /*#__PURE__*/function () {
               total: query.length,
               all: query
             });
-            _context7.next = 15;
+            _context7.next = 22;
             break;
 
-          case 14:
+          case 21:
             return _context7.abrupt("return", res.status(404).json({
               message: "El vendedor ".concat(seller, " no cuenta con expedientes")
             }));
 
-          case 15:
-            _context7.next = 21;
+          case 22:
+            _context7.next = 28;
             break;
 
-          case 17:
-            _context7.prev = 17;
-            _context7.t0 = _context7["catch"](1);
+          case 24:
+            _context7.prev = 24;
+            _context7.t0 = _context7["catch"](2);
             console.log(_context7.t0);
             return _context7.abrupt("return", res.status(503).json({
               message: _context7.t0.message
             }));
 
-          case 21:
+          case 28:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[1, 17]]);
+    }, _callee7, null, [[2, 24]]);
   }));
 
   return function (_x13, _x14) {
@@ -2895,13 +3006,13 @@ fileController.getFilesByVendedor = /*#__PURE__*/function () {
 
 fileController.groupFilesByEstado = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
-    var _req$body4, sucursalE, start, end, query;
+    var _req$body5, sucursalE, start, end, query;
 
     return _regeneratorRuntime().wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
-            _req$body4 = req.body, sucursalE = _req$body4.sucursalE, start = _req$body4.start, end = _req$body4.end;
+            _req$body5 = req.body, sucursalE = _req$body5.sucursalE, start = _req$body5.start, end = _req$body5.end;
             _context8.prev = 1;
             _context8.next = 4;
             return _Sale.default.aggregate([{
@@ -2974,13 +3085,13 @@ fileController.groupFilesByEstado = /*#__PURE__*/function () {
 
 fileController.conteoFilesByEstado = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
-    var _req$body5, estado, ubicacion, isEntregado, sucursalE, start, end, query;
+    var _req$body6, estado, ubicacion, isEntregado, sucursalE, start, end, query;
 
     return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
-            _req$body5 = req.body, estado = _req$body5.estado, ubicacion = _req$body5.ubicacion, isEntregado = _req$body5.isEntregado, sucursalE = _req$body5.sucursalE, start = _req$body5.start, end = _req$body5.end;
+            _req$body6 = req.body, estado = _req$body6.estado, ubicacion = _req$body6.ubicacion, isEntregado = _req$body6.isEntregado, sucursalE = _req$body6.sucursalE, start = _req$body6.start, end = _req$body6.end;
             query = null;
             _context9.prev = 2;
 
@@ -3059,13 +3170,13 @@ fileController.conteoFilesByEstado = /*#__PURE__*/function () {
 
 fileController.rankingFilesByUbicacion = /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res) {
-    var _req$body6, ubicacion, start, end, query;
+    var _req$body7, ubicacion, start, end, query;
 
     return _regeneratorRuntime().wrap(function _callee10$(_context10) {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            _req$body6 = req.body, ubicacion = _req$body6.ubicacion, start = _req$body6.start, end = _req$body6.end;
+            _req$body7 = req.body, ubicacion = _req$body7.ubicacion, start = _req$body7.start, end = _req$body7.end;
             _context10.prev = 1;
             _context10.next = 4;
             return _Sale.default.aggregate([{
@@ -3121,13 +3232,13 @@ fileController.rankingFilesByUbicacion = /*#__PURE__*/function () {
 
 fileController.getFilesByEstado = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res) {
-    var _req$body7, estado, tramite, sucursalE, query;
+    var _req$body8, estado, tramite, sucursalE, query;
 
     return _regeneratorRuntime().wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
-            _req$body7 = req.body, estado = _req$body7.estado, tramite = _req$body7.tramite, sucursalE = _req$body7.sucursalE;
+            _req$body8 = req.body, estado = _req$body8.estado, tramite = _req$body8.tramite, sucursalE = _req$body8.sucursalE;
             query = null;
             _context11.prev = 2;
 
@@ -3329,15 +3440,22 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
 
 fileController.rankingFilesByModelo = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(req, res) {
-    var _req$body8, sucursalE, estado, start, end, query;
+    var _req$body9, sucursalE, seller, estado, start, end, query, sellerFound;
 
     return _regeneratorRuntime().wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
-            _req$body8 = req.body, sucursalE = _req$body8.sucursalE, estado = _req$body8.estado, start = _req$body8.start, end = _req$body8.end;
-            _context12.prev = 1;
-            _context12.next = 4;
+            _req$body9 = req.body, sucursalE = _req$body9.sucursalE, seller = _req$body9.seller, estado = _req$body9.estado, start = _req$body9.start, end = _req$body9.end;
+            query = null;
+            _context12.prev = 2;
+
+            if (!(seller == null || seller == undefined || seller == "")) {
+              _context12.next = 9;
+              break;
+            }
+
+            _context12.next = 6;
             return _Sale.default.aggregate([{
               $match: {
                 sucursal_venta: {
@@ -3362,9 +3480,62 @@ fileController.rankingFilesByModelo = /*#__PURE__*/function () {
               }
             }]);
 
-          case 4:
+          case 6:
+            query = _context12.sent;
+            _context12.next = 17;
+            break;
+
+          case 9:
+            _context12.next = 11;
+            return _Seller.default.findOne({
+              name: seller
+            });
+
+          case 11:
+            sellerFound = _context12.sent;
+
+            if (sellerFound) {
+              _context12.next = 14;
+              break;
+            }
+
+            return _context12.abrupt("return", res.status(404).json({
+              message: "Asesor ".concat(seller, " no encontrado")
+            }));
+
+          case 14:
+            _context12.next = 16;
+            return _Sale.default.aggregate([{
+              $match: {
+                sucursal_venta: {
+                  $regex: ".*" + sucursalE + ".*"
+                },
+                vendedor: sellerFound._id,
+                estatus_venta: {
+                  $regex: ".*" + estado + ".*"
+                },
+                fecha_cancelacion: {
+                  $gte: new Date(start),
+                  $lte: new Date(end)
+                }
+              }
+            }, {
+              $group: {
+                _id: "$auto",
+                num_ventas: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                num_ventas: -1
+              }
+            }]);
+
+          case 16:
             query = _context12.sent;
 
+          case 17:
             if (query.length > 0) {
               res.json({
                 total: query.length,
@@ -3372,23 +3543,23 @@ fileController.rankingFilesByModelo = /*#__PURE__*/function () {
               });
             }
 
-            _context12.next = 12;
+            _context12.next = 24;
             break;
 
-          case 8:
-            _context12.prev = 8;
-            _context12.t0 = _context12["catch"](1);
+          case 20:
+            _context12.prev = 20;
+            _context12.t0 = _context12["catch"](2);
             console.log(_context12.t0);
             return _context12.abrupt("return", res.status(503).json({
               message: _context12.t0.message
             }));
 
-          case 12:
+          case 24:
           case "end":
             return _context12.stop();
         }
       }
-    }, _callee12, null, [[1, 8]]);
+    }, _callee12, null, [[2, 20]]);
   }));
 
   return function (_x23, _x24) {
@@ -3398,13 +3569,13 @@ fileController.rankingFilesByModelo = /*#__PURE__*/function () {
 
 fileController.rankingFilesBySeller = /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(req, res) {
-    var _req$body9, sucursalE, estadoE, start, end, query;
+    var _req$body10, sucursalE, estadoE, start, end, query;
 
     return _regeneratorRuntime().wrap(function _callee13$(_context13) {
       while (1) {
         switch (_context13.prev = _context13.next) {
           case 0:
-            _req$body9 = req.body, sucursalE = _req$body9.sucursalE, estadoE = _req$body9.estadoE, start = _req$body9.start, end = _req$body9.end; // console.log(req.body);
+            _req$body10 = req.body, sucursalE = _req$body10.sucursalE, estadoE = _req$body10.estadoE, start = _req$body10.start, end = _req$body10.end; // console.log(req.body);
 
             _context13.prev = 1;
             _context13.next = 4;
@@ -3481,15 +3652,22 @@ fileController.rankingFilesBySeller = /*#__PURE__*/function () {
 
 fileController.getFilesByToyotaValue = /*#__PURE__*/function () {
   var _ref14 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(req, res) {
-    var _req$body10, sucursalE, isToyotaValue, start, end, query;
+    var _req$body11, sucursalE, isToyotaValue, seller, start, end, query, sellerFound;
 
     return _regeneratorRuntime().wrap(function _callee14$(_context14) {
       while (1) {
         switch (_context14.prev = _context14.next) {
           case 0:
-            _req$body10 = req.body, sucursalE = _req$body10.sucursalE, isToyotaValue = _req$body10.isToyotaValue, start = _req$body10.start, end = _req$body10.end;
-            _context14.prev = 1;
-            _context14.next = 4;
+            _req$body11 = req.body, sucursalE = _req$body11.sucursalE, isToyotaValue = _req$body11.isToyotaValue, seller = _req$body11.seller, start = _req$body11.start, end = _req$body11.end;
+            query = null;
+            _context14.prev = 2;
+
+            if (!(seller == undefined || seller == null || seller == "")) {
+              _context14.next = 9;
+              break;
+            }
+
+            _context14.next = 6;
             return _Sale.default.find({
               sucursal_venta: {
                 $regex: ".*" + sucursalE + ".*"
@@ -3521,11 +3699,67 @@ fileController.getFilesByToyotaValue = /*#__PURE__*/function () {
               }
             });
 
-          case 4:
+          case 6:
+            query = _context14.sent;
+            _context14.next = 17;
+            break;
+
+          case 9:
+            _context14.next = 11;
+            return _Seller.default.findOne({
+              name: seller
+            });
+
+          case 11:
+            sellerFound = _context14.sent;
+
+            if (sellerFound) {
+              _context14.next = 14;
+              break;
+            }
+
+            return _context14.abrupt("return", res.status(404).json({
+              message: "Vendedor ".concat(seller, " no encontrado")
+            }));
+
+          case 14:
+            _context14.next = 16;
+            return _Sale.default.find({
+              // sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
+              vendedor: sellerFound._id,
+              isToyotaValue: isToyotaValue,
+              fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end)
+              }
+            }).select("vendedor cliente auto serie_tdp isToyotaValue arrayToyotaValues sucursalE").populate({
+              path: "vendedor",
+              select: "name avatar"
+            }).populate({
+              path: "cliente",
+              select: "name document"
+            }).populate({
+              path: "sucursalE",
+              select: "name"
+            }).populate({
+              path: "auto",
+              select: "model cod_tdp",
+              populate: {
+                path: "model",
+                select: "name avatar marca",
+                populate: {
+                  path: "marca",
+                  select: "name avatar"
+                }
+              }
+            });
+
+          case 16:
             query = _context14.sent;
 
+          case 17:
             if (!(query.length > 0)) {
-              _context14.next = 9;
+              _context14.next = 21;
               break;
             }
 
@@ -3533,32 +3767,32 @@ fileController.getFilesByToyotaValue = /*#__PURE__*/function () {
               total: query.length,
               all: query
             });
-            _context14.next = 10;
+            _context14.next = 22;
             break;
 
-          case 9:
+          case 21:
             return _context14.abrupt("return", res.status(404).json({
               message: "No existen expedientes con toyota value"
             }));
 
-          case 10:
-            _context14.next = 16;
+          case 22:
+            _context14.next = 28;
             break;
 
-          case 12:
-            _context14.prev = 12;
-            _context14.t0 = _context14["catch"](1);
+          case 24:
+            _context14.prev = 24;
+            _context14.t0 = _context14["catch"](2);
             console.log(_context14.t0);
             return _context14.abrupt("return", res.status(503).json({
               message: _context14.t0.message
             }));
 
-          case 16:
+          case 28:
           case "end":
             return _context14.stop();
         }
       }
-    }, _callee14, null, [[1, 12]]);
+    }, _callee14, null, [[2, 24]]);
   }));
 
   return function (_x27, _x28) {
@@ -3568,13 +3802,13 @@ fileController.getFilesByToyotaValue = /*#__PURE__*/function () {
 
 fileController.getFilesByImporteAccesorios = /*#__PURE__*/function () {
   var _ref15 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15(req, res) {
-    var _req$body11, sucursalE, start, end, query;
+    var _req$body12, sucursalE, start, end, query;
 
     return _regeneratorRuntime().wrap(function _callee15$(_context15) {
       while (1) {
         switch (_context15.prev = _context15.next) {
           case 0:
-            _req$body11 = req.body, sucursalE = _req$body11.sucursalE, start = _req$body11.start, end = _req$body11.end;
+            _req$body12 = req.body, sucursalE = _req$body12.sucursalE, start = _req$body12.start, end = _req$body12.end;
             _context15.prev = 1;
             _context15.next = 4;
             return _Sale.default.find({
@@ -3660,11 +3894,11 @@ fileController.getAllLogs = /*#__PURE__*/function () {
             return _LogFile.default.find().sort({
               timeAt: -1
             }).populate({
-              path: 'file_id',
-              select: 'serie_tdp'
+              path: "file_id",
+              select: "serie_tdp"
             }).populate({
-              path: 'modifiedBy',
-              select: 'name username avatar'
+              path: "modifiedBy",
+              select: "name username avatar"
             });
 
           case 3:

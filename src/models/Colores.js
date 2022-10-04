@@ -2,8 +2,9 @@ import { Schema, model } from 'mongoose'
 
 const colorSchema = new Schema({
     name: { type: String },
-    status: { type: String },
-    estado: { type: Boolean, default: true }
+    codigo_toyota: { type: String },
+    hex: { type: String },
+    estado: { type: Boolean, default: false }
 }, {
     timestamps: true,
     versionKey: false

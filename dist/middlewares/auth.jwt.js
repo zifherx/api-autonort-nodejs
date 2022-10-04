@@ -7,7 +7,7 @@ var _typeof = require("@babel/runtime/helpers/typeof");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.verifyToken = exports.isVendedor = exports.isTasadororChiefEPDP = exports.isTasador = exports.isInmatriculadosAsistantyAdministrador = exports.isInmatriculadosAsistant = exports.isExecutiveMaf = exports.isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin = exports.isConexosOrADVOrVendedorOrEPDPOrAdmin = exports.isConexosOrADV = exports.isConexosAsistantOrAdmin = exports.isChiefTunning = exports.isChiefSales = exports.isChiefPlaneamientorAdmin = exports.isChiefEPDPorAdmin = exports.isChiefEPDP = exports.isChiefAdvorAdminorAsistantADVorChiefPlaneamiento = exports.isChiefAdvorAdminorAsistantADV = exports.isChiefAdvorAdmin = exports.isChiefAdv = exports.isChiefADVOrChiefPlaneamientoOrAdministrador = exports.isCSAsistant = exports.isAdministradorOrAsistantComercial = exports.isAdmin = void 0;
+exports.verifyToken = exports.isVendedor = exports.isTasadororChiefEPDP = exports.isTasadorOrChiefEDPDOrAdmin = exports.isTasador = exports.isInmatriculadosAsistantyAdministrador = exports.isInmatriculadosAsistant = exports.isExecutiveMaf = exports.isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin = exports.isConexosOrADVOrVendedorOrEPDPOrAdmin = exports.isConexosOrADV = exports.isConexosAsistantOrAdmin = exports.isChiefTunning = exports.isChiefSales = exports.isChiefPlaneamientorAdmin = exports.isChiefEPDPorAdmin = exports.isChiefEPDP = exports.isChiefAdvorAdminorAsistantADVorChiefPlaneamiento = exports.isChiefAdvorAdminorAsistantADV = exports.isChiefAdvorAdmin = exports.isChiefAdv = exports.isChiefADVOrChiefPlaneamientoOrAdministrador = exports.isCSAsistant = exports.isAdministradorOrAsistantComercial = exports.isAdmin = void 0;
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
@@ -1093,7 +1093,7 @@ var isTasadororChiefEPDP = /*#__PURE__*/function () {
 
 exports.isTasadororChiefEPDP = isTasadororChiefEPDP;
 
-var isTasador = /*#__PURE__*/function () {
+var isTasadorOrChiefEDPDOrAdmin = /*#__PURE__*/function () {
   var _ref18 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee18(req, res, next) {
     var user, roles, i;
     return _regeneratorRuntime().wrap(function _callee18$(_context18) {
@@ -1122,7 +1122,7 @@ var isTasador = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Tasador')) {
+            if (!(roles[i].name === 'Tasador' || roles[i].name === 'Jefe-EPDP' || roles[i].name === 'Administrador')) {
               _context18.next = 11;
               break;
             }
@@ -1137,7 +1137,7 @@ var isTasador = /*#__PURE__*/function () {
 
           case 14:
             return _context18.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Tasador'
+              message: 'Requiere permiso del Tasador ó Jefe-EPDP ó Adminsitrador'
             }));
 
           case 15:
@@ -1148,14 +1148,14 @@ var isTasador = /*#__PURE__*/function () {
     }, _callee18);
   }));
 
-  return function isTasador(_x52, _x53, _x54) {
+  return function isTasadorOrChiefEDPDOrAdmin(_x52, _x53, _x54) {
     return _ref18.apply(this, arguments);
   };
 }();
 
-exports.isTasador = isTasador;
+exports.isTasadorOrChiefEDPDOrAdmin = isTasadorOrChiefEDPDOrAdmin;
 
-var isChiefEPDP = /*#__PURE__*/function () {
+var isTasador = /*#__PURE__*/function () {
   var _ref19 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee19(req, res, next) {
     var user, roles, i;
     return _regeneratorRuntime().wrap(function _callee19$(_context19) {
@@ -1184,7 +1184,7 @@ var isChiefEPDP = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Jefe-Tasación')) {
+            if (!(roles[i].name === 'Tasador')) {
               _context19.next = 11;
               break;
             }
@@ -1199,7 +1199,7 @@ var isChiefEPDP = /*#__PURE__*/function () {
 
           case 14:
             return _context19.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Jefe-EPDP'
+              message: 'Requiere permiso del Tasador'
             }));
 
           case 15:
@@ -1210,14 +1210,14 @@ var isChiefEPDP = /*#__PURE__*/function () {
     }, _callee19);
   }));
 
-  return function isChiefEPDP(_x55, _x56, _x57) {
+  return function isTasador(_x55, _x56, _x57) {
     return _ref19.apply(this, arguments);
   };
 }();
 
-exports.isChiefEPDP = isChiefEPDP;
+exports.isTasador = isTasador;
 
-var isChiefEPDPorAdmin = /*#__PURE__*/function () {
+var isChiefEPDP = /*#__PURE__*/function () {
   var _ref20 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee20(req, res, next) {
     var user, roles, i;
     return _regeneratorRuntime().wrap(function _callee20$(_context20) {
@@ -1246,7 +1246,7 @@ var isChiefEPDPorAdmin = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Administrador' || roles[i].name === 'Jefe-EPDP')) {
+            if (!(roles[i].name === 'Jefe-Tasación')) {
               _context20.next = 11;
               break;
             }
@@ -1272,14 +1272,14 @@ var isChiefEPDPorAdmin = /*#__PURE__*/function () {
     }, _callee20);
   }));
 
-  return function isChiefEPDPorAdmin(_x58, _x59, _x60) {
+  return function isChiefEPDP(_x58, _x59, _x60) {
     return _ref20.apply(this, arguments);
   };
 }();
 
-exports.isChiefEPDPorAdmin = isChiefEPDPorAdmin;
+exports.isChiefEPDP = isChiefEPDP;
 
-var isVendedor = /*#__PURE__*/function () {
+var isChiefEPDPorAdmin = /*#__PURE__*/function () {
   var _ref21 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee21(req, res, next) {
     var user, roles, i;
     return _regeneratorRuntime().wrap(function _callee21$(_context21) {
@@ -1308,7 +1308,7 @@ var isVendedor = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Vendedor')) {
+            if (!(roles[i].name === 'Administrador' || roles[i].name === 'Jefe-EPDP')) {
               _context21.next = 11;
               break;
             }
@@ -1323,7 +1323,7 @@ var isVendedor = /*#__PURE__*/function () {
 
           case 14:
             return _context21.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Vendedor'
+              message: 'Requiere permiso del Jefe-EPDP'
             }));
 
           case 15:
@@ -1334,14 +1334,14 @@ var isVendedor = /*#__PURE__*/function () {
     }, _callee21);
   }));
 
-  return function isVendedor(_x61, _x62, _x63) {
+  return function isChiefEPDPorAdmin(_x61, _x62, _x63) {
     return _ref21.apply(this, arguments);
   };
 }();
 
-exports.isVendedor = isVendedor;
+exports.isChiefEPDPorAdmin = isChiefEPDPorAdmin;
 
-var isExecutiveMaf = /*#__PURE__*/function () {
+var isVendedor = /*#__PURE__*/function () {
   var _ref22 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee22(req, res, next) {
     var user, roles, i;
     return _regeneratorRuntime().wrap(function _callee22$(_context22) {
@@ -1370,7 +1370,7 @@ var isExecutiveMaf = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Ejecutivo-MAF')) {
+            if (!(roles[i].name === 'Vendedor')) {
               _context22.next = 11;
               break;
             }
@@ -1385,7 +1385,7 @@ var isExecutiveMaf = /*#__PURE__*/function () {
 
           case 14:
             return _context22.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso del Ejecutivo MAF'
+              message: 'Requiere permiso del Vendedor'
             }));
 
           case 15:
@@ -1396,14 +1396,14 @@ var isExecutiveMaf = /*#__PURE__*/function () {
     }, _callee22);
   }));
 
-  return function isExecutiveMaf(_x64, _x65, _x66) {
+  return function isVendedor(_x64, _x65, _x66) {
     return _ref22.apply(this, arguments);
   };
 }();
 
-exports.isExecutiveMaf = isExecutiveMaf;
+exports.isVendedor = isVendedor;
 
-var isChiefADVOrChiefPlaneamientoOrAdministrador = /*#__PURE__*/function () {
+var isExecutiveMaf = /*#__PURE__*/function () {
   var _ref23 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee23(req, res, next) {
     var user, roles, i;
     return _regeneratorRuntime().wrap(function _callee23$(_context23) {
@@ -1432,7 +1432,7 @@ var isChiefADVOrChiefPlaneamientoOrAdministrador = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Jefe-ADV' || roles[i].name === 'Jefe-Planeamiento-Comercial' || roles[i].name === 'Administrador')) {
+            if (!(roles[i].name === 'Ejecutivo-MAF')) {
               _context23.next = 11;
               break;
             }
@@ -1447,7 +1447,7 @@ var isChiefADVOrChiefPlaneamientoOrAdministrador = /*#__PURE__*/function () {
 
           case 14:
             return _context23.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso de Jefe-ADV || Jefe-Planeamiento-Comercial || Administrador'
+              message: 'Requiere permiso del Ejecutivo MAF'
             }));
 
           case 15:
@@ -1458,14 +1458,14 @@ var isChiefADVOrChiefPlaneamientoOrAdministrador = /*#__PURE__*/function () {
     }, _callee23);
   }));
 
-  return function isChiefADVOrChiefPlaneamientoOrAdministrador(_x67, _x68, _x69) {
+  return function isExecutiveMaf(_x67, _x68, _x69) {
     return _ref23.apply(this, arguments);
   };
 }();
 
-exports.isChiefADVOrChiefPlaneamientoOrAdministrador = isChiefADVOrChiefPlaneamientoOrAdministrador;
+exports.isExecutiveMaf = isExecutiveMaf;
 
-var isAdministradorOrAsistantComercial = /*#__PURE__*/function () {
+var isChiefADVOrChiefPlaneamientoOrAdministrador = /*#__PURE__*/function () {
   var _ref24 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee24(req, res, next) {
     var user, roles, i;
     return _regeneratorRuntime().wrap(function _callee24$(_context24) {
@@ -1494,7 +1494,7 @@ var isAdministradorOrAsistantComercial = /*#__PURE__*/function () {
               break;
             }
 
-            if (!(roles[i].name === 'Asistente-Comercial' || roles[i].name === 'Administrador')) {
+            if (!(roles[i].name === 'Jefe-ADV' || roles[i].name === 'Jefe-Planeamiento-Comercial' || roles[i].name === 'Administrador')) {
               _context24.next = 11;
               break;
             }
@@ -1509,7 +1509,7 @@ var isAdministradorOrAsistantComercial = /*#__PURE__*/function () {
 
           case 14:
             return _context24.abrupt("return", res.status(403).json({
-              message: 'Requiere permiso de Asistente Comercial || Administrador'
+              message: 'Requiere permiso de Jefe-ADV || Jefe-Planeamiento-Comercial || Administrador'
             }));
 
           case 15:
@@ -1520,8 +1520,70 @@ var isAdministradorOrAsistantComercial = /*#__PURE__*/function () {
     }, _callee24);
   }));
 
-  return function isAdministradorOrAsistantComercial(_x70, _x71, _x72) {
+  return function isChiefADVOrChiefPlaneamientoOrAdministrador(_x70, _x71, _x72) {
     return _ref24.apply(this, arguments);
+  };
+}();
+
+exports.isChiefADVOrChiefPlaneamientoOrAdministrador = isChiefADVOrChiefPlaneamientoOrAdministrador;
+
+var isAdministradorOrAsistantComercial = /*#__PURE__*/function () {
+  var _ref25 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee25(req, res, next) {
+    var user, roles, i;
+    return _regeneratorRuntime().wrap(function _callee25$(_context25) {
+      while (1) {
+        switch (_context25.prev = _context25.next) {
+          case 0:
+            _context25.next = 2;
+            return _User.default.findById(req.userId);
+
+          case 2:
+            user = _context25.sent;
+            _context25.next = 5;
+            return _Role.default.find({
+              _id: {
+                $in: user.roles
+              }
+            });
+
+          case 5:
+            roles = _context25.sent;
+            i = 0;
+
+          case 7:
+            if (!(i < roles.length)) {
+              _context25.next = 14;
+              break;
+            }
+
+            if (!(roles[i].name === 'Asistente-Comercial' || roles[i].name === 'Administrador')) {
+              _context25.next = 11;
+              break;
+            }
+
+            next();
+            return _context25.abrupt("return");
+
+          case 11:
+            i++;
+            _context25.next = 7;
+            break;
+
+          case 14:
+            return _context25.abrupt("return", res.status(403).json({
+              message: 'Requiere permiso de Asistente Comercial || Administrador'
+            }));
+
+          case 15:
+          case "end":
+            return _context25.stop();
+        }
+      }
+    }, _callee25);
+  }));
+
+  return function isAdministradorOrAsistantComercial(_x73, _x74, _x75) {
+    return _ref25.apply(this, arguments);
   };
 }();
 

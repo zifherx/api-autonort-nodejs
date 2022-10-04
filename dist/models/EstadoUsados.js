@@ -7,26 +7,23 @@ exports.default = void 0;
 
 var _mongoose = require("mongoose");
 
-var colorSchema = new _mongoose.Schema({
+var estadoUsadosSchema = new _mongoose.Schema({
   name: {
     type: String
   },
-  codigo_toyota: {
-    type: String
-  },
-  hex: {
-    type: String
+  value: {
+    type: Number
   },
   estado: {
     type: Boolean,
-    default: false
+    default: true
   }
 }, {
   timestamps: true,
   versionKey: false
 });
 
-var _default = (0, _mongoose.model)('Colores', colorSchema);
+var _default = (0, _mongoose.model)('EstadoUsados', estadoUsadosSchema);
 
 exports.default = _default;
-//# sourceMappingURL=Colores.js.map
+//# sourceMappingURL=EstadoUsados.js.map
