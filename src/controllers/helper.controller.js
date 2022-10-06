@@ -141,4 +141,67 @@ helperController.enviarCorreo = async (req, res) => {
     }
 };
 
+helperController.enviarTasaCambio = async (req, res) => {
+    const {to, cc, subject, text, fecha, tasa_venta_vehiculos, tasa_venta_repuestos, tasa_licitaciones, departamento_finanzas } = req.body;
+
+    let transporter = null;
+    let optionsTemplate = null;
+    let emailOptions = null;
+    let emailSent = null;
+
+    try {
+        transporter = nodemailer.createTransport({
+            host: config.EMAIL_HOST,
+            port: config.EMAIL_PORT_SMTP,
+            secure: true,
+            auth: {
+                user: config.EMAIL_FINANZAS_USER,
+                pass: config.EMAIL_FINANZAS_PASS
+            }
+        });
+
+        optionsTemplate = {
+            viewEngine: {
+                extname: ".hbs",
+                layoutsDir: "src/views",
+                defaultLayout: "templateTipoCambio"
+            },
+            viewPath: 'src/views',
+            extName: ".hbs"
+        }
+
+        transporter.use("compile", hbs(optionsTemplate));
+
+        emailOptions = {
+            from: `"Plataforma SCI 👻" <${config.EMAIL_FINANZAS_USER}>`,
+            to,
+            cc: [ cc, "frojas@autonortnor.com.pe"],
+            subject,
+            text,
+            template: "templateTipoCambio",
+            context: {
+                fecha,
+                tasa_venta_vehiculos,
+                tasa_venta_repuestos,
+                tasa_licitaciones,
+                departamento_finanzas
+            }
+        }
+
+        emailSent = await transporter.sendMail(emailOptions);
+
+        let respuesta = emailSent.response.split(" ");
+
+        if(respuesta[1] == "OK"){
+            console.log("Preview URL: %s", nodemailer.getTestMessageUrl(emailSent));
+            res.json({message: "Mensaje enviado", info: emailSent.messageId, delay: emailSent.envelopeTime, response: emailSent.response});
+        }else{
+            return res.status(500).json({ message: "Error al enviar correo"});
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({message: err.message});
+    }
+}
+
 export default helperController;

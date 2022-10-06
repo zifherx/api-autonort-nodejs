@@ -10,5 +10,8 @@ export default {
     EMAIL_HOST: process.env.EMAIL_HOST,
     EMAIL_PORT_SMTP: process.env.EMAIL_PORT,
     EMAIL_USER: process.env.EMAIL_USER,
-    EMAIL_PASS: process.env.EMAIL_PASS
+    EMAIL_PASS: process.env.EMAIL_PASS,
+    //CORREO FINANZAS
+    EMAIL_FINANZAS_USER: process.env.EMAIL_FINANZAS_USER,
+    EMAIL_FINANZAS_PASS: process.env.EMAIL_FINANZAS_PASS
 }

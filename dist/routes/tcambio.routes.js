@@ -9,11 +9,12 @@ exports.default = void 0;
 
 var _express = require("express");
 
-var _helper = _interopRequireDefault(require("../controllers/helper.controller"));
+var _tcambio = _interopRequireDefault(require("../controllers/tcambio.controller"));
 
 var router = (0, _express.Router)();
-router.post('/send-email', _helper.default.enviarCorreo);
-router.post('/send-tc', _helper.default.enviarTasaCambio);
+router.get('/', _tcambio.default.getAll);
+router.get('/:itemId', _tcambio.default.getOneById);
+router.post('/', _tcambio.default.createOne);
 var _default = router;
 exports.default = _default;
-//# sourceMappingURL=helper.routes.js.map
+//# sourceMappingURL=tcambio.routes.js.map

@@ -78,6 +78,7 @@ import listaEsperaRoutes from './listaEspera.routes';
 import estadoLERoutes from './estadoListaEspera.routes';
 import nMas2Routes from './nMas2.routes';
 import usadosRoutes from './usados.routes';
+import tcambioRoutes from './tcambio.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -156,6 +157,7 @@ router.use('/lista-espera', listaEsperaRoutes);
 router.use('/estado-lespera', estadoLERoutes);
 router.use('/n2', nMas2Routes);
 router.use('/usados', usadosRoutes);
+router.use('/t-cambio', tcambioRoutes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);
