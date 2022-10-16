@@ -2024,11 +2024,11 @@ fileController.getFilesByEstado = async (req, res) => {
                 })
                 .populate({
                     path: "ubicacionVehiculoE",
-                    select: "name",
+                    select: "name valor",
                 })
                 .populate({
                     path: "estadoVehiculoE",
-                    select: "name",
+                    select: "name valor",
                 })
                 .populate({
                     path: "financiamientoE",
@@ -2106,11 +2106,11 @@ fileController.getFilesByEstado = async (req, res) => {
                 })
                 .populate({
                     path: "ubicacionVehiculoE",
-                    select: "name",
+                    select: "name valor",
                 })
                 .populate({
                     path: "estadoVehiculoE",
-                    select: "name",
+                    select: "name valor",
                 })
                 .populate({
                     path: "financiamientoE",

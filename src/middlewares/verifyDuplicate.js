@@ -52,7 +52,8 @@ import SubmoduloG from '../models/SubmoduloG'
 import TipoProducto from '../models/TipoProducto';
 import Mes from '../models/Mes';
 import EstadoListaEspera from '../models/EstadoListaEspera'
-import EstadoUsados from '../models/EstadoUsados'
+import EstadoUsados from '../models/EstadoUsados';
+import EstadoTunningAccesorio from '../models/EstadoTunningAccesorio';
 
 export const checkDuplicateRole = async(req, res, next) => {
     const { name } = req.body;
@@ -368,6 +369,15 @@ export const checkDuplicateStatusMafRequest = async(req, res, next) => {
     const query = await StatusMafRequest.findOne({ name });
 
     if (query) return res.status(201).json({ message: 'El Estado Maf ya existe' });
+
+    next();
+}
+
+export const checkDuplicateEstadoTunningAccesorios = async(req, res, next) => {
+    const { name } = req.body;
+    const query = await EstadoTunningAccesorio.findOne({ name });
+
+    if (query) return res.status(201).json({ message: 'El Estado ya existe' });
 
     next();
 }

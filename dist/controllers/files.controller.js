@@ -3287,10 +3287,10 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
               select: "name"
             }).populate({
               path: "ubicacionVehiculoE",
-              select: "name"
+              select: "name valor"
             }).populate({
               path: "estadoVehiculoE",
-              select: "name"
+              select: "name valor"
             }).populate({
               path: "financiamientoE",
               select: "name"
@@ -3362,10 +3362,10 @@ fileController.getFilesByEstado = /*#__PURE__*/function () {
               select: "name"
             }).populate({
               path: "ubicacionVehiculoE",
-              select: "name"
+              select: "name valor"
             }).populate({
               path: "estadoVehiculoE",
-              select: "name"
+              select: "name valor"
             }).populate({
               path: "financiamientoE",
               select: "name"

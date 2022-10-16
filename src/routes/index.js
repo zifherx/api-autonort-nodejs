@@ -79,6 +79,8 @@ import estadoLERoutes from './estadoListaEspera.routes';
 import nMas2Routes from './nMas2.routes';
 import usadosRoutes from './usados.routes';
 import tcambioRoutes from './tcambio.routes';
+import taccesoriosRoutes from './tunningAccesorios.routes';
+import estadoTunningRoutes from './estadoTunningAccesorios.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -158,6 +160,8 @@ router.use('/estado-lespera', estadoLERoutes);
 router.use('/n2', nMas2Routes);
 router.use('/usados', usadosRoutes);
 router.use('/t-cambio', tcambioRoutes);
+router.use('/tunning-accesorios', taccesoriosRoutes);
+router.use('/estado-tAccesorios', estadoTunningRoutes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);

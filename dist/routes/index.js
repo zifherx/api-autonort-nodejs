@@ -163,6 +163,10 @@ var _usados = _interopRequireDefault(require("./usados.routes"));
 
 var _tcambio = _interopRequireDefault(require("./tcambio.routes"));
 
+var _tunningAccesorios = _interopRequireDefault(require("./tunningAccesorios.routes"));
+
+var _estadoTunningAccesorios = _interopRequireDefault(require("./estadoTunningAccesorios.routes"));
+
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
   res.send('Api Swagger');
@@ -240,7 +244,9 @@ router.use('/lista-espera', _listaEspera.default);
 router.use('/estado-lespera', _estadoListaEspera.default);
 router.use('/n2', _nMas.default);
 router.use('/usados', _usados.default);
-router.use('/t-cambio', _tcambio.default); //Modulos
+router.use('/t-cambio', _tcambio.default);
+router.use('/tunning-accesorios', _tunningAccesorios.default);
+router.use('/estado-tAccesorios', _estadoTunningAccesorios.default); //Modulos
 
 router.use('/menuG', _menuG.default);
 router.use('/moduloG', _moduloG.default);

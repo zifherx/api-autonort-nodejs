@@ -97,6 +97,19 @@ export const isChiefPlaneamientorAdmin = async(req, res, next) => {
     return res.status(403).json({ message: 'Requiere permiso de Jefe-ADV' });
 }
 
+export const isAdminorResponsableFinanzas = async (req, res, next) => {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === 'Responsable-Finanzas' || roles[i].name === 'Administrador') {
+            next()
+            return;
+        }
+    }
+    return res.status(403).json({ message: 'Requiere permiso del Responsable de Finanzas' }); 
+}
+
 export const isChiefAdvorAdminorAsistantADV = async(req, res, next) => {
     const user = await User.findById(req.userId);
     const roles = await Role.find({ _id: { $in: user.roles } });

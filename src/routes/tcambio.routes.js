@@ -1,10 +1,11 @@
 import {Router} from 'express';
 import controllerT from '../controllers/tcambio.controller';
+import { authJwt } from '../middlewares';
 
 const router = Router();
 
 router.get('/', controllerT.getAll);
 router.get('/:itemId', controllerT.getOneById);
-router.post('/', controllerT.createOne);
+router.post('/', [authJwt.verifyToken, authJwt.isAdminorResponsableFinanzas] ,controllerT.createOne);
 
 export default router;
