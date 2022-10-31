@@ -90,4 +90,5 @@ estadoController.deleteOneById = async(req, res) => {
     }
 }
 
+
 export default estadoController;

@@ -81,6 +81,10 @@ import usadosRoutes from './usados.routes';
 import tcambioRoutes from './tcambio.routes';
 import taccesoriosRoutes from './tunningAccesorios.routes';
 import estadoTunningRoutes from './estadoTunningAccesorios.routes';
+import estadoKaizenRoutes from './estadoKaizen.routes';
+import actividadKaizenRoutes from './actividadKaizen.routes';
+import circularRoutes from './circular.routes';
+import categoriaCircularRoutes from './categoriaCircular.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -162,6 +166,10 @@ router.use('/usados', usadosRoutes);
 router.use('/t-cambio', tcambioRoutes);
 router.use('/tunning-accesorios', taccesoriosRoutes);
 router.use('/estado-tAccesorios', estadoTunningRoutes);
+router.use('/estado-kaizen', estadoKaizenRoutes);
+router.use('/activity-kaizen', actividadKaizenRoutes);
+router.use('/circular', circularRoutes);
+router.use('/categoria-circular', categoriaCircularRoutes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);

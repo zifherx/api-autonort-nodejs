@@ -116,4 +116,21 @@ tunningController.updateOneById = async (req, res) => {
     }
 }
 
+tunningController.findByEstado = async(req, res) => {
+    const {estado} = req.body;
+
+    try {
+        const query = await TuningAccesorios.find({
+            estado: {$regex: ".*" + estado + ".*"}
+        }).countDocuments();
+
+        if(query >= 0){
+            res.json({total: query})
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
 export default tunningController;

@@ -6,6 +6,7 @@ const router = Router();
 
 router.get("/", controller.getAll);
 router.post("/", [authJwt.verifyToken, authJwt.isAdministradorOrAsistantComercial], controller.createOne);
+router.post('/count/by-estado', controller.findByEstado);
 router.patch("/:itemId", [authJwt.verifyToken, authJwt.isAdministradorOrAsistantComercial], controller.updateOneById);
 
 export default router;
