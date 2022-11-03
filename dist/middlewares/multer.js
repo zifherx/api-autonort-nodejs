@@ -15,14 +15,12 @@ var _path = _interopRequireDefault(require("path"));
 
 var _multerS = _interopRequireDefault(require("multer-s3"));
 
-var _nanoid = require("nanoid");
-
 require("dotenv/config");
 
 var accessClient = {
   region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_KEY
+  accessKeyId: process.env.AWS_ACCESS_KEY2,
+  secretAccessKey: process.env.AWS_SECRET_KEY2
 };
 var s3 = new _s.default(accessClient);
 var storage = (0, _multerS.default)({
@@ -34,13 +32,13 @@ var storage = (0, _multerS.default)({
     });
   },
   key: function key(req, file, cb) {
-    // let name = file.originalname.split('.')[0];
-    // let campo = name + path.extname(file.originalname);
-    var alternativo = new Date().getTime() + _path.default.extname(file.originalname); // let campo = nanoid() + path.extname(file.originalname);
-    // cb(null, campo);
+    var name = file.originalname.split('.')[0];
+
+    var campo = name + _path.default.extname(file.originalname); // let alternativo = new Date().getTime() + path.extname(file.originalname);
+    // let campo = nanoid() + path.extname(file.originalname);
 
 
-    cb(null, alternativo);
+    cb(null, campo); // cb(null, alternativo);
   }
 });
 var upload = (0, _multer.default)({

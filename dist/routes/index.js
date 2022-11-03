@@ -167,6 +167,14 @@ var _tunningAccesorios = _interopRequireDefault(require("./tunningAccesorios.rou
 
 var _estadoTunningAccesorios = _interopRequireDefault(require("./estadoTunningAccesorios.routes"));
 
+var _estadoKaizen = _interopRequireDefault(require("./estadoKaizen.routes"));
+
+var _actividadKaizen = _interopRequireDefault(require("./actividadKaizen.routes"));
+
+var _circular = _interopRequireDefault(require("./circular.routes"));
+
+var _categoriaCircular = _interopRequireDefault(require("./categoriaCircular.routes"));
+
 var router = (0, _express.Router)();
 router.get('/', function (req, res) {
   res.send('Api Swagger');
@@ -246,7 +254,11 @@ router.use('/n2', _nMas.default);
 router.use('/usados', _usados.default);
 router.use('/t-cambio', _tcambio.default);
 router.use('/tunning-accesorios', _tunningAccesorios.default);
-router.use('/estado-tAccesorios', _estadoTunningAccesorios.default); //Modulos
+router.use('/estado-tAccesorios', _estadoTunningAccesorios.default);
+router.use('/estado-kaizen', _estadoKaizen.default);
+router.use('/activity-kaizen', _actividadKaizen.default);
+router.use('/circular', _circular.default);
+router.use('/categoria-circular', _categoriaCircular.default); //Modulos
 
 router.use('/menuG', _menuG.default);
 router.use('/moduloG', _moduloG.default);

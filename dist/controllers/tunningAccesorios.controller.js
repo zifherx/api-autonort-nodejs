@@ -341,6 +341,55 @@ tunningController.updateOneById = /*#__PURE__*/function () {
   };
 }();
 
+tunningController.findByEstado = /*#__PURE__*/function () {
+  var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+    var estado, query;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            estado = req.body.estado;
+            _context4.prev = 1;
+            _context4.next = 4;
+            return _TuningAccesorios.default.find({
+              estado: {
+                $regex: ".*" + estado + ".*"
+              }
+            }).countDocuments();
+
+          case 4:
+            query = _context4.sent;
+
+            if (query >= 0) {
+              res.json({
+                total: query
+              });
+            }
+
+            _context4.next = 12;
+            break;
+
+          case 8:
+            _context4.prev = 8;
+            _context4.t0 = _context4["catch"](1);
+            console.log(_context4.t0);
+            return _context4.abrupt("return", res.status(503).json({
+              message: _context4.t0.message
+            }));
+
+          case 12:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[1, 8]]);
+  }));
+
+  return function (_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
 var _default = tunningController;
 exports.default = _default;
 //# sourceMappingURL=tunningAccesorios.controller.js.map

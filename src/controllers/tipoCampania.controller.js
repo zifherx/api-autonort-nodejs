@@ -17,9 +17,9 @@ tipoCampaniaCtrl.getAll = async(req, res) => {
 }
 
 tipoCampaniaCtrl.getOneById = async(req, res) => {
-    const { tcampaniaId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await TipoCampania.findById(tcampaniaId);
+        const query = await TipoCampania.findById(itemId);
         if (query) {
             res.json({one: query});
         } else {
@@ -63,9 +63,9 @@ tipoCampaniaCtrl.createOne = async(req, res) => {
 
 tipoCampaniaCtrl.updateOneById = async(req, res) => {
     const { name, estado } = req.body;
-    const { tcampaniaId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await TipoCampania.findByIdAndUpdate(tcampaniaId, { name, estado });
+        const query = await TipoCampania.findByIdAndUpdate(itemId, { name, estado });
 
         if (query) {
             res.json({ message: 'Tipo de campaña actualizada con éxito' });
@@ -79,9 +79,9 @@ tipoCampaniaCtrl.updateOneById = async(req, res) => {
 }
 
 tipoCampaniaCtrl.deleteOneById = async(req, res) => {
-    const { tcampaniaId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await TipoCampania.findByIdAndDelete(tcampaniaId);
+        const query = await TipoCampania.findByIdAndDelete(itemId);
         if (query) {
             res.json({ message: 'Tipo de campaña eliminada con éxito' });
         } else {

@@ -16,6 +16,7 @@ var _middlewares = require("../middlewares");
 var router = (0, _express.Router)();
 router.get("/", _tunningAccesorios.default.getAll);
 router.post("/", [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdministradorOrAsistantComercial], _tunningAccesorios.default.createOne);
+router.post('/count/by-estado', _tunningAccesorios.default.findByEstado);
 router.patch("/:itemId", [_middlewares.authJwt.verifyToken, _middlewares.authJwt.isAdministradorOrAsistantComercial], _tunningAccesorios.default.updateOneById);
 var _default = router;
 exports.default = _default;

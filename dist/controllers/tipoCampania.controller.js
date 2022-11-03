@@ -77,15 +77,15 @@ tipoCampaniaCtrl.getAll = /*#__PURE__*/function () {
 
 tipoCampaniaCtrl.getOneById = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var tcampaniaId, query;
+    var itemId, query;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            tcampaniaId = req.params.tcampaniaId;
+            itemId = req.params.itemId;
             _context2.prev = 1;
             _context2.next = 4;
-            return _TipoCampania.default.findById(tcampaniaId);
+            return _TipoCampania.default.findById(itemId);
 
           case 4:
             query = _context2.sent;
@@ -243,17 +243,17 @@ tipoCampaniaCtrl.createOne = /*#__PURE__*/function () {
 
 tipoCampaniaCtrl.updateOneById = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var _req$body2, name, estado, tcampaniaId, query;
+    var _req$body2, name, estado, itemId, query;
 
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _req$body2 = req.body, name = _req$body2.name, estado = _req$body2.estado;
-            tcampaniaId = req.params.tcampaniaId;
+            itemId = req.params.itemId;
             _context5.prev = 2;
             _context5.next = 5;
-            return _TipoCampania.default.findByIdAndUpdate(tcampaniaId, {
+            return _TipoCampania.default.findByIdAndUpdate(itemId, {
               name: name,
               estado: estado
             });
@@ -304,15 +304,15 @@ tipoCampaniaCtrl.updateOneById = /*#__PURE__*/function () {
 
 tipoCampaniaCtrl.deleteOneById = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-    var tcampaniaId, query;
+    var itemId, query;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            tcampaniaId = req.params.tcampaniaId;
+            itemId = req.params.itemId;
             _context6.prev = 1;
             _context6.next = 4;
-            return _TipoCampania.default.findByIdAndDelete(tcampaniaId);
+            return _TipoCampania.default.findByIdAndDelete(itemId);
 
           case 4:
             query = _context6.sent;

@@ -9,7 +9,8 @@ const circularSchema = new Schema({
     mes: { type: Number, min: 1, max: 12 },
     categoria: { type: String },
     categoriaE: { type: Types.ObjectId, ref: 'CategoriaCircular' },
-    representa: { type: String },
+    tipo: { type: String },
+    tipoE: { type: Types.ObjectId, ref: 'TipoCampania' },
     enlace: { type: String }
 },{
     timestamps: true,

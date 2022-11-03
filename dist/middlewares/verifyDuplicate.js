@@ -7,7 +7,7 @@ var _typeof = require("@babel/runtime/helpers/typeof");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.checkDuplicateVendedor = exports.checkDuplicateVehiculo = exports.checkDuplicateUser = exports.checkDuplicateUbicacion = exports.checkDuplicateTramite = exports.checkDuplicateTipoUso = exports.checkDuplicateTipoProducto = exports.checkDuplicateTipoDocumento = exports.checkDuplicateTipoCampania = exports.checkDuplicateTecnico = exports.checkDuplicateSustento = exports.checkDuplicateSucursal = exports.checkDuplicateSubmoduloG = exports.checkDuplicateStatusTasacion = exports.checkDuplicateStatusRP = exports.checkDuplicateStatusMafRequest = exports.checkDuplicateStatusFile = exports.checkDuplicateStatusFacturacion = exports.checkDuplicateStatusEntrega = exports.checkDuplicateStatusAAP = exports.checkDuplicateSituacion = exports.checkDuplicateSectorista = exports.checkDuplicateRole = exports.checkDuplicatePlanMAF = exports.checkDuplicateMotivoRechazo = exports.checkDuplicateModuloG = exports.checkDuplicateModeloT = exports.checkDuplicateModelo = exports.checkDuplicateMes = exports.checkDuplicateMenuG = exports.checkDuplicateMarcaT = exports.checkDuplicateMarca = exports.checkDuplicateFinanciamiento = exports.checkDuplicateFiltroMaf = exports.checkDuplicateExpediente = exports.checkDuplicateEstadoUsado = exports.checkDuplicateEstadoTunningAccesorios = exports.checkDuplicateEstadoSeguro = exports.checkDuplicateEstadoListaEspera = exports.checkDuplicateEstadoCivil = exports.checkDuplicateEndoso = exports.checkDuplicateConexo = exports.checkDuplicateCondicionAccesorio = exports.checkDuplicateCondicion = exports.checkDuplicateComprobante = exports.checkDuplicateColor = exports.checkDuplicateCliente = exports.checkDuplicateChasis = exports.checkDuplicateCampania = exports.checkDuplicateBanco = exports.checkDuplicateAseguradora = exports.checkDuplicateArea = exports.checkDuplicateAnio = exports.checkDuplicateAdicional = exports.checkDuplicateAccesorio = exports.checkDuplicateAServicios = void 0;
+exports.checkDuplicateVendedor = exports.checkDuplicateVehiculo = exports.checkDuplicateUser = exports.checkDuplicateUbicacion = exports.checkDuplicateTramite = exports.checkDuplicateTipoUso = exports.checkDuplicateTipoProducto = exports.checkDuplicateTipoDocumento = exports.checkDuplicateTipoCampania = exports.checkDuplicateTecnico = exports.checkDuplicateSustento = exports.checkDuplicateSucursal = exports.checkDuplicateSubmoduloG = exports.checkDuplicateStatusTasacion = exports.checkDuplicateStatusRP = exports.checkDuplicateStatusMafRequest = exports.checkDuplicateStatusFile = exports.checkDuplicateStatusFacturacion = exports.checkDuplicateStatusEntrega = exports.checkDuplicateStatusAAP = exports.checkDuplicateSituacion = exports.checkDuplicateSectorista = exports.checkDuplicateRole = exports.checkDuplicatePlanMAF = exports.checkDuplicateMotivoRechazo = exports.checkDuplicateModuloG = exports.checkDuplicateModeloT = exports.checkDuplicateModelo = exports.checkDuplicateMes = exports.checkDuplicateMenuG = exports.checkDuplicateMarcaT = exports.checkDuplicateMarca = exports.checkDuplicateFinanciamiento = exports.checkDuplicateFiltroMaf = exports.checkDuplicateExpediente = exports.checkDuplicateEstadoUsado = exports.checkDuplicateEstadoTunningAccesorios = exports.checkDuplicateEstadoSeguro = exports.checkDuplicateEstadoListaEspera = exports.checkDuplicateEstadoKaizen = exports.checkDuplicateEstadoCivil = exports.checkDuplicateEndoso = exports.checkDuplicateConexo = exports.checkDuplicateCondicionAccesorio = exports.checkDuplicateCondicion = exports.checkDuplicateComprobante = exports.checkDuplicateColor = exports.checkDuplicateCliente = exports.checkDuplicateChasis = exports.checkDuplicateCampania = exports.checkDuplicateBanco = exports.checkDuplicateAseguradora = exports.checkDuplicateArea = exports.checkDuplicateAnio = exports.checkDuplicateAdicional = exports.checkDuplicateAccesorio = exports.checkDuplicateAServicios = void 0;
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
@@ -122,6 +122,8 @@ var _EstadoListaEspera = _interopRequireDefault(require("../models/EstadoListaEs
 var _EstadoUsados = _interopRequireDefault(require("../models/EstadoUsados"));
 
 var _EstadoTunningAccesorio = _interopRequireDefault(require("../models/EstadoTunningAccesorio"));
+
+var _EstadoKaizen = _interopRequireDefault(require("../models/EstadoKaizen"));
 
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator.return && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, catch: function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
 
@@ -1661,7 +1663,7 @@ var checkDuplicateEstadoTunningAccesorios = /*#__PURE__*/function () {
 
 exports.checkDuplicateEstadoTunningAccesorios = checkDuplicateEstadoTunningAccesorios;
 
-var checkDuplicateTecnico = /*#__PURE__*/function () {
+var checkDuplicateEstadoKaizen = /*#__PURE__*/function () {
   var _ref35 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee35(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee35$(_context35) {
@@ -1670,7 +1672,7 @@ var checkDuplicateTecnico = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context35.next = 3;
-            return _Tecnico.default.findOne({
+            return _EstadoKaizen.default.findOne({
               name: name
             });
 
@@ -1683,7 +1685,7 @@ var checkDuplicateTecnico = /*#__PURE__*/function () {
             }
 
             return _context35.abrupt("return", res.status(201).json({
-              message: 'El Técnico Evaluador ya existe'
+              message: 'El Estado ya existe'
             }));
 
           case 6:
@@ -1697,14 +1699,14 @@ var checkDuplicateTecnico = /*#__PURE__*/function () {
     }, _callee35);
   }));
 
-  return function checkDuplicateTecnico(_x103, _x104, _x105) {
+  return function checkDuplicateEstadoKaizen(_x103, _x104, _x105) {
     return _ref35.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateTecnico = checkDuplicateTecnico;
+exports.checkDuplicateEstadoKaizen = checkDuplicateEstadoKaizen;
 
-var checkDuplicateAServicios = /*#__PURE__*/function () {
+var checkDuplicateTecnico = /*#__PURE__*/function () {
   var _ref36 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee36(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee36$(_context36) {
@@ -1713,7 +1715,7 @@ var checkDuplicateAServicios = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context36.next = 3;
-            return _AServicios.default.findOne({
+            return _Tecnico.default.findOne({
               name: name
             });
 
@@ -1726,7 +1728,7 @@ var checkDuplicateAServicios = /*#__PURE__*/function () {
             }
 
             return _context36.abrupt("return", res.status(201).json({
-              message: 'El Asesor de Servicios ya existe'
+              message: 'El Técnico Evaluador ya existe'
             }));
 
           case 6:
@@ -1740,14 +1742,14 @@ var checkDuplicateAServicios = /*#__PURE__*/function () {
     }, _callee36);
   }));
 
-  return function checkDuplicateAServicios(_x106, _x107, _x108) {
+  return function checkDuplicateTecnico(_x106, _x107, _x108) {
     return _ref36.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateAServicios = checkDuplicateAServicios;
+exports.checkDuplicateTecnico = checkDuplicateTecnico;
 
-var checkDuplicateMarcaT = /*#__PURE__*/function () {
+var checkDuplicateAServicios = /*#__PURE__*/function () {
   var _ref37 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee37(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee37$(_context37) {
@@ -1756,7 +1758,7 @@ var checkDuplicateMarcaT = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context37.next = 3;
-            return _MarcaTasaciones.default.findOne({
+            return _AServicios.default.findOne({
               name: name
             });
 
@@ -1769,7 +1771,7 @@ var checkDuplicateMarcaT = /*#__PURE__*/function () {
             }
 
             return _context37.abrupt("return", res.status(201).json({
-              message: 'La marca ya existe'
+              message: 'El Asesor de Servicios ya existe'
             }));
 
           case 6:
@@ -1783,14 +1785,14 @@ var checkDuplicateMarcaT = /*#__PURE__*/function () {
     }, _callee37);
   }));
 
-  return function checkDuplicateMarcaT(_x109, _x110, _x111) {
+  return function checkDuplicateAServicios(_x109, _x110, _x111) {
     return _ref37.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateMarcaT = checkDuplicateMarcaT;
+exports.checkDuplicateAServicios = checkDuplicateAServicios;
 
-var checkDuplicateModeloT = /*#__PURE__*/function () {
+var checkDuplicateMarcaT = /*#__PURE__*/function () {
   var _ref38 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee38(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee38$(_context38) {
@@ -1799,7 +1801,7 @@ var checkDuplicateModeloT = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context38.next = 3;
-            return _ModeloTasaciones.default.findOne({
+            return _MarcaTasaciones.default.findOne({
               name: name
             });
 
@@ -1812,7 +1814,7 @@ var checkDuplicateModeloT = /*#__PURE__*/function () {
             }
 
             return _context38.abrupt("return", res.status(201).json({
-              message: 'El modelo ya existe'
+              message: 'La marca ya existe'
             }));
 
           case 6:
@@ -1826,14 +1828,14 @@ var checkDuplicateModeloT = /*#__PURE__*/function () {
     }, _callee38);
   }));
 
-  return function checkDuplicateModeloT(_x112, _x113, _x114) {
+  return function checkDuplicateMarcaT(_x112, _x113, _x114) {
     return _ref38.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateModeloT = checkDuplicateModeloT;
+exports.checkDuplicateMarcaT = checkDuplicateMarcaT;
 
-var checkDuplicateComprobante = /*#__PURE__*/function () {
+var checkDuplicateModeloT = /*#__PURE__*/function () {
   var _ref39 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee39(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee39$(_context39) {
@@ -1842,7 +1844,7 @@ var checkDuplicateComprobante = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context39.next = 3;
-            return _TipoComprobante.default.findOne({
+            return _ModeloTasaciones.default.findOne({
               name: name
             });
 
@@ -1855,7 +1857,7 @@ var checkDuplicateComprobante = /*#__PURE__*/function () {
             }
 
             return _context39.abrupt("return", res.status(201).json({
-              message: 'El comprobante ya existe'
+              message: 'El modelo ya existe'
             }));
 
           case 6:
@@ -1869,14 +1871,14 @@ var checkDuplicateComprobante = /*#__PURE__*/function () {
     }, _callee39);
   }));
 
-  return function checkDuplicateComprobante(_x115, _x116, _x117) {
+  return function checkDuplicateModeloT(_x115, _x116, _x117) {
     return _ref39.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateComprobante = checkDuplicateComprobante;
+exports.checkDuplicateModeloT = checkDuplicateModeloT;
 
-var checkDuplicateMotivoRechazo = /*#__PURE__*/function () {
+var checkDuplicateComprobante = /*#__PURE__*/function () {
   var _ref40 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee40(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee40$(_context40) {
@@ -1885,7 +1887,7 @@ var checkDuplicateMotivoRechazo = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context40.next = 3;
-            return _MotivoRechazo.default.findOne({
+            return _TipoComprobante.default.findOne({
               name: name
             });
 
@@ -1898,7 +1900,7 @@ var checkDuplicateMotivoRechazo = /*#__PURE__*/function () {
             }
 
             return _context40.abrupt("return", res.status(201).json({
-              message: 'El motivo ya existe'
+              message: 'El comprobante ya existe'
             }));
 
           case 6:
@@ -1912,14 +1914,14 @@ var checkDuplicateMotivoRechazo = /*#__PURE__*/function () {
     }, _callee40);
   }));
 
-  return function checkDuplicateMotivoRechazo(_x118, _x119, _x120) {
+  return function checkDuplicateComprobante(_x118, _x119, _x120) {
     return _ref40.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateMotivoRechazo = checkDuplicateMotivoRechazo;
+exports.checkDuplicateComprobante = checkDuplicateComprobante;
 
-var checkDuplicateStatusFacturacion = /*#__PURE__*/function () {
+var checkDuplicateMotivoRechazo = /*#__PURE__*/function () {
   var _ref41 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee41(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee41$(_context41) {
@@ -1928,7 +1930,7 @@ var checkDuplicateStatusFacturacion = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context41.next = 3;
-            return _StatusFacturacion.default.findOne({
+            return _MotivoRechazo.default.findOne({
               name: name
             });
 
@@ -1941,7 +1943,7 @@ var checkDuplicateStatusFacturacion = /*#__PURE__*/function () {
             }
 
             return _context41.abrupt("return", res.status(201).json({
-              message: 'El estado de facturación ya existe'
+              message: 'El motivo ya existe'
             }));
 
           case 6:
@@ -1955,14 +1957,14 @@ var checkDuplicateStatusFacturacion = /*#__PURE__*/function () {
     }, _callee41);
   }));
 
-  return function checkDuplicateStatusFacturacion(_x121, _x122, _x123) {
+  return function checkDuplicateMotivoRechazo(_x121, _x122, _x123) {
     return _ref41.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateStatusFacturacion = checkDuplicateStatusFacturacion;
+exports.checkDuplicateMotivoRechazo = checkDuplicateMotivoRechazo;
 
-var checkDuplicateStatusEntrega = /*#__PURE__*/function () {
+var checkDuplicateStatusFacturacion = /*#__PURE__*/function () {
   var _ref42 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee42(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee42$(_context42) {
@@ -1971,7 +1973,7 @@ var checkDuplicateStatusEntrega = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context42.next = 3;
-            return _StatusEntrega.default.findOne({
+            return _StatusFacturacion.default.findOne({
               name: name
             });
 
@@ -1984,7 +1986,7 @@ var checkDuplicateStatusEntrega = /*#__PURE__*/function () {
             }
 
             return _context42.abrupt("return", res.status(201).json({
-              message: 'El estado de entrega ya existe'
+              message: 'El estado de facturación ya existe'
             }));
 
           case 6:
@@ -1998,14 +2000,14 @@ var checkDuplicateStatusEntrega = /*#__PURE__*/function () {
     }, _callee42);
   }));
 
-  return function checkDuplicateStatusEntrega(_x124, _x125, _x126) {
+  return function checkDuplicateStatusFacturacion(_x124, _x125, _x126) {
     return _ref42.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateStatusEntrega = checkDuplicateStatusEntrega;
+exports.checkDuplicateStatusFacturacion = checkDuplicateStatusFacturacion;
 
-var checkDuplicateTipoCampania = /*#__PURE__*/function () {
+var checkDuplicateStatusEntrega = /*#__PURE__*/function () {
   var _ref43 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee43(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee43$(_context43) {
@@ -2014,7 +2016,7 @@ var checkDuplicateTipoCampania = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context43.next = 3;
-            return _TipoCampania.default.findOne({
+            return _StatusEntrega.default.findOne({
               name: name
             });
 
@@ -2027,7 +2029,7 @@ var checkDuplicateTipoCampania = /*#__PURE__*/function () {
             }
 
             return _context43.abrupt("return", res.status(201).json({
-              message: 'El tipo de campaña ya existe'
+              message: 'El estado de entrega ya existe'
             }));
 
           case 6:
@@ -2041,14 +2043,14 @@ var checkDuplicateTipoCampania = /*#__PURE__*/function () {
     }, _callee43);
   }));
 
-  return function checkDuplicateTipoCampania(_x127, _x128, _x129) {
+  return function checkDuplicateStatusEntrega(_x127, _x128, _x129) {
     return _ref43.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateTipoCampania = checkDuplicateTipoCampania;
+exports.checkDuplicateStatusEntrega = checkDuplicateStatusEntrega;
 
-var checkDuplicateAccesorio = /*#__PURE__*/function () {
+var checkDuplicateTipoCampania = /*#__PURE__*/function () {
   var _ref44 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee44(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee44$(_context44) {
@@ -2057,7 +2059,7 @@ var checkDuplicateAccesorio = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context44.next = 3;
-            return _AccesorioE.default.findOne({
+            return _TipoCampania.default.findOne({
               name: name
             });
 
@@ -2070,7 +2072,7 @@ var checkDuplicateAccesorio = /*#__PURE__*/function () {
             }
 
             return _context44.abrupt("return", res.status(201).json({
-              message: 'El accesorio ya existe'
+              message: 'El tipo de campaña ya existe'
             }));
 
           case 6:
@@ -2084,14 +2086,14 @@ var checkDuplicateAccesorio = /*#__PURE__*/function () {
     }, _callee44);
   }));
 
-  return function checkDuplicateAccesorio(_x130, _x131, _x132) {
+  return function checkDuplicateTipoCampania(_x130, _x131, _x132) {
     return _ref44.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateAccesorio = checkDuplicateAccesorio;
+exports.checkDuplicateTipoCampania = checkDuplicateTipoCampania;
 
-var checkDuplicateCondicionAccesorio = /*#__PURE__*/function () {
+var checkDuplicateAccesorio = /*#__PURE__*/function () {
   var _ref45 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee45(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee45$(_context45) {
@@ -2100,7 +2102,7 @@ var checkDuplicateCondicionAccesorio = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context45.next = 3;
-            return _CondicionAccesorio.default.findOne({
+            return _AccesorioE.default.findOne({
               name: name
             });
 
@@ -2113,7 +2115,7 @@ var checkDuplicateCondicionAccesorio = /*#__PURE__*/function () {
             }
 
             return _context45.abrupt("return", res.status(201).json({
-              message: 'La condición de accesorio ya existe'
+              message: 'El accesorio ya existe'
             }));
 
           case 6:
@@ -2127,14 +2129,14 @@ var checkDuplicateCondicionAccesorio = /*#__PURE__*/function () {
     }, _callee45);
   }));
 
-  return function checkDuplicateCondicionAccesorio(_x133, _x134, _x135) {
+  return function checkDuplicateAccesorio(_x133, _x134, _x135) {
     return _ref45.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateCondicionAccesorio = checkDuplicateCondicionAccesorio;
+exports.checkDuplicateAccesorio = checkDuplicateAccesorio;
 
-var checkDuplicateEstadoSeguro = /*#__PURE__*/function () {
+var checkDuplicateCondicionAccesorio = /*#__PURE__*/function () {
   var _ref46 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee46(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee46$(_context46) {
@@ -2143,7 +2145,7 @@ var checkDuplicateEstadoSeguro = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context46.next = 3;
-            return _EstadoSeguro.default.findOne({
+            return _CondicionAccesorio.default.findOne({
               name: name
             });
 
@@ -2156,7 +2158,7 @@ var checkDuplicateEstadoSeguro = /*#__PURE__*/function () {
             }
 
             return _context46.abrupt("return", res.status(201).json({
-              message: 'El estado ya existe'
+              message: 'La condición de accesorio ya existe'
             }));
 
           case 6:
@@ -2170,14 +2172,14 @@ var checkDuplicateEstadoSeguro = /*#__PURE__*/function () {
     }, _callee46);
   }));
 
-  return function checkDuplicateEstadoSeguro(_x136, _x137, _x138) {
+  return function checkDuplicateCondicionAccesorio(_x136, _x137, _x138) {
     return _ref46.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateEstadoSeguro = checkDuplicateEstadoSeguro;
+exports.checkDuplicateCondicionAccesorio = checkDuplicateCondicionAccesorio;
 
-var checkDuplicateEstadoUsado = /*#__PURE__*/function () {
+var checkDuplicateEstadoSeguro = /*#__PURE__*/function () {
   var _ref47 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee47(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee47$(_context47) {
@@ -2186,7 +2188,7 @@ var checkDuplicateEstadoUsado = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context47.next = 3;
-            return _EstadoUsados.default.findOne({
+            return _EstadoSeguro.default.findOne({
               name: name
             });
 
@@ -2213,14 +2215,14 @@ var checkDuplicateEstadoUsado = /*#__PURE__*/function () {
     }, _callee47);
   }));
 
-  return function checkDuplicateEstadoUsado(_x139, _x140, _x141) {
+  return function checkDuplicateEstadoSeguro(_x139, _x140, _x141) {
     return _ref47.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateEstadoUsado = checkDuplicateEstadoUsado;
+exports.checkDuplicateEstadoSeguro = checkDuplicateEstadoSeguro;
 
-var checkDuplicateEstadoCivil = /*#__PURE__*/function () {
+var checkDuplicateEstadoUsado = /*#__PURE__*/function () {
   var _ref48 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee48(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee48$(_context48) {
@@ -2229,7 +2231,7 @@ var checkDuplicateEstadoCivil = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context48.next = 3;
-            return _EstadoCivil.default.findOne({
+            return _EstadoUsados.default.findOne({
               name: name
             });
 
@@ -2242,7 +2244,7 @@ var checkDuplicateEstadoCivil = /*#__PURE__*/function () {
             }
 
             return _context48.abrupt("return", res.status(201).json({
-              message: 'El estado civil ya existe'
+              message: 'El estado ya existe'
             }));
 
           case 6:
@@ -2256,14 +2258,14 @@ var checkDuplicateEstadoCivil = /*#__PURE__*/function () {
     }, _callee48);
   }));
 
-  return function checkDuplicateEstadoCivil(_x142, _x143, _x144) {
+  return function checkDuplicateEstadoUsado(_x142, _x143, _x144) {
     return _ref48.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateEstadoCivil = checkDuplicateEstadoCivil;
+exports.checkDuplicateEstadoUsado = checkDuplicateEstadoUsado;
 
-var checkDuplicatePlanMAF = /*#__PURE__*/function () {
+var checkDuplicateEstadoCivil = /*#__PURE__*/function () {
   var _ref49 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee49(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee49$(_context49) {
@@ -2272,7 +2274,7 @@ var checkDuplicatePlanMAF = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context49.next = 3;
-            return _PlanMAF.default.findOne({
+            return _EstadoCivil.default.findOne({
               name: name
             });
 
@@ -2285,7 +2287,7 @@ var checkDuplicatePlanMAF = /*#__PURE__*/function () {
             }
 
             return _context49.abrupt("return", res.status(201).json({
-              message: 'El plan MAF ya existe'
+              message: 'El estado civil ya existe'
             }));
 
           case 6:
@@ -2299,14 +2301,14 @@ var checkDuplicatePlanMAF = /*#__PURE__*/function () {
     }, _callee49);
   }));
 
-  return function checkDuplicatePlanMAF(_x145, _x146, _x147) {
+  return function checkDuplicateEstadoCivil(_x145, _x146, _x147) {
     return _ref49.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicatePlanMAF = checkDuplicatePlanMAF;
+exports.checkDuplicateEstadoCivil = checkDuplicateEstadoCivil;
 
-var checkDuplicateFiltroMaf = /*#__PURE__*/function () {
+var checkDuplicatePlanMAF = /*#__PURE__*/function () {
   var _ref50 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee50(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee50$(_context50) {
@@ -2315,7 +2317,7 @@ var checkDuplicateFiltroMaf = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context50.next = 3;
-            return _FiltroMaf.default.findOne({
+            return _PlanMAF.default.findOne({
               name: name
             });
 
@@ -2328,7 +2330,7 @@ var checkDuplicateFiltroMaf = /*#__PURE__*/function () {
             }
 
             return _context50.abrupt("return", res.status(201).json({
-              message: 'El estado de filtro ya existe'
+              message: 'El plan MAF ya existe'
             }));
 
           case 6:
@@ -2342,14 +2344,14 @@ var checkDuplicateFiltroMaf = /*#__PURE__*/function () {
     }, _callee50);
   }));
 
-  return function checkDuplicateFiltroMaf(_x148, _x149, _x150) {
+  return function checkDuplicatePlanMAF(_x148, _x149, _x150) {
     return _ref50.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateFiltroMaf = checkDuplicateFiltroMaf;
+exports.checkDuplicatePlanMAF = checkDuplicatePlanMAF;
 
-var checkDuplicateTipoDocumento = /*#__PURE__*/function () {
+var checkDuplicateFiltroMaf = /*#__PURE__*/function () {
   var _ref51 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee51(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee51$(_context51) {
@@ -2358,7 +2360,7 @@ var checkDuplicateTipoDocumento = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context51.next = 3;
-            return _TipoDocumento.default.findOne({
+            return _FiltroMaf.default.findOne({
               name: name
             });
 
@@ -2371,7 +2373,7 @@ var checkDuplicateTipoDocumento = /*#__PURE__*/function () {
             }
 
             return _context51.abrupt("return", res.status(201).json({
-              message: 'El documento de identidad ya existe'
+              message: 'El estado de filtro ya existe'
             }));
 
           case 6:
@@ -2385,14 +2387,14 @@ var checkDuplicateTipoDocumento = /*#__PURE__*/function () {
     }, _callee51);
   }));
 
-  return function checkDuplicateTipoDocumento(_x151, _x152, _x153) {
+  return function checkDuplicateFiltroMaf(_x151, _x152, _x153) {
     return _ref51.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateTipoDocumento = checkDuplicateTipoDocumento;
+exports.checkDuplicateFiltroMaf = checkDuplicateFiltroMaf;
 
-var checkDuplicateMenuG = /*#__PURE__*/function () {
+var checkDuplicateTipoDocumento = /*#__PURE__*/function () {
   var _ref52 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee52(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee52$(_context52) {
@@ -2401,7 +2403,7 @@ var checkDuplicateMenuG = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context52.next = 3;
-            return _MenuG.default.findOne({
+            return _TipoDocumento.default.findOne({
               name: name
             });
 
@@ -2414,7 +2416,7 @@ var checkDuplicateMenuG = /*#__PURE__*/function () {
             }
 
             return _context52.abrupt("return", res.status(201).json({
-              message: 'El menú ya existe'
+              message: 'El documento de identidad ya existe'
             }));
 
           case 6:
@@ -2428,14 +2430,14 @@ var checkDuplicateMenuG = /*#__PURE__*/function () {
     }, _callee52);
   }));
 
-  return function checkDuplicateMenuG(_x154, _x155, _x156) {
+  return function checkDuplicateTipoDocumento(_x154, _x155, _x156) {
     return _ref52.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateMenuG = checkDuplicateMenuG;
+exports.checkDuplicateTipoDocumento = checkDuplicateTipoDocumento;
 
-var checkDuplicateModuloG = /*#__PURE__*/function () {
+var checkDuplicateMenuG = /*#__PURE__*/function () {
   var _ref53 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee53(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee53$(_context53) {
@@ -2444,7 +2446,7 @@ var checkDuplicateModuloG = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context53.next = 3;
-            return _ModuloG.default.findOne({
+            return _MenuG.default.findOne({
               name: name
             });
 
@@ -2457,7 +2459,7 @@ var checkDuplicateModuloG = /*#__PURE__*/function () {
             }
 
             return _context53.abrupt("return", res.status(201).json({
-              message: 'El módulo ya existe'
+              message: 'El menú ya existe'
             }));
 
           case 6:
@@ -2471,14 +2473,14 @@ var checkDuplicateModuloG = /*#__PURE__*/function () {
     }, _callee53);
   }));
 
-  return function checkDuplicateModuloG(_x157, _x158, _x159) {
+  return function checkDuplicateMenuG(_x157, _x158, _x159) {
     return _ref53.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateModuloG = checkDuplicateModuloG;
+exports.checkDuplicateMenuG = checkDuplicateMenuG;
 
-var checkDuplicateSubmoduloG = /*#__PURE__*/function () {
+var checkDuplicateModuloG = /*#__PURE__*/function () {
   var _ref54 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee54(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee54$(_context54) {
@@ -2487,7 +2489,7 @@ var checkDuplicateSubmoduloG = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context54.next = 3;
-            return _SubmoduloG.default.findOne({
+            return _ModuloG.default.findOne({
               name: name
             });
 
@@ -2500,7 +2502,7 @@ var checkDuplicateSubmoduloG = /*#__PURE__*/function () {
             }
 
             return _context54.abrupt("return", res.status(201).json({
-              message: "El subm\xF3dulo ".concat(name, " ya existe")
+              message: 'El módulo ya existe'
             }));
 
           case 6:
@@ -2514,14 +2516,14 @@ var checkDuplicateSubmoduloG = /*#__PURE__*/function () {
     }, _callee54);
   }));
 
-  return function checkDuplicateSubmoduloG(_x160, _x161, _x162) {
+  return function checkDuplicateModuloG(_x160, _x161, _x162) {
     return _ref54.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateSubmoduloG = checkDuplicateSubmoduloG;
+exports.checkDuplicateModuloG = checkDuplicateModuloG;
 
-var checkDuplicateTipoProducto = /*#__PURE__*/function () {
+var checkDuplicateSubmoduloG = /*#__PURE__*/function () {
   var _ref55 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee55(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee55$(_context55) {
@@ -2530,7 +2532,7 @@ var checkDuplicateTipoProducto = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context55.next = 3;
-            return _TipoProducto.default.findOne({
+            return _SubmoduloG.default.findOne({
               name: name
             });
 
@@ -2543,7 +2545,7 @@ var checkDuplicateTipoProducto = /*#__PURE__*/function () {
             }
 
             return _context55.abrupt("return", res.status(201).json({
-              message: "El tipo de producto ".concat(name, " ya existe")
+              message: "El subm\xF3dulo ".concat(name, " ya existe")
             }));
 
           case 6:
@@ -2557,14 +2559,14 @@ var checkDuplicateTipoProducto = /*#__PURE__*/function () {
     }, _callee55);
   }));
 
-  return function checkDuplicateTipoProducto(_x163, _x164, _x165) {
+  return function checkDuplicateSubmoduloG(_x163, _x164, _x165) {
     return _ref55.apply(this, arguments);
   };
 }();
 
-exports.checkDuplicateTipoProducto = checkDuplicateTipoProducto;
+exports.checkDuplicateSubmoduloG = checkDuplicateSubmoduloG;
 
-var checkDuplicateMes = /*#__PURE__*/function () {
+var checkDuplicateTipoProducto = /*#__PURE__*/function () {
   var _ref56 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee56(req, res, next) {
     var name, query;
     return _regeneratorRuntime().wrap(function _callee56$(_context56) {
@@ -2573,7 +2575,7 @@ var checkDuplicateMes = /*#__PURE__*/function () {
           case 0:
             name = req.body.name;
             _context56.next = 3;
-            return _Mes.default.findOne({
+            return _TipoProducto.default.findOne({
               name: name
             });
 
@@ -2586,7 +2588,7 @@ var checkDuplicateMes = /*#__PURE__*/function () {
             }
 
             return _context56.abrupt("return", res.status(201).json({
-              message: "El mes ".concat(name, " ya existe")
+              message: "El tipo de producto ".concat(name, " ya existe")
             }));
 
           case 6:
@@ -2600,8 +2602,51 @@ var checkDuplicateMes = /*#__PURE__*/function () {
     }, _callee56);
   }));
 
-  return function checkDuplicateMes(_x166, _x167, _x168) {
+  return function checkDuplicateTipoProducto(_x166, _x167, _x168) {
     return _ref56.apply(this, arguments);
+  };
+}();
+
+exports.checkDuplicateTipoProducto = checkDuplicateTipoProducto;
+
+var checkDuplicateMes = /*#__PURE__*/function () {
+  var _ref57 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regeneratorRuntime().mark(function _callee57(req, res, next) {
+    var name, query;
+    return _regeneratorRuntime().wrap(function _callee57$(_context57) {
+      while (1) {
+        switch (_context57.prev = _context57.next) {
+          case 0:
+            name = req.body.name;
+            _context57.next = 3;
+            return _Mes.default.findOne({
+              name: name
+            });
+
+          case 3:
+            query = _context57.sent;
+
+            if (!query) {
+              _context57.next = 6;
+              break;
+            }
+
+            return _context57.abrupt("return", res.status(201).json({
+              message: "El mes ".concat(name, " ya existe")
+            }));
+
+          case 6:
+            next();
+
+          case 7:
+          case "end":
+            return _context57.stop();
+        }
+      }
+    }, _callee57);
+  }));
+
+  return function checkDuplicateMes(_x169, _x170, _x171) {
+    return _ref57.apply(this, arguments);
   };
 }();
 
