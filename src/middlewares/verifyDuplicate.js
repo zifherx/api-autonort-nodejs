@@ -44,7 +44,6 @@ import EstadoSeguro from '../models/EstadoSeguro';
 import TipoUso from '../models/TipoUso';
 import EstadoCivil from '../models/EstadoCivil';
 import PlanMAF from '../models/PlanMAF';
-import FiltroMaf from '../models/FiltroMaf';
 import TipoDocumento from '../models/TipoDocumento';
 import MenuG from '../models/MenuG';
 import ModuloG from '../models/ModuloG'
@@ -526,15 +525,6 @@ export const checkDuplicatePlanMAF = async (req, res, next) => {
 
     const query = await PlanMAF.findOne({name});
     if(query) return res.status(201).json({message: 'El plan MAF ya existe'});
-
-    next();
-}
-
-export const checkDuplicateFiltroMaf = async (req, res, next) => {
-    const { name } = req.body;
-
-    const query = await FiltroMaf.findOne({name});
-    if(query) return res.status(201).json({message: 'El estado de filtro ya existe'});
 
     next();
 }

@@ -14,10 +14,10 @@ export const getAll = async(req, res) => {
     }
 }
 
-export const getMarcaById = async(req, res) => {
-    const { marcaId } = req.params;
+export const getOneById = async(req, res) => {
+    const { itemId } = req.params;
     try {
-        const query = await MarcaTasaciones.findById(marcaId);
+        const query = await MarcaTasaciones.findById(itemId);
         if (query) {
             res.json({one: query});
         } else {
@@ -29,11 +29,11 @@ export const getMarcaById = async(req, res) => {
     }
 }
 
-export const getMarcaActiva = async(req, res) => {
+export const getAllActive = async(req, res) => {
     try {
         const query = await MarcaTasaciones.find({ estado: true }).sort({ name: 1 });
         if (query.length > 0) {
-            res.json({ total_active: query.length, all_active: query });
+            res.json({ total: query.length, all: query });
         } else {
             return res.status(404).json({ message: 'No existen Marcas activas' })
         }
@@ -43,7 +43,7 @@ export const getMarcaActiva = async(req, res) => {
     }
 }
 
-export const createMarca = async(req, res) => {
+export const createOne = async(req, res) => {
     const { name, estado } = req.body;
     const avatar = req.file;
 
@@ -73,19 +73,19 @@ export const createMarca = async(req, res) => {
     }
 }
 
-export const updateMarcaById = async(req, res) => {
+export const updateOneById = async(req, res) => {
     const { name, estado } = req.body;
-    const { marcaId } = req.params;
+    const { itemId } = req.params;
     const avatar = req.file;
     try {
         let query = null;
         if (avatar == undefined || avatar == null) {
-            query = await MarcaTasaciones.findByIdAndUpdate(marcaId, {
+            query = await MarcaTasaciones.findByIdAndUpdate(itemId, {
                 name,
                 estado
             });
         } else {
-            query = await MarcaTasaciones.findByIdAndUpdate(marcaId, {
+            query = await MarcaTasaciones.findByIdAndUpdate(itemId, {
                 avatar: avatar.location,
                 name,
                 estado
@@ -103,10 +103,10 @@ export const updateMarcaById = async(req, res) => {
     }
 }
 
-export const deleteMarcaById = async(req, res) => {
-    const { marcaId } = req.params;
+export const deleteOneById = async(req, res) => {
+    const { itemId } = req.params;
     try {
-        const query = await MarcaTasaciones.findByIdAndDelete(marcaId);
+        const query = await MarcaTasaciones.findByIdAndDelete(itemId);
         if (query) {
             res.json({ message: 'Marca eliminada con éxito' });
         } else {

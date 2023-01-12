@@ -1,4 +1,5 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose';
+import { connectSCIDB } from "../config/database";
 
 const tipoComprobanteSchema = new Schema({
     name: { type: String },
@@ -8,4 +9,4 @@ const tipoComprobanteSchema = new Schema({
     versionKey: false
 });
 
-export default model('TipoComprobante', tipoComprobanteSchema);
+export default connectSCIDB.model('TipoComprobante', tipoComprobanteSchema);

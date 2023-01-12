@@ -11,7 +11,7 @@ router.get('/', conexoCtrl.getAll);
 router.get('/activos', conexoCtrl.getAllActivos);
 
 //Obtener Conexo por ID
-router.get('/:conexoId', conexoCtrl.getOneById);
+router.get('/:itemId', conexoCtrl.getOneById);
 
 //Obtener Asesor x Sucursal
 router.post('/by-sucursal', conexoCtrl.getAsesorxSucursalyArea);
@@ -22,9 +22,9 @@ router.post('/by-name', conexoCtrl.getAsesorByName);
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateConexo], conexoCtrl.createOne);
 
 //Actualizar Conexo
-router.patch('/:conexoId', [authJwt.verifyToken, authJwt.isAdmin], conexoCtrl.updateOneById);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], conexoCtrl.updateOneById);
 
 //Eliminar Conexo
-router.delete('/:conexoId', [authJwt.verifyToken, authJwt.isAdmin], conexoCtrl.deleteOneById);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], conexoCtrl.deleteOneById);
 
 export default router;

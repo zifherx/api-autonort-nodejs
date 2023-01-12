@@ -8,12 +8,12 @@ router.get('/', rolesCtrl.getAll);
 
 router.get('/activos', rolesCtrl.getAllActivos);
 
-router.get('/:roleId', rolesCtrl.getOneById);
+router.get('/:itemId', rolesCtrl.getOneById);
 
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateRole], rolesCtrl.createOne);
 
-router.patch('/:roleId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], rolesCtrl.updateOneById);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], rolesCtrl.updateOneById);
 
-router.delete('/:roleId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], rolesCtrl.deleteOneById);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], rolesCtrl.deleteOneById);
 
 export default router;

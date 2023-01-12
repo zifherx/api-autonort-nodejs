@@ -17,9 +17,9 @@ civilController.getAll = async(req, res) => {
 }
 
 civilController.getOneById = async(req, res) => {
-    const { civilId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await EstadoCivil.findById(civilId);
+        const query = await EstadoCivil.findById(itemId);
         if (query) {
             res.json({one: query});
         } else {
@@ -35,7 +35,7 @@ civilController.getAllActivos = async(req, res) => {
     try {
         const query = await EstadoCivil.find({ estado: true }).sort({ name: 1 });
         if (query.length > 0) {
-            res.json({total_active: query.length, all_active: query});
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen estados civiles activos'});
         }
@@ -63,9 +63,9 @@ civilController.createOne = async(req, res) => {
 
 civilController.updateOneById = async(req, res) => {
     const { name, estado } = req.body;
-    const { civilId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await EstadoCivil.findByIdAndUpdate(civilId, { name, estado });
+        const query = await EstadoCivil.findByIdAndUpdate(itemId, { name, estado });
 
         if (query) {
             res.json({ message: 'Estado civil actualizado con éxito' });
@@ -79,9 +79,9 @@ civilController.updateOneById = async(req, res) => {
 }
 
 civilController.deleteOneById = async(req, res) => {
-    const { civilId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await EstadoCivil.findByIdAndDelete(civilId);
+        const query = await EstadoCivil.findByIdAndDelete(itemId);
         if (query) {
             res.json({ message: 'Estado civil eliminado con éxito' });
         } else {

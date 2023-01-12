@@ -4,7 +4,8 @@ config();
 export default {
     SECRET: 'ADV_API',
     // mongodbURL: process.env.MONGO_URI
-    mongodbURL: process.env.MONGO_URI_PUBLIC,
+    mongoSCIdbURL: process.env.MONGO_URI_PUBLIC,
+    mongoSGLdbURL: process.env.MONGO_URI_SGL_PUBLIC,
     API_PORT: process.env.PORT,
     //ENVIO CORREOS
     EMAIL_HOST: process.env.EMAIL_HOST,

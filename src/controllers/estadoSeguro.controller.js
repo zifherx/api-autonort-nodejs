@@ -36,7 +36,7 @@ seguroController.getAllActivos = async(req, res) => {
     try {
         const query = await EstadoSeguro.find({ estado: true }).sort({ value: 1 });
         if (query.length > 0) {
-            res.json({total_active: query.length, all_active: query});
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen estados activos' });
         }

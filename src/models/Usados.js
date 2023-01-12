@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { connectSCIDB } from "../config/database";
 
 const usadoSchema = new Schema(
     {
@@ -11,11 +12,11 @@ const usadoSchema = new Schema(
         precio_tasacion: { type: Number, min: 0 },
         precio_venta: { type: Number, min: 0 },
         estado_usado: { type: String },
-        estadoE: { type: Schema.Types.ObjectId, ref: 'EstadoUsados' },
+        estadoE: { type: Schema.Types.ObjectId, ref: "EstadoUsados" },
         ubicacion: { type: String },
-        ubicacionE: { type: Schema.Types.ObjectId, ref: 'Sucursal' },
+        ubicacionE: { type: Schema.Types.ObjectId, ref: "Sucursal" },
         observacion: { type: String },
-        createdBy: { type: Schema.Types.ObjectId, ref: 'User'},
+        createdBy: { type: Schema.Types.ObjectId, ref: "User" },
         // LOGS
         isDisponible: { type: Boolean, default: true },
         fechaDisponible: { type: Date },
@@ -30,4 +31,4 @@ const usadoSchema = new Schema(
     }
 );
 
-export default model("Usados", usadoSchema);
+export default connectSCIDB.model("Usados", usadoSchema);

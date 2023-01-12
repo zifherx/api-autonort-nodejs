@@ -1,24 +1,24 @@
 import { Router } from 'express'
-import userCtrl from '../controllers/user.controller'
+import controller from '../controllers/user.controller'
 import { authJwt, verifySignup, verifyDuplicate } from '../middlewares'
 import multer from '../middlewares/multer'
 
 const router = Router();
 
-router.get('/', userCtrl.getAll);
+router.get('/', controller.getAll);
 
-router.get('/activos', userCtrl.getAllActivos);
+router.get('/activos', controller.getAllActivos);
 
-router.get('/:userId', userCtrl.getOneById);
+router.get('/:userId', controller.getOneById);
 
-router.post('/count/by-online', userCtrl.countByOnlineStatus);
+router.post('/count/by-online', controller.countByOnlineStatus);
 
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateUser],  userCtrl.createOne);
+router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateUser],  controller.createOne);
 
-router.patch('/:userId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('avatar'), userCtrl.updateOneById);
+router.patch('/:userId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('avatar'), controller.updateOneById);
 
-router.patch('/update-profile/:userId', [authJwt.verifyToken], userCtrl.updateProfileById);
+router.patch('/update-profile/:userId', [authJwt.verifyToken], controller.updateProfileById);
 
-router.delete('/:userId', [authJwt.verifyToken, authJwt.isAdmin], userCtrl.deleteOneById);
+router.delete('/:userId', [authJwt.verifyToken, authJwt.isAdmin], controller.deleteOneById);
 
 export default router;

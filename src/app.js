@@ -9,22 +9,22 @@ import * as initData from './libs/initialSetup'
 
 const app = express();
 
-initData.createRoles();
-initData.createUserAdmin();
-initData.createConfigAnios();
-initData.createConfigColor();
-initData.createConfigChasis();
-initData.createConfigMarca();
-initData.createConfigBanco();
-initData.createConfigFinanciamiento();
-initData.createConfigModelo();
-initData.createConfigSectorista();
-initData.createConfigCondicion();
-initData.createConfigSituacion();
-initData.createConfigSucursal();
-initData.createConfigSustento();
-initData.createConfigUbicacion();
-initData.createConfigStatusFile();
+// initData.createRoles();
+// initData.createUserAdmin();
+// initData.createConfigAnios();
+// initData.createConfigColor();
+// initData.createConfigChasis();
+// initData.createConfigMarca();
+// initData.createConfigBanco();
+// initData.createConfigFinanciamiento();
+// initData.createConfigModelo();
+// initData.createConfigSectorista();
+// initData.createConfigCondicion();
+// initData.createConfigSituacion();
+// initData.createConfigSucursal();
+// initData.createConfigSustento();
+// initData.createConfigUbicacion();
+// initData.createConfigStatusFile();
 
 //Settings
 app.set('port', Number(config.API_PORT) || Number(4000));

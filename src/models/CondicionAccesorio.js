@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import { connectSCIDB } from '../config/database';
 
 const condicionAccesorioSchema = new Schema({
     name: { type: String },
@@ -8,4 +9,4 @@ const condicionAccesorioSchema = new Schema({
     versionKey: false
 });
 
-export default model('CondicionAccesorio', condicionAccesorioSchema);
+export default connectSCIDB.model('CondicionAccesorio', condicionAccesorioSchema);

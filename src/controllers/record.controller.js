@@ -1,5 +1,6 @@
 import Record from "../models/Record";
 import Sale from "../models/Sale";
+import Seller from "../models/Seller";
 import StatusAAP from "../models/StatusAAP";
 import StatusFile from "../models/StatusFile";
 import StatusRP from "../models/StatusRP";
@@ -14,10 +15,10 @@ recordController.createOne = async (req, res) => {
         sucursal_tramite,
         sucursalE,
         statusFile,
-        estadoFileE,
         status_tarjeta,
-        estadoRPE,
         status_placa,
+        estadoFileE,
+        estadoRPE,
         estadoAAPE,
         fecha_recepcion,
         hora_recepcion,
@@ -435,7 +436,7 @@ recordController.updateOneById = async (req, res) => {
                 fecha_entrega_tarjeta_cliente,
                 fecha_entrega_placa_recepcion,
                 fecha_entrega_placa_cliente,
-                observaciones_aap
+                observaciones_aap,
             });
         } else if (estadoFileE == "Firmado") {
             query = await Record.findByIdAndUpdate(recordId, {
@@ -461,7 +462,7 @@ recordController.updateOneById = async (req, res) => {
                 fecha_entrega_tarjeta_cliente,
                 fecha_entrega_placa_recepcion,
                 fecha_entrega_placa_cliente,
-                observaciones_aap
+                observaciones_aap,
             });
         } else if (estadoFileE == "Legalizado") {
             query = await Record.findByIdAndUpdate(recordId, {
@@ -487,7 +488,7 @@ recordController.updateOneById = async (req, res) => {
                 fecha_entrega_tarjeta_cliente,
                 fecha_entrega_placa_recepcion,
                 fecha_entrega_placa_cliente,
-                observaciones_aap
+                observaciones_aap,
             });
         } else if (estadoFileE == "Finalizado") {
             query = await Record.findByIdAndUpdate(recordId, {
@@ -511,9 +512,9 @@ recordController.updateOneById = async (req, res) => {
                 fecha_entrega_tarjeta_cliente,
                 fecha_entrega_placa_recepcion,
                 fecha_entrega_placa_cliente,
-                observaciones_aap
+                observaciones_aap,
             });
-        }else{
+        } else {
             query = await Record.findByIdAndUpdate(recordId, {
                 statusFile,
                 estadoFileE: estadoFileFound._id,
@@ -537,8 +538,8 @@ recordController.updateOneById = async (req, res) => {
                 fecha_entrega_tarjeta_cliente,
                 fecha_entrega_placa_recepcion,
                 fecha_entrega_placa_cliente,
-                observaciones_aap
-            })
+                observaciones_aap,
+            });
         }
 
         if (query) {
@@ -648,4 +649,74 @@ recordController.countAllByStatus = async (req, res) => {
     }
 };
 
+recordController.getTramitesBySeller = async (req, res) => {
+    const { seller } = req.body;
+
+    let query = null;
+
+    try {
+        query = await Record.find()
+        .populate({
+            path: 'estadoAAPE',
+            select: 'name'
+        })
+        .populate({
+            path: 'estadoRPE',
+            select: 'name'
+        })
+        .populate({
+            path: 'estadoFileE',
+            select: 'name'
+        })
+        .populate({
+            path: 'empleado',
+            select: 'name username role'
+        })
+        .populate({
+            path: "sales",
+            select: "vendedor cliente auto serie_tdp ubicacion_vehiculo ubicacionVehiculoE pasoaTramite",
+            populate: [
+                {
+                    path: "cliente",
+                    select: "name document",
+                },
+                {
+                    path: "auto",
+                    select: "cod_tdp model version",
+                    populate: {
+                        path: "model",
+                        select: "name avatar marca",
+                        populate: {
+                            path: "marca",
+                            select: "name avatar",
+                        },
+                    },
+                },
+                {
+                    path: "vendedor",
+                    select: "name",
+                    match: {
+                        name: seller,
+                    },
+                },
+                {
+                    path: "ubicacionVehiculoE",
+                    select: "name",
+                },
+            ],
+        });
+
+        let obj = query.filter((b) => b.sales.vendedor && b.sales.pasoaTramite == 1);
+
+        if (obj.length > 0) {
+            res.json({ total: obj.length, all: obj });
+        } else {
+            return res.status(404).json({ message: `Asesor ${seller} no cuenta con trámites` });
+        }
+
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
 export default recordController;

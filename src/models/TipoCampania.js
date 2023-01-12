@@ -1,11 +1,15 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
+import { connectSCIDB } from "../config/database";
 
-const tipoCampaniaSchema = new Schema({
-    name: { type: String, unique: true },
-    estado : { type: Boolean, default: true },
-},{
-    timestamps: true,
-    versionKey: false
-})
+const tipoCampaniaSchema = new Schema(
+    {
+        name: { type: String, unique: true },
+        estado: { type: Boolean, default: true },
+    },
+    {
+        timestamps: true,
+        versionKey: false,
+    }
+);
 
-export default model('TipoCampania', tipoCampaniaSchema);
+export default connectSCIDB.model("TipoCampania", tipoCampaniaSchema);

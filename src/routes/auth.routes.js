@@ -4,7 +4,7 @@ import { authJwt, verifySignup } from '../middlewares'
 
 const router = Router();
 
-router.post('/signin', authCtrl.signIn);
+router.post('/login', authCtrl.signIn);
 
 router.post('/change-password', [authJwt.verifyToken], authCtrl.changePassword);
 

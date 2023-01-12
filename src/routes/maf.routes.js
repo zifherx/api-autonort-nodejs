@@ -20,6 +20,8 @@ router.patch("/agree/:mafId", [authJwt.verifyToken, authJwt.isExecutiveMaf], mul
 router.patch("/reenroll/:mafId", [authJwt.verifyToken, authJwt.isVendedor], multer.array("adicionales", 30), mafCtrl.reenrollRequestStateById);
 router.patch("/update/:mafId", [authJwt.verifyToken, authJwt.isExecutiveMaf], mafCtrl.updateRequestStateById);
 
+router.patch('/chief-approve/:itemId', [authJwt.verifyToken, authJwt.isChiefSalesORAdmin], mafCtrl.updateFileOnStatusByChief);
+
 // Delete One By Id
 router.delete("/:mafId", [authJwt.verifyToken, authJwt.isAdmin], mafCtrl.deleteOneById);
 

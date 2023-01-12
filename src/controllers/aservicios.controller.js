@@ -23,9 +23,9 @@ serviciosCtrl.getAll = async(req, res) => {
 }
 
 serviciosCtrl.getOneById = async(req, res) => {
-    const { asesorId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await AServicios.findById(asesorId)
+        const query = await AServicios.findById(itemId)
         .populate({
             path: 'sucursalE',
             select: 'name'
@@ -52,7 +52,7 @@ serviciosCtrl.getAllByActivo = async(req, res) => {
         });
 
         if (query.length > 0) {
-            res.json({total_active: query.length, all_active: query});
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No hay Asesores de Servicios Activos' })
         }
@@ -106,7 +106,7 @@ serviciosCtrl.createOne = async(req, res) => {
 
 serviciosCtrl.updatedOneById = async(req, res) => {
     const { name, document, cellphone, email, sucursalE, estado } = req.body;
-    const { asesorId } = req.params;
+    const { itemId } = req.params;
     const avatar = req.file;
 
     try {
@@ -117,7 +117,7 @@ serviciosCtrl.updatedOneById = async(req, res) => {
         if(!sucursalFound) return res.status(404).json({message: `Sucursal ${sucursalE} no encontrada`});
 
         if(avatar == undefined || avatar == null){
-            query = await AServicios.findByIdAndUpdate(asesorId,{
+            query = await AServicios.findByIdAndUpdate(itemId,{
                 name,
                 document,
                 cellphone,
@@ -126,7 +126,7 @@ serviciosCtrl.updatedOneById = async(req, res) => {
                 estado
             })
         }else{
-            query = await AServicios.findByIdAndUpdate(asesorId,{
+            query = await AServicios.findByIdAndUpdate(itemId,{
                 name,
                 document,
                 cellphone,
@@ -149,9 +149,9 @@ serviciosCtrl.updatedOneById = async(req, res) => {
 }
 
 serviciosCtrl.deleteOneById = async(req, res) => {
-    const { asesorId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await AServicios.findByIdAndDelete(asesorId);
+        const query = await AServicios.findByIdAndDelete(itemId);
         if (query) {
             res.json({ message: 'Asesor de Servicio eliminado con éxito' });
         } else {

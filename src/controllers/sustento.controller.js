@@ -35,7 +35,7 @@ sustentoController.getAllActivos = async(req, res) => {
     try {
         const query = await Sustento.find({ estado: true }).sort({ name: 'asc' });
         if (query.length > 0) {
-            res.json({total_active: query.length, all_active: query});
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No hay Sustentos Activos' })
         }

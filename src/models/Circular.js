@@ -1,4 +1,5 @@
 import { Schema, Types, model} from 'mongoose';
+import { connectSCIDB } from '../config/database';
 
 const circularSchema = new Schema({
     codigo_interno: { type: String },
@@ -17,4 +18,4 @@ const circularSchema = new Schema({
     versionKey: false
 });
 
-export default model('Circular', circularSchema);
+export default connectSCIDB.model('Circular', circularSchema);

@@ -62,6 +62,7 @@ export const changePassword = async(req, res) => {
 
 export const cerrarSesion = async(req, res) => {
     const { id } = res.locals.jwtPayload;
+
     try {
         const userFound = await User.findById(id);
 

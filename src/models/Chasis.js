@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import { connectSCIDB } from '../config/database';
 
 const chasisSchema = new Schema({
     name: { type: String },
@@ -9,4 +10,4 @@ const chasisSchema = new Schema({
     versionKey: false
 });
 
-export default model('Chasis', chasisSchema);
+export default connectSCIDB.model('Chasis', chasisSchema);

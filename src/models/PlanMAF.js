@@ -1,11 +1,15 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from "mongoose";
+import { connectSCIDB } from "../config/database";
 
-const planSchema = new Schema({
-    name: { type: String },
-    estado: { type: Boolean, default: false },
-}, {
-    timestamps: true,
-    versionKey: false
-});
+const planSchema = new Schema(
+    {
+        name: { type: String },
+        estado: { type: Boolean, default: false },
+    },
+    {
+        timestamps: true,
+        versionKey: false,
+    }
+);
 
-export default model('PlanMAF', planSchema);
+export default connectSCIDB.model("PlanMAF", planSchema);

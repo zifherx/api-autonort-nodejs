@@ -34,7 +34,7 @@ roleController.getAllActivos = async(req, res) => {
     try {
         const query = await Role.find({estado: true}).sort({ name: 1 });
         if (query.length > 0) {
-            res.json({total_active: query.length, all_active: query});
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen roles activos' });
         }
@@ -45,9 +45,9 @@ roleController.getAllActivos = async(req, res) => {
 }
 
 roleController.getOneById = async(req, res) => {
-    const { roleId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await Role.findById(roleId);
+        const query = await Role.findById(itemId);
         if (query) {
             res.json({one: query});
         } else {
@@ -60,10 +60,10 @@ roleController.getOneById = async(req, res) => {
 }
 
 roleController.updateOneById = async(req, res) => {
-    const { roleId } = req.params;
+    const { itemId } = req.params;
     const { name, description, estado } = req.body;
     try {
-        const query = await Role.findByIdAndUpdate(roleId, { name, description, estado });
+        const query = await Role.findByIdAndUpdate(itemId, { name, description, estado });
         
         if (query) {
             res.json({ message: 'Rol actualizado con éxito' });
@@ -77,9 +77,9 @@ roleController.updateOneById = async(req, res) => {
 }
 
 roleController.deleteOneById = async(req, res) => {
-    const { roleId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await Role.findByIdAndDelete(roleId);
+        const query = await Role.findByIdAndDelete(itemId);
         if (query) {
             res.json({ message: 'Rol eliminado con éxito' });
         } else {

@@ -11,15 +11,15 @@ router.get('/', endosoCtrl.getAll);
 router.get('/activos', endosoCtrl.getAllActivos);
 
 //Obtener Endoso por ID
-router.get('/:endosoId', endosoCtrl.getOneById);
+router.get('/:itemId', endosoCtrl.getOneById);
 
 //Crear Endoso
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateEndoso], endosoCtrl.createOne);
 
 //Actualizar Endoso
-router.patch('/:endosoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], endosoCtrl.updateOneById);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], endosoCtrl.updateOneById);
 
 //Eliminar Endoso
-router.delete('/:endosoId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], endosoCtrl.deleteOneById);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], endosoCtrl.deleteOneById);
 
 export default router;

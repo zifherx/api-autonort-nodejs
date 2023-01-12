@@ -33,7 +33,7 @@ export const getStatusRPByActivo = async(req, res) => {
     try {
         const query = await StatusRP.find({ estado: true }).sort({ value: 'asc' });
         if (query.length > 0) {
-            res.json({total_active: query.length, all_active: query});
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Estados activos' });
         }

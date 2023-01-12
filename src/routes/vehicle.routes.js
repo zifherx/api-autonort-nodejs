@@ -8,7 +8,7 @@ const router = Router();
 router.get('/', vehicleCtrl.getAll);
 
 //Obtener Vehiculo por ID
-router.get('/:vehicleId', vehicleCtrl.getVehicleById);
+router.get('/:itemId', vehicleCtrl.getVehicleById);
 
 //Obtener Vehiculo por COD-TDP
 router.post('/by-codtdp', vehicleCtrl.getVehicleByCodigo);
@@ -20,15 +20,12 @@ router.post('/by-marca', vehicleCtrl.getVehiculeByMarca);
 router.post('/by-modelo', vehicleCtrl.getVehiculeByModelo);
 
 //Crear Vehiculo
-// router.post('/', vehicleCtrl.createVehicle);
 router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifyDuplicate.checkDuplicateVehiculo], vehicleCtrl.createVehicle);
 
 //Actualizar Vehiculo
-// router.patch('/:vehicleId', vehicleCtrl.updateVehicleById);
-router.patch('/:vehicleId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin], vehicleCtrl.updateVehicleById);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin], vehicleCtrl.updateVehicleById);
 
 //Eliminar Vehiculo
-// router.delete('/:vehicleId', vehicleCtrl.deleteVehicleById);
-router.delete('/:vehicleId', [authJwt.verifyToken, authJwt.isAdmin], vehicleCtrl.deleteVehicleById);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], vehicleCtrl.deleteVehicleById);
 
 export default router;

@@ -12,15 +12,15 @@ router.get('/', bancoCtrl.getBancos);
 router.get('/activos', bancoCtrl.getBancoByActivo);
 
 //Obtener Banco por ID
-router.get('/:bancoId', bancoCtrl.getBancoById);
+router.get('/:itemId', bancoCtrl.getBancoById);
 
 //Crear Banco
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateBanco], multer.single('avatar'), bancoCtrl.createBanco);
 
 //Actualizar Banco
-router.patch('/:bancoId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('avatar'), bancoCtrl.updateBanco);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('avatar'), bancoCtrl.updateBanco);
 
 //Eliminar Banco
-router.delete('/:bancoId', [authJwt.verifyToken, authJwt.isAdmin], bancoCtrl.deleteBanco);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], bancoCtrl.deleteBanco);
 
 export default router;

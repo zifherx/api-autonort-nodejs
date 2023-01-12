@@ -1,4 +1,5 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose';
+import { connectSCIDB } from "../config/database";
 
 const colorSchema = new Schema({
     name: { type: String },
@@ -10,4 +11,4 @@ const colorSchema = new Schema({
     versionKey: false
 });
 
-export default model('Colores', colorSchema);
+export default connectSCIDB.model('Colores', colorSchema);

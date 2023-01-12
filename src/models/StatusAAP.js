@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import { connectSCIDB } from '../config/database';
 
 const statusAAP = new Schema({
     name: { type: String },
@@ -10,4 +11,4 @@ const statusAAP = new Schema({
     versionKey: false
 });
 
-export default model('StatusAAP', statusAAP);
+export default connectSCIDB.model('StatusAAP', statusAAP);

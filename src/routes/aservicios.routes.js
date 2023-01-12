@@ -9,7 +9,7 @@ const router = Router();
 router.get('/activos', serviciosCtrl.getAllByActivo);
 
 //Obtener Asesor de Servicios por ID
-router.get('/:asesorId', serviciosCtrl.getOneById);
+router.get('/:itemId', serviciosCtrl.getOneById);
 
 //Obtener Asesor de Servicios
 router.get('/', serviciosCtrl.getAll);
@@ -21,9 +21,9 @@ router.post('/by-sucursal', serviciosCtrl.getBySucursal);
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateAServicios], multer.single('avatar'), serviciosCtrl.createOne);
 
 //Actualizar Asesor de Servicios
-router.patch('/:asesorId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('avatar'), serviciosCtrl.updatedOneById);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], multer.single('avatar'), serviciosCtrl.updatedOneById);
 
 //Eliminar Asesor de Servicios
-router.delete('/:asesorId', [authJwt.verifyToken, authJwt.isAdmin], serviciosCtrl.deleteOneById);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], serviciosCtrl.deleteOneById);
 
 export default router;

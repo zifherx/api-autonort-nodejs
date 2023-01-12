@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import { connectSCIDB } from '../config/database';
 
 const endosoSchema = new Schema({
     name: { type: String },
@@ -9,4 +10,4 @@ const endosoSchema = new Schema({
     versionKey: false
 });
 
-export default model('Endoso', endosoSchema);
+export default connectSCIDB.model('Endoso', endosoSchema);

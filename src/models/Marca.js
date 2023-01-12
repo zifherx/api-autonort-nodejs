@@ -1,11 +1,15 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from "mongoose";
+import { connectSCIDB } from "../config/database";
 
-const marcaSchema = new Schema({
-    name: { type: String },
-    status: { type: String },
-}, {
-    timestamps: true,
-    versionKey: false
-});
+const marcaSchema = new Schema(
+    {
+        name: { type: String },
+        status: { type: String },
+    },
+    {
+        timestamps: true,
+        versionKey: false,
+    }
+);
 
-export default model('Marca', marcaSchema);
+export default connectSCIDB.model("Marca", marcaSchema);

@@ -10,6 +10,8 @@ router.get('/:recordId', recordCtrl.getOneById);
 
 router.post('/by-seller', recordCtrl.getAllBySeller);
 
+router.post('/view/by-seller', recordCtrl.getTramitesBySeller);
+
 router.post('/count/by-estado', recordCtrl.countAllByStatus);
 
 router.post('/by-sucursal', recordCtrl.getAllBySucursal);

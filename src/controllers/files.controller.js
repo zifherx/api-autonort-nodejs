@@ -278,10 +278,10 @@ fileController.createOne = async (req, res) => {
         ofertaMafE,
         isToyotaValue,
         arrayToyotaValues,
-        descuento_autonort,
-        acuerdoTDP,
         herramientas_tdp,
         herramientas_maf,
+        descuento_autonort,
+        acuerdoTDP,
         observacion_adv,
         accesoriosE,
         condicionAccesorioE,
@@ -1739,11 +1739,11 @@ fileController.getFilesBySucursalyFecha = async (req, res) => {
                 });
         }
 
-        if (query.length > 0) {
-            res.json({ total: query.length, all: query });
-        } else {
-            return res.status(404).json({ message: `La sucursal ${sucursalE} no cuenta con expedientes` });
+        if (query.length == 0) {
+            const message = entregados ? `La sucursal ${sucursalE} no cuenta con entregas` : `La sucursal ${sucursalE} no cuenta con expedientes`;
+            return res.status(404).json({ message });
         }
+        res.json({ total: query.length, all: query });
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
@@ -2313,7 +2313,7 @@ fileController.getFilesByToyotaValue = async (req, res) => {
         } else {
             const sellerFound = await Seller.findOne({ name: seller });
             if (!sellerFound) return res.status(404).json({ message: `Vendedor ${seller} no encontrado` });
-            
+
             query = await Sale.find({
                 // sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
                 vendedor: sellerFound._id,

@@ -1,25 +1,29 @@
 import { Router } from "express";
-import * as condicionCtrl from '../controllers/condicion.controller'
+import * as condicionCtrl from "../controllers/condicion.controller";
 import { authJwt, verifySignup, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
 //Obtener Condicion
-router.get('/', condicionCtrl.getCondiciones);
+router.get("/", condicionCtrl.getAll);
 
 //Obtener Condicion Activos
-router.get('/activos', condicionCtrl.getCondicionByActivo);
+router.get("/activos", condicionCtrl.getAllActive);
 
 //Obtener Condicion por ID
-router.get('/:condicionId', condicionCtrl.getCondicionById);
+router.get("/:itemId", condicionCtrl.getOneById);
 
 //Crear Condicion
-router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateCondicion], condicionCtrl.createCondicion);
+router.post(
+    "/",
+    [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateCondicion],
+    condicionCtrl.craeteOne
+);
 
 //Actualizar Condicion
-router.patch('/:condicionId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], condicionCtrl.updateCondicion);
+router.patch("/:itemId", [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], condicionCtrl.updateOneById);
 
 //Eliminar Condicion
-router.delete('/:condicionId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], condicionCtrl.deleteCondicion);
+router.delete("/:itemId", [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], condicionCtrl.deleteOneById);
 
 export default router;

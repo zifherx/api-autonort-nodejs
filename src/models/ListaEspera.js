@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { connectSCIDB } from "../config/database";
 
 const listaEsperaSchema = new Schema(
     {
@@ -10,9 +11,9 @@ const listaEsperaSchema = new Schema(
         cantidad: { type: Number },
         orden: { type: Number },
         estado: { type: String },
-        estadoE: { type: Schema.Types.ObjectId, ref: 'EstadoListaEspera' },
+        estadoE: { type: Schema.Types.ObjectId, ref: "EstadoListaEspera" },
         cliente: { type: Schema.Types.ObjectId, ref: "Customer" },
-        vendedor: { type: Schema.Types.ObjectId, ref: 'Seller'},
+        vendedor: { type: Schema.Types.ObjectId, ref: "Seller" },
         anio_primer_abono: { type: Schema.Types.ObjectId, ref: "Anio" },
         mes_primer_abono: { type: Schema.Types.ObjectId, ref: "Mes" },
         grupo_abonos: [
@@ -23,7 +24,7 @@ const listaEsperaSchema = new Schema(
         ],
         precio_venta_final: { type: Number },
         tipo_venta: { type: Schema.Types.ObjectId, ref: "Financiamiento" },
-        financiera: { type: Schema.Types.ObjectId, ref: "Banco", default: null},
+        financiera: { type: Schema.Types.ObjectId, ref: "Banco", default: null },
         plan_maf: { type: Schema.Types.ObjectId, ref: "PlanMAF", default: null },
         fecha_carta_aprobacion: { type: Date },
         inicial: { type: Number, default: 0 },
@@ -46,4 +47,4 @@ const listaEsperaSchema = new Schema(
     }
 );
 
-export default model("ListaEspera", listaEsperaSchema);
+export default connectSCIDB.model("ListaEspera", listaEsperaSchema);

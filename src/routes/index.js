@@ -6,7 +6,6 @@ import userRoutes from './user.routes'
 import roleRoutes from './roles.routes'
 import vehicleRoutes from './vehicle.routes'
 import sellerRoutes from './seller.routes'
-// import campaignRoutes from './campaign.routes'
 import campaignRoutes from './campania.routes'
 import tipoCampaniaRoutes from './tipoCampania.routes'
 import adicionalRoutes from './adicional.routes'
@@ -62,7 +61,6 @@ import origenRoutes from './origenConcesionario.routes';
 import metodoARoutes from './metodoAtencion.routes';
 import civilRoutes from './civil.routes';
 import planMafRoutes from './planMaf.routes';
-import filtroMafRoutes from './filtroMaf.routes';
 import helperRoutes from './helper.routes';
 import tDocumentoRoutes from './tipoDocumento.routes';
 import permisoRoutes from './permiso.routes';
@@ -85,6 +83,11 @@ import estadoKaizenRoutes from './estadoKaizen.routes';
 import actividadKaizenRoutes from './actividadKaizen.routes';
 import circularRoutes from './circular.routes';
 import categoriaCircularRoutes from './categoriaCircular.routes';
+import estadosJefaturaMafRoutes from './statusJefaturaMaf.routes';
+import origenDataRoutes from './origenData.routes';
+import estadoCRMRoutes from './estadoCRM.routes';
+import cityRoutes from './city.routes';
+import leadCRMRoutes from './leadCRM.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -150,7 +153,6 @@ router.use('/origen-concesionario',origenRoutes);
 router.use('/metodo-atencion',metodoARoutes);
 router.use('/estado-civil', civilRoutes);
 router.use('/plan-maf', planMafRoutes);
-router.use('/filtro-maf', filtroMafRoutes);
 router.use('/helper', helperRoutes);
 router.use('/documento-identidad', tDocumentoRoutes);
 router.use('/permisos',permisoRoutes);
@@ -170,6 +172,11 @@ router.use('/estado-kaizen', estadoKaizenRoutes);
 router.use('/activity-kaizen', actividadKaizenRoutes);
 router.use('/circular', circularRoutes);
 router.use('/categoria-circular', categoriaCircularRoutes);
+router.use('/status-jefatura-maf', estadosJefaturaMafRoutes);
+router.use('/origen-data', origenDataRoutes);
+router.use('/estado-crm', estadoCRMRoutes);
+router.use('/city', cityRoutes);
+router.use('/lead-crm', leadCRMRoutes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);

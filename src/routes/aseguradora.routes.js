@@ -11,15 +11,15 @@ router.get('/', aseguradoraCtrl.getAll);
 router.get('/activos', aseguradoraCtrl.getAseguradoraByActivo);
 
 //Obtener Aseguradora por ID
-router.get('/:aseguradoraId', aseguradoraCtrl.getAseguradoraById);
+router.get('/:itemId', aseguradoraCtrl.getAseguradoraById);
 
 //Crear Aseguradora
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist, verifyDuplicate.checkDuplicateAseguradora], aseguradoraCtrl.createAseguradora);
 
 //Actualizar Aseguradora
-router.patch('/:aseguradoraId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], aseguradoraCtrl.updateAseguradora);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], aseguradoraCtrl.updateAseguradora);
 
 //Eliminar Aseguradora
-router.delete('/:aseguradoraId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], aseguradoraCtrl.deleteAseguradora);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin, verifySignup.checkRolesExist], aseguradoraCtrl.deleteAseguradora);
 
 export default router;

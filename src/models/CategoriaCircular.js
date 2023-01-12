@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import { connectSCIDB } from '../config/database';
 
 const categoriaSchema = new Schema({
     name: { type: String },
@@ -8,4 +9,4 @@ const categoriaSchema = new Schema({
     versionKey: false
 });
 
-export default model('CategoriaCircular', categoriaSchema);
+export default connectSCIDB.model('CategoriaCircular', categoriaSchema);

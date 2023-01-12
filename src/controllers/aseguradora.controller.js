@@ -1,89 +1,89 @@
-import Aseguradora from '../models/Aseguradora'
+import Aseguradora from "../models/Aseguradora";
 
-export const getAll = async(req, res) => {
+export const getAll = async (req, res) => {
     try {
-        const query = await Aseguradora.find().sort({ name: 'asc' })
+        const query = await Aseguradora.find().sort({ name: "asc" });
         if (query.length > 0) {
-            res.json({total: query.length, all: query});
+            res.json({ total: query.length, all: query });
         } else {
-            return res.status(404).json({ message: 'No existen Aseguradora' })
+            return res.status(404).json({ message: "No existen Aseguradora" });
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const getAseguradoraById = async(req, res) => {
-    const { aseguradoraId } = req.params
+export const getAseguradoraById = async (req, res) => {
+    const { itemId } = req.params;
     try {
-        const query = await Aseguradora.findById(aseguradoraId)
+        const query = await Aseguradora.findById(itemId);
         if (query) {
-            res.json({one: query});
+            res.json({ one: query });
         } else {
-            return res.status(404).json({ message: 'No existe Aseguradora' })
+            return res.status(404).json({ message: "No existe Aseguradora" });
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const getAseguradoraByActivo = async(req, res) => {
+export const getAseguradoraByActivo = async (req, res) => {
     try {
-        const query = await Aseguradora.find({ estado: true }).sort({ name: 1 })
+        const query = await Aseguradora.find({ estado: true }).sort({ name: 1 });
         if (query.length > 0) {
-            res.json({total_active:query.length, all_active: query});
+            res.json({ total: query.length, all: query });
         } else {
-            return res.status(404).json({ message: 'No existen Aseguradora Activos' })
+            return res.status(404).json({ message: "No existen Aseguradora Activos" });
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const createAseguradora = async(req, res) => {
+export const createAseguradora = async (req, res) => {
     const { name, estado } = req.body;
     try {
-        const nuevo = new Aseguradora({ name, estado })
-        const query = await nuevo.save()
+        const nuevo = new Aseguradora({ name, estado });
+        const query = await nuevo.save();
         if (query) {
-            res.json({ message: 'Aseguradora creado con éxito' })
+            res.json({ message: "Aseguradora creado con éxito" });
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const updateAseguradora = async(req, res) => {
+export const updateAseguradora = async (req, res) => {
     const { name, estado } = req.body;
-    const { aseguradoraId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await Aseguradora.findByIdAndUpdate(aseguradoraId, { name, estado })
+        const query = await Aseguradora.findByIdAndUpdate(itemId, { name, estado });
         if (query) {
-            res.json({ message: 'Aseguradora actualizado con éxito' })
+            res.json({ message: "Aseguradora actualizado con éxito" });
         } else {
-            return res.status(404).json({ message: 'No existe Aseguradora a actualizar' })
+            return res.status(404).json({ message: "No existe Aseguradora a actualizar" });
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const deleteAseguradora = async(req, res) => {
-    const { aseguradoraId } = req.params;
+export const deleteAseguradora = async (req, res) => {
+    const { itemId } = req.params;
     try {
-        const query = await Aseguradora.findByIdAndDelete(aseguradoraId)
+        const query = await Aseguradora.findByIdAndDelete(itemId);
         if (query) {
-            res.json({ message: 'Aseguradora eliminado con éxito' })
+            res.json({ message: "Aseguradora eliminado con éxito" });
         } else {
-            return res.status(404).json({ message: 'No existe Aseguradora a eliminar' })
+            return res.status(404).json({ message: "No existe Aseguradora a eliminar" });
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({ message: err.message })
+        return res.status(503).json({ message: err.message });
     }
-}
+};

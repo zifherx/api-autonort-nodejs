@@ -1,6 +1,6 @@
 import Condicion from "../models/Condicion";
 
-export const getCondiciones = async(req, res) => {
+export const getAll = async(req, res) => {
     try {
         const query = await Condicion.find().sort({ name: 'asc' });
         if (query.length > 0) {
@@ -14,10 +14,10 @@ export const getCondiciones = async(req, res) => {
     }
 }
 
-export const getCondicionById = async(req, res) => {
-    const { condicionId } = req.params;
+export const getOneById = async(req, res) => {
+    const { itemId } = req.params;
     try {
-        const query = await Condicion.findById(condicionId);
+        const query = await Condicion.findById(itemId);
         if (query) {
             res.json({one: query});
         } else {
@@ -29,11 +29,11 @@ export const getCondicionById = async(req, res) => {
     }
 }
 
-export const getCondicionByActivo = async(req, res) => {
+export const getAllActive = async(req, res) => {
     try {
         const query = await Condicion.find({ estado: true }).sort({ name: 'asc' });
         if (query) {
-            res.json({total_active: query.length, all_active: query});
+            res.json({totatl: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Condiciones Activas' })
         }
@@ -43,7 +43,7 @@ export const getCondicionByActivo = async(req, res) => {
     }
 }
 
-export const createCondicion = async(req, res) => {
+export const craeteOne = async(req, res) => {
     const { name, estado } = req.body;
     try {
         const objeto = new Condicion({ name, estado });
@@ -57,11 +57,11 @@ export const createCondicion = async(req, res) => {
     }
 }
 
-export const updateCondicion = async(req, res) => {
+export const updateOneById = async(req, res) => {
     const { name, estado } = req.body;
-    const { condicionId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await Condicion.findByIdAndUpdate(condicionId, { name, estado });
+        const query = await Condicion.findByIdAndUpdate(itemId, { name, estado });
         if (query) {
             res.json({ message: 'Condición actualizada con éxito' });
         } else {
@@ -73,10 +73,10 @@ export const updateCondicion = async(req, res) => {
     }
 }
 
-export const deleteCondicion = async(req, res) => {
-    const { condicionId } = req.params;
+export const deleteOneById = async(req, res) => {
+    const { itemId } = req.params;
     try {
-        const query = await Condicion.findByIdAndDelete(condicionId);
+        const query = await Condicion.findByIdAndDelete(itemId);
         if (query) {
             res.json({ message: 'Condición eliminada con éxito' });
         } else {
