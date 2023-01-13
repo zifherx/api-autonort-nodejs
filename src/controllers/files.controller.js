@@ -131,7 +131,11 @@ fileController.getOneById = async (req, res) => {
         const query = await Sale.findById(itemId)
             .populate({
                 path: "vendedor",
-                select: "name sucursal",
+                select: "name sucursal sucursalE",
+                populate: {
+                    path: 'sucursalE',
+                    select: 'name'
+                }
             })
             .populate({
                 path: "auto",

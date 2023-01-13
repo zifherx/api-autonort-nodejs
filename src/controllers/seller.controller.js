@@ -43,7 +43,7 @@ sellerController.getAllActive = async(req, res) => {
         });
 
         if (query.length > 0) {
-            res.json({total_active: query.length, all_active: query});
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen Vendedores' })
         }
@@ -54,9 +54,9 @@ sellerController.getAllActive = async(req, res) => {
 }
 
 sellerController.getSellerById = async(req, res) => {
-    const { sellerId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await Seller.findById(sellerId)
+        const query = await Seller.findById(itemId)
         .populate({
             path: 'sucursalE',
             select: 'name'
@@ -177,7 +177,7 @@ sellerController.createSeller = async(req, res) => {
 }
 
 sellerController.updateSellerById = async(req, res) => {
-    const { sellerId } = req.params;
+    const { itemId } = req.params;
     const { name, document, telefono, email, sucursalE, marcaE , estado } = req.body;
     const avatar = req.file;
 
@@ -191,7 +191,7 @@ sellerController.updateSellerById = async(req, res) => {
         if(!marcaFound) return res.status(404).json({message: `Marca ${marcaE} no encontrada`});
 
         if(avatar == null || avatar == undefined){
-            query = await Seller.findByIdAndUpdate(sellerId, {
+            query = await Seller.findByIdAndUpdate(itemId, {
                 name,
                 document,
                 telefono,
@@ -201,7 +201,7 @@ sellerController.updateSellerById = async(req, res) => {
                 estado 
             });
         }else{
-            query = await Seller.findByIdAndUpdate(sellerId, {
+            query = await Seller.findByIdAndUpdate(itemId, {
                 name,
                 document,
                 telefono,
@@ -224,9 +224,9 @@ sellerController.updateSellerById = async(req, res) => {
 }
 
 sellerController.deleteSellerById = async(req, res) => {
-    const { sellerId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await Seller.findByIdAndDelete(sellerId);
+        const query = await Seller.findByIdAndDelete(itemId);
         if (query) {
             res.json({ message: 'Vendedor eliminado con éxito' });
         } else {

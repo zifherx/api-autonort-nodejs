@@ -11,7 +11,7 @@ router.get('/', sellerCtrl.getAll);
 router.get('/activos', sellerCtrl.getAllActive)
 
 //Obtener Vendedor por Id
-router.get('/:sellerId', sellerCtrl.getSellerById);
+router.get('/:itemId', sellerCtrl.getSellerById);
 
 //Obtener Vendedor por Sucursal
 router.post('/by-sucursal', [authJwt.verifyToken] ,sellerCtrl.getSellerBySucursal);
@@ -25,9 +25,9 @@ router.post('/by-sucursal', [authJwt.verifyToken] ,sellerCtrl.getSellerBySucursa
 router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller);
 
 //Actualizar Vendedor
-router.patch('/:sellerId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin], multer.single('avatar'), sellerCtrl.updateSellerById);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin], multer.single('avatar'), sellerCtrl.updateSellerById);
 
 //Remover Vendedor
-router.delete('/:sellerId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin], sellerCtrl.deleteSellerById);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin], sellerCtrl.deleteSellerById);
 
 export default router;

@@ -88,6 +88,9 @@ import origenDataRoutes from './origenData.routes';
 import estadoCRMRoutes from './estadoCRM.routes';
 import cityRoutes from './city.routes';
 import leadCRMRoutes from './leadCRM.routes';
+import estadoSoatRoutes from './estadoSoat.routes';
+import tipoSoatRoutes from './tipoSoat.routes';
+import soatRoutes from './soat.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -177,6 +180,9 @@ router.use('/origen-data', origenDataRoutes);
 router.use('/estado-crm', estadoCRMRoutes);
 router.use('/city', cityRoutes);
 router.use('/lead-crm', leadCRMRoutes);
+router.use('/estado-soat', estadoSoatRoutes);
+router.use('/tipo-soat', tipoSoatRoutes);
+router.use('/soat', soatRoutes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);
