@@ -56,9 +56,9 @@ customerController.getAll = async (req, res) => {
 };
 
 customerController.getOneById = async (req, res) => {
-    const { customerId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await Customer.findById(customerId)
+        const query = await Customer.findById(itemId)
             .populate({ path: "tipoDocumento", select: "name abreviatura longitud" })
             .populate({ path: "empleado", select: "name username" });
 
@@ -93,14 +93,14 @@ customerController.getClienteByDNI = async (req, res) => {
 };
 
 customerController.updateOneById = async (req, res) => {
-    const { customerId } = req.params;
+    const { itemId } = req.params;
     const { name, tipoDocumento, document, representanteLegal, documentoRepresentante, cellphone, email, address } = req.body;
 
     try {
         const tipoDocFound = await TipoDocumento.findOne({ abreviatura: tipoDocumento });
         if (!tipoDocFound) return res.status(404).json({ message: `Documento de identidad ${tipoDocumento} no encontrado` });
 
-        const query = await Customer.findByIdAndUpdate(customerId, {
+        const query = await Customer.findByIdAndUpdate(itemId, {
             name,
             tipoDocumento: tipoDocFound._id,
             document,
@@ -123,10 +123,10 @@ customerController.updateOneById = async (req, res) => {
 };
 
 customerController.deleteOneById = async (req, res) => {
-    const { customerId } = req.params;
+    const { itemId } = req.params;
 
     try {
-        const query = await Customer.findByIdAndDelete(customerId);
+        const query = await Customer.findByIdAndDelete(itemId);
 
         if (query) {
             res.json({ message: "Cliente eliminado con éxito" });

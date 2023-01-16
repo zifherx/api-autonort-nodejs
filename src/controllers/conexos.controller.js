@@ -184,7 +184,15 @@ conexosController.getAsesoresxArea = async (req, res) => {
         const query = await Conexos.find({
             areaE: areaFound._id,
             estado: true,
-        });
+        })
+            .populate({
+                path: "sucursalE",
+                select: "name",
+            })
+            .populate({
+                path: "areaE",
+                select: "name",
+            });
 
         if (query) {
             res.json({ total: query.length, all: query });

@@ -31,7 +31,7 @@ controller.getOneById = async (req, res) => {
 
 controller.getAllByActivo = async (req, res) => {
     try {
-        const query = await EstadoSoat.find({ estado: true }).sort({ name: 1 });
+        const query = await EstadoSoat.find({ estado: true }).sort({ valor: 1 });
         if (query.length === 0) {
             return res.status(404).json({ message: "No existen estados activos" });
         }

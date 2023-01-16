@@ -1,13 +1,13 @@
 import { Router } from "express";
 import controller from "../controllers/soat.controller";
+import { authJwt, verifyDuplicate } from "../middlewares";
 
 const router = Router();
 
-router.get('/', controller.getAll);
-router.get('/activos', controller.getAllByActivo);
-router.get('/:itemId', controller.getOneById);
-router.post('/', controller.createOne);
-router.patch('/:itemId', controller.updateOneById);
-router.delete('/:itemId', controller.deleteOneById);
+router.get("/", controller.getAll);
+router.get("/:itemId", controller.getOneById);
+router.post("/", [authJwt.verifyToken, authJwt.isConexosAsistantOrAdmin], controller.createOne);
+router.patch("/:itemId", [authJwt.verifyToken, authJwt.isConexosAsistantOrAdmin], controller.updateOneById);
+router.delete("/:itemId", [authJwt.verifyToken, authJwt.isAdmin], controller.deleteOneById);
 
 export default router;

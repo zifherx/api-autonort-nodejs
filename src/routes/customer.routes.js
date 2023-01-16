@@ -7,7 +7,7 @@ const router = Router();
 router.get('/', customerCtrl.getAll);
 
 //Obtener Cliente por Id
-router.get('/:customerId', customerCtrl.getOneById);
+router.get('/:itemId', customerCtrl.getOneById);
 
 //Obtener Cliente por DNI
 router.post('/find', customerCtrl.getClienteByDNI);
@@ -16,9 +16,9 @@ router.post('/find', customerCtrl.getClienteByDNI);
 router.post('/', [authJwt.verifyToken, authJwt.isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin, verifyDuplicate.checkDuplicateCliente], customerCtrl.createOne);
 
 //Actualizar Cliente
-router.patch('/:customerId', [authJwt.verifyToken, authJwt.isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin], customerCtrl.updateOneById);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin], customerCtrl.updateOneById);
 
 //Remover Cliente
-router.delete('/:customerId', [authJwt.verifyToken, authJwt.isAdmin], customerCtrl.deleteOneById);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], customerCtrl.deleteOneById);
 
 export default router;

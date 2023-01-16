@@ -1,6 +1,6 @@
 {
     "name": "sistema-ventas",
-    "version": "1.0.9",
+    "version": "1.1.0",
     "description": "Sistema ADV",
     "main": "index.js",
     "scripts": {

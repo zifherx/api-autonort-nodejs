@@ -35,7 +35,7 @@ comprobanteController.getAllActivos = async(req, res) => {
     try {
         const query = await TipoComprobante.find({ estado: true }).sort({ name: 1 });
         if (query.length > 0) {
-            res.json({total_active: query.length, all_active: query});
+            res.json({total: query.length, all: query});
         } else {
             return res.status(404).json({ message: 'No existen comprobantes activos' })
         }

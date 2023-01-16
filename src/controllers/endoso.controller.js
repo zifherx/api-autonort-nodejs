@@ -17,7 +17,7 @@ export const getAll = async (req, res) => {
 export const getAllActivos = async (req, res) => {
     try {
         const query = await Endoso.find({ estado: true }).sort({ name: 1 });
-        if (!query.length == 0) {
+        if (query.length === 0) {
             return res.status(404).json({ message: "No existen endosos activos" });
         }
         res.json({ total: query.length, all: query });

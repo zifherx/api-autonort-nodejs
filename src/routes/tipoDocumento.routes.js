@@ -2,7 +2,7 @@ import {Router} from 'express';
 import docController from '../controllers/tipoDocumento.controller';
 import { authJwt, verifyDuplicate } from "../middlewares";
 
-const router = Router();
+const   router = Router();
 
 router.get('/', docController.getAll);
 router.get('/activos', docController.getAllByActive);

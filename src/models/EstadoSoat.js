@@ -4,7 +4,7 @@ import { connectSCIDB } from "../config/database";
 const estadoSoatSchema = new Schema(
     {
         name: { type: String },
-        valor: { type: Number },
+        valor: { type: Number, default: 0 },
         hex: { type: String },
         icon: { type: String },
         estado: { type: Boolean, default: true },
