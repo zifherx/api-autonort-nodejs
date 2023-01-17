@@ -17,6 +17,7 @@ const usadoSchema = new Schema(
         ubicacionE: { type: Schema.Types.ObjectId, ref: "Sucursal" },
         observacion: { type: String },
         createdBy: { type: Schema.Types.ObjectId, ref: "User" },
+        adjuntos: [{ type: String }],
         // LOGS
         isDisponible: { type: Boolean, default: true },
         fechaDisponible: { type: Date },

@@ -1983,7 +1983,7 @@ fileController.rankingFilesByUbicacion = async (req, res) => {
 fileController.getFilesByEstado = async (req, res) => {
     const { estado, tramite, sucursalE } = req.body;
     let query = null;
-
+    console.log(req.body);
     try {
         // if (tramite == null || tramite == undefined || tramite == "") {
         if (tramite === 0) {
@@ -1991,7 +1991,8 @@ fileController.getFilesByEstado = async (req, res) => {
             query = await Sale.find({
                 estatus_venta: { $regex: ".*" + estado + ".*" },
                 pasoaTramite: tramite,
-                sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
+                sucursal_venta: { $in: sucursalE },
+                // sucursal_venta: { $regex: ".*" + sucursalE + ".*" },
             })
                 .sort({ fecha_cancelacion: -1 })
                 .populate({

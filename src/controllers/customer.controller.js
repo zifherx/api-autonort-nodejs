@@ -2,10 +2,27 @@ import Customer from "../models/Customer";
 import TipoDocumento from "../models/TipoDocumento";
 import User from "../models/User";
 
-const customerController = {};
+const controller = {};
 
-customerController.createOne = async (req, res) => {
-    const { name, tipoDocumento, document, representanteLegal, documentoRepresentante, cellphone, email, address, empleado } = req.body;
+controller.createOne = async (req, res) => {
+    const {
+        name,
+        tipoDocumento,
+        document,
+        representanteLegal,
+        documentoRepresentante,
+        condicion,
+        departamento,
+        provincia,
+        distrito,
+        estado,
+        direccion_completa,
+        cellphone,
+        email,
+        address,
+        createdBy,
+    } = req.body;
+    // console.log('BODY',req.body);
 
     try {
         const newCustomer = new Customer({
@@ -13,14 +30,21 @@ customerController.createOne = async (req, res) => {
             document,
             representanteLegal,
             documentoRepresentante,
+            condicion,
+            departamento,
+            provincia,
+            distrito,
+            estado,
+            direccion_completa,
             cellphone,
             email,
             address,
         });
-        const foundEmployee = await User.findOne({ username: { $in: empleado } });
 
-        if (!foundEmployee) return res.status(404).json({ message: `Empleado ${empleado} no encontrado` });
+        const foundEmployee = await User.findOne({ username: createdBy });
+        if (!foundEmployee) return res.status(404).json({ message: `Usuario ${createdBy} no encontrado` });
         newCustomer.empleado = foundEmployee._id;
+        newCustomer.createdBy = foundEmployee._id;
 
         const tipoDocFound = await TipoDocumento.findOne({ abreviatura: tipoDocumento });
         if (!tipoDocFound) return res.status(404).json({ message: `Documento de identidad ${tipoDocumento} no encontrado` });
@@ -37,7 +61,7 @@ customerController.createOne = async (req, res) => {
     }
 };
 
-customerController.getAll = async (req, res) => {
+controller.getAll = async (req, res) => {
     try {
         const query = await Customer.find().sort({ name: 1 }).populate({ path: "tipoDocumento", select: "name abreviatura longitud" }).populate({
             path: "empleado",
@@ -55,7 +79,7 @@ customerController.getAll = async (req, res) => {
     }
 };
 
-customerController.getOneById = async (req, res) => {
+controller.getOneById = async (req, res) => {
     const { itemId } = req.params;
     try {
         const query = await Customer.findById(itemId)
@@ -73,7 +97,7 @@ customerController.getOneById = async (req, res) => {
     }
 };
 
-customerController.getClienteByDNI = async (req, res) => {
+controller.getClienteByDNI = async (req, res) => {
     const { document } = req.body;
 
     try {
@@ -92,9 +116,24 @@ customerController.getClienteByDNI = async (req, res) => {
     }
 };
 
-customerController.updateOneById = async (req, res) => {
+controller.updateOneById = async (req, res) => {
     const { itemId } = req.params;
-    const { name, tipoDocumento, document, representanteLegal, documentoRepresentante, cellphone, email, address } = req.body;
+    const {
+        name,
+        tipoDocumento,
+        document,
+        representanteLegal,
+        documentoRepresentante,
+        condicion,
+        departamento,
+        provincia,
+        distrito,
+        estado,
+        direccion_completa,
+        cellphone,
+        email,
+        address,
+    } = req.body;
 
     try {
         const tipoDocFound = await TipoDocumento.findOne({ abreviatura: tipoDocumento });
@@ -106,6 +145,12 @@ customerController.updateOneById = async (req, res) => {
             document,
             representanteLegal,
             documentoRepresentante,
+            condicion,
+            departamento,
+            provincia,
+            distrito,
+            estado,
+            direccion_completa,
             cellphone,
             email,
             address,
@@ -122,7 +167,7 @@ customerController.updateOneById = async (req, res) => {
     }
 };
 
-customerController.deleteOneById = async (req, res) => {
+controller.deleteOneById = async (req, res) => {
     const { itemId } = req.params;
 
     try {
@@ -139,4 +184,4 @@ customerController.deleteOneById = async (req, res) => {
     }
 };
 
-export default customerController;
+export default controller;
