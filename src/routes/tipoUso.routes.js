@@ -11,15 +11,15 @@ router.get('/', usoCtrl.getAll);
 router.get('/activos', usoCtrl.getAllByActivo);
 
 //Obtener Anio por ID
-router.get('/:usoId', usoCtrl.getOneById);
+router.get('/:itemId', usoCtrl.getOneById);
 
 //Crear Anio
 router.post('/', [authJwt.verifyToken, authJwt.isAdmin, verifyDuplicate.checkDuplicateTipoUso], usoCtrl.createOne);
 
 //Actualizar Anio
-router.patch('/:usoId', [authJwt.verifyToken, authJwt.isAdmin], usoCtrl.updateOneById);
+router.patch('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], usoCtrl.updateOneById);
 
 //Eliminar Anio
-router.delete('/:usoId', [authJwt.verifyToken, authJwt.isAdmin], usoCtrl.deleteOneById);
+router.delete('/:itemId', [authJwt.verifyToken, authJwt.isAdmin], usoCtrl.deleteOneById);
 
 export default router;

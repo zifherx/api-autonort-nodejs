@@ -23,13 +23,7 @@ export const createRoles = async() => {
 
         const values = await Promise.all([
             new Role({ name: 'Administrador' }).save(),
-            new Role({ name: 'Jefe-ADV' }).save(),
-            new Role({ name: 'Jefe-Tunning' }).save(),
-            new Role({ name: 'Jefe-Ventas' }).save(),
-            new Role({ name: 'Asistente-Inmatriculaciones' }).save(),
             new Role({ name: 'Usuario' }).save(),
-            new Role({ name: 'Vendedor' }).save(),
-            new Role({ name: 'Asistente-CS' }).save()
         ]);
         console.log(values);
     } catch (err) {

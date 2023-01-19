@@ -15,7 +15,7 @@ const controller = {};
 controller.getAll = async (req, res) => {
     try {
         const query = await Soat.find()
-            .sort({ name: 1 })
+            .sort({ fecha_emision: 1 })
             .populate({
                 path: "cliente",
                 select: "name username document cellphone email",
@@ -368,6 +368,71 @@ controller.deleteOneById = async (req, res) => {
         } else {
             return res.status(404).json({ message: `Soat ${itemId} no encontrado` });
         }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+controller.getItemsBySede = async (req, res) => {
+    const { sucursal, estado, start, end } = req.body;
+
+    try {
+        const query = await Soat.find({
+            sucursal: { $regex: ".*" + sucursal + ".*" },
+            estadoSoat: { $regex: ".*" + estado + ".*" },
+            fecha_emision: { $gte: new Date(start), $lte: new Date(end) },
+        })
+            .sort({ fecha_emision: 1 })
+            .populate({
+                path: "cliente",
+                select: "name username document cellphone email",
+            })
+            .populate({
+                path: "sucursalE",
+                select: "name estado",
+            })
+            .populate({
+                path: "marcaE",
+                select: "name avatar",
+            })
+            .populate({
+                path: "modeloE",
+                select: "name avatar marca",
+                populate: {
+                    path: "marca",
+                    select: "name avatar",
+                },
+            })
+            .populate({
+                path: "anioE",
+                select: "name estado",
+            })
+            .populate({
+                path: "asesorConexos",
+                select: "name areaE email sucursalE encargadoDe",
+            })
+            .populate({
+                path: "usoE",
+                select: "name estado",
+            })
+            .populate({
+                path: "tipoSoatE",
+                select: "name estado",
+            })
+            .populate({
+                path: "estadoSoatE",
+                select: "name valor hex icon estado",
+            })
+            .populate({
+                path: "createdBy",
+                select: "name username",
+            });
+
+        if (query.length >= 0) {
+            res.json({ total: query.length, all: query });
+        }
+        // return res.status(404).json({ message: `La sede ${sucursal} no cuenta con soats` });
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });

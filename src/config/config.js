@@ -3,7 +3,10 @@ config();
 
 export default {
     SECRET: 'ADV_API',
-    // mongodbURL: process.env.MONGO_URI
+    // OFFLINE
+    // mongoSCIdbURL: process.env.MONGO_URI_SCI_OFFLINE,
+    // mongoSGLdbURL: process.env.MONGO_URI_SGL_OFFLINE,
+    // ONLINE
     mongoSCIdbURL: process.env.MONGO_URI_PUBLIC,
     mongoSGLdbURL: process.env.MONGO_URI_SGL_PUBLIC,
     API_PORT: process.env.PORT,

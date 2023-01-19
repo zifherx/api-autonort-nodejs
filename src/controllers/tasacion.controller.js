@@ -387,7 +387,7 @@ tasacionCtrl.getBySucursalFecha = async (req, res) => {
             sucursal: { $regex: ".*" + sucursal + ".*" },
             fecha_operacion: { $gte: new Date(start), $lte: new Date(end) },
         })
-            .sort({ fecha_operacion: -1 })
+            .sort({ fecha_operacion: 1 })
             .populate({ path: "cliente", select: "name document" })
             .populate({ path: "colorE", select: "name" })
             .populate({ path: "anioF", select: "name" })

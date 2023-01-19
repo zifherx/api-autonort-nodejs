@@ -17,9 +17,9 @@ usoController.getAll = async (req, res) => {
 };
 
 usoController.getOneById = async (req, res) => {
-    const { usoId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await TipoUso.findById(usoId);
+        const query = await TipoUso.findById(itemId);
         if (query) {
             res.json({ one: query });
         } else {
@@ -62,9 +62,9 @@ usoController.createOne = async (req, res) => {
 
 usoController.updateOneById = async (req, res) => {
     const { name, estado } = req.body;
-    const { usoId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await TipoUso.findByIdAndUpdate(usoId, { name, estado });
+        const query = await TipoUso.findByIdAndUpdate(itemId, { name, estado });
 
         if (query) {
             res.json({ message: "Tipo de uso actualizado con éxito" });
@@ -78,9 +78,9 @@ usoController.updateOneById = async (req, res) => {
 };
 
 usoController.deleteOneById = async (req, res) => {
-    const { usoId } = req.params;
+    const { itemId } = req.params;
     try {
-        const query = await TipoUso.findByIdAndDelete(usoId);
+        const query = await TipoUso.findByIdAndDelete(itemId);
         if (query) {
             res.json({ message: "Tipo de uso eliminado con éxito" });
         } else {

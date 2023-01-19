@@ -91,6 +91,9 @@ import leadCRMRoutes from './leadCRM.routes';
 import estadoSoatRoutes from './estadoSoat.routes';
 import tipoSoatRoutes from './tipoSoat.routes';
 import soatRoutes from './soat.routes';
+import productoGPSRoutes from './productoGps.routes';
+import estadoGPSRoutes from './estadoGPS.routes';
+import gpsRoutes from './gps.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -183,6 +186,9 @@ router.use('/lead-crm', leadCRMRoutes);
 router.use('/estado-soat', estadoSoatRoutes);
 router.use('/tipo-soat', tipoSoatRoutes);
 router.use('/soat', soatRoutes);
+router.use('/producto-gps', productoGPSRoutes);
+router.use('/estado-gps', estadoGPSRoutes);
+router.use('/gps', gpsRoutes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);
