@@ -1983,7 +1983,7 @@ fileController.rankingFilesByUbicacion = async (req, res) => {
 fileController.getFilesByEstado = async (req, res) => {
     const { estado, tramite, sucursalE } = req.body;
     let query = null;
-    console.log(req.body);
+    // console.log(req.body);
     try {
         // if (tramite == null || tramite == undefined || tramite == "") {
         if (tramite === 0) {
