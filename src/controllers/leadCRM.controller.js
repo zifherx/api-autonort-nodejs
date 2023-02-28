@@ -10,12 +10,63 @@ import Vehicle from "../models/Vehicle";
 import EstadoCRM from "../models/EstadoCRM";
 import Banco from "../models/Banco";
 import Seller from "../models/Seller";
+import ModeloTasaciones from "../models/ModeloTasaciones";
 
 const controller = {};
 
 controller.getAll = async (req, res) => {
     try {
-        const query = await LeadCRM.find();
+        const query = await LeadCRM.find()
+        .populate({
+            path: "customer",
+            select: "name document cellphone cellphone2 email address",
+        })
+        .populate({
+            path: "estadoLeadE",
+            select: "name valor hex description",
+        })
+        .populate({
+            path: "marcaLeadE",
+            select: "name avatar",
+        })
+        .populate({
+            path: "bankSelected",
+            select: "name avatar",
+        })
+        .populate({
+            path: "sellerAssigned",
+            select: "name avatar document sucursalE marcaE",
+            populate: [
+                {
+                    path: "sucursalE",
+                    select: "name",
+                },
+                {
+                    path: "marcaE",
+                    select: "name",
+                },
+            ],
+        })
+        .populate({
+            path: "origenDataE",
+            select: "name icon hex",
+        })
+        .populate({
+            path: "sucursalLeadE",
+            select: "name",
+        })
+        .populate({
+            path: "tipoFinanciamiento",
+            select: "name",
+        })
+        .populate({
+            path: "vehicleInterested",
+            select: "cod_tdp model",
+            populate: {
+                path: "model",
+                select: "name avatar",
+            },
+        });
         // const query = await LeadCRM.findAllLeads();
 
         if (query.length === 0) {
@@ -43,6 +94,10 @@ controller.getOneById = async (req, res) => {
             })
             .populate({
                 path: "marcaLeadE",
+                select: "name avatar",
+            })
+            .populate({
+                path: "modeloLeadE",
                 select: "name avatar",
             })
             .populate({
@@ -104,6 +159,8 @@ controller.createOne = async (req, res) => {
         origenDataE,
         marcaLead,
         marcaLeadE,
+        modeloLead,
+        modeloLeadE,
         observacion,
         createdBy,
         tipoFinanciamiento,
@@ -122,6 +179,7 @@ controller.createOne = async (req, res) => {
             sucursalLead,
             origenData,
             marcaLead,
+            modeloLead,
             observacion,
             customerCity,
             estadoLead,
@@ -139,6 +197,10 @@ controller.createOne = async (req, res) => {
         const marcaFound = await MarcaTasaciones.findOne({ name: marcaLeadE });
         if (!marcaFound) return res.status(404).json({ message: `Marca ${marcaLeadE} no encontrad@` });
         newObj.marcaLeadE = marcaFound._id;
+
+        const modeloFound = await ModeloTasaciones.findOne({ name: modeloLeadE });
+        if (!modeloFound) return res.status(404).json({ message: `Modelo ${modeloLeadE} no encontrad@` });
+        newObj.modeloLeadE = modeloFound._id;
 
         const userFound = await User.findOne({ username: createdBy });
         if (!userFound) return res.status(404).json({ message: `Usuario ${createdBy} no encontrad@` });
@@ -413,7 +475,25 @@ controller.deleteOneById = async (req, res) => {
     }
 };
 
-controller.getAllByEstado = async (req, res) => {};
+controller.getAllByEstado = async (req, res) => {
+    const { estado } = req.body;
+
+    try {
+        const estadoFound = await EstadoCRM.findOne({ name: estado });
+        if (!estadoFound) return res.status(404).json({ message: `Estado ${estado} no encontrado` });
+
+        const query = await LeadCRM.find({
+            estadoLeadE: estadoFound._id,
+        }).countDocuments();
+
+        if (query >= 0) {
+            res.json({ total: query });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
 
 controller.getAllBySede = async (req, res) => {
     const { sucursalE, start, end } = req.body;

@@ -6,6 +6,7 @@ const router = Router();
 
 router.get('/', controllerT.getAll);
 router.get('/:itemId', controllerT.getOneById);
+router.post('/by-range', [authJwt.verifyToken, authJwt.isAdminorResponsableFinanzas] ,controllerT.getCambiosByRange);
 router.post('/', [authJwt.verifyToken, authJwt.isAdminorResponsableFinanzas] ,controllerT.createOne);
 
 export default router;

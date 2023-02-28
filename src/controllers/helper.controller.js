@@ -175,7 +175,7 @@ helperController.enviarTasaCambio = async (req, res) => {
         emailOptions = {
             from: `"Plataforma SCI 👻" <${config.EMAIL_FINANZAS_USER}>`,
             to,
-            cc: [ cc, "frojas@autonortnor.com.pe"],
+            cc: [ cc ],
             subject,
             text,
             template: "templateTipoCambio",

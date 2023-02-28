@@ -11,6 +11,8 @@ const leadSchema = new Schema(
         origenDataE: { type: Types.ObjectId, ref: "OrigenData" },
         marcaLead: { type: String },
         marcaLeadE: { type: Types.ObjectId, ref: "MarcaT", default: null },
+        modeloLead: { type: String },
+        modeloLeadE: { type: Types.ObjectId, ref: "ModeloT", default: null },
         observacion: [{ type: String }],
         createdBy: { type: Types.ObjectId, ref: "User" },
         // Finances
