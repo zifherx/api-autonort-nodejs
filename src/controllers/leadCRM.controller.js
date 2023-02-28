@@ -15,10 +15,8 @@ const controller = {};
 
 controller.getAll = async (req, res) => {
     try {
-        // const query = await LeadCRM.find();
-        const query = await LeadCRM.findAllLeads();
-
-        // console.log(query);
+        const query = await LeadCRM.find();
+        // const query = await LeadCRM.findAllLeads();
 
         if (query.length === 0) {
             return res.status(404).json({ message: "No existen leads" });
@@ -34,8 +32,57 @@ controller.getAll = async (req, res) => {
 controller.getOneById = async (req, res) => {
     const { itemId } = req.params;
     try {
-        // const query = await LeadCRM.findById(itemId);
-        const query = await LeadCRM.findOneLead(itemId);
+        const query = await LeadCRM.findById(itemId)
+            .populate({
+                path: "customer",
+                select: "name document cellphone cellphone2 email address",
+            })
+            .populate({
+                path: "estadoLeadE",
+                select: "name valor hex description",
+            })
+            .populate({
+                path: "marcaLeadE",
+                select: "name avatar",
+            })
+            .populate({
+                path: "bankSelected",
+                select: "name avatar",
+            })
+            .populate({
+                path: "sellerAssigned",
+                select: "name avatar document sucursalE marcaE",
+                populate: [
+                    {
+                        path: "sucursalE",
+                        select: "name",
+                    },
+                    {
+                        path: "marcaE",
+                        select: "name",
+                    },
+                ],
+            })
+            .populate({
+                path: "origenDataE",
+                select: "name icon hex",
+            })
+            .populate({
+                path: "sucursalLeadE",
+                select: "name",
+            })
+            .populate({
+                path: "tipoFinanciamiento",
+                select: "name",
+            })
+            .populate({
+                path: "vehicleInterested",
+                select: "cod_tdp model",
+                populate: {
+                    path: "model",
+                    select: "name avatar",
+                },
+            });
 
         if (query.length === 0) {
             return res.status(404).json({ message: `No existen lead ${itemId}` });
@@ -114,14 +161,18 @@ controller.createOne = async (req, res) => {
         if (!customerFound) return res.status(404).json({ message: `Cliente ${customer} no encontrad@` });
         newObj.customer = customerFound._id;
 
-        const cityFound = await City.findOne({ name: customerCityE });
-        if (!cityFound) return res.status(404).json({ message: `Ciudad ${customerCityE} no encontrad@` });
-        newObj.customerCityE = cityFound._id;
+        if (customerCityE == null || customerCityE == undefined) {
+            newObj.customerCityE = null;
+        } else {
+            const cityFound = await City.findOne({ name: customerCityE });
+            if (!cityFound) return res.status(404).json({ message: `Ciudad ${customerCityE} no encontrad@` });
+            newObj.customerCityE = cityFound._id;
+        }
 
         if (vehicleInterested == null || vehicleInterested == undefined) {
             newObj.vehicleInterested = null;
         } else {
-            const vehicleFound = await Vehicle.findOne({ name: vehicleInterested });
+            const vehicleFound = await Vehicle.findOne({ cod_tdp: vehicleInterested });
             if (!vehicleFound) return res.status(404).json({ message: `Vehículo ${vehicleInterested} no encontrad@` });
             newObj.vehicleInterested = vehicleFound._id;
         }
@@ -152,8 +203,8 @@ controller.updateOneById = async (req, res) => {
         bankSelected,
         initialMount,
         customer,
-        customerCity,
-        customerCityE,
+        // customerCity,
+        // customerCityE,
         vehicleInterested,
         sellerAssigned,
         estadoLead,
@@ -188,8 +239,8 @@ controller.updateOneById = async (req, res) => {
         const customerFound = await Customer.findOne({ document: customer });
         if (!customerFound) return res.status(404).json({ message: `Cliente ${customer} no encontrado` });
 
-        const cityFound = await City.findOne({ name: customerCityE });
-        if (!cityFound) return res.status(404).json({ message: `Ciudad ${customerCityE} no encontrado` });
+        // const cityFound = await City.findOne({ name: customerCityE });
+        // if (!cityFound) return res.status(404).json({ message: `Ciudad ${customerCityE} no encontrado` });
 
         const estadoFound = await EstadoCRM.findOne({ name: estadoLeadE });
         if (!estadoFound) return res.status(404).json({ message: `Estado ${estadoLeadE} no encontrado` });
@@ -256,8 +307,8 @@ controller.updateOneById = async (req, res) => {
                     bankSelected: bankNull,
                     initialMount,
                     customer: customerFound._id,
-                    customerCity,
-                    customerCityE: customerCityE == null ? null : cityFound._id,
+                    // customerCity,
+                    // customerCityE: customerCityE == null ? null : cityFound._id,
                     vehicleInterested: vehicleNull,
                     sellerAssigned: sellerNull,
                     estadoLead,
@@ -280,8 +331,8 @@ controller.updateOneById = async (req, res) => {
                     bankSelected: bankNull,
                     initialMount,
                     customer: customerFound._id,
-                    customerCity,
-                    customerCityE: cityFound._id,
+                    // customerCity,
+                    // customerCityE: cityFound._id,
                     estadoLead,
                     estadoLeadE: estadoFound._id,
                     isDeclinado,
@@ -302,8 +353,8 @@ controller.updateOneById = async (req, res) => {
                     bankSelected: bankNull,
                     initialMount,
                     customer: customerFound._id,
-                    customerCity,
-                    customerCityE: cityFound._id,
+                    // customerCity,
+                    // customerCityE: cityFound._id,
                     estadoLead,
                     estadoLeadE: estadoFound._id,
                     isBooking,
@@ -324,8 +375,8 @@ controller.updateOneById = async (req, res) => {
                     bankSelected: bankNull,
                     initialMount,
                     customer: customerFound._id,
-                    customerCity,
-                    customerCityE: cityFound._id,
+                    // customerCity,
+                    // customerCityE: cityFound._id,
                     estadoLead,
                     estadoLeadE: estadoFound._id,
                     isVenta,
@@ -363,5 +414,73 @@ controller.deleteOneById = async (req, res) => {
 };
 
 controller.getAllByEstado = async (req, res) => {};
+
+controller.getAllBySede = async (req, res) => {
+    const { sucursalE, start, end } = req.body;
+    let query = null;
+
+    try {
+        query = await LeadCRM.find({
+            sucursalLead: { $regex: ".*" + sucursalE + ".*" },
+            fecha_ingreso: {
+                $gte: new Date(start),
+                $lte: new Date(end),
+            },
+        })
+            .sort({ fecha_ingreso: -1 })
+            .populate({
+                path: "customer",
+                select: "name document cellphone",
+            })
+            .populate({
+                path: "customerCityE",
+                select: "name estado",
+            })
+            .populate({
+                path: "estadoLeadE",
+                select: "name valor description hex icon estado",
+            })
+            .populate({
+                path: "marcaLeadE",
+                select: "name avatar estado",
+            })
+            .populate({
+                path: "origenDataE",
+                select: "name hex icon estado",
+            })
+            .populate({
+                path: "sellerAssigned",
+                select: "name document avatar estado",
+            })
+            .populate({
+                path: "sucursalLeadE",
+                select: "name estado",
+            })
+            .populate({
+                path: "vehicleInterested",
+                select: "codigo_interno model cod_tdp version estado",
+                populate: {
+                    path: "model",
+                    select: "name avatar estado",
+                },
+            })
+            .populate({
+                path: "tipoFinanciamiento",
+                select: "name estado",
+            })
+            .populate({
+                path: "createdBy",
+                select: "name username",
+            });
+
+        if (query.length == 0) {
+            return res.status(404).json({ message: `La sede ${sucursalE} no cuenta con leads` });
+        }
+        res.json({ total: query.length, all: query });
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
 
 export default controller;

@@ -84,6 +84,7 @@ leadSchema.statics.findAllLeads = function () {
                             _id: 0,
                             name: 1,
                             document: 1,
+                            cellphone: 1,
                         },
                     },
                 ],

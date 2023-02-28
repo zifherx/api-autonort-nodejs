@@ -14,7 +14,49 @@ const controller = {};
 
 controller.getAllItems = async (req, res) => {
     try {
-        const query = await Gps.find().sort({ name: 1 });
+        const query = await Gps.find()
+        .sort({ name: 1 })
+        .populate({
+            path: 'cliente',
+            select: 'name document'
+        })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        })
+        .populate({
+            path: 'marcaE',
+            select: 'name avatar'
+        })
+        .populate({
+            path: 'modeloE',
+            select: 'name avatar'
+        })
+        .populate({
+            path: 'anioE',
+            select: 'name estado'
+        })
+        .populate({
+            path: 'vendedor',
+            select: 'name document email avatar'
+        })
+        .populate({
+            path: 'asesorConexos',
+            select: 'name encargadoDe'
+        })
+        .populate({
+            path: 'producto_gps',
+            select: 'name precio codigo_interno'
+        })
+        .populate({
+            path: 'estadoGPSE',
+            select: 'name valor hex icon'
+        })
+        .populate({
+            path: 'createdBy',
+            select: 'name username'
+        });
+
         if (query.length === 0) return res.status(404).json({ message: `No existen registro gps` });
         res.json({ total: query.length, all: query });
     } catch (err) {
@@ -26,7 +68,48 @@ controller.getAllItems = async (req, res) => {
 controller.getOneItem = async (req, res) => {
     const { itemId } = req.params;
     try {
-        const query = await Gps.findById(itemId);
+        const query = await Gps.findById(itemId)
+        .populate({
+            path: 'cliente',
+            select: 'name document'
+        })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        })
+        .populate({
+            path: 'marcaE',
+            select: 'name avatar'
+        })
+        .populate({
+            path: 'modeloE',
+            select: 'name avatar'
+        })
+        .populate({
+            path: 'anioE',
+            select: 'name estado'
+        })
+        .populate({
+            path: 'vendedor',
+            select: 'name document email avatar'
+        })
+        .populate({
+            path: 'asesorConexos',
+            select: 'name encargadoDe'
+        })
+        .populate({
+            path: 'producto_gps',
+            select: 'name precio codigo_interno'
+        })
+        .populate({
+            path: 'estadoGPSE',
+            select: 'name valor hex icon'
+        })
+        .populate({
+            path: 'createdBy',
+            select: 'name username'
+        });
+
         if (!query) {
             return res.status(404).json({ message: "No existe registro" });
         }
@@ -57,8 +140,10 @@ controller.createOneItem = async (req, res) => {
         vendedor,
         asesorConexos,
         producto_gps,
+        estadoGPS,
         estadoGPSE,
         fechaIngresado,
+        createdBy
     } = req.body;
     try {
         const obj = new Gps({
@@ -73,6 +158,7 @@ controller.createOneItem = async (req, res) => {
             modelo,
             anio,
             fechaIngresado,
+            estadoGPS,
         });
 
         const clienteFound = await Customer.findOne({ document: cliente });
@@ -103,7 +189,7 @@ controller.createOneItem = async (req, res) => {
         if (!asesorFound) return res.status(404).json({ message: `Asesor ${asesorConexos} no encontrad@` });
         obj.asesorConexos = asesorFound._id;
 
-        const productoFound = await ProductoGps.findOne({ name: producto_gps });
+        const productoFound = await ProductoGps.findOne({ codigo_interno: producto_gps });
         if (!productoFound) return res.status(404).json({ message: `Producto ${producto_gps} no encontrad@` });
         obj.producto_gps = productoFound._id;
 
@@ -272,5 +358,128 @@ controller.deleteItemById = async (req, res) => {
         return res.status(503).json({ message: err.message });
     }
 };
+
+controller.getGPSBySede = async (req, res) => {
+    const { sucursal, estado, start, end } = req.body;
+
+    try {
+        const query = await Gps.find({
+            sucursal: { $regex: ".*" + sucursal + ".*" },
+            estadoGPS: { $regex: ".*" + estado + ".*" },
+            fecha_registro: { $gte: new Date(start), $lte: new Date(end) },
+        })
+        .populate({
+            path: 'cliente',
+            select: 'name document cellphone email'
+        })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        })
+        .populate({
+            path: 'marcaE',
+            select: 'name avatar'
+        })
+        .populate({
+            path: 'modeloE',
+            select: 'name avatar'
+        })
+        .populate({
+            path: 'anioE',
+            select: 'name estado'
+        })
+        .populate({
+            path: 'vendedor',
+            select: 'name document email avatar'
+        })
+        .populate({
+            path: 'asesorConexos',
+            select: 'name encargadoDe'
+        })
+        .populate({
+            path: 'producto_gps',
+            select: 'name precio codigo_interno'
+        })
+        .populate({
+            path: 'estadoGPSE',
+            select: 'name valor hex icon'
+        })
+        .populate({
+            path: 'createdBy',
+            select: 'name username'
+        });
+
+        if (query.length >= 0) {
+            res.json({ total: query.length, all: query });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
+controller.getGPSByCreator = async(req, res) => {
+    const { estado, createdBy } = req.body;
+
+    try {
+
+        const userFound = await User.findOne({ username: createdBy });
+        if (!userFound) return res.status(404).json({ message: `Usuario ${createdBy} no encontrado` });
+
+        const query = await Gps.find({
+            estadoGPS: { $regex: ".*" + estado + ".*" },
+            createdBy: userFound._id,
+        })
+        .populate({
+            path: 'cliente',
+            select: 'name document cellphone email'
+        })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        })
+        .populate({
+            path: 'marcaE',
+            select: 'name avatar'
+        })
+        .populate({
+            path: 'modeloE',
+            select: 'name avatar'
+        })
+        .populate({
+            path: 'anioE',
+            select: 'name estado'
+        })
+        .populate({
+            path: 'vendedor',
+            select: 'name document email avatar'
+        })
+        .populate({
+            path: 'asesorConexos',
+            select: 'name encargadoDe'
+        })
+        .populate({
+            path: 'producto_gps',
+            select: 'name precio codigo_interno'
+        })
+        .populate({
+            path: 'estadoGPSE',
+            select: 'name valor hex icon'
+        })
+        .populate({
+            path: 'createdBy',
+            select: 'name username'
+        });
+
+        if (query.length >= 0) {
+            res.json({ total: query.length, all: query });
+        } else {
+           return res.status(404).json({ message: `No existen soats ${estadoSoat} de ${createdBy}` });
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+}
 
 export default controller;

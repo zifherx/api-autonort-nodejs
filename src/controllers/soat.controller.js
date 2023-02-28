@@ -439,4 +439,72 @@ controller.getItemsBySede = async (req, res) => {
     }
 };
 
+controller.getSOATByCreator = async (req, res) => {
+    const { estadoSoat, createdBy } = req.body;
+
+    try {
+        const userFound = await User.findOne({ username: createdBy });
+        if (!userFound) return res.status(404).json({ message: `Usuario ${createdBy} no encontrado` });
+
+        const query = await Soat.find({
+            estadoSoat: { $regex: ".*" + estadoSoat + ".*" },
+            createdBy: userFound._id,
+        })
+            .sort({ fechaIngresado: -1 })
+            .populate({
+                path: "cliente",
+                select: "name username document cellphone email",
+            })
+            .populate({
+                path: "sucursalE",
+                select: "name estado",
+            })
+            .populate({
+                path: "marcaE",
+                select: "name avatar",
+            })
+            .populate({
+                path: "modeloE",
+                select: "name avatar marca",
+                populate: {
+                    path: "marca",
+                    select: "name avatar",
+                },
+            })
+            .populate({
+                path: "anioE",
+                select: "name estado",
+            })
+            .populate({
+                path: "asesorConexos",
+                select: "name areaE email sucursalE encargadoDe",
+            })
+            .populate({
+                path: "usoE",
+                select: "name estado",
+            })
+            .populate({
+                path: "tipoSoatE",
+                select: "name estado",
+            })
+            .populate({
+                path: "estadoSoatE",
+                select: "name valor hex icon estado",
+            })
+            .populate({
+                path: "createdBy",
+                select: "name username",
+            });
+
+        if (query.length >= 0) {
+            res.json({ total: query.length, all: query });
+        } else {
+            return res.status(404).json({ message: `No existen soats ${estadoSoat} de ${createdBy}` });
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
 export default controller;

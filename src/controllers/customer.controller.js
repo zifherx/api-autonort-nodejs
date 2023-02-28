@@ -63,10 +63,17 @@ controller.createOne = async (req, res) => {
 
 controller.getAll = async (req, res) => {
     try {
-        const query = await Customer.find().sort({ name: 1 }).populate({ path: "tipoDocumento", select: "name abreviatura longitud" }).populate({
-            path: "empleado",
-            select: "name username",
-        });
+        const query = await Customer.find()
+            .sort({ name: 1 })
+            .populate({ path: "tipoDocumento", select: "name abreviatura longitud" })
+            .populate({
+                path: "createdBy",
+                select: "name username",
+            })
+            .populate({
+                path: "empleado",
+                select: "name username",
+            });
 
         if (query.length > 0) {
             res.json({ total: query.length, all: query });
@@ -183,5 +190,20 @@ controller.deleteOneById = async (req, res) => {
         return res.status(503).json({ message: err.message });
     }
 };
+
+controller.getCountByType = async (req, res) => {
+    const { tipoDocumento } = req.body;
+
+    try {
+        const tipoDocumentoFound = await TipoDocumento.findOne({abreviatura: tipoDocumento});
+        // console.log(tipoDocumentoFound);
+        const query = await Customer.find({ tipoDocumento: tipoDocumentoFound._id}).countDocuments();
+
+        if(query >= 0) res.json({total: query}); 
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
 
 export default controller;

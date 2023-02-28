@@ -174,21 +174,40 @@ controller.createOne = async (req, res) => {
         createdBy,
     } = req.body;
     const adjuntos = req.files;
+    let obj = null;
 
     try {
-        const newObj = new Usados({
-            codigo_interno,
-            sucursal,
-            mes,
-            fechaRegistro,
-            precio_tasacion,
-            precio_venta,
-            estado_usado,
-            ubicacion,
-            observacion,
-            fechaDisponible,
-            adjuntos: adjuntos.map((a) => a.location),
-        });
+
+        // if(adjuntos.length === 0) return res.status(404).json({message: `No se han adjuntado fotos`});
+
+        if(adjuntos.length > 0){
+            obj = new Usados({
+                codigo_interno,
+                sucursal,
+                mes,
+                fechaRegistro,
+                precio_tasacion,
+                precio_venta,
+                estado_usado,
+                ubicacion,
+                observacion,
+                fechaDisponible,
+                adjuntos: adjuntos.map((a) => a.location),
+            });
+        }else{
+            obj = new Usados({
+                codigo_interno,
+                sucursal,
+                mes,
+                fechaRegistro,
+                precio_tasacion,
+                precio_venta,
+                estado_usado,
+                ubicacion,
+                observacion,
+                fechaDisponible,
+            });
+        }
 
         const sedeFound = await Sucursal.findOne({ name: sucursalE });
         if (!sedeFound) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrada` });

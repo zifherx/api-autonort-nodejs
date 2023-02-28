@@ -15,6 +15,8 @@ router.post('/find', customerCtrl.getClienteByDNI);
 //Crear Cliente
 router.post('/', [authJwt.verifyToken, authJwt.isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin, verifyDuplicate.checkDuplicateCliente], customerCtrl.createOne);
 
+router.post('/count/by-type', customerCtrl.getCountByType);
+
 //Actualizar Cliente
 router.patch('/:itemId', [authJwt.verifyToken, authJwt.isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin], customerCtrl.updateOneById);
 

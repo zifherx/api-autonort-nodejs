@@ -141,7 +141,7 @@ campaniaCtrl.createOne = async (req, res) => {
 };
 
 campaniaCtrl.updateOneById = async (req, res) => {
-    const { descripcion, startDate, endDate, tipo,model, versiones, oferta, estado } = req.body;
+    const { cod_interno,descripcion, startDate, endDate, tipo,model, versiones, oferta, estado } = req.body;
     const { campaniaId } = req.params;
 
     try {
@@ -153,6 +153,7 @@ campaniaCtrl.updateOneById = async (req, res) => {
         if (!modelFound) return res.status(404).json({ message: `Modelo ${model} no encontrado` });
 
         const query = await Campania.findByIdAndUpdate(campaniaId, {
+            cod_interno,
             descripcion,
             startDate,
             endDate,

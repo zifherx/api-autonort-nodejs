@@ -32,7 +32,7 @@ router.post('/by-sucursal', seguroCtrl.getBySucursalFecha);
 
 router.post('/by-estado', seguroCtrl.getSegurosByEstado);
 
-router.post('/by-creator', seguroCtrl.getSegurosByCreator);
+router.post('/by-aseguradora', seguroCtrl.getSegurosByAseguradora);
 
 //Crear Seguro
 router.post('/', [authJwt.verifyToken, authJwt.isConexosAsistantOrAdmin], seguroCtrl.createOne);

@@ -1,14 +1,14 @@
 import Customer from "../models/Customer";
 import Seller from "../models/Seller";
 import Seguro from "../models/Seguro";
-import Sucursal from '../models/Sucursal';
+import Sucursal from "../models/Sucursal";
 import User from "../models/User";
 import EstadoSeguro from "../models/EstadoSeguro";
 import Vehicle from "../models/Vehicle";
 import Anio from "../models/Anio";
 import Conexos from "../models/Conexos";
 import Aseguradora from "../models/Aseguradora";
-import TipoUso from '../models/TipoUso';
+import TipoUso from "../models/TipoUso";
 
 const seguroController = {};
 
@@ -61,10 +61,10 @@ seguroController.getOneById = async (req, res) => {
             .populate({
                 path: "vendedor",
                 select: "name document avatar sucursalE",
-                populate:{
-                    path: 'sucursalE',
-                    select: 'name'
-                }
+                populate: {
+                    path: "sucursalE",
+                    select: "name",
+                },
             })
             .populate({
                 path: "vehicleE",
@@ -73,9 +73,9 @@ seguroController.getOneById = async (req, res) => {
                     path: "model",
                     select: "name avatar marca",
                     populate: {
-                        path: 'marca',
-                        select: 'name avatar'
-                    }
+                        path: "marca",
+                        select: "name avatar",
+                    },
                 },
             })
             .populate({
@@ -98,9 +98,9 @@ seguroController.getOneById = async (req, res) => {
                 path: "asesorConexosE",
                 select: "name encargadoDe areaE",
                 populate: {
-                    path: 'areaE',
-                    select: 'name'
-                }
+                    path: "areaE",
+                    select: "name",
+                },
             })
             .populate({
                 path: "createdBy",
@@ -121,7 +121,7 @@ seguroController.getOneById = async (req, res) => {
 seguroController.createOne = async (req, res) => {
     const {
         codigo_interno,
-        cliente,//---
+        cliente, //---
         company,
         sucursal,
         sucursalE,
@@ -133,8 +133,8 @@ seguroController.createOne = async (req, res) => {
         fechaRegistro,
         forma_pago,
         cuotas,
-        poliza,//---
-        vendedor,//---
+        poliza, //---
+        vendedor, //---
         marca,
         modelo,
         version,
@@ -144,14 +144,15 @@ seguroController.createOne = async (req, res) => {
         uso,
         tipoUsoE,
         chasis,
-        motor,//---
+        motor, //---
         asesorConexosE,
         endoso,
         entidad,
         inicio_vigencia,
         fin_vigencia,
+        aseguradora,
         aseguradoraE,
-        suma_asegurada,//---
+        suma_asegurada, //---
         createdBy,
     } = req.body;
 
@@ -177,6 +178,7 @@ seguroController.createOne = async (req, res) => {
             uso,
             endoso,
             entidad,
+            aseguradora,
             inicio_vigencia,
             fin_vigencia,
             suma_asegurada,
@@ -185,7 +187,7 @@ seguroController.createOne = async (req, res) => {
         const foundSucursal = await Sucursal.findOne({ name: sucursalE });
         if (!foundSucursal) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrado` });
         newObj.sucursalE = foundSucursal._id;
-        
+
         const foundEstado = await EstadoSeguro.findOne({ name: estadoSeguroE });
         if (!foundEstado) return res.status(404).json({ message: `Estado ${estadoSeguroE} no encontrado` });
         newObj.estadoSeguroE = foundEstado._id;
@@ -242,15 +244,15 @@ seguroController.updateOneById = async (req, res) => {
         const foundEstado = await EstadoSeguro.findOne({ name: estadoSeguroE });
         if (!foundEstado) return res.status(404).json({ message: `Estado ${estadoSeguroE} no encontrado` });
 
-        if(estadoSeguroE == 'EN PROCESO'){
-            query = await Seguro.findByIdAndUpdate(seguroId,{
+        if (estadoSeguroE == "EN PROCESO") {
+            query = await Seguro.findByIdAndUpdate(seguroId, {
                 status,
                 estadoSeguroE: foundEstado._id,
                 isProceso,
-                fechaProceso
+                fechaProceso,
             });
-        }else if(estadoSeguroE == 'EMITIDO'){
-            query = await Seguro.findByIdAndUpdate(seguroId,{
+        } else if (estadoSeguroE == "EMITIDO") {
+            query = await Seguro.findByIdAndUpdate(seguroId, {
                 status,
                 estadoSeguroE: foundEstado._id,
                 isEmitido,
@@ -514,7 +516,7 @@ seguroController.getBySucursalFecha = async (req, res) => {
             .sort({ fechaRegistro: -1 })
             .populate({
                 path: "cliente",
-                select: "name document",
+                select: "name document cellphone",
             })
             .populate({
                 path: "estadoSeguroE",
@@ -525,8 +527,32 @@ seguroController.getBySucursalFecha = async (req, res) => {
                 select: "name document",
             })
             .populate({
+                path: "vehicleE",
+                select: "cod_tdp model",
+                populate: {
+                    path: "model",
+                    select: "name avatar marca",
+                    populate: {
+                        path: "marca",
+                        select: "name avatar",
+                    },
+                },
+            })
+            .populate({
+                path: "asesor",
+                select: "name email",
+            })
+            .populate({
                 path: "asesorConexosE",
                 select: "name email",
+            })
+            .populate({
+                path: "aseguradoraE",
+                select: "name",
+            })
+            .populate({
+                path: "anioE",
+                select: "name",
             })
             .populate({
                 path: "createdBy",
@@ -543,14 +569,14 @@ seguroController.getBySucursalFecha = async (req, res) => {
 };
 
 seguroController.getSegurosByCreator = async (req, res) => {
-    const { status,createdBy } = req.body;
+    const { status, createdBy } = req.body;
 
     try {
         const userFound = await User.findOne({ username: createdBy });
         if (!userFound) return res.status(404).json({ message: `Usuario ${createdBy} no encontrado` });
 
         const query = await Seguro.find({
-            status: {$regex: '.*' + status + '.*'},
+            status: { $regex: ".*" + status + ".*" },
             createdBy: userFound._id,
         })
             .sort({ fechaRegistro: -1 })
@@ -581,9 +607,9 @@ seguroController.getSegurosByCreator = async (req, res) => {
                     path: "model",
                     select: "name avatar marca",
                     populate: {
-                        path: 'marca',
-                        select: 'name avatar'
-                    }
+                        path: "marca",
+                        select: "name avatar",
+                    },
                 },
             })
             .populate({
@@ -594,7 +620,71 @@ seguroController.getSegurosByCreator = async (req, res) => {
         if (query.length >= 0) {
             res.json({ total: query.length, all: query });
         } else {
-            return res.status(404).json({ message: `No existen seguros ${status} de ${createdBy}`  });
+            return res.status(404).json({ message: `No existen seguros ${status} de ${createdBy}` });
+        }
+    } catch (err) {
+        console.log(err.message);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+seguroController.getSegurosByAseguradora = async (req, res) => {
+    const { aseguradora, sucursal, start, end } = req.body;
+
+    try {
+        const query = await Seguro.find({
+            sucursal: { $regex: ".*" + sucursal + ".*" },
+            fechaRegistro: { $gte: new Date(start), $lte: new Date(end) },
+            aseguradora: { $regex: ".*" + aseguradora + ".*" },
+        })
+            .sort({ fechaRegistro: -1 })
+            .populate({
+                path: "cliente",
+                select: "name document cellphone",
+            })
+            .populate({
+                path: "estadoSeguroE",
+                select: "name",
+            })
+            .populate({
+                path: "vendedor",
+                select: "name document",
+            })
+            .populate({
+                path: "vehicleE",
+                select: "cod_tdp model",
+                populate: {
+                    path: "model",
+                    select: "name avatar marca",
+                    populate: {
+                        path: "marca",
+                        select: "name avatar",
+                    },
+                },
+            })
+            .populate({
+                path: "asesor",
+                select: "name email",
+            })
+            .populate({
+                path: "asesorConexosE",
+                select: "name email",
+            })
+            .populate({
+                path: "aseguradoraE",
+                select: "name",
+            })
+            .populate({
+                path: "anioE",
+                select: "name",
+            })
+            .populate({
+                path: "createdBy",
+                select: "name username",
+            });
+
+        if (query.length >= 0) {
+            res.json({ total: query.length, all: query });
         }
     } catch (err) {
         console.log(err.message);
@@ -603,17 +693,18 @@ seguroController.getSegurosByCreator = async (req, res) => {
 };
 
 seguroController.getSegurosByEstado = async (req, res) => {
-    const { estado, start, end } = req.body;
+    const { aseguradora,estado, start, end } = req.body;
     // console.log(req.body);
 
     try {
-        const estadoFound = await EstadoSeguro.findOne({ name: estado });
+        // const estadoFound = await EstadoSeguro.findOne({ name: estado });
         // console.log(estadoFound);
-        if (!estadoFound) return res.status(404).json({ message: `Estado ${estado} no encontrado` });
+        // if (!estadoFound) return res.status(404).json({ message: `Estado ${estado} no encontrado` });
 
         const query = await Seguro.find({
-            estadoSeguroE: estadoFound._id,
-            fechaRegistro: { $gte: new Date(start), $lte: new Date(end)}
+            status: { $regex: ".*" + estado + ".*" },
+            aseguradora: { $regex: ".*" + aseguradora + ".*" },
+            fecha_registro: { $gte: new Date(start), $lte: new Date(end) },
         })
             .sort({ fechaRegistro: -1 })
             .populate({

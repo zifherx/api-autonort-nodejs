@@ -52,7 +52,9 @@ modeloController.getModelosByMarca = async (req, res) => {
         const marcaFound = await MarcaTasaciones.findOne({ name: marca });
         if (!marcaFound) return res.status(404).json({ message: `La marca ${marca} no existe` });
 
-        const query = await ModeloTasaciones.find({ marca: marcaFound._id }).sort({ name: 1 }).populate({ path: "marca", select: "name avatar" });
+        const query = await ModeloTasaciones.find({ marca: marcaFound._id })
+        .sort({ name: 1 })
+        .populate({ path: "marca", select: "name avatar" });
 
         if (query.length > 0) {
             res.json({ total: query.length, all: query });

@@ -78,10 +78,10 @@ conexosController.getOneById = async (req, res) => {
 };
 
 conexosController.createOne = async (req, res) => {
-    const { name, email, areaE, sucursalE, encargadoDe, estado, createdBy } = req.body;
+    const { name, email, area, areaE, sucursalE, encargadoDe, estado, createdBy } = req.body;
 
     try {
-        const newObj = new Conexos({ name, email, encargadoDe, estado });
+        const newObj = new Conexos({ name, email, area, encargadoDe, estado });
 
         const areaFound = await Area.findOne({ name: areaE });
         if (!areaFound) return res.status(404).json({ message: `Area ${areaE} no encontrada` });
@@ -105,7 +105,7 @@ conexosController.createOne = async (req, res) => {
 };
 
 conexosController.updateOneById = async (req, res) => {
-    const { name, email, areaE, sucursalE, encargadoDe, estado } = req.body;
+    const { name, email, area, areaE, sucursalE, encargadoDe, estado } = req.body;
     const { itemId } = req.params;
 
     try {
@@ -118,6 +118,7 @@ conexosController.updateOneById = async (req, res) => {
         const query = await Conexos.findByIdAndUpdate(itemId, {
             name,
             email,
+            area,
             areaE: areaFound._id,
             sucursalE: sucursalFound._id,
             encargadoDe,
@@ -157,7 +158,7 @@ conexosController.getAsesorxSucursalyArea = async (req, res) => {
         const query = await Conexos.findOne({
             area: area,
             encargadoDe: { $in: sucursal },
-            status: true,
+            estado: true,
         })
             .populate({ path: "areaE", select: "name" })
             .populate({ path: "sucursalE", select: "name" })

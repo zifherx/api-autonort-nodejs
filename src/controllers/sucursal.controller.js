@@ -4,7 +4,7 @@ const sucursalController = {};
 
 sucursalController.getAll = async (req, res) => {
     try {
-        const query = await Sucursal.find().sort({ name: "asc" });
+        const query = await Sucursal.find().sort({ name: 1 });
         if (query.length > 0) {
             res.json({ total: query.length, all: query });
         } else {
@@ -33,7 +33,7 @@ sucursalController.getOneById = async (req, res) => {
 
 sucursalController.getAllActivos = async (req, res) => {
     try {
-        const query = await Sucursal.find({ estado: true }).sort({ name: "asc" });
+        const query = await Sucursal.find({ estado: true }).sort({ name: 1 });
         if (query.length > 0) {
             res.json({ total: query.length, all: query });
         } else {

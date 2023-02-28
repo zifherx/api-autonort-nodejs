@@ -133,6 +133,10 @@ controller.getVehiculeByModelo = async (req, res) => {
             .select("cod_tdp model version")
             .sort({ cod_tdp: 1 })
             .populate({
+                path: 'chasis',
+                select: 'name estado'
+            })
+            .populate({
                 path: "model",
                 match: { name: { $in: modelo } },
                 select: "avatar name marca",

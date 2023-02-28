@@ -6,6 +6,7 @@ const router = Router();
 router.get('/',controller.getAll);
 router.get('/:itemId',controller.getOneById);
 router.post('/by-estado',controller.getAllByEstado);
+router.post('/by-sede',controller.getAllBySede);
 router.post('/',controller.createOne);
 router.patch('/:itemId',controller.updateOneById);
 router.delete('/:itemId',controller.deleteOneById);

@@ -8,7 +8,7 @@ const router = Router();
 router.get('/:itemId', usadosCtrl.getOneById);
 router.get('/', usadosCtrl.getAll);
 router.post('/find/by-estado', usadosCtrl.getFilesByEstado);
-router.post('/', [authJwt.verifyToken, authJwt.isChiefEPDPorAdmin], usadosCtrl.createOne);
+router.post('/', usadosCtrl.createOne);
 router.patch('/:itemId', [authJwt.verifyToken, authJwt.isChiefEPDPorAdmin], multer.array('adjuntos', 15)  ,usadosCtrl.updateOneById);
 router.delete('/:itemId', [authJwt.verifyToken, authJwt.isChiefEPDPorAdmin], usadosCtrl.deleteOneById);
 
