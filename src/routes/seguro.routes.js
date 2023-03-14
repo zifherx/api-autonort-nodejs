@@ -28,6 +28,8 @@ router.post('/ranking/by-aseguradora', seguroCtrl.getRankingByAseguradora);
 router.post('/status-by-seller', seguroCtrl.getSegurosByVendedor);
 router.post('/vehicles-by-seller', seguroCtrl.getSegurosByModelo);
 
+router.post('/by-creator', seguroCtrl.getSegurosByCreator);
+
 router.post('/by-sucursal', seguroCtrl.getBySucursalFecha);
 
 router.post('/by-estado', seguroCtrl.getSegurosByEstado);

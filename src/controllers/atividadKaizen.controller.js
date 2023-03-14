@@ -32,7 +32,7 @@ activityController.getAll = async (req, res) => {
             })
             .populate({
                 path: "estadoE",
-                select: "name",
+                select: "name valor",
             });
 
         if (query.length > 0) {

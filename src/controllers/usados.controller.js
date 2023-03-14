@@ -177,10 +177,9 @@ controller.createOne = async (req, res) => {
     let obj = null;
 
     try {
-
         // if(adjuntos.length === 0) return res.status(404).json({message: `No se han adjuntado fotos`});
 
-        if(adjuntos.length > 0){
+        if (adjuntos.length > 0) {
             obj = new Usados({
                 codigo_interno,
                 sucursal,
@@ -194,7 +193,7 @@ controller.createOne = async (req, res) => {
                 fechaDisponible,
                 adjuntos: adjuntos.map((a) => a.location),
             });
-        }else{
+        } else {
             obj = new Usados({
                 codigo_interno,
                 sucursal,
@@ -255,39 +254,72 @@ controller.updateOneById = async (req, res) => {
         const ubicacionFound = await Sucursal.findOne({ name: ubicacionE });
         if (!ubicacionFound) return res.status(404).json({ message: `Ubicación ${ubicacionE} no encontrada` });
 
-        if (adjuntos.length === 0) return res.status(404).json({ message: `No se ha cargado ninguna evidencia` });
+        // if (adjuntos.length === 0) return res.status(404).json({ message: `No se ha cargado ninguna evidencia` });
         if (adjuntos.length > 15) return res.status(404).json({ message: `Superó el límite de subida de archivos` });
 
-        if (estadoE == "DISPONIBLE") {
-            query = await Usados.findByIdAndUpdate(itemId, {
-                estado_usado,
-                estadoE: estadoFound._id,
-                ubicacion,
-                ubicacionE: ubicacionFound._id,
-                observacion,
-                fechaDisponible,
-                adjuntos: adjuntos.map((a) => a.location),
-            });
-        } else if (estadoE == "EVALUACIÓN") {
-            query = await Usados.findByIdAndUpdate(itemId, {
-                estado_usado,
-                estadoE: estadoFound._id,
-                ubicacion,
-                ubicacionE: ubicacionFound._id,
-                observacion,
-                isEvaluacion,
-                fechaEvaluacion,
-            });
-        } else if (estadoE == "VENDIDO") {
-            query = await Usados.findByIdAndUpdate(itemId, {
-                estado_usado,
-                estadoE: estadoFound._id,
-                ubicacion,
-                ubicacionE: ubicacionFound._id,
-                observacion,
-                isVendido,
-                fechaVendido,
-            });
+        if (adjuntos == null || adjuntos == undefined) {
+            if (estadoE == "DISPONIBLE") {
+                query = await Usados.findByIdAndUpdate(itemId, {
+                    estado_usado,
+                    estadoE: estadoFound._id,
+                    ubicacion,
+                    ubicacionE: ubicacionFound._id,
+                    observacion,
+                    fechaDisponible,
+                });
+            } else if (estadoE == "EVALUACIÓN") {
+                query = await Usados.findByIdAndUpdate(itemId, {
+                    estado_usado,
+                    estadoE: estadoFound._id,
+                    ubicacion,
+                    ubicacionE: ubicacionFound._id,
+                    observacion,
+                    isEvaluacion,
+                    fechaEvaluacion,
+                });
+            } else if (estadoE == "VENDIDO") {
+                query = await Usados.findByIdAndUpdate(itemId, {
+                    estado_usado,
+                    estadoE: estadoFound._id,
+                    ubicacion,
+                    ubicacionE: ubicacionFound._id,
+                    observacion,
+                    isVendido,
+                    fechaVendido,
+                });
+            }
+        } else {
+            if (estadoE == "DISPONIBLE") {
+                query = await Usados.findByIdAndUpdate(itemId, {
+                    estado_usado,
+                    estadoE: estadoFound._id,
+                    ubicacion,
+                    ubicacionE: ubicacionFound._id,
+                    observacion,
+                    fechaDisponible,
+                    adjuntos: adjuntos.map((a) => a.location),
+                });
+            } else if (estadoE == "EVALUACIÓN") {
+                query = await Usados.findByIdAndUpdate(itemId, {
+                    estado_usado,
+                    estadoE: estadoFound._id,
+                    ubicacion,
+                    ubicacionE: ubicacionFound._id,
+                    observacion,
+                    isEvaluacion,
+                    fechaEvaluacion,
+                });
+            } else if (estadoE == "VENDIDO") {
+                query = await Usados.findByIdAndUpdate(itemId, {
+                    estado_usado,
+                    estadoE: estadoFound._id,
+                    ubicacion,
+                    ubicacionE: ubicacionFound._id,
+                    observacion,
+                    isVendido,
+                    fechaVendido,
+                });
+            }
         }
 
         if (query) {

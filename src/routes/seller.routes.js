@@ -19,7 +19,7 @@ router.post('/by-sucursal', [authJwt.verifyToken] ,sellerCtrl.getSellerBySucursa
 // router.post('/brand', sellerCtrl.getSellerByMarcaAndSucursal);
 
 //Obtener Vendedor por Nombre
-// router.post('/name', sellerCtrl.getSellerByName);
+router.post('/name', sellerCtrl.getSellerByName);
 
 //Crear Vendedor
 router.post('/', [authJwt.verifyToken, authJwt.isChiefAdvorAdmin, verifyDuplicate.checkDuplicateVendedor], sellerCtrl.createSeller);

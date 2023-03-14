@@ -1,15 +1,19 @@
 import TipoProducto from "../models/TipoProducto";
+import Area from "../models/Area";
 
 const tProductoController = {};
 
 tProductoController.getAll = async (req, res) => {
     try {
-        const query = await TipoProducto.find().sort({ name: -1 });
-        if (query.length > 0) {
-            res.json({ total: query.length, all: query });
-        } else {
+        const query = await TipoProducto.find().sort({ name: -1 }).populate({
+            path: "areaE",
+            select: "name estado",
+        });
+
+        if (query.length == 0) {
             return res.status(404).json({ message: "No existen tipos de producto" });
         }
+        res.json({ total: query.length, all: query });
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
@@ -19,7 +23,11 @@ tProductoController.getAll = async (req, res) => {
 tProductoController.getOneById = async (req, res) => {
     const { itemId } = req.params;
     try {
-        const query = await TipoProducto.findById(itemId);
+        const query = await TipoProducto.findById(itemId).populate({
+            path: "areaE",
+            select: "name estado",
+        });
+
         if (query) {
             res.json({ one: query });
         } else {
@@ -33,7 +41,11 @@ tProductoController.getOneById = async (req, res) => {
 
 tProductoController.getAllActivos = async (req, res) => {
     try {
-        const query = await TipoProducto.find({ estado: true }).sort({ name: 1 });
+        const query = await TipoProducto.find({ estado: true }).sort({ name: 1 }).populate({
+            path: "areaE",
+            select: "name estado",
+        });
+
         if (query.length == 0) {
             return res.status(404).json({ message: "No existen tipos de producto activos" });
         }
@@ -45,9 +57,13 @@ tProductoController.getAllActivos = async (req, res) => {
 };
 
 tProductoController.createOne = async (req, res) => {
-    const { name, estado } = req.body;
+    const { areaE, name, estado } = req.body;
     try {
+        const areaFound = await Area.findOne({ name: areaE });
+        if (!areaFound) return res.status(404).json({ message: `Area ${areaE} no encontrado` });
+
         const obj = new TipoProducto({ name, estado });
+        obj.areaE = areaFound._id;
 
         const query = await obj.save();
 
@@ -61,10 +77,13 @@ tProductoController.createOne = async (req, res) => {
 };
 
 tProductoController.updateOneById = async (req, res) => {
-    const { name, estado } = req.body;
+    const { areaE, name, estado } = req.body;
     const { itemId } = req.params;
     try {
-        const query = await TipoProducto.findByIdAndUpdate(itemId, { name, estado });
+        const areaFound = await Area.findOne({ name: areaE });
+        if (!areaFound) return res.status(404).json({ message: `Area ${areaE} no encontrado` });
+
+        const query = await TipoProducto.findByIdAndUpdate(itemId, { name, estado, areaE: areaFound._id });
 
         if (query) {
             res.json({ message: "Tipo de producto actualizado con éxito" });

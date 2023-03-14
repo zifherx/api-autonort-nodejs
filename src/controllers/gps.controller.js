@@ -71,7 +71,7 @@ controller.getOneItem = async (req, res) => {
         const query = await Gps.findById(itemId)
         .populate({
             path: 'cliente',
-            select: 'name document'
+            select: 'name document cellphone email'
         })
         .populate({
             path: 'sucursalE',
@@ -99,7 +99,7 @@ controller.getOneItem = async (req, res) => {
         })
         .populate({
             path: 'producto_gps',
-            select: 'name precio codigo_interno'
+            select: 'name precio codigo_interno descuento'
         })
         .populate({
             path: 'estadoGPSE',
@@ -143,7 +143,9 @@ controller.createOneItem = async (req, res) => {
         estadoGPS,
         estadoGPSE,
         fechaIngresado,
-        createdBy
+        createdBy,
+        forma_pago,
+        instalado
     } = req.body;
     try {
         const obj = new Gps({
@@ -159,6 +161,8 @@ controller.createOneItem = async (req, res) => {
             anio,
             fechaIngresado,
             estadoGPS,
+            forma_pago,
+            instalado
         });
 
         const clienteFound = await Customer.findOne({ document: cliente });

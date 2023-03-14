@@ -376,30 +376,56 @@ seguroController.getRankingByVehicle = async (req, res) => {
 };
 
 seguroController.getRankingBySeller = async (req, res) => {
-    const { sucursal, status, start, end } = req.body;
-
-    let filtro = {
-        sucursal: sucursal,
-        status: status,
-        fechaRegistro: { $gte: new Date(start), $lte: new Date(end) },
-    };
+    const { sucursal, status, start, end, tipo_venta, aseguradora } = req.body;
 
     try {
         const query = await Seguro.aggregate([
-            { $match: filtro },
+            {
+                $match: {
+                    sucursal: { $regex: ".*" + sucursal + ".*" },
+                    tipo_venta: { $regex: ".*" + tipo_venta + ".*" },
+                    status: { $regex: ".*" + status + ".*" },
+                    aseguradora: { $in: aseguradora },
+                    fechaRegistro: { $gte: new Date(start), $lte: new Date(end) },
+                },
+            },
             {
                 $group: {
                     _id: "$vendedor",
                     qty: { $sum: 1 },
                 },
             },
+            {
+                $sort: {
+                    qty: -1,
+                },
+            },
+            {
+                $lookup: {
+                    from: "sellers",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "vendedor",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$vendedor",
+                },
+            },
+            {
+                $project: {
+                    "vendedor.name": 1,
+                    qty: 1,
+                    _id: 0,
+                },
+            },
         ]);
 
-        if (query.length > 0) {
-            res.json({ total: query.length, deploy: query });
-        } else {
-            return res.status(201).json({ message: "No existen solicitudes" });
+        if (query.length === 0) {
+            return res.status(201).json({ message: "No existen registros" });
         }
+        res.json({ total: query.length, all: query });
     } catch (err) {
         return res.status(503).json({ message: err.message });
     }
@@ -693,7 +719,7 @@ seguroController.getSegurosByAseguradora = async (req, res) => {
 };
 
 seguroController.getSegurosByEstado = async (req, res) => {
-    const { aseguradora,estado, start, end } = req.body;
+    const { aseguradora, estado, start, end } = req.body;
     // console.log(req.body);
 
     try {

@@ -6,6 +6,7 @@ import helmet from 'helmet'
 import routes from "./routes"
 import config from './config/config'
 import * as initData from './libs/initialSetup'
+// import fileUpload from 'express-fileupload'
 
 const app = express();
 
@@ -33,8 +34,15 @@ app.set('port', Number(config.API_PORT) || Number(4000));
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors());
+// app.use(cors({
+//     origin: 'https://autonortnor.com'
+// }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// app.use(fileUpload({
+//     useTempFiles: true,
+//     tempFileDir: './uploads'
+// }))
 
 //Routes
 app.use('/api', routes);

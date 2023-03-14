@@ -46,6 +46,7 @@ const mafSchema = new Schema(
         motivo: { type: String },
         //Estado de Solicitud para el crédito
         primer_status_request: { type: String }, // actualizado
+        estadoSolicitud: { type: String },
         estadoSolicitudMAF: { type: Types.ObjectId, ref: "StatusMafRequest" },
         //Logs
         isIngresada: { type: Boolean, default: true },

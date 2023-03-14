@@ -42,6 +42,7 @@ const saleSchema = new Schema(
         estadoFacturacionE: { type: Schema.Types.ObjectId, ref: 'StatusFacturacion', default: null},
 		accesoriosE: [{ type: Schema.Types.ObjectId, ref: 'AccesorioE' }],
         pasoTramiteE: { type: Boolean, default: false },
+        isToyotaLife: { type: Boolean, default: false }, // Nuevo campo // 28.02.2023
 		//------------------------------------------------------------------------------------
 		//Financiamiento
 		tipo_financiamiento: { type: String }, //actualizado

@@ -15,6 +15,7 @@ router.post("/by-estado", mafCtrl.getAllByEstado);
 router.post("/by-sucursal", mafCtrl.getAllBySucursal);
 router.post("/by-vendedor", mafCtrl.getAllByCreador);
 router.post("/by-customer", mafCtrl.getAllSolicitudesAprobadas);
+router.post("/testing", mafCtrl.testSeguimiento);
 
 router.patch("/agree/:mafId", [authJwt.verifyToken, authJwt.isExecutiveMaf], multer.array("docuAprobacion", 2), mafCtrl.approveRequestStateById);
 router.patch("/reenroll/:mafId", [authJwt.verifyToken, authJwt.isVendedor], multer.array("adicionales", 30), mafCtrl.reenrollRequestStateById);

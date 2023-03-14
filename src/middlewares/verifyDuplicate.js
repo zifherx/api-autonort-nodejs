@@ -249,12 +249,12 @@ export const checkDuplicateVendedor = async(req, res, next) => {
 export const checkDuplicateCliente = async(req, res, next) => {
     const { name, document } = req.body;
 
-    const encontrado = await Customer.findOne({ name: name });
+    // const encontrado = await Customer.findOne({ name: name });
     const encontrado1 = await Customer.findOne({ document: document });
 
-    if (encontrado) return res.status(201).json({ message: 'El Cliente ya existe' });
+    // if (encontrado) return res.status(201).json({ message: 'El Cliente ya existe' });
 
-    if (encontrado1) return res.status(201).json({ message: 'El DNI ya existe' })
+    if (encontrado1) return res.status(201).json({ message: 'El documento ya existe' })
 
     next();
 }

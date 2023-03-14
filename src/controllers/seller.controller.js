@@ -129,10 +129,16 @@ sellerController.getSellerByMarcaAndSucursal = async(req, res) => {
 
 sellerController.getSellerByName = async(req, res) => {
     const { name } = req.body;
+
     try {
-        const query = await Seller.findOne({ name: name });
+        const query = await Seller.findOne({ name })
+        .populate({
+            path: 'sucursalE',
+            select: 'name'
+        });
+
         if (query) {
-            res.json(query);
+            res.json({one: query});
         } else {
             return res.status(404).json({ message: 'No existen Vendedores con este Nombre' });
         }

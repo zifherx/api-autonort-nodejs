@@ -21,6 +21,8 @@ const gpsSchema = new Schema(
         vendedor: { type: Types.ObjectId, ref: "Seller", default: null },
         asesorConexos: { type: Types.ObjectId, ref: "Conexos" },
         producto_gps: { type: Types.ObjectId, ref: "ProductoGPS", default: null },
+        forma_pago: { type: String },
+        instalado: { type: Boolean, default: false },
         estadoGPS: { type: String },
         estadoGPSE: { type: Types.ObjectId, ref: 'EstadoGPS' },
         createdBy: { type: Types.ObjectId, ref: 'User'},

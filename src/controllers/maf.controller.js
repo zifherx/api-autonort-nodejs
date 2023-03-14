@@ -44,6 +44,7 @@ mafController.createOne = async (req, res) => {
     } = req.body;
     // console.log(req.body);
     const evidencias = req.files;
+    console.log(req.files);
 
     try {
         if (evidencias.length == 0) return res.status(404).json({ message: "No se cargó ningún archivo" });
@@ -259,7 +260,11 @@ mafController.getAllByEstado = async (req, res) => {
                 .populate({ path: "customer", select: "name document" })
                 .populate({ path: "sucursalE", select: "name" })
                 .populate({ path: "seller", select: "name email telefono" })
-                .populate({ path: "car", select: "model cod_tdp version", populate: { path: "model", select: "name avatar marca", populate: { path: "marca", select: "name avatar" } } })
+                .populate({
+                    path: "car",
+                    select: "model cod_tdp version",
+                    populate: { path: "model", select: "name avatar marca", populate: { path: "marca", select: "name avatar" } },
+                })
                 .populate({ path: "estadoSolicitudMAF", select: "name" })
                 .populate({ path: "planMAF", select: "name" })
                 .populate({ path: "tipoUsoE", select: "name" })
@@ -288,7 +293,11 @@ mafController.getAllByEstado = async (req, res) => {
                 .populate({ path: "customer", select: "name document" })
                 .populate({ path: "sucursalE", select: "name" })
                 .populate({ path: "seller", select: "name email telefono" })
-                .populate({ path: "car", select: "model cod_tdp version", populate: { path: "model", select: "name avatar marca", populate: { path: "marca", select: "name avatar" } } })
+                .populate({
+                    path: "car",
+                    select: "model cod_tdp version",
+                    populate: { path: "model", select: "name avatar marca", populate: { path: "marca", select: "name avatar" } },
+                })
                 .populate({ path: "estadoSolicitudMAF", select: "name" })
                 .populate({ path: "planMAF", select: "name" })
                 .populate({ path: "tipoUsoE", select: "name" })
@@ -350,7 +359,18 @@ mafController.getOneById = async (req, res) => {
 };
 
 mafController.updateRequestStateById = async (req, res) => {
-    const { primer_status_request, estadoSolicitudMAF, observacion, motivo, isEvaluacion, fechaEvaluacion, isObservado, fechaObservado, isRechazado, fechaRechazado } = req.body;
+    const {
+        primer_status_request,
+        estadoSolicitudMAF,
+        observacion,
+        motivo,
+        isEvaluacion,
+        fechaEvaluacion,
+        isObservado,
+        fechaObservado,
+        isRechazado,
+        fechaRechazado,
+    } = req.body;
     const { mafId } = req.params;
 
     let query = null;
@@ -397,7 +417,8 @@ mafController.updateRequestStateById = async (req, res) => {
 };
 
 mafController.approveRequestStateById = async (req, res) => {
-    const { primer_status_request, estadoSolicitudMAF, fecha_aprobacion, carta_aprobacion, observacion, isAprobado, fechaAprobado, userApprove } = req.body;
+    const { primer_status_request, estadoSolicitudMAF, fecha_aprobacion, carta_aprobacion, observacion, isAprobado, fechaAprobado, userApprove } =
+        req.body;
     const { mafId } = req.params;
     const docuAprobacion = req.files;
 
@@ -470,11 +491,12 @@ mafController.reenrollRequestStateById = async (req, res) => {
 };
 
 mafController.updateFileOnStatusByChief = async (req, res) => {
-    const { estadoAprobacionJefatura, estadoAprobacionJefaturaE, comentarioJefatura, isHot, fechaHot, isProxMes, fechaProxMes, isNoVa, fechaNoVa } = req.body;
+    const { estadoAprobacionJefatura, estadoAprobacionJefaturaE, comentarioJefatura, isHot, fechaHot, isProxMes, fechaProxMes, isNoVa, fechaNoVa } =
+        req.body;
     const { itemId } = req.params;
     let query = null;
 
-    console.log('ID:',itemId);
+    console.log("ID:", itemId);
     try {
         const estadoJefaturaFound = await StatusJefaturaMaf.findOne({ name: estadoAprobacionJefaturaE });
         if (!estadoJefaturaFound) return res.status(404).json({ message: `Estado ${estadoAprobacionJefaturaE} no encontrado` });
@@ -485,23 +507,23 @@ mafController.updateFileOnStatusByChief = async (req, res) => {
                 estadoAprobacionJefaturaE: estadoJefaturaFound._id,
                 comentarioJefatura,
                 isHot,
-                fechaHot
+                fechaHot,
             });
         } else if (estadoAprobacionJefaturaE == "PROX MES") {
             query = await Maf.findByIdAndUpdate(itemId, {
                 estadoAprobacionJefatura,
                 estadoAprobacionJefaturaE: estadoJefaturaFound._id,
                 comentarioJefatura,
-                isProxMes, 
-                fechaProxMes
+                isProxMes,
+                fechaProxMes,
             });
         } else if (estadoAprobacionJefaturaE == "NO VA") {
             query = await Maf.findByIdAndUpdate(itemId, {
                 estadoAprobacionJefatura,
                 estadoAprobacionJefaturaE: estadoJefaturaFound._id,
                 comentarioJefatura,
-                isNoVa, 
-                fechaNoVa
+                isNoVa,
+                fechaNoVa,
             });
         }
 
@@ -1261,7 +1283,7 @@ mafController.getAllSolicitudesAprobadas = async (req, res) => {
             customer: customerFound._id,
             primer_status_request: estado,
         })
-            .select("nro_solicitud fecha_ingreso customer seller car fecha_aprobacion carta_evidencia primer_status_request")
+            .select("nro_solicitud fecha_ingreso customer seller car fecha_aprobacion carta_evidencia primer_status_request plan planMAF")
             .populate({
                 path: "customer",
                 select: "name",
@@ -1281,6 +1303,10 @@ mafController.getAllSolicitudesAprobadas = async (req, res) => {
                         select: "name avatar",
                     },
                 },
+            })
+            .populate({
+                path: "planMAF",
+                select: "name",
             });
 
         if (query.length > 0) {
@@ -1288,6 +1314,66 @@ mafController.getAllSolicitudesAprobadas = async (req, res) => {
         } else {
             return res.status(404).json({ message: `El cliente ${customer} no cuenta con solicitudes MAF` });
         }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+mafController.testSeguimiento = async (req, res) => {
+    const { estado, start, end, sucursal } = req.body;
+    let query = null;
+
+    try {
+        query = await Maf.aggregate([
+            {
+                $match: {
+                    sucursal: {
+                        $regex: ".*" + sucursal + ".*",
+                    },
+                    primer_status_request: {
+                        $regex: ".*" + estado + ".*",
+                    },
+                    fecha_ingreso: {
+                        $gte: new Date(start),
+                        $lte: new Date(end),
+                    },
+                },
+            },
+            {
+                $group: {
+                    _id: "$seller",
+                    num_solicitudes: {
+                        $sum: 1,
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "sellers",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "vendedor",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$vendedor",
+                },
+            },
+            {
+                $project: {
+                    "vendedor.name": 1,
+                    num_solicitudes: 1,
+                    _id: 0,
+                },
+            },
+        ]);
+
+        if (query.length === 0) {
+            return res.status(201).json({ message: `No existen registros` });
+        }
+        res.json({ total: query.length, all: query });
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
