@@ -20,7 +20,16 @@ const leadSchema = new Schema(
         bankSelected: { type: Types.ObjectId, ref: "Banco", default: null },
         initialMount: { type: Number, default: 0 },
         // Customer
-        customer: { type: Types.ObjectId, ref: "Customer" },
+        customer: { type: Types.ObjectId, ref: "Customer", default: null },
+        //**************************************** */
+        customer_name: { type: String },
+        customer_document: { type: String },
+        customer_cellphone: { type: String },
+        customer_cellphone2: { type: String },
+        customer_email: { type: String },
+        customer_address: { type: String },
+        customer_city: { type: String },
+        //**************************************** */
         customerCity: { type: String },
         customerCityE: { type: Types.ObjectId, ref: "City", default: null },
         // Vehicle

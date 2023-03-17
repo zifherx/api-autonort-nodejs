@@ -2549,4 +2549,117 @@ fileController.testSeguimiento = async (req, res) => {
     }
 };
 
+fileController.getFilesByToyotaLife = async (req, res) => {
+    const { sucursalE, estadoE, start, end, isToyotaLife } = req.body;
+    let query = null;
+    try {
+        if (isToyotaLife) {
+            query = await Sale.aggregate([
+                {
+                    $match: {
+                        sucursal_venta: {
+                            $regex: ".*" + sucursalE + ".*",
+                        },
+                        estatus_venta: {
+                            $regex: ".*" + estadoE + ".*",
+                        },
+                        isToyotaLife,
+                        fecha_cancelacion: {
+                            $gte: new Date(start),
+                            $lte: new Date(end),
+                        },
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$vendedor",
+                        num_ventas: {
+                            $sum: 1,
+                        },
+                    },
+                },
+                {
+                    $sort: {
+                        num_ventas: -1,
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "sellers",
+                        localField: "_id",
+                        foreignField: "_id",
+                        as: "vendedor",
+                    },
+                },
+                {
+                    $unwind: {
+                        path: "$vendedor",
+                    },
+                },
+                {
+                    $project: {
+                        "vendedor.name": 1,
+                        num_ventas: 1,
+                        _id: 0,
+                    },
+                },
+            ]);
+        } else {
+            query = await Sale.aggregate([
+                {
+                    $match: {
+                        sucursal_venta: {
+                            $regex: ".*" + sucursalE + ".*",
+                        },
+                        estatus_venta: {
+                            $regex: ".*" + estadoE + ".*",
+                        },
+                        fecha_cancelacion: {
+                            $gte: new Date(start),
+                            $lte: new Date(end),
+                        },
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$vendedor",
+                        num_ventas: {
+                            $sum: 1,
+                        },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "sellers",
+                        localField: "_id",
+                        foreignField: "_id",
+                        as: "vendedor",
+                    },
+                },
+                {
+                    $unwind: {
+                        path: "$vendedor",
+                    },
+                },
+                {
+                    $project: {
+                        "vendedor.name": 1,
+                        "vendedor.sucursal": 1,
+                        num_ventas: 1,
+                        _id: 0,
+                    },
+                },
+            ]);
+        }
+
+        if (query.length === 0) {
+            return res.status(201).json({ message: `No existen registros` });
+        }
+        res.json({ total: query.length, all: query });
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+}
+
 export default fileController;

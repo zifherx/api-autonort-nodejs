@@ -17,56 +17,56 @@ const controller = {};
 controller.getAll = async (req, res) => {
     try {
         const query = await LeadCRM.find()
-        .populate({
-            path: "customer",
-            select: "name document cellphone cellphone2 email address",
-        })
-        .populate({
-            path: "estadoLeadE",
-            select: "name valor hex description",
-        })
-        .populate({
-            path: "marcaLeadE",
-            select: "name avatar",
-        })
-        .populate({
-            path: "bankSelected",
-            select: "name avatar",
-        })
-        .populate({
-            path: "sellerAssigned",
-            select: "name avatar document sucursalE marcaE",
-            populate: [
-                {
-                    path: "sucursalE",
-                    select: "name",
-                },
-                {
-                    path: "marcaE",
-                    select: "name",
-                },
-            ],
-        })
-        .populate({
-            path: "origenDataE",
-            select: "name icon hex",
-        })
-        .populate({
-            path: "sucursalLeadE",
-            select: "name",
-        })
-        .populate({
-            path: "tipoFinanciamiento",
-            select: "name",
-        })
-        .populate({
-            path: "vehicleInterested",
-            select: "cod_tdp model",
-            populate: {
-                path: "model",
+            .populate({
+                path: "customer",
+                select: "name document cellphone cellphone2 email address",
+            })
+            .populate({
+                path: "estadoLeadE",
+                select: "name valor hex description",
+            })
+            .populate({
+                path: "marcaLeadE",
                 select: "name avatar",
-            },
-        });
+            })
+            .populate({
+                path: "bankSelected",
+                select: "name avatar",
+            })
+            .populate({
+                path: "sellerAssigned",
+                select: "name avatar document sucursalE marcaE",
+                populate: [
+                    {
+                        path: "sucursalE",
+                        select: "name",
+                    },
+                    {
+                        path: "marcaE",
+                        select: "name",
+                    },
+                ],
+            })
+            .populate({
+                path: "origenDataE",
+                select: "name icon hex",
+            })
+            .populate({
+                path: "sucursalLeadE",
+                select: "name",
+            })
+            .populate({
+                path: "tipoFinanciamiento",
+                select: "name",
+            })
+            .populate({
+                path: "vehicleInterested",
+                select: "cod_tdp model",
+                populate: {
+                    path: "model",
+                    select: "name avatar",
+                },
+            });
         // const query = await LeadCRM.findAllLeads();
 
         if (query.length === 0) {
@@ -165,6 +165,13 @@ controller.createOne = async (req, res) => {
         createdBy,
         tipoFinanciamiento,
         customer,
+        customer_name,
+        customer_document,
+        customer_cellphone,
+        customer_cellphone2,
+        customer_email,
+        customer_address,
+        customer_city,
         customerCity,
         customerCityE,
         vehicleInterested,
@@ -181,6 +188,13 @@ controller.createOne = async (req, res) => {
             marcaLead,
             modeloLead,
             observacion,
+            customer_name,
+            customer_document,
+            customer_cellphone,
+            customer_cellphone2,
+            customer_email,
+            customer_address,
+            customer_city,
             customerCity,
             estadoLead,
             fecha_ingreso,
@@ -198,9 +212,13 @@ controller.createOne = async (req, res) => {
         if (!marcaFound) return res.status(404).json({ message: `Marca ${marcaLeadE} no encontrad@` });
         newObj.marcaLeadE = marcaFound._id;
 
-        const modeloFound = await ModeloTasaciones.findOne({ name: modeloLeadE });
-        if (!modeloFound) return res.status(404).json({ message: `Modelo ${modeloLeadE} no encontrad@` });
-        newObj.modeloLeadE = modeloFound._id;
+        if (modeloLeadE == undefined || modeloLeadE == null) {
+            newObj.modeloLeadE = null;
+        } else {
+            const modeloFound = await ModeloTasaciones.findOne({ name: modeloLeadE });
+            if (!modeloFound) return res.status(404).json({ message: `Modelo ${modeloLeadE} no encontrad@` });
+            newObj.modeloLeadE = modeloFound._id;
+        }
 
         const userFound = await User.findOne({ username: createdBy });
         if (!userFound) return res.status(404).json({ message: `Usuario ${createdBy} no encontrad@` });
@@ -219,9 +237,13 @@ controller.createOne = async (req, res) => {
             newObj.tipoFinanciamiento = financiamientoFound._id;
         }
 
-        const customerFound = await Customer.findOne({ document: customer });
-        if (!customerFound) return res.status(404).json({ message: `Cliente ${customer} no encontrad@` });
-        newObj.customer = customerFound._id;
+        if (customer == undefined || customer == null) {
+            newObj.customer = null;
+        } else {
+            const customerFound = await Customer.findOne({ document: customer });
+            if (!customerFound) return res.status(404).json({ message: `Cliente ${customer} no encontrad@` });
+            newObj.customer = customerFound._id;
+        }
 
         if (customerCityE == null || customerCityE == undefined) {
             newObj.customerCityE = null;
@@ -264,7 +286,16 @@ controller.updateOneById = async (req, res) => {
         tipoFinanciamiento,
         bankSelected,
         initialMount,
+        modeloLead,
+        modeloLeadE,
         customer,
+        customer_name,
+        customer_document,
+        customer_cellphone,
+        customer_cellphone2,
+        customer_email,
+        customer_address,
+        customer_city,
         // customerCity,
         // customerCityE,
         vehicleInterested,
@@ -284,6 +315,8 @@ controller.updateOneById = async (req, res) => {
     } = req.body;
     const { itemId } = req.params;
 
+    let modeloNull = null;
+    let customerNull = null;
     let financeNull = null;
     let bankNull = null;
     let vehicleNull = null;
@@ -298,8 +331,21 @@ controller.updateOneById = async (req, res) => {
         const marcaFound = await MarcaTasaciones.findOne({ name: marcaLeadE });
         if (!marcaFound) return res.status(404).json({ message: `Marca ${marcaLeadE} no encontrado` });
 
-        const customerFound = await Customer.findOne({ document: customer });
-        if (!customerFound) return res.status(404).json({ message: `Cliente ${customer} no encontrado` });
+        if(customer == undefined || customer == null || customer == ''){
+            customerNull = null;
+        }else{
+            const customerFound = await Customer.findOne({ document: customer });
+            if (!customerFound) return res.status(404).json({ message: `Cliente ${customer} no encontrado` });
+            customerNull = customerFound._id;
+        }
+
+        if(modeloLeadE == undefined || modeloLeadE == null || modeloLeadE == ''){
+            modeloNull = null;
+        }else{
+            const modeloFound = await ModeloTasaciones.findOne({name: modeloLeadE});
+            if(!modeloFound) return res.status(404).json({message: `Modelo ${modeloLeadE} no encontrado`});
+            modeloNull = modeloFound._id;
+        }
 
         // const cityFound = await City.findOne({ name: customerCityE });
         // if (!cityFound) return res.status(404).json({ message: `Ciudad ${customerCityE} no encontrado` });
@@ -364,11 +410,20 @@ controller.updateOneById = async (req, res) => {
                     sucursalLeadE: sucursalFound._id,
                     marcaLead,
                     marcaLeadE: marcaFound._id,
+                    modeloLead,
+                    modeloLeadE: modeloNull,
                     observacion,
                     tipoFinanciamiento: financeNull,
                     bankSelected: bankNull,
                     initialMount,
-                    customer: customerFound._id,
+                    customer: customerNull,
+                    customer_name,
+                    customer_document,
+                    customer_cellphone,
+                    customer_cellphone2,
+                    customer_email,
+                    customer_address,
+                    customer_city,
                     // customerCity,
                     // customerCityE: customerCityE == null ? null : cityFound._id,
                     vehicleInterested: vehicleNull,
@@ -392,7 +447,14 @@ controller.updateOneById = async (req, res) => {
                     tipoFinanciamiento: financeNull,
                     bankSelected: bankNull,
                     initialMount,
-                    customer: customerFound._id,
+                    customer: customerNull,
+                    customer_name,
+                    customer_document,
+                    customer_cellphone,
+                    customer_cellphone2,
+                    customer_email,
+                    customer_address,
+                    customer_city,
                     // customerCity,
                     // customerCityE: cityFound._id,
                     estadoLead,
@@ -411,10 +473,19 @@ controller.updateOneById = async (req, res) => {
                     marcaLead,
                     marcaLeadE: marcaFound._id,
                     observacion,
+                    modeloLead,
+                    modeloLeadE: modeloNull,
                     tipoFinanciamiento: financeNull,
                     bankSelected: bankNull,
                     initialMount,
-                    customer: customerFound._id,
+                    customer: customerNull,
+                    customer_name,
+                    customer_document,
+                    customer_cellphone,
+                    customer_cellphone2,
+                    customer_email,
+                    customer_address,
+                    customer_city,
                     // customerCity,
                     // customerCityE: cityFound._id,
                     estadoLead,
@@ -433,10 +504,19 @@ controller.updateOneById = async (req, res) => {
                     marcaLead,
                     marcaLeadE: marcaFound._id,
                     observacion,
+                    modeloLead,
+                    modeloLeadE: modeloNull,
                     tipoFinanciamiento: financeNull,
                     bankSelected: bankNull,
                     initialMount,
-                    customer: customerFound._id,
+                    customer: customerNull,
+                    customer_name,
+                    customer_document,
+                    customer_cellphone,
+                    customer_cellphone2,
+                    customer_email,
+                    customer_address,
+                    customer_city,
                     // customerCity,
                     // customerCityE: cityFound._id,
                     estadoLead,
