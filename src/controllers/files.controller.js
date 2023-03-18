@@ -2660,6 +2660,74 @@ fileController.getFilesByToyotaLife = async (req, res) => {
         console.log(err);
         return res.status(503).json({ message: err.message });
     }
-}
+};
+
+fileController.getFilesWithModeloByStock = async (req, res) => {
+    const { sucursal, estadoE, start, end } = req.body;
+
+    try {
+        const query = await Sale.aggregate([
+            {
+                $match: {
+                    sucursal_venta: { $regex: ".*" + sucursal + ".*" },
+                    estatus_venta: estadoE,
+                    fecha_cancelacion: {
+                        $gte: new Date(start),
+                        $lte: new Date(end),
+                    },
+                },
+            },
+            {
+                $group: {
+                    _id: "$auto",
+                    qty: { $sum: 1 },
+                },
+            },
+            {
+                $lookup: {
+                    from: "vehicles",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "vehicle",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$vehicle",
+                },
+            },
+            {
+                $lookup: {
+                    from: "modelots",
+                    localField: "vehicle.model",
+                    foreignField: "_id",
+                    as: "model",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$model",
+                },
+            },
+            {
+                $project: {
+                    qty: 1,
+                    "vehicle.cod_tdp": 1,
+                    "vehicle.version": 1,
+                    "model.name": 1,
+                    "model.avatar": 1,
+                },
+            },
+        ]);
+
+        if (query.length === 0) {
+            return res.status(201).json({ message: `No existen registros` });
+        }
+        res.json({ total: query.length, all: query });
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
 
 export default fileController;

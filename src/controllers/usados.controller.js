@@ -175,11 +175,12 @@ controller.createOne = async (req, res) => {
     } = req.body;
     const adjuntos = req.files;
     let obj = null;
+    console.log(req.files);
 
     try {
         // if(adjuntos.length === 0) return res.status(404).json({message: `No se han adjuntado fotos`});
 
-        if (adjuntos.length > 0) {
+        if (adjuntos == null || adjuntos == undefined) {
             obj = new Usados({
                 codigo_interno,
                 sucursal,
@@ -191,7 +192,6 @@ controller.createOne = async (req, res) => {
                 ubicacion,
                 observacion,
                 fechaDisponible,
-                adjuntos: adjuntos.map((a) => a.location),
             });
         } else {
             obj = new Usados({
@@ -205,30 +205,31 @@ controller.createOne = async (req, res) => {
                 ubicacion,
                 observacion,
                 fechaDisponible,
+                adjuntos: adjuntos.map((a) => a.location),
             });
         }
 
         const sedeFound = await Sucursal.findOne({ name: sucursalE });
         if (!sedeFound) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrada` });
-        newObj.sucursalE = sedeFound._id;
+        obj.sucursalE = sedeFound._id;
 
         const estadoFound = await EstadoUsados.findOne({ name: estadoE });
         if (!estadoFound) return res.status(404).json({ message: `Estado ${estadoE} no encontrado` });
-        newObj.estadoE = estadoFound._id;
+        obj.estadoE = estadoFound._id;
 
         const ubicacionFound = await Sucursal.findOne({ name: ubicacionE });
         if (!ubicacionFound) return res.status(404).json({ message: `Ubicación ${ubicacionE} no encontrada` });
-        newObj.ubicacionE = ubicacionFound._id;
+        obj.ubicacionE = ubicacionFound._id;
 
         const tasacionFound = await Tasacion.findOne({ codigo_interno: tasacionId });
         if (!tasacionFound) return res.status(404).json({ message: `Tasación ${tasacionId} no encontrada` });
-        newObj.tasacionId = tasacionFound._id;
+        obj.tasacionId = tasacionFound._id;
 
         const userFound = await User.findOne({ username: createdBy });
         if (!userFound) return res.status(404).json({ message: `Usuario ${createdBy} no encontrado` });
-        newObj.createdBy = userFound._id;
+        obj.createdBy = userFound._id;
 
-        const query = newObj.save();
+        const query = obj.save();
 
         if (query) {
             await Tasacion.findByIdAndUpdate(tasacionFound._id, { pasoUsados: true });

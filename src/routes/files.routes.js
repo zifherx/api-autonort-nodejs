@@ -19,6 +19,7 @@ router.post("/ranking/by-seller", filesCtrl.rankingFilesBySeller);
 router.post("/ranking/entregas", filesCtrl.rankingFilesByUbicacion);
 router.post("/testing", filesCtrl.testSeguimiento);
 router.post("/ranking/by-toyota-life", filesCtrl.getFilesByToyotaLife);
+router.post("/ranking/stock", filesCtrl.getFilesByToyotaLife);
 router.post("/", [authJwt.verifyToken, authJwt.isChiefAdvorAdminorAsistantADVorChiefPlaneamiento], filesCtrl.createOne);
 router.patch("/:itemId", [authJwt.verifyToken, authJwt.isChiefAdvorAdminorAsistantADVorChiefPlaneamiento], filesCtrl.updateOneById);
 router.delete("/:itemId", [authJwt.verifyToken, authJwt.isAdmin], filesCtrl.deleteOneById);
