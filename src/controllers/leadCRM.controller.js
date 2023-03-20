@@ -331,19 +331,19 @@ controller.updateOneById = async (req, res) => {
         const marcaFound = await MarcaTasaciones.findOne({ name: marcaLeadE });
         if (!marcaFound) return res.status(404).json({ message: `Marca ${marcaLeadE} no encontrado` });
 
-        if(customer == undefined || customer == null || customer == ''){
+        if (customer == undefined || customer == null || customer == "") {
             customerNull = null;
-        }else{
+        } else {
             const customerFound = await Customer.findOne({ document: customer });
             if (!customerFound) return res.status(404).json({ message: `Cliente ${customer} no encontrado` });
             customerNull = customerFound._id;
         }
 
-        if(modeloLeadE == undefined || modeloLeadE == null || modeloLeadE == ''){
+        if (modeloLeadE == undefined || modeloLeadE == null || modeloLeadE == "") {
             modeloNull = null;
-        }else{
-            const modeloFound = await ModeloTasaciones.findOne({name: modeloLeadE});
-            if(!modeloFound) return res.status(404).json({message: `Modelo ${modeloLeadE} no encontrado`});
+        } else {
+            const modeloFound = await ModeloTasaciones.findOne({ name: modeloLeadE });
+            if (!modeloFound) return res.status(404).json({ message: `Modelo ${modeloLeadE} no encontrado` });
             modeloNull = modeloFound._id;
         }
 
@@ -637,6 +637,68 @@ controller.getAllBySede = async (req, res) => {
             return res.status(404).json({ message: `La sede ${sucursalE} no cuenta con leads` });
         }
         res.json({ total: query.length, all: query });
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+controller.getCountByEstado = async (req, res) => {
+    const { marcaE, estadoE, sucursalE, start, end } = req.body;
+
+    try {
+        const query = await LeadCRM.find({
+            marcaLead: { $regex: ".*" + marcaE + ".*" },
+            sucursalLead: { $regex: ".*" + sucursalE + ".*" },
+            estadoLead: { $regex: ".*" + estadoE + ".*" },
+            fecha_ingreso: {
+                $gte: new Date(start),
+                $lte: new Date(end),
+            },
+        }).countDocuments();
+
+        if (query >= 0) res.json({ qty: query });
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+controller.getCountByEstado2 = async (req, res) => {
+    const { marcaE, estadoE, sucursalE, start, end, isBooking, isVenta } = req.body;
+
+    try {
+        let query = null;
+
+        const marcaFound = await MarcaTasaciones.findOne({ name: marcaE });
+        if (!marcaFound) return res.status(404).json({ message: `Marca ${marcaE} no encontrada` });
+
+        if (isVenta) {
+            query = await LeadCRM.find({
+                marcaLead: { $regex: ".*" + marcaE + ".*" },
+                sucursalLead: { $regex: ".*" + sucursalE + ".*" },
+                estadoLead: { $regex: ".*" + estadoE + ".*" },
+                fecha_ingreso: {
+                    $gte: new Date(start),
+                    $lte: new Date(end),
+                },
+                isBooking,
+                isVenta,
+            }).countDocuments();
+        } else {
+            query = await LeadCRM.find({
+                marcaLead: { $regex: ".*" + marcaE + ".*" },
+                sucursalLead: { $regex: ".*" + sucursalE + ".*" },
+                estadoLead: { $regex: ".*" + estadoE + ".*" },
+                fecha_ingreso: {
+                    $gte: new Date(start),
+                    $lte: new Date(end),
+                },
+                isBooking,
+            }).countDocuments();
+        }
+
+        if (query >= 0) res.json({ qty: query });
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });

@@ -2670,7 +2670,7 @@ fileController.getFilesWithModeloByStock = async (req, res) => {
             {
                 $match: {
                     sucursal_venta: { $regex: ".*" + sucursal + ".*" },
-                    estatus_venta: estadoE,
+                    estatus_venta: { $regex: '.*' + estadoE + '.*' },
                     fecha_cancelacion: {
                         $gte: new Date(start),
                         $lte: new Date(end),
@@ -2711,6 +2711,7 @@ fileController.getFilesWithModeloByStock = async (req, res) => {
             },
             {
                 $project: {
+                    _id: 1,
                     qty: 1,
                     "vehicle.cod_tdp": 1,
                     "vehicle.version": 1,
@@ -2718,6 +2719,9 @@ fileController.getFilesWithModeloByStock = async (req, res) => {
                     "model.avatar": 1,
                 },
             },
+            {
+                $sort:{ "vehicle.cod_tdp" : 1}
+            }
         ]);
 
         if (query.length === 0) {
