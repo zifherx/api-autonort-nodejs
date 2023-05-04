@@ -3,6 +3,7 @@ import { connectSCIDB } from '../config/database';
 
 const estadoSchema = new Schema({
     name: { type: String, unique: true },
+    description: { type: String },
     valor: { type: Number },
     estado: { type: Boolean, default: true }
 },{

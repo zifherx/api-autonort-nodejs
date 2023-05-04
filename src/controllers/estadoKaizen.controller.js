@@ -50,11 +50,12 @@ estadoController.getOneById = async (req, res) => {
 };
 
 estadoController.createOne = async (req, res) => {
-    const { name, valor, estado } = req.body;
+    const { name, description, valor, estado } = req.body;
 
     try {
         const obj = new EstadoKaizen({
             name,
+            description,
             valor,
             estado,
         });
@@ -72,10 +73,10 @@ estadoController.createOne = async (req, res) => {
 
 estadoController.updateById = async (req, res) => {
     const { itemId } = req.params;
-    const { name, valor, estado } = req.body;
+    const { name, description, valor, estado } = req.body;
 
     try {
-        const query = await EstadoKaizen.findByIdAndUpdate(itemId, { name, valor, estado });
+        const query = await EstadoKaizen.findByIdAndUpdate(itemId, { name, description, valor, estado });
 
         if (query) {
             res.json({ message: "Estado actualizado con éxito" });

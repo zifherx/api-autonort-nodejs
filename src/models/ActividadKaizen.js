@@ -13,6 +13,10 @@ const actividadSchema = new Schema(
         cod_interno: { type: String },
         titulo_actividad: { type: String },
         area: { type: Schema.Types.ObjectId, ref: "Area", default: null },
+        tipoMejora: { type: String }, //nuevo.31.03.23
+        tipoMejoraE: { type: Schema.Types.ObjectId, ref: 'TipoMejora', default: null }, //nuevo.31.03.23
+        ubicacionMejora: { type: String }, //nuevo.31.03.23
+        ubicacionMejoraE: { type: Schema.Types.ObjectId, ref: 'UbicacionMejora', default: null }, //nuevo.31.03.23
         // Problema
         problema: { type: String },
         tituloFotoProblema: { type: String },
@@ -20,6 +24,7 @@ const actividadSchema = new Schema(
         descripcionProblema: { type: String },
         flujogramaProblema: { type: String },
         graficoProblema: { type: String },
+        causaRaizProblema: { type: String }, //nuevo.31.03.23
         // Contramedida
         contramedida: { type: String },
         tituloFotoContramedida: { type: String },
@@ -32,6 +37,8 @@ const actividadSchema = new Schema(
         titulo_indicadores_cuantitativos: { type: String },
         indicadores_cuantitativos: { type: String },
         descripcionResultados: { type: String },
+        kpiImpacto: { type: String }, //nuevo.31.03.23
+        kpiImpactoE: { type: Schema.Types.ObjectId, ref: 'ImpactoKPI', default: null }, //nuevo.31.03.23
         proximas_actividades: { type: String },
         titular: { type: String },
         anexos: [{ type: String }],
@@ -41,8 +48,11 @@ const actividadSchema = new Schema(
         estado: { type: String },
         estadoE: { type: Schema.Types.ObjectId, ref: "EstadoKaizen" },
         observaciones_generales: { type: String },
+        sendToEvaluate: { type: Boolean, default: false },
         //LOGS
-        isProceso: { type: Boolean, default: true },
+        isBorrador: { type: Boolean, default: true },
+        fechaBorrador: { type: Date },
+        isProceso: { type: Boolean, default: false },
         fechaProceso: { type: Date },
         isRevision: { type: Boolean, default: false },
         fechaRevision: { type: Date },

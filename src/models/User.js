@@ -21,6 +21,13 @@ const userSchema = new Schema(
         estado: { type: Boolean, default: true },
         online: { type: Boolean, default: false },
         avatar: { type: String, default: "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg" },
+        // Nuevos Campos
+        fecha_nacimiento: { type: Date },
+        genero: { type: String },
+        area: { type: String },
+        areaE: { type: Schema.Types.ObjectId, ref: 'Area', default: null},
+        fecha_ingreso: { type: Date },
+        documento: { type: String },
     },
     {
         timestamps: true,

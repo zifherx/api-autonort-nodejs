@@ -1,50 +1,52 @@
-import jwt from 'jsonwebtoken'
-import config from '../config/config'
-import User from '../models/User'
+import jwt from "jsonwebtoken";
+import config from "../config/config";
+import User from "../models/User";
 
-export const signIn = async(req, res) => {
+const authController = {};
+
+authController.signIn = async (req, res) => {
     const { username, password } = req.body;
 
     const userFound = await User.findOne({ username });
 
-    if (!userFound) return res.status(404).json({ message: 'Usuario no existe' });
+    if (!userFound) return res.status(404).json({ message: "Usuario no existe" });
 
-    if (!userFound.status) return res.status(403).json({ message: 'Usuario inactivo' });
+    if (!userFound.status) return res.status(403).json({ message: "Usuario inactivo" });
 
     // if (userFound.online) return res.status(401).json({ message: 'Usuario ya se encuentra logueado' });
 
     const matchPassword = await User.comparePassword(password, userFound.password);
 
-    if (!matchPassword) return res.status(403).json({ token: null, message: 'Contraseña Errónea' });
+    if (!matchPassword) return res.status(403).json({ token: null, message: "Contraseña Errónea" });
 
-    const token = jwt.sign({ id: userFound._id }, config.SECRET, { expiresIn: '48h' });
+    const token = jwt.sign({ id: userFound._id }, config.SECRET, { expiresIn: "48h" });
 
     //Cambio de estado a online
     await User.findByIdAndUpdate(userFound._id, { online: true });
 
-    console.log('Token:', token);
+    console.log("Token:", token);
 
     res.json({ token, codigo: userFound._id });
-}
+};
 
-export const changePassword = async(req, res) => {
+authController.changePassword = async (req, res) => {
     const { id } = res.locals.jwtPayload;
     const { oldPassword, newPassword } = req.body;
     let user;
 
     if (!(oldPassword && newPassword)) {
-        res.status(400).json({ message: 'Contraseña Anterior y Nueva Contraseña son necesarios' });
+        res.status(400).json({ message: "Contraseña Anterior y Nueva Contraseña son necesarios" });
     }
 
     try {
         user = await User.findById(id);
     } catch (err) {
-        return res.status(404).json({ message: 'Usuario no existe' })
+        return res.status(404).json({ message: "Usuario no existe" });
     }
 
     const matchPassword = await User.comparePassword(oldPassword, user.password);
 
-    if (!matchPassword) return res.status(401).json({ message: 'Contraseña actual errónea' });
+    if (!matchPassword) return res.status(401).json({ message: "Contraseña actual errónea" });
 
     try {
         user.password = await User.encryptPassword(newPassword);
@@ -52,31 +54,31 @@ export const changePassword = async(req, res) => {
         const guardado = await user.save();
 
         if (guardado) {
-            res.json({ message: 'Contraseña actualizada con éxito' });
+            res.json({ message: "Contraseña actualizada con éxito" });
         }
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const cerrarSesion = async(req, res) => {
+authController.cerrarSesion = async (req, res) => {
     const { id } = res.locals.jwtPayload;
 
     try {
         const userFound = await User.findById(id);
 
-        if (!userFound.online) return res.status(401).json({ message: 'No existe sesión abierta' });
+        if (!userFound.online) return res.status(401).json({ message: "No existe sesión abierta" });
 
         const offline = await User.findByIdAndUpdate(id, { online: false });
 
-        if (offline) return res.json({ message: 'Sesión cerrada con éxito' });
+        if (offline) return res.json({ message: "Sesión cerrada con éxito" });
     } catch (err) {
         return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const forzarCierre = async(req, res) => {
+authController.forzarCierre = async (req, res) => {
     const { username } = req.body;
 
     try {
@@ -84,24 +86,44 @@ export const forzarCierre = async(req, res) => {
 
         let codUser = userFound._id;
 
-        if (!userFound) return res.status(404).json({ message: 'Usuario no existe' });
+        if (!userFound) return res.status(404).json({ message: "Usuario no existe" });
 
-        if (!userFound.online) return res.status(401).json({ message: 'No existe sesión iniciada' });
+        if (!userFound.online) return res.status(401).json({ message: "No existe sesión iniciada" });
 
         const offline = await User.findByIdAndUpdate(codUser, { online: false });
 
-        if (offline) return res.json({ message: 'Se cerró la sesión de forma forzada' })
-
+        if (offline) return res.json({ message: "Se cerró la sesión de forma forzada" });
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export const refreshToken = async(req, res) => {
+authController.refreshToken = async (req, res) => {
     const refreshTok = req.headers.refresh;
 
-    if (!refreshTok) res.status(400).json({ message: 'Algo salió mal' })
+    if (!refreshTok) res.status(400).json({ message: "Algo salió mal" });
+};
 
+authController.resetPassword = async (req, res) => {
+    const { id } = res.locals.jwtPayload;
 
-}
+    const userFound = await User.findById(id);
+    if (!userFound) return res.status(404).json({ message: `Usuario no existe` });
+
+    const matchPassword = await User.comparePassword(userFound.documento, userFound.password);
+    // console.log(matchPassword);
+    if (matchPassword) return res.status(201).json({ message: `Contraseña ya reseteada` });
+
+    try {
+        userFound.password = await User.encryptPassword(userFound.documento);
+        const saved = await userFound.save();
+
+        if (saved) res.json({ message: `Contraseña reseteada con éxito` });
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+export default authController;

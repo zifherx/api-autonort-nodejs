@@ -3,9 +3,9 @@ import Anio from "../models/Anio";
 import CategoriaCircular from "../models/CategoriaCircular";
 import TipoCampania from "../models/TipoCampania";
 
-const circularController = {};
+const itemController = {};
 
-circularController.createOne = async (req, res) => {
+itemController.createOne = async (req, res) => {
     const { codigo_interno, fecha_registro, nombre, anio, anioE, mes, categoria, categoriaE, tipo, tipoE } = req.body;
     const avatar = req.file;
 
@@ -43,7 +43,7 @@ circularController.createOne = async (req, res) => {
     }
 };
 
-circularController.getAll = async (req, res) => {
+itemController.getAll = async (req, res) => {
     try {
         const query = await Circular.find()
             .sort({ fecha_registro: -1 })
@@ -71,19 +71,75 @@ circularController.getAll = async (req, res) => {
     }
 };
 
-circularController.deleteOneById = async (req, res) => {
-    const {itemId} = req.params;
+itemController.deleteOneById = async (req, res) => {
+    const { itemId } = req.params;
     try {
         const query = await Circular.findByIdAndDelete(itemId);
-        if(query){
-            res.json({message: `Circular eliminada con éxito`});
-        }else{
-            return res.status(404).json({message: `Circular ${itemId} no encontrada`});
+        if (query) {
+            res.json({ message: `Circular eliminada con éxito` });
+        } else {
+            return res.status(404).json({ message: `Circular ${itemId} no encontrada` });
         }
     } catch (err) {
         console.log(err);
-        return res.status(503).json({message: err.message});
+        return res.status(503).json({ message: err.message });
     }
-}
+};
 
-export default circularController;
+itemController.getAllByYear = async (req, res) => {
+    const { year, month } = req.query;
+    let query = null;
+
+    // console.log("Y: ", year);
+    // console.log("M: ", month);
+
+    try {
+        if (month == null || month == undefined) {
+            query = await Circular.find({
+                anio: {$regex: '.*' + year + '.*'},
+            })
+                .sort({ mes: 1 })
+                .populate({
+                    path: "anioE",
+                    select: "name",
+                })
+                .populate({
+                    path: "categoriaE",
+                    select: "name",
+                })
+                .populate({
+                    path: "tipoE",
+                    select: "name",
+                });
+        } else {
+            query = await Circular.find({
+                anio: year,
+                mes: month,
+            })
+                .sort({ mes: 1 })
+                .populate({
+                    path: "anioE",
+                    select: "name",
+                })
+                .populate({
+                    path: "categoriaE",
+                    select: "name",
+                })
+                .populate({
+                    path: "tipoE",
+                    select: "name",
+                });
+        }
+
+        if (query.length > 0) {
+            res.json({ total: query.length, all: query });
+        } else {
+            return res.status(404).json({ message: `No existen circulares en el año ${year}` });
+        }
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+export default itemController;

@@ -75,6 +75,7 @@ const saleSchema = new Schema(
 		herramientas_tdp: { type: Number, default: 0 },
 		herramientas_maf: { type: Number, default: 0 },
 		acuerdoTDP: { type: Number, default: 0},
+        acuerdotdp_gerencia: { type: Number, default: 0 },
 		observacion_adv: { type: String },
 		//Accesorio
 		accesorios: [{ ref: "Props", type: Schema.Types.ObjectId }],

@@ -1,6 +1,7 @@
 import User from "../models/User";
 import Role from "../models/Role";
 import Sucursal from "../models/Sucursal";
+import Area from "../models/Area";
 
 const userController = {};
 
@@ -15,6 +16,10 @@ userController.getAll = async (req, res) => {
             })
             .populate({
                 path: "sedeAcargo",
+                select: "name",
+            })
+            .populate({
+                path: "areaE",
                 select: "name",
             })
             .populate({
@@ -44,6 +49,10 @@ userController.getAllActivos = async (req, res) => {
             })
             .populate({
                 path: "sedeAcargo",
+                select: "name",
+            })
+            .populate({
+                path: "areaE",
                 select: "name",
             })
             .populate({
@@ -77,6 +86,10 @@ userController.getOneById = async (req, res) => {
                 select: "name",
             })
             .populate({
+                path: "areaE",
+                select: "name",
+            })
+            .populate({
                 path: "sucursalE",
                 select: "name",
             });
@@ -93,7 +106,24 @@ userController.getOneById = async (req, res) => {
 };
 
 userController.createOne = async (req, res) => {
-    const { name, username, password, sucursal, sucursalE, sedeAcargo, roles, estado } = req.body;
+    const {
+        name,
+        username,
+        password,
+        sucursal,
+        sucursalE,
+        sedeAcargo,
+        roles,
+        estado,
+        fecha_nacimiento,
+        genero,
+        area,
+        areaE,
+        fecha_ingreso,
+        documento,
+        phone,
+        email,
+    } = req.body;
 
     try {
         const newUser = new User({
@@ -102,6 +132,13 @@ userController.createOne = async (req, res) => {
             sucursal,
             password: await User.encryptPassword(password),
             estado,
+            fecha_nacimiento,
+            genero,
+            area,
+            fecha_ingreso,
+            documento,
+            phone,
+            email,
         });
 
         const sucursalFound = await Sucursal.findOne({ name: sucursalE });
@@ -120,6 +157,10 @@ userController.createOne = async (req, res) => {
             newUser.roles = [role._id];
         }
 
+        const areaFound = await Area.findOne({ name: areaE });
+        if (!areaFound) return res.status(404).json({ message: `Area ${areaE} no encontrada` });
+        newUser.areaE = areaFound._id;
+
         const query = await newUser.save();
 
         if (query) {
@@ -133,8 +174,11 @@ userController.createOne = async (req, res) => {
 
 userController.updateOneById = async (req, res) => {
     const { userId } = req.params;
-    const { name, username, sucursalE, email, phone, sedeAcargo, roles, estado } = req.body;
+    const { name, username, sucursalE, email, phone, sedeAcargo, roles, estado, fecha_nacimiento, genero, area, areaE, fecha_ingreso, documento } =
+        req.body;
+    // console.log('BODY: ',req.body);
     const avatar = req.file;
+    let areaNull = null;
 
     try {
         let query = null;
@@ -144,6 +188,14 @@ userController.updateOneById = async (req, res) => {
 
         const cargoFound = await Sucursal.find({ name: { $in: sedeAcargo } });
         if (!cargoFound) return res.status(404).json({ message: `Sede ${sedeAcargo} no encontrada` });
+
+        if (areaE == null || areaE == undefined || areaE == '' || areaE == 'null') {
+            areaNull = null;
+        } else {
+            const areaFound = await Area.findOne({ name: areaE });
+            if (!areaFound) return res.status(404).json({ message: `Area ${areaE} no encontrada` });
+            areaNull = areaFound._id;
+        }
 
         const roleFound = await Role.find({ name: { $in: roles } });
         if (!roleFound) return res.status(404).json({ message: `Rol ${roles} no encontrado` });
@@ -158,6 +210,12 @@ userController.updateOneById = async (req, res) => {
                 email,
                 phone,
                 estado,
+                fecha_nacimiento,
+                genero,
+                area,
+                areaE: areaNull,
+                fecha_ingreso,
+                documento,
             });
         } else {
             query = await User.findByIdAndUpdate(userId, {
@@ -170,6 +228,12 @@ userController.updateOneById = async (req, res) => {
                 email,
                 phone,
                 estado,
+                fecha_nacimiento,
+                genero,
+                area,
+                areaE: areaNull,
+                fecha_ingreso,
+                documento,
             });
         }
 

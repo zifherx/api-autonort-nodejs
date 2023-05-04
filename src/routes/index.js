@@ -96,6 +96,9 @@ import estadoGPSRoutes from './estadoGPS.routes';
 import gpsRoutes from './gps.routes';
 import goalsRoutes from './metasAutonort.routes';
 import seguimientoRoutes from './seguimientoComercial.routes';
+import tipoMejoraKaizenRoutes from './tipoMejoraKaizen.routes';
+import ubicacionMejoraKaizenRoutes from './ubicacionMejoraKaizen.routes';
+import impactoMejoraKaizenRoutes from './impactoKPIKaizen.routes';
 
 router.get('/', (req, res) => {
     res.send('Api Swagger')
@@ -193,6 +196,9 @@ router.use('/estado-gps', estadoGPSRoutes);
 router.use('/gps', gpsRoutes);
 router.use('/goals-autonort',goalsRoutes);
 router.use('/seguimiento',seguimientoRoutes);
+router.use('/tipo-kaizen',tipoMejoraKaizenRoutes);
+router.use('/ubicacion-kaizen',ubicacionMejoraKaizenRoutes);
+router.use('/impacto-kaizen',impactoMejoraKaizenRoutes);
 //Modulos
 router.use('/menuG', menuGRoutes);
 router.use('/moduloG', moduloGRoutes);

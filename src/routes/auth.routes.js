@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import * as authCtrl from '../controllers/auth.controller'
+import authCtrl from '../controllers/auth.controller'
 import { authJwt, verifySignup } from '../middlewares'
 
 const router = Router();
@@ -11,5 +11,7 @@ router.post('/change-password', [authJwt.verifyToken], authCtrl.changePassword);
 router.post('/force-logout', [authJwt.verifyToken], authCtrl.forzarCierre);
 
 router.post('/logout', [authJwt.verifyToken], authCtrl.cerrarSesion);
+
+router.post('/reset-password', [authJwt.verifyToken], authCtrl.resetPassword);
 
 export default router;
