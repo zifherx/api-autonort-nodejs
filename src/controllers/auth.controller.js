@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import config from "../config/config";
 import User from "../models/User";
+import Role from "../models/Role";
 
 const authController = {};
 
@@ -107,17 +108,24 @@ authController.refreshToken = async (req, res) => {
 
 authController.resetPassword = async (req, res) => {
     const { id } = res.locals.jwtPayload;
+    const { userMod } = req.body;
 
-    const userFound = await User.findById(id);
-    if (!userFound) return res.status(404).json({ message: `Usuario no existe` });
+    const userAdminFound = await User.findById(id);
+    if (!userAdminFound) return res.status(404).json({ message: `JWT No válido` });
 
-    const matchPassword = await User.comparePassword(userFound.documento, userFound.password);
-    // console.log(matchPassword);
-    if (matchPassword) return res.status(201).json({ message: `Contraseña ya reseteada` });
+    const userResetFound = await User.findOne({ username: userMod });
+    if (!userResetFound) return res.status(404).json({ message: `Usuario no existe` });
+
+    const roleAdmin = await Role.findById(userAdminFound.roles[0]);
+    // console.log(roleAdmin);
+    if (roleAdmin.name !== "Administrador") return res.status(404).json({ message: `Usuario no es Administrador` });
+
+    const matchPassword = await User.comparePassword(userResetFound.documento, userResetFound.password);
+    if (matchPassword) return res.status(201).json({ message: `Contraseña ya reseteada!` });
 
     try {
-        userFound.password = await User.encryptPassword(userFound.documento);
-        const saved = await userFound.save();
+        userResetFound.password = await User.encryptPassword(userResetFound.documento);
+        const saved = await userResetFound.save();
 
         if (saved) res.json({ message: `Contraseña reseteada con éxito` });
     } catch (err) {
