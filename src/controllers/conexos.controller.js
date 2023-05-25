@@ -210,10 +210,15 @@ conexosController.getAsesorByName = async (req, res) => {
     const { name } = req.body;
 
     try {
-        const query = await Conexos.findOne({ name })
+        const query = await Conexos.findOne({ name, estado: true })
+            // console.log("Q:", query);
             .select("name email areaE sucursalE encargadoDe")
             .populate({
                 path: "areaE",
+                select: "name",
+            })
+            .populate({
+                path: "encargadoDe",
                 select: "name",
             })
             .populate({
