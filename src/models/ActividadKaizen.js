@@ -14,31 +14,27 @@ const actividadSchema = new Schema(
         titulo_actividad: { type: String },
         area: { type: Schema.Types.ObjectId, ref: "Area", default: null },
         tipoMejora: { type: String }, //nuevo.31.03.23
-        tipoMejoraE: { type: Schema.Types.ObjectId, ref: 'TipoMejora', default: null }, //nuevo.31.03.23
+        tipoMejoraE: { type: Schema.Types.ObjectId, ref: "TipoMejora", default: null }, //nuevo.31.03.23
         ubicacionMejora: { type: String }, //nuevo.31.03.23
-        ubicacionMejoraE: { type: Schema.Types.ObjectId, ref: 'UbicacionMejora', default: null }, //nuevo.31.03.23
+        ubicacionMejoraE: { type: Schema.Types.ObjectId, ref: "UbicacionMejora", default: null }, //nuevo.31.03.23
         // Problema
         problema: { type: String },
-        tituloFotoProblema: { type: String },
-        evidenciaProblema: { type: String },
         descripcionProblema: { type: String },
-        flujogramaProblema: { type: String },
         graficoProblema: { type: String },
         causaRaizProblema: { type: String }, //nuevo.31.03.23
         // Contramedida
         contramedida: { type: String },
-        tituloFotoContramedida: { type: String },
-        avatarContramedida: { type: String },
         descripcionContramedida: { type: String },
-        flujogramaContramedida: { type: String },
+        graficoContramedida: { type: String },
         // Resultados
         resultados: { type: String },
-        indicadores_cualitativos: { type: String },
-        titulo_indicadores_cuantitativos: { type: String },
-        indicadores_cuantitativos: { type: String },
+        graficoResultados: { type: String },
         descripcionResultados: { type: String },
+        resultado_Antes: { type: Number },
+        resultado_Ahora: { type: Number },
         kpiImpacto: { type: String }, //nuevo.31.03.23
-        kpiImpactoE: { type: Schema.Types.ObjectId, ref: 'ImpactoKPI', default: null }, //nuevo.31.03.23
+        kpiImpactoE: { type: Schema.Types.ObjectId, ref: "ImpactoKPI", default: null }, //nuevo.31.03.23
+        // ANEXOS
         proximas_actividades: { type: String },
         titular: { type: String },
         anexos: [{ type: String }],

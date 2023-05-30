@@ -127,20 +127,18 @@ activityController.createOne = async (req, res) => {
         //*********** Actividad **********/
         //*********** Problema **********/
         problema,
-        tituloFotoProblema,
         descripcionProblema,
         causaRaizProblema,
         //*********** Problema **********/
         //*********** Contramedida **********/
         contramedida,
         descripcionContramedida,
-        tituloFotoContramedida,
         //*********** Contramedida **********/
         //*********** Resultados **********/
         resultados,
-        indicadores_cualitativos,
-        titulo_indicadores_cuantitativos,
         descripcionResultados,
+        resultado_Antes,
+        resultado_Ahora,
         proximas_actividades,
         titular,
         kpiImpacto,
@@ -156,33 +154,34 @@ activityController.createOne = async (req, res) => {
         responsable,
         fechaBorrador,
     } = req.body;
-    const { evidenciaProblema, flujogramaProblema, graficoProblema, avatarContramedida, flujogramaContramedida, indicadores_cuantitativos, anexos } =
-        req.files;
+    const { graficoProblema, graficoContramedida, graficoResultados, anexos } = req.files;
 
-    // console.log("Adjuntos:", req.files);
-    let flujoProblema = null;
-    let grafiProblema = null;
-    let flujoContramedida = null;
+    let grafProblema = null;
+    let grafContramedida = null;
+    let grafResultados = null;
+    let anexosNull = null;
 
     try {
-        if (flujogramaProblema == null || flujogramaProblema == undefined) {
-            flujoProblema = "";
-        } else {
-            flujoProblema = flujogramaProblema[0].location;
-        }
-
         if (graficoProblema == null || graficoProblema == undefined) {
-            grafiProblema = "";
+            grafProblema = "";
         } else {
-            grafiProblema = graficoProblema[0].location;
+            grafProblema = graficoProblema[0].location;
+        }
+        if (graficoContramedida == null || graficoContramedida == undefined) {
+            grafContramedida = "";
+        } else {
+            grafContramedida = graficoContramedida[0].location;
+        }
+        if (graficoResultados == null || graficoResultados == undefined) {
+            grafResultados = "";
+        } else {
+            grafResultados = graficoResultados[0].location;
         }
 
-        if (flujogramaContramedida == null || flujogramaContramedida == undefined) {
-            flujoContramedida = "";
-        } else {
-            flujoContramedida = flujogramaContramedida[0].location;
-        }
-
+        // console.log("Problema", grafProblema);
+        // console.log("Contramedida", grafContramedida);
+        // console.log("Resultado", grafResultados);
+        // console.log("Anexos", anexos == (null || undefined) ? [] : anexos.map((a) => a.location));
         const newObj = new ActividadKaizen({
             cod_interno,
             titulo_actividad,
@@ -193,34 +192,29 @@ activityController.createOne = async (req, res) => {
             ubicacionMejora,
             // Problema
             problema,
-            tituloFotoProblema,
             descripcionProblema,
-            evidenciaProblema: evidenciaProblema[0].location,
-            flujogramaProblema: flujoProblema,
-            graficoProblema: grafiProblema,
+            graficoProblema: grafProblema,
             causaRaizProblema,
             // Contramedida
             contramedida,
-            tituloFotoContramedida,
-            avatarContramedida: avatarContramedida[0].location,
             descripcionContramedida,
-            flujogramaContramedida: flujoContramedida,
+            graficoContramedida: grafContramedida,
             // Resultados
             resultados,
-            indicadores_cualitativos,
-            titulo_indicadores_cuantitativos,
-            indicadores_cuantitativos: indicadores_cuantitativos[0].location,
             descripcionResultados,
+            resultado_Antes,
+            resultado_Ahora,
+            graficoResultados: grafResultados,
+            kpiImpacto,
+            // Anexos
             proximas_actividades,
             titular,
-            anexos: anexos.map((a) => a.location),
-            kpiImpacto,
+            anexos: anexos == (null || undefined) ? [] : anexos.map((a) => a.location),
             // General
             estado,
             responsable,
             fechaBorrador,
         });
-
         if (area == null || area == undefined) {
             newObj.area = null;
         } else {
@@ -228,7 +222,6 @@ activityController.createOne = async (req, res) => {
             if (!areaFound) return res.status(404).json({ message: `Area ${area} no encontrada` });
             newObj.area = areaFound._id;
         }
-
         if (sucursalE == null || sucursalE == undefined) {
             newObj.sucursalE = null;
         } else {
@@ -236,7 +229,6 @@ activityController.createOne = async (req, res) => {
             if (!sucursalFound) return res.status(404).json({ message: `Sucursal ${sucursalE} no encontrada` });
             newObj.sucursalE = sucursalFound._id;
         }
-
         if (tipoMejoraE == null || tipoMejoraE == undefined) {
             newObj.tipoMejoraE = null;
         } else {
@@ -244,7 +236,6 @@ activityController.createOne = async (req, res) => {
             if (!tipoMejoraFound) return res.status(404).json({ message: `Tipo de Mejora ${tipoMejoraE} no encontrada` });
             newObj.tipoMejoraE = tipoMejoraFound._id;
         }
-
         if (ubicacionMejoraE == null || ubicacionMejoraE == undefined) {
             newObj.ubicacionMejoraE = null;
         } else {
@@ -252,7 +243,6 @@ activityController.createOne = async (req, res) => {
             if (!ubicacionMejoraFound) return res.status(404).json({ message: `Ubicación mejora ${ubicacionMejoraE} no encontrada` });
             newObj.ubicacionMejoraE = ubicacionMejoraFound._id;
         }
-
         if (kpiImpactoE == null || kpiImpactoE == undefined) {
             newObj.kpiImpactoE = null;
         } else {
@@ -260,17 +250,13 @@ activityController.createOne = async (req, res) => {
             if (!kpiFound) return res.status(404).json({ message: `KPI ${kpiImpactoE} no encontrado` });
             newObj.kpiImpactoE = kpiFound._id;
         }
-
         const createdFound = await User.findOne({ username: createdBy });
         if (!createdFound) return res.status(404).json({ message: `Usuario ${createdBy} no encontrado` });
         newObj.createdBy = createdFound._id;
-
         const estadoFound = await EstadoKaizen.findOne({ name: estadoE });
         if (!estadoFound) return res.status(404).json({ message: `Estado ${estadoE} no encontrado` });
         newObj.estadoE = estadoFound._id;
-
         const query = await newObj.save();
-
         if (query) {
             res.json({ message: "Actividad creada con éxito" });
         }
@@ -291,18 +277,16 @@ activityController.updateOneById = async (req, res) => {
         ubicacionMejoraE,
         //*********** Problema **********/
         problema,
-        tituloFotoProblema,
         descripcionProblema,
         causaRaizProblema,
         //*********** Contramedida **********/
         contramedida,
         descripcionContramedida,
-        tituloFotoContramedida,
         //*********** Resultados **********/
         resultados,
-        indicadores_cualitativos,
-        titulo_indicadores_cuantitativos,
         descripcionResultados,
+        resultado_Antes,
+        resultado_Ahora,
         proximas_actividades,
         titular,
         kpiImpacto,
@@ -323,14 +307,15 @@ activityController.updateOneById = async (req, res) => {
         fechaAprobado,
     } = req.body;
     const { itemId } = req.params;
-    const { evidenciaProblema, flujogramaProblema, graficoProblema, avatarContramedida, flujogramaContramedida, indicadores_cuantitativos, anexos } =
-        req.files;
+    const { graficoProblema, graficoContramedida, graficoResultados, anexos } = req.files;
 
-    console.log("Adjuntos:", anexos);
+    // console.log("Adjuntos:", anexos);
+    // console.log(req.params);
+    // console.log(req.body);
 
-    let flujoProblema = null;
     let grafiProblema = null;
-    let flujoContramedida = null;
+    let grafiContramedida = null;
+    let grafiResultados = null;
     let areaNull = null;
     let sucursalNull = null;
     let tipoMejoraNull = null;
@@ -379,25 +364,25 @@ activityController.updateOneById = async (req, res) => {
             kpiImpactoNull = kpiFound._id;
         }
 
-        if (flujogramaProblema == null || flujogramaProblema == undefined) {
-            flujoProblema = "";
-        } else {
-            flujoProblema = flujogramaProblema[0].location;
-        }
-
         if (graficoProblema == null || graficoProblema == undefined) {
             grafiProblema = "";
         } else {
             grafiProblema = graficoProblema[0].location;
         }
 
-        if (flujogramaContramedida == null || flujogramaContramedida == undefined) {
-            flujoContramedida = "";
+        if (graficoContramedida == null || graficoContramedida == undefined) {
+            grafiContramedida = "";
         } else {
-            flujoContramedida = flujogramaContramedida[0].location;
+            grafiContramedida = graficoContramedida[0].location;
         }
 
-        const evidenciaExiste = await ActividadKaizen.findById(itemId)
+        if (graficoResultados == null || graficoResultados == undefined) {
+            grafiResultados = "";
+        } else {
+            grafiResultados = graficoResultados[0].location;
+        }
+
+        const evidenciaExiste = await ActividadKaizen.findById(itemId);
         // console.log(evidenciaExiste.evidenciaProblema);
 
         const estadoFound = await EstadoKaizen.findOne({ name: estadoE });
@@ -415,24 +400,19 @@ activityController.updateOneById = async (req, res) => {
                 sucursalE: sucursalNull,
                 // Problema
                 problema,
-                tituloFotoProblema,
                 descripcionProblema,
-                evidenciaProblema: evidenciaProblema == (null || undefined) ? evidenciaExiste.evidenciaProblema : evidenciaProblema[0].location,
-                flujogramaProblema: flujogramaProblema == (null || undefined) ? evidenciaExiste.flujogramaProblema : flujoProblema,
                 graficoProblema: graficoProblema == (null || undefined) ? evidenciaExiste.graficoProblema : grafiProblema,
                 causaRaizProblema,
                 // Contramedida
                 contramedida,
-                tituloFotoContramedida,
                 descripcionContramedida,
-                avatarContramedida: avatarContramedida == (null || undefined) ? evidenciaExiste.avatarContramedida : avatarContramedida[0].location,
-                flujoContramedida: flujogramaContramedida == (null || undefined) ? evidenciaExiste.flujogramaContramedida : flujoContramedida,
+                graficoContramedida: graficoContramedida == (null || undefined) ? evidenciaExiste.graficoContramedida : grafiContramedida,
                 // Resultados
                 resultados,
-                indicadores_cualitativos,
-                titulo_indicadores_cuantitativos,
-                indicadores_cuantitativos: indicadores_cuantitativos == (null || undefined) ? evidenciaExiste.indicadores_cuantitativos : indicadores_cuantitativos[0].location,
                 descripcionResultados,
+                graficoResultados: graficoResultados == (null || undefined) ? evidenciaExiste.graficoResultados : grafiResultados,
+                resultado_Antes,
+                resultado_Ahora,
                 kpiImpacto,
                 kpiImpactoE: kpiImpactoNull,
                 proximas_actividades,
@@ -470,6 +450,9 @@ activityController.updateOneById = async (req, res) => {
             });
         }
 
+        // console.log("Estado:", estadoFound);
+        // console.log("Q:", query);
+
         if (query) {
             res.json({ message: `Actividad actualizada con éxito` });
         } else {
@@ -481,7 +464,30 @@ activityController.updateOneById = async (req, res) => {
     }
 };
 
-activityController.updateEvidencesById = async (req, res) => {};
+activityController.sendActivityToEvaluate = async (req, res) => {
+    const { estado, estadoE, isProceso, fechaProceso } = req.body;
+    const { itemId } = req.params;
+
+    try {
+        const estadoFound = await EstadoKaizen.findOne({ name: estadoE });
+        if (!estadoFound) return res.status(404).json({ message: `Estado ${estadoE} no encontrado` });
+
+        const query = await ActividadKaizen.findByIdAndUpdate(itemId, {
+            estado,
+            estadoE: estadoFound._id,
+            isProceso,
+            fechaProceso,
+        });
+        if (query) {
+            res.json({ message: `Actividad enviada a evaluación con éxito` });
+        } else {
+            return res.status(404).json({ message: `Actividad ${itemId} no encontrada` });
+        }
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: err.message });
+    }
+};
 
 activityController.deleteOneById = async (req, res) => {
     const { itemId } = req.params;

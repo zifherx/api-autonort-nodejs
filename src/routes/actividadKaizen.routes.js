@@ -9,18 +9,12 @@ router.get("/", activityController.getAll);
 router.get("/:itemId", activityController.getOneById);
 router.post(
     "/",
-    authJwt.verifyToken,
+    // authJwt.verifyToken,
     multer.fields([
-        // Problema
-        { name: "evidenciaProblema", maxCount: 1 },
-        { name: "flujogramaProblema", maxCount: 1 },
         { name: "graficoProblema", maxCount: 1 },
-        // Contramedida
-        { name: "avatarContramedida", maxCount: 1 },
-        { name: "flujogramaContramedida", maxCount: 1 },
-        // Resultados
-        { name: "indicadores_cuantitativos", maxCount: 1 },
-        { name: "anexos", maxCount: 10 },
+        { name: "graficoContramedida", maxCount: 1 },
+        { name: "graficoResultados", maxCount: 1 },
+        { name: "anexos[]", maxCount: 10 },
     ]),
     activityController.createOne
 );
@@ -29,19 +23,17 @@ router.patch(
     authJwt.verifyToken,
     multer.fields([
         // Problema
-        { name: "evidenciaProblema", maxCount: 1 },
-        { name: "flujogramaProblema", maxCount: 1 },
         { name: "graficoProblema", maxCount: 1 },
         // Contramedida
-        { name: "avatarContramedida", maxCount: 1 },
-        { name: "flujogramaContramedida", maxCount: 1 },
+        { name: "graficoContramedida", maxCount: 1 },
         // Resultados
-        { name: "indicadores_cuantitativos", maxCount: 1 },
-        { name: "anexos", maxCount: 10 },
+        { name: "graficoResultados", maxCount: 1 },
+        // Anexos
+        { name: "anexos[]", maxCount: 10 },
     ]),
     activityController.updateOneById
 );
-router.patch("/evidences/:itemId", activityController.updateEvidencesById);
+router.patch("/rate/:itemId", activityController.sendActivityToEvaluate);
 router.delete("/:itemId", activityController.deleteOneById);
 
 export default router;
