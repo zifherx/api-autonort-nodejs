@@ -30,8 +30,8 @@ const actividadSchema = new Schema(
         resultados: { type: String },
         graficoResultados: { type: String },
         descripcionResultados: { type: String },
-        resultado_Antes: { type: Number },
-        resultado_Ahora: { type: Number },
+        resultado_Antes: { type: String },
+        resultado_Ahora: { type: String },
         kpiImpacto: { type: String }, //nuevo.31.03.23
         kpiImpactoE: { type: Schema.Types.ObjectId, ref: "ImpactoKPI", default: null }, //nuevo.31.03.23
         // ANEXOS

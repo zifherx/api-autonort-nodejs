@@ -473,6 +473,7 @@ activityController.sendActivityToEvaluate = async (req, res) => {
         if (!estadoFound) return res.status(404).json({ message: `Estado ${estadoE} no encontrado` });
 
         const query = await ActividadKaizen.findByIdAndUpdate(itemId, {
+            sendToEvaluate: true,
             estado,
             estadoE: estadoFound._id,
             isProceso,
