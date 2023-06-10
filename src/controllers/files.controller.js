@@ -307,6 +307,8 @@ fileController.createOne = async (req, res) => {
         mesReportado,
         createdBy,
         fechaCreacionS,
+        getGPS,
+        importeGPS,
     } = req.body;
 
     try {
@@ -337,6 +339,8 @@ fileController.createOne = async (req, res) => {
             estatus_venta,
             sucursal_venta,
             fechaCreacionS,
+            getGPS,
+            importeGPS,
         });
 
         //Seller Obligado
@@ -545,6 +549,8 @@ fileController.updateOneById = async (req, res) => {
         sucursalE,
         estadoVentaE,
         fecha_cancelacion,
+        getGPS,
+        importeGPS,
         estatus_venta,
         fecha_facturacion_tdp,
         estadoFacturacionE,
@@ -774,6 +780,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -831,6 +839,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -888,6 +898,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -945,6 +957,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -1002,6 +1016,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -1059,6 +1075,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -1116,6 +1134,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -1173,6 +1193,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -1230,6 +1252,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -1287,6 +1311,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -1344,6 +1370,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -1401,6 +1429,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -1458,6 +1488,8 @@ fileController.updateOneById = async (req, res) => {
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
+                    getGPS,
+                    importeGPS,
                     colorE: colorNull,
                     anioFabricacionE: anioFNull,
                     anioModeloE: anioMNull,
@@ -1512,6 +1544,8 @@ fileController.updateOneById = async (req, res) => {
                     cliente: customerFound._id,
                     auto: autoFound._id,
                     estadoVehiculoE: estadoVehicularFound._id,
+                    getGPS,
+                    importeGPS,
                     tipoOperacionE: operacionFound._id,
                     sucursalE: sucursalFound._id,
                     estadoVentaE: situacionFound._id,
@@ -2670,7 +2704,7 @@ fileController.getFilesWithModeloByStock = async (req, res) => {
             {
                 $match: {
                     sucursal_venta: { $regex: ".*" + sucursal + ".*" },
-                    estatus_venta: { $regex: '.*' + estadoE + '.*' },
+                    estatus_venta: { $regex: ".*" + estadoE + ".*" },
                     fecha_cancelacion: {
                         $gte: new Date(start),
                         $lte: new Date(end),
@@ -2720,8 +2754,8 @@ fileController.getFilesWithModeloByStock = async (req, res) => {
                 },
             },
             {
-                $sort:{ "vehicle.cod_tdp" : 1}
-            }
+                $sort: { "vehicle.cod_tdp": 1 },
+            },
         ]);
 
         if (query.length === 0) {

@@ -45,6 +45,15 @@ const actividadSchema = new Schema(
         estadoE: { type: Schema.Types.ObjectId, ref: "EstadoKaizen" },
         observaciones_generales: { type: String },
         sendToEvaluate: { type: Boolean, default: false },
+        //Qualify By TDP
+        metodologia_tdp: { type: String },
+        comentario_1: { type: String },
+        impacto_tdp: { type: String },
+        comentario_2: { type: String },
+        puntaje_tdp: { type: String },
+        estadoTDP: { type: String },
+        estadoTDP_E: { type: Schema.Types.ObjectId, ref: "EstadoTDPKaizen", default: null },
+        motivo_tdp: { type: String },
         //LOGS
         isBorrador: { type: Boolean, default: true },
         fechaBorrador: { type: Date },

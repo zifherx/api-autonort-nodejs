@@ -1,8 +1,8 @@
-import { config } from 'dotenv';
+import { config } from "dotenv";
 config();
 
 export default {
-    SECRET: 'ADV_API',
+    SECRET: "ADV_API",
     // OFFLINE
     // mongoSCIdbURL: process.env.MONGO_URI_SCI_OFFLINE,
     // mongoSGLdbURL: process.env.MONGO_URI_SGL_OFFLINE,
@@ -17,5 +17,8 @@ export default {
     EMAIL_PASS: process.env.EMAIL_PASS,
     //CORREO FINANZAS
     EMAIL_FINANZAS_USER: process.env.EMAIL_FINANZAS_USER,
-    EMAIL_FINANZAS_PASS: process.env.EMAIL_FINANZAS_PASS
-}
+    EMAIL_FINANZAS_PASS: process.env.EMAIL_FINANZAS_PASS,
+    //CORREO VELOCITY KAIZEN
+    EMAIL_VK_USER: process.env.EMAIL_VK_USER,
+    EMAIL_VK_PASSWORD: process.env.EMAIL_VK_PASSWORD,
+};

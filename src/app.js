@@ -5,27 +5,8 @@ import path from "path";
 import helmet from "helmet";
 import routes from "./routes";
 import config from "./config/config";
-import * as initData from "./libs/initialSetup";
-// import fileUpload from 'express-fileupload'
 
 const app = express();
-
-// initData.createRoles();
-// initData.createUserAdmin();
-// initData.createConfigAnios();
-// initData.createConfigColor();
-// initData.createConfigChasis();
-// initData.createConfigMarca();
-// initData.createConfigBanco();
-// initData.createConfigFinanciamiento();
-// initData.createConfigModelo();
-// initData.createConfigSectorista();
-// initData.createConfigCondicion();
-// initData.createConfigSituacion();
-// initData.createConfigSucursal();
-// initData.createConfigSustento();
-// initData.createConfigUbicacion();
-// initData.createConfigStatusFile();
 
 //Settings
 app.set("port", Number(config.API_PORT) || Number(4000));
