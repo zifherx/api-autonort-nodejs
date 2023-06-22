@@ -228,6 +228,7 @@ const helperController = {
 
         const rutaActividad = await ActividadKaizen.findOne({ cod_interno });
         // console.log(rutaActividad._id);
+        // console.log(req.body);
 
         try {
             transporter = nodemailer.createTransport({
@@ -240,15 +241,19 @@ const helperController = {
                 },
             });
 
-            if (estadoE == "EN PROCESO") {
+            if (estadoE == "BORRADOR") {
+                return res.json({ message: "No envía nada" });
+            } else if (estadoE == "EN PROCESO") {
                 optionsTemplate = {
                     viewEngine: {
                         extname: ".handlebars",
+                        // extname: ".hbs",
                         layoutsDir: "src/views",
                         defaultLayout: "templateActivityNew",
                     },
                     viewPath: "src/views",
                     extname: ".handlebars",
+                    // extname: ".hbs",
                 };
 
                 transporter.use("compile", hbs(optionsTemplate));

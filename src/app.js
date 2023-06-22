@@ -15,17 +15,8 @@ app.set("port", Number(config.API_PORT) || Number(4000));
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors());
-// app.use(
-//     cors({
-//         origin: ["https://autonortnor.com", "http://localhost:8080"],
-//     })
-// );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(fileUpload({
-//     useTempFiles: true,
-//     tempFileDir: './uploads'
-// }))
 
 //Routes
 app.use("/api", routes);
@@ -33,6 +24,6 @@ app.use("/api", routes);
 //Static Files
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/views", express.static(path.join(__dirname, "views")));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 export default app;

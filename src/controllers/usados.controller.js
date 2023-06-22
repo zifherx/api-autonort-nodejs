@@ -233,7 +233,7 @@ controller.createOne = async (req, res) => {
 
         if (query) {
             await Tasacion.findByIdAndUpdate(tasacionFound._id, { pasoUsados: true });
-            res.json({ message: "Tasación creada con éxito" });
+            res.json({ message: "Seminuevo creado con éxito" });
         }
     } catch (err) {
         console.log(err);

@@ -2768,4 +2768,34 @@ fileController.getFilesWithModeloByStock = async (req, res) => {
     }
 };
 
+fileController.testBusquedaXmarcas = async (req, res) => {
+    const { codTDP, start, end, sucursalE, estadoE } = req.body;
+
+    let query = null;
+
+    try {
+        query = await Sale.find({
+            sucursal_venta: {
+                $regex: ".*" + sucursalE + ".*",
+            },
+            estatus_venta: {
+                $regex: ".*" + estadoE + ".*",
+            },
+            fecha_cancelacion: {
+                $gte: new Date(start),
+                $lte: new Date(end),
+            },
+        }).populate({
+            path: "auto",
+            match: { cod_tdp: codTDP },
+        });
+
+        if (query.length == 0) return res.status(404).json({ message: `No existen datos` });
+        res.json({ total: query.length, all: query });
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
 export default fileController;

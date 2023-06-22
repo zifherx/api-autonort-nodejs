@@ -153,7 +153,16 @@ const activityController = {
             fechaIngreso,
             responsable,
             fechaBorrador,
-            // TDP
+            // Dispositiva Entrada
+            appCodeName,
+            appName,
+            appVersion,
+            platform,
+            userAgent,
+            userAgentData,
+            isAgentMobile,
+            agentPlatform,
+            vendor,
         } = req.body;
         const { graficoProblema, graficoContramedida, graficoResultados, anexos } = req.files;
 
@@ -179,10 +188,6 @@ const activityController = {
                 grafResultados = graficoResultados[0].location;
             }
 
-            // console.log("Problema", grafProblema);
-            // console.log("Contramedida", grafContramedida);
-            // console.log("Resultado", grafResultados);
-            // console.log("Anexos", anexos == (null || undefined) ? [] : anexos.map((a) => a.location));
             const newObj = new ActividadKaizen({
                 cod_interno,
                 titulo_actividad,
@@ -260,7 +265,19 @@ const activityController = {
             if (!estadoFound) return res.status(404).json({ message: `Estado ${estadoE} no encontrado` });
             newObj.estadoE = estadoFound._id;
 
+            newObj.dispositivoEntrada.appCodeName = appCodeName;
+            newObj.dispositivoEntrada.appName = appName;
+            newObj.dispositivoEntrada.appVersion = appVersion;
+            newObj.dispositivoEntrada.platform = platform;
+            newObj.dispositivoEntrada.userAgent = userAgent;
+            newObj.dispositivoEntrada.userAgentData = JSON.parse(userAgentData);
+            newObj.dispositivoEntrada.isAgentMobile = isAgentMobile;
+            newObj.dispositivoEntrada.agentPlatform = agentPlatform;
+            newObj.dispositivoEntrada.vendor = vendor;
+
             const query = await newObj.save();
+
+            // console.log("OBJ NUEVO", query);
 
             if (query) {
                 res.json({ message: "Actividad creada con éxito" });

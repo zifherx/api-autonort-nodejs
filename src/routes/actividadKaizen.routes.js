@@ -14,7 +14,7 @@ router.post(
         { name: "graficoProblema", maxCount: 1 },
         { name: "graficoContramedida", maxCount: 1 },
         { name: "graficoResultados", maxCount: 1 },
-        { name: "anexos[]", maxCount: 10 },
+        { name: "anexos", maxCount: 10 },
     ]),
     activityController.createOne
 );
@@ -29,7 +29,7 @@ router.patch(
         // Resultados
         { name: "graficoResultados", maxCount: 1 },
         // Anexos
-        { name: "anexos[]", maxCount: 10 },
+        { name: "anexos", maxCount: 10 },
     ]),
     activityController.updateOneById
 );
