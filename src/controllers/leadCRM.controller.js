@@ -66,7 +66,8 @@ controller.getAll = async (req, res) => {
                     path: "model",
                     select: "name avatar",
                 },
-            });
+            })
+            .sort({ fecha_ingreso: -1 });
         // const query = await LeadCRM.findAllLeads();
 
         if (query.length === 0) {
