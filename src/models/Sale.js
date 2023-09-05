@@ -45,6 +45,11 @@ const saleSchema = new Schema(
         isToyotaLife: { type: Boolean, default: false }, // Nuevo campo // 28.02.2023
         getGPS: { type: Boolean, default: false }, //Nuevo campo + 08/06/2023
         importeGPS: { type: Number, default: 0 }, //Nuevo campo + 08/06/2023
+        isReportado: { type: Boolean, default: false },
+        fechaReporte: { type: Date },
+        mesReportado: { type: Number },
+        isVentaInterna: { type: Boolean, default: false }, //Nuevo campo + 17/07/2023
+        isVentaMenor: { type: Boolean, default: false }, //Nuevo campo + 17/07/2023
         //------------------------------------------------------------------------------------
         //Financiamiento
         tipo_financiamiento: { type: String }, //actualizado
@@ -100,9 +105,6 @@ const saleSchema = new Schema(
         empleado: { ref: "User", type: Schema.Types.ObjectId }, //actualizado
         //Está en Tramite
         pasoaTramite: { type: Number, default: 0 }, //actualizado
-        isReportado: { type: Boolean, default: false },
-        fechaReporte: { type: Date },
-        mesReportado: { type: Number },
         //LOGS SITUACION
         isCreadoS: { type: Boolean, default: true },
         fechaCreacionS: { type: Date },
@@ -140,6 +142,17 @@ const saleSchema = new Schema(
         fechaCanceladoPTS: { type: Date },
         isEPDPS: { type: Boolean, default: false },
         fechaEPDPS: { type: Date },
+        // Nuevos
+        isLibreConAccesoriosS: { type: Boolean, default: false }, // agregado 22.08.23
+        fechaLibreConAccesoriosS: { type: Date }, // agregado 22.08.23
+        isBuenaProS: { type: Boolean, default: false }, // agregado 22.08.23
+        fechaBuenaProS: { type: Date }, // agregado 22.08.23
+        isReservadoOCS: { type: Boolean, default: false }, // agregado 22.08.23
+        fechaReservadoOCS: { type: Date }, // agregado 22.08.23
+        isTallerMovilS: { type: Boolean, default: false }, // agregado 22.08.23
+        fechaTallerMovilS: { type: Date }, // agregado 22.08.23
+        isKintoShareS: { type: Boolean, default: false }, // agregado 22.08.23
+        fechaKintoShareS: { type: Date }, // agregado 22.08.23
         //LOGS CONDICION
         // isLibreC: { type: Boolean, default: false },
         // fechaLibreC: { type: Date },

@@ -7,6 +7,9 @@ const logFileSchema = new Schema(
         file_id: { type: Schema.Types.ObjectId, ref: "Sale", default: null },
         modifiedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
         action: { type: String },
+        objBefore: { type: String },
+        objAfter: { type: String },
+        changes: [{ objBefore: { type: String }, objAfter: { type: String } }],
         timeAt: { type: Date },
     },
     {

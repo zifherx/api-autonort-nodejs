@@ -377,7 +377,7 @@ mafController.updateRequestStateById = async (req, res) => {
 
     try {
         const mafStatusFound = await StatusMafRequest.findOne({ name: estadoSolicitudMAF });
-        if (!mafStatusFound) return res.status(503).json({ message: `Estado ${estadoSolicitudMAF} no encontrado` });
+        if (!mafStatusFound) return res.status(404).json({ message: `Estado ${estadoSolicitudMAF} no encontrado` });
 
         if (estadoSolicitudMAF == "EN EVALUACIÓN") {
             query = await Maf.findByIdAndUpdate(mafId, {

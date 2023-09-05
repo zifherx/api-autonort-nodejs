@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 const router = Router();
 
 import authRoutes from "./auth.routes";
@@ -100,6 +101,9 @@ import tipoMejoraKaizenRoutes from "./tipoMejoraKaizen.routes";
 import ubicacionMejoraKaizenRoutes from "./ubicacionMejoraKaizen.routes";
 import impactoMejoraKaizenRoutes from "./impactoKPIKaizen.routes";
 import estadoTDPKaizenRoutes from "./estadoTDPKaizen.routes";
+import applicationMafRoutes from "./applicationMafRoutes.routes";
+import catalogueRoutes from "./catalogueVehicular.routes";
+import planillaRoutes from "./planilla.routes";
 
 router.get("/", (req, res) => {
     res.send("Api Swagger");
@@ -112,7 +116,6 @@ router.use("/users", userRoutes);
 router.use("/helper", helperRoutes);
 router.use("/permisos", permisoRoutes);
 
-router.use("/vehicles", vehicleRoutes);
 router.use("/seller", sellerRoutes);
 router.use("/campania", campaignRoutes);
 router.use("/tipo-campania", tipoCampaniaRoutes);
@@ -138,13 +141,22 @@ router.use("/delivery", deliveryRoutes);
 router.use("/seguro", seguroRoutes);
 router.use("/aseguradora", aseguradoraRoutes);
 router.use("/tipo-operacion", operacionRoutes);
+
+// MAF
 router.use("/maf", mafRoutes);
+router.use("/application-maf", applicationMafRoutes);
+
 router.use("/jefatura-ventas", jefaturaVentasRoutes);
 router.use("/tasacion", tasacionRoutes);
 router.use("/tecnico-automotriz", tecnicoRoutes);
 router.use("/service-advisor", aserviciosRoutes);
+
+// VEHICLE
 router.use("/brand", marcaTRoutes);
 router.use("/models", modeloTRoutes);
+router.use("/vehicles", vehicleRoutes);
+router.use("/catalog-vehicle", catalogueRoutes);
+
 router.use("/accesorios", accesorioRoutes);
 router.use("/portada", portadaRoutes);
 router.use("/submodule", subumoduleRoutes);
@@ -183,6 +195,9 @@ router.use("/goals-autonort", goalsRoutes);
 router.use("/tipo-kaizen", tipoMejoraKaizenRoutes);
 router.use("/ubicacion-kaizen", ubicacionMejoraKaizenRoutes);
 router.use("/impacto-kaizen", impactoMejoraKaizenRoutes);
+
+// RR.HH
+router.use("/planilla", planillaRoutes);
 
 // Estados
 router.use("/situacion", situacionRoutes);

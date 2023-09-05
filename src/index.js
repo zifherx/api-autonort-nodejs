@@ -2,6 +2,7 @@ import app from "./app";
 import { connectSCIDB, connectSGLDB } from "./config/database";
 
 async function main() {
+    // connectSCIDB();
     await app.listen(app.get("port"));
     console.log("Server on port:", app.get("port"));
     console.log(`Database ${(await connectSCIDB.asPromise()).db.namespace} is`, (await connectSCIDB).readyState);

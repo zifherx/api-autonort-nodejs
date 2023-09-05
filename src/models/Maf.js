@@ -7,6 +7,7 @@ const mafSchema = new Schema(
         nro_solicitud: { type: String },
         fecha_ingreso: { type: Date },
         hora_ingreso: { type: String },
+        fecha_envio_evaluacion: { type: Date },
         sucursal: { type: String }, // actualizado
         sucursalE: { type: Types.ObjectId, ref: "Sucursal" },
         customer: { ref: "Customer", type: Types.ObjectId },
@@ -22,12 +23,29 @@ const mafSchema = new Schema(
         ingreso_promedio: { type: Number, min: 0 },
         cuota_inicial: { type: Number, min: 0 },
         seller: { ref: "Seller", type: Types.ObjectId },
-        car: { ref: "Vehicle", type: Types.ObjectId },
+        car: { ref: "Vehicle", type: Types.ObjectId, default: null },
         anio_fab: { type: Number }, // actualizado
         anioFabE: { type: Types.ObjectId, ref: "Anio" },
         anio_mod: { type: Number }, // actualizado
         anioModE: { type: Types.ObjectId, ref: "Anio" },
         pvp: { type: Number, min: 0 },
+        // NUEVOS
+        precio_a_financiar: { type: Number }, //actualizado 25.07.23
+        // TDP
+        isBonoTDP: { type: Boolean, default: false }, //actualizado 25.07.23
+        circularTDP: { type: Types.ObjectId, ref: "Campania", default: null },
+        ofertaTDP: [{ type: String }], //actualizado 25.07.23
+        // MAF
+        isBonoMAF: { type: Boolean, default: false }, //actualizado 25.07.23
+        circularMAF: { type: Types.ObjectId, ref: "Campania", default: null }, //actualizado 25.07.23
+        ofertaMAF: [{ type: String }], //actualizado 25.07.23
+        // DESCUENTOS
+        herramientas_tdp: { type: Number, default: 0 },
+        herramientas_maf: { type: Number, default: 0 },
+        descuento_autonort: { type: Number, default: 0 },
+        acuerdotdp_gerencia: { type: Number, default: 0 },
+        importe_accesorios: { type: Number, default: 0 },
+        // NUEVOS
         plan: { type: String }, // actualizado
         planMAF: { type: Types.ObjectId, ref: "PlanMAF" },
         tipo_uso: { type: String }, // actualizado
@@ -61,6 +79,8 @@ const mafSchema = new Schema(
         fechaRechazado: { type: Date },
         isAprobado: { type: Boolean, default: false },
         fechaAprobado: { type: Date },
+        isParaRevisor: { type: Boolean, default: false },
+        fechaParaRevisor: { type: Date },
         isRevisorio: { type: Boolean, default: false },
         fechaRevisorio: { type: Date },
         isDesembolsar: { type: Boolean, default: false },
@@ -84,8 +104,8 @@ const mafSchema = new Schema(
         //Aprobadores
         userCreator: { type: Types.ObjectId, ref: "User", default: null },
         userApprove: { type: Types.ObjectId, ref: "User", default: null },
-
         createdBy: { type: Types.ObjectId, ref: "User" },
+        isDeleted: { type: Boolean, default: false },
     },
     {
         timestamps: true,

@@ -40,6 +40,7 @@ const actividadSchema = new Schema(
         anexos: [{ type: String }],
         // General
         createdBy: { type: Schema.Types.ObjectId, ref: "User" },
+        qualifyBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
         aprobadoBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
         estado: { type: String },
         estadoE: { type: Schema.Types.ObjectId, ref: "EstadoKaizen" },

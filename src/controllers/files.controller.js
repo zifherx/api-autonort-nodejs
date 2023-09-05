@@ -309,6 +309,8 @@ fileController.createOne = async (req, res) => {
         fechaCreacionS,
         getGPS,
         importeGPS,
+        isVentaInterna,
+        isVentaMenor,
     } = req.body;
 
     try {
@@ -341,6 +343,8 @@ fileController.createOne = async (req, res) => {
             fechaCreacionS,
             getGPS,
             importeGPS,
+            isVentaInterna,
+            isVentaMenor,
         });
 
         //Seller Obligado
@@ -487,12 +491,133 @@ fileController.createOne = async (req, res) => {
 
         const query = await newSale.save();
 
+        const queryDecomposed = query
+            .populate({
+                path: "vendedor",
+                select: "name sucursal sucursalE",
+                populate: {
+                    path: "sucursalE",
+                    select: "name",
+                },
+            })
+            .populate({
+                path: "auto",
+                select: "model version cod_tdp",
+                populate: {
+                    path: "model",
+                    select: "marca name avatar",
+                    populate: {
+                        path: "marca",
+                        select: "name avatar",
+                    },
+                },
+            })
+            .populate({
+                path: "sucursalE",
+                select: "name",
+            })
+            .populate({
+                path: "colorE",
+                select: "name",
+            })
+            .populate({
+                path: "anioFabricacionE",
+                select: "name",
+            })
+            .populate({
+                path: "anioModeloE",
+                select: "name",
+            })
+            .populate({
+                path: "ubicacionVehiculoE",
+                select: "name",
+            })
+            .populate({
+                path: "estadoVehiculoE",
+                select: "name",
+            })
+            .populate({
+                path: "financiamientoE",
+                select: "name",
+            })
+            .populate({
+                path: "bancoE",
+                select: "name",
+            })
+            .populate({
+                path: "solicitudMAF",
+                select: "nro_solicitud fecha_ingreso customer",
+                populate: {
+                    path: "customer",
+                    select: "name document",
+                },
+            })
+            .populate({
+                path: "cliente",
+                select: "name document",
+            })
+            .populate({
+                path: "campaniasTDPE",
+                select: "cod_interno descripcion tipo oferta",
+                populate: {
+                    path: "tipo",
+                    select: "name",
+                },
+            })
+            .populate({
+                path: "campaniasMafE",
+                select: "cod_interno descripcion tipo oferta",
+                populate: {
+                    path: "tipo",
+                    select: "name",
+                },
+            })
+            .populate({
+                path: "accesoriosE",
+                select: "cod_interno name model precio",
+                populate: {
+                    path: "model",
+                    select: "name",
+                },
+            })
+            .populate({
+                path: "condicionAccesorioE",
+                select: "name",
+            })
+            .populate({
+                path: "tipoOperacionE",
+                select: "name document",
+            })
+            .populate({
+                path: "tipoComprobanteE",
+                select: "name document",
+            })
+            .populate({ path: "estadoVentaE", select: "name document" })
+            .populate({
+                path: "estadoFacturacionE",
+                select: "name document",
+            })
+            .populate("campanias")
+            .populate("adicional")
+            .populate("accesorios")
+            .populate({
+                path: "empleado",
+                select: "name username",
+            })
+            .populate({
+                path: "createdBy",
+                select: "name username",
+                strictPopulate: false,
+            });
+
         if (query) {
             const newLog = await LogFile({
                 cod_interno: new Date().getTime(),
                 file_id: query._id,
                 modifiedBy: query.createdBy,
                 action: `Usuario ${createdBy} ha creado nuevo expediente`,
+                objBefore: "",
+                objAfter: JSON.stringify(queryDecomposed),
                 timeAt: query.fechaCreacionS,
             });
             // console.log('Query:',newLog);
@@ -558,6 +683,8 @@ fileController.updateOneById = async (req, res) => {
         isReportado,
         fechaReporte,
         mesReportado,
+        isVentaInterna,
+        isVentaMenor,
         updatedBy,
         // LOG
         isLibreS,
@@ -594,6 +721,16 @@ fileController.updateOneById = async (req, res) => {
         fechaCanceladoPTS,
         isEPDPS,
         fechaEPDPS,
+        isLibreConAccesoriosS,
+        fechaLibreConAccesoriosS,
+        isBuenaProS,
+        fechaBuenaProS,
+        isReservadoOCS,
+        fechaReservadoOCS,
+        isTallerMovilS,
+        fechaTallerMovilS,
+        isKintoShareS,
+        fechaKintoShareS,
     } = req.body;
 
     // Opcionales
@@ -743,7 +880,7 @@ fileController.updateOneById = async (req, res) => {
             facturacionNull = facturacionFound._id;
         }
 
-        if (estadoVentaE == "Libre") {
+        if (estadoVentaE === "Libre") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -799,10 +936,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isLibreS,
                     fechaLibreS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "Credito") {
+        } else if (estadoVentaE === "Credito") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -858,10 +997,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isCreditoS,
                     fechaCreditoS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "Reservado") {
+        } else if (estadoVentaE === "Reservado") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -917,10 +1058,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isReservadoS,
                     fechaReservadoS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "Reservado C") {
+        } else if (estadoVentaE === "Reservado C") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -976,10 +1119,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isReservadoCS,
                     fechaReservadoCS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "Reservado L") {
+        } else if (estadoVentaE === "Reservado L") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -1035,10 +1180,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isReservadoLS,
                     fechaReservadoLS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "En Espera") {
+        } else if (estadoVentaE === "En Espera") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -1094,10 +1241,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isEsperaS,
                     fechaEsperaS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "Facturado") {
+        } else if (estadoVentaE === "Facturado") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -1153,10 +1302,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isFacturadoS,
                     fechaFacturadoS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "Anticipo") {
+        } else if (estadoVentaE === "Anticipo") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -1212,10 +1363,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isAnticipoS,
                     fechaAnticipoS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "Cancelado") {
+        } else if (estadoVentaE === "Cancelado") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -1271,10 +1424,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isCanceladoS,
                     fechaCanceladoS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "Cancelado PT") {
+        } else if (estadoVentaE === "Cancelado PT") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -1330,10 +1485,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isCanceladoPTS,
                     fechaCanceladoPTS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "EPDP") {
+        } else if (estadoVentaE === "EPDP") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -1389,10 +1546,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isEPDPS,
                     fechaEPDPS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "Por Desembolsar") {
+        } else if (estadoVentaE === "Por Desembolsar") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -1448,10 +1607,12 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isDesembolsarS,
                     fechaDesembolsarS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
-        } else if (estadoVentaE == "EXHIBICIÓN") {
+        } else if (estadoVentaE === "EXHIBICIÓN") {
             query = await Sale.findByIdAndUpdate(
                 itemId,
                 {
@@ -1507,9 +1668,524 @@ fileController.updateOneById = async (req, res) => {
                     estadoFacturacionE: facturacionNull,
                     isExhibicionS,
                     fechaExhibicionS,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
+        } else if (estadoVentaE === "Libre con accesorios") {
+            query = await Sale.findByIdAndUpdate(itemId, {
+                serie_tdp,
+                precio,
+                ubicacion_vehiculo,
+                estatus_vehiculo,
+                fecha_ciguena,
+                fecha_entrega,
+                adelantosE,
+                isToyotaLife,
+                isToyotaValue,
+                arrayToyotaValues,
+                descuento_autonort,
+                acuerdoTDP,
+                herramientas_tdp,
+                herramientas_maf,
+                observacion_adv,
+                condicion_accesorios,
+                nro_comprobante,
+                fecha_comprobante,
+                sucursal_venta,
+                fecha_cancelacion,
+                estatus_venta,
+                fecha_facturacion_tdp,
+                monto_facturado,
+                isReportado,
+                fechaReporte,
+                mesReportado,
+                vendedor: sellerFound._id,
+                cliente: customerFound._id,
+                auto: autoFound._id,
+                estadoVehiculoE: estadoVehicularFound._id,
+                tipoOperacionE: operacionFound._id,
+                sucursalE: sucursalFound._id,
+                estadoVentaE: situacionFound._id,
+                getGPS,
+                importeGPS,
+                colorE: colorNull,
+                anioFabricacionE: anioFNull,
+                anioModeloE: anioMNull,
+                ubicacionVehiculoE: ubicacionNull,
+                financiamientoE: financiamientoNull,
+                bancoE: bancoNull,
+                solicitudMAF: solicitudNull,
+                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                accesoriosE: accesoriosFound.map((a) => a._id),
+                condicionAccesorioE: condicionAccNull,
+                tipoComprobanteE: comprobanteNull,
+                ofertaTDPE,
+                ofertaMafE,
+                estadoFacturacionE: facturacionNull,
+                isLibreConAccesoriosS,
+                fechaLibreConAccesoriosS,
+                isVentaInterna,
+                isVentaMenor,
+            });
+        } else if (estadoVentaE === "Stand By") {
+            query = await Sale.findByIdAndUpdate(itemId, {
+                serie_tdp,
+                precio,
+                ubicacion_vehiculo,
+                estatus_vehiculo,
+                fecha_ciguena,
+                fecha_entrega,
+                adelantosE,
+                isToyotaLife,
+                isToyotaValue,
+                arrayToyotaValues,
+                descuento_autonort,
+                acuerdoTDP,
+                herramientas_tdp,
+                herramientas_maf,
+                observacion_adv,
+                condicion_accesorios,
+                nro_comprobante,
+                fecha_comprobante,
+                sucursal_venta,
+                fecha_cancelacion,
+                estatus_venta,
+                fecha_facturacion_tdp,
+                monto_facturado,
+                isReportado,
+                fechaReporte,
+                mesReportado,
+                vendedor: sellerFound._id,
+                cliente: customerFound._id,
+                auto: autoFound._id,
+                estadoVehiculoE: estadoVehicularFound._id,
+                tipoOperacionE: operacionFound._id,
+                sucursalE: sucursalFound._id,
+                estadoVentaE: situacionFound._id,
+                getGPS,
+                importeGPS,
+                colorE: colorNull,
+                anioFabricacionE: anioFNull,
+                anioModeloE: anioMNull,
+                ubicacionVehiculoE: ubicacionNull,
+                financiamientoE: financiamientoNull,
+                bancoE: bancoNull,
+                solicitudMAF: solicitudNull,
+                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                accesoriosE: accesoriosFound.map((a) => a._id),
+                condicionAccesorioE: condicionAccNull,
+                tipoComprobanteE: comprobanteNull,
+                ofertaTDPE,
+                ofertaMafE,
+                estadoFacturacionE: facturacionNull,
+                isStandByS,
+                fechaStandByS,
+                isVentaInterna,
+                isVentaMenor,
+            });
+        } else if (estadoVentaE === "BUENA PRO") {
+            query = await Sale.findByIdAndUpdate(itemId, {
+                serie_tdp,
+                precio,
+                ubicacion_vehiculo,
+                estatus_vehiculo,
+                fecha_ciguena,
+                fecha_entrega,
+                adelantosE,
+                isToyotaLife,
+                isToyotaValue,
+                arrayToyotaValues,
+                descuento_autonort,
+                acuerdoTDP,
+                herramientas_tdp,
+                herramientas_maf,
+                observacion_adv,
+                condicion_accesorios,
+                nro_comprobante,
+                fecha_comprobante,
+                sucursal_venta,
+                fecha_cancelacion,
+                estatus_venta,
+                fecha_facturacion_tdp,
+                monto_facturado,
+                isReportado,
+                fechaReporte,
+                mesReportado,
+                vendedor: sellerFound._id,
+                cliente: customerFound._id,
+                auto: autoFound._id,
+                estadoVehiculoE: estadoVehicularFound._id,
+                tipoOperacionE: operacionFound._id,
+                sucursalE: sucursalFound._id,
+                estadoVentaE: situacionFound._id,
+                getGPS,
+                importeGPS,
+                colorE: colorNull,
+                anioFabricacionE: anioFNull,
+                anioModeloE: anioMNull,
+                ubicacionVehiculoE: ubicacionNull,
+                financiamientoE: financiamientoNull,
+                bancoE: bancoNull,
+                solicitudMAF: solicitudNull,
+                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                accesoriosE: accesoriosFound.map((a) => a._id),
+                condicionAccesorioE: condicionAccNull,
+                tipoComprobanteE: comprobanteNull,
+                ofertaTDPE,
+                ofertaMafE,
+                estadoFacturacionE: facturacionNull,
+                isBuenaProS,
+                fechaBuenaProS,
+                isVentaInterna,
+                isVentaMenor,
+            });
+        } else if (estadoVentaE === "RESERVADO OC") {
+            query = await Sale.findByIdAndUpdate(itemId, {
+                serie_tdp,
+                precio,
+                ubicacion_vehiculo,
+                estatus_vehiculo,
+                fecha_ciguena,
+                fecha_entrega,
+                adelantosE,
+                isToyotaLife,
+                isToyotaValue,
+                arrayToyotaValues,
+                descuento_autonort,
+                acuerdoTDP,
+                herramientas_tdp,
+                herramientas_maf,
+                observacion_adv,
+                condicion_accesorios,
+                nro_comprobante,
+                fecha_comprobante,
+                sucursal_venta,
+                fecha_cancelacion,
+                estatus_venta,
+                fecha_facturacion_tdp,
+                monto_facturado,
+                isReportado,
+                fechaReporte,
+                mesReportado,
+                vendedor: sellerFound._id,
+                cliente: customerFound._id,
+                auto: autoFound._id,
+                estadoVehiculoE: estadoVehicularFound._id,
+                tipoOperacionE: operacionFound._id,
+                sucursalE: sucursalFound._id,
+                estadoVentaE: situacionFound._id,
+                getGPS,
+                importeGPS,
+                colorE: colorNull,
+                anioFabricacionE: anioFNull,
+                anioModeloE: anioMNull,
+                ubicacionVehiculoE: ubicacionNull,
+                financiamientoE: financiamientoNull,
+                bancoE: bancoNull,
+                solicitudMAF: solicitudNull,
+                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                accesoriosE: accesoriosFound.map((a) => a._id),
+                condicionAccesorioE: condicionAccNull,
+                tipoComprobanteE: comprobanteNull,
+                ofertaTDPE,
+                ofertaMafE,
+                estadoFacturacionE: facturacionNull,
+                isReservadoOCS,
+                fechaReservadoOCS,
+                isVentaInterna,
+                isVentaMenor,
+            });
+        } else if (estadoVentaE === "TALLER MOVIL") {
+            query = await Sale.findByIdAndUpdate(itemId, {
+                serie_tdp,
+                precio,
+                ubicacion_vehiculo,
+                estatus_vehiculo,
+                fecha_ciguena,
+                fecha_entrega,
+                adelantosE,
+                isToyotaLife,
+                isToyotaValue,
+                arrayToyotaValues,
+                descuento_autonort,
+                acuerdoTDP,
+                herramientas_tdp,
+                herramientas_maf,
+                observacion_adv,
+                condicion_accesorios,
+                nro_comprobante,
+                fecha_comprobante,
+                sucursal_venta,
+                fecha_cancelacion,
+                estatus_venta,
+                fecha_facturacion_tdp,
+                monto_facturado,
+                isReportado,
+                fechaReporte,
+                mesReportado,
+                vendedor: sellerFound._id,
+                cliente: customerFound._id,
+                auto: autoFound._id,
+                estadoVehiculoE: estadoVehicularFound._id,
+                tipoOperacionE: operacionFound._id,
+                sucursalE: sucursalFound._id,
+                estadoVentaE: situacionFound._id,
+                getGPS,
+                importeGPS,
+                colorE: colorNull,
+                anioFabricacionE: anioFNull,
+                anioModeloE: anioMNull,
+                ubicacionVehiculoE: ubicacionNull,
+                financiamientoE: financiamientoNull,
+                bancoE: bancoNull,
+                solicitudMAF: solicitudNull,
+                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                accesoriosE: accesoriosFound.map((a) => a._id),
+                condicionAccesorioE: condicionAccNull,
+                tipoComprobanteE: comprobanteNull,
+                ofertaTDPE,
+                ofertaMafE,
+                estadoFacturacionE: facturacionNull,
+                isTallerMovilS,
+                fechaTallerMovilS,
+                isVentaInterna,
+                isVentaMenor,
+            });
+        } else if (estadoVentaE === "BLOQUEADO") {
+            query = await Sale.findByIdAndUpdate(itemId, {
+                serie_tdp,
+                precio,
+                ubicacion_vehiculo,
+                estatus_vehiculo,
+                fecha_ciguena,
+                fecha_entrega,
+                adelantosE,
+                isToyotaLife,
+                isToyotaValue,
+                arrayToyotaValues,
+                descuento_autonort,
+                acuerdoTDP,
+                herramientas_tdp,
+                herramientas_maf,
+                observacion_adv,
+                condicion_accesorios,
+                nro_comprobante,
+                fecha_comprobante,
+                sucursal_venta,
+                fecha_cancelacion,
+                estatus_venta,
+                fecha_facturacion_tdp,
+                monto_facturado,
+                isReportado,
+                fechaReporte,
+                mesReportado,
+                vendedor: sellerFound._id,
+                cliente: customerFound._id,
+                auto: autoFound._id,
+                estadoVehiculoE: estadoVehicularFound._id,
+                tipoOperacionE: operacionFound._id,
+                sucursalE: sucursalFound._id,
+                estadoVentaE: situacionFound._id,
+                getGPS,
+                importeGPS,
+                colorE: colorNull,
+                anioFabricacionE: anioFNull,
+                anioModeloE: anioMNull,
+                ubicacionVehiculoE: ubicacionNull,
+                financiamientoE: financiamientoNull,
+                bancoE: bancoNull,
+                solicitudMAF: solicitudNull,
+                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                accesoriosE: accesoriosFound.map((a) => a._id),
+                condicionAccesorioE: condicionAccNull,
+                tipoComprobanteE: comprobanteNull,
+                ofertaTDPE,
+                ofertaMafE,
+                estadoFacturacionE: facturacionNull,
+                isBloqueadoS,
+                fechaBloqueadoS,
+                isVentaInterna,
+                isVentaMenor,
+            });
+        } else if (estadoVentaE === "Devolución") {
+            query = await Sale.findByIdAndUpdate(itemId, {
+                serie_tdp,
+                precio,
+                ubicacion_vehiculo,
+                estatus_vehiculo,
+                fecha_ciguena,
+                fecha_entrega,
+                adelantosE,
+                isToyotaLife,
+                isToyotaValue,
+                arrayToyotaValues,
+                descuento_autonort,
+                acuerdoTDP,
+                herramientas_tdp,
+                herramientas_maf,
+                observacion_adv,
+                condicion_accesorios,
+                nro_comprobante,
+                fecha_comprobante,
+                sucursal_venta,
+                fecha_cancelacion,
+                estatus_venta,
+                fecha_facturacion_tdp,
+                monto_facturado,
+                isReportado,
+                fechaReporte,
+                mesReportado,
+                vendedor: sellerFound._id,
+                cliente: customerFound._id,
+                auto: autoFound._id,
+                estadoVehiculoE: estadoVehicularFound._id,
+                tipoOperacionE: operacionFound._id,
+                sucursalE: sucursalFound._id,
+                estadoVentaE: situacionFound._id,
+                getGPS,
+                importeGPS,
+                colorE: colorNull,
+                anioFabricacionE: anioFNull,
+                anioModeloE: anioMNull,
+                ubicacionVehiculoE: ubicacionNull,
+                financiamientoE: financiamientoNull,
+                bancoE: bancoNull,
+                solicitudMAF: solicitudNull,
+                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                accesoriosE: accesoriosFound.map((a) => a._id),
+                condicionAccesorioE: condicionAccNull,
+                tipoComprobanteE: comprobanteNull,
+                ofertaTDPE,
+                ofertaMafE,
+                estadoFacturacionE: facturacionNull,
+                isDevolucionS,
+                fechaDevolucionS,
+                isVentaInterna,
+                isVentaMenor,
+            });
+        } else if (estadoVentaE === "KINTO SHARE") {
+            query = await Sale.findByIdAndUpdate(itemId, {
+                serie_tdp,
+                precio,
+                ubicacion_vehiculo,
+                estatus_vehiculo,
+                fecha_ciguena,
+                fecha_entrega,
+                adelantosE,
+                isToyotaLife,
+                isToyotaValue,
+                arrayToyotaValues,
+                descuento_autonort,
+                acuerdoTDP,
+                herramientas_tdp,
+                herramientas_maf,
+                observacion_adv,
+                condicion_accesorios,
+                nro_comprobante,
+                fecha_comprobante,
+                sucursal_venta,
+                fecha_cancelacion,
+                estatus_venta,
+                fecha_facturacion_tdp,
+                monto_facturado,
+                isReportado,
+                fechaReporte,
+                mesReportado,
+                vendedor: sellerFound._id,
+                cliente: customerFound._id,
+                auto: autoFound._id,
+                estadoVehiculoE: estadoVehicularFound._id,
+                tipoOperacionE: operacionFound._id,
+                sucursalE: sucursalFound._id,
+                estadoVentaE: situacionFound._id,
+                getGPS,
+                importeGPS,
+                colorE: colorNull,
+                anioFabricacionE: anioFNull,
+                anioModeloE: anioMNull,
+                ubicacionVehiculoE: ubicacionNull,
+                financiamientoE: financiamientoNull,
+                bancoE: bancoNull,
+                solicitudMAF: solicitudNull,
+                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                accesoriosE: accesoriosFound.map((a) => a._id),
+                condicionAccesorioE: condicionAccNull,
+                tipoComprobanteE: comprobanteNull,
+                ofertaTDPE,
+                ofertaMafE,
+                estadoFacturacionE: facturacionNull,
+                isKintoShareS,
+                fechaKintoShareS,
+                isVentaInterna,
+                isVentaMenor,
+            });
+        } else if (estadoVentaE === "Test Drive") {
+            query = await Sale.findByIdAndUpdate(itemId, {
+                serie_tdp,
+                precio,
+                ubicacion_vehiculo,
+                estatus_vehiculo,
+                fecha_ciguena,
+                fecha_entrega,
+                adelantosE,
+                isToyotaLife,
+                isToyotaValue,
+                arrayToyotaValues,
+                descuento_autonort,
+                acuerdoTDP,
+                herramientas_tdp,
+                herramientas_maf,
+                observacion_adv,
+                condicion_accesorios,
+                nro_comprobante,
+                fecha_comprobante,
+                sucursal_venta,
+                fecha_cancelacion,
+                estatus_venta,
+                fecha_facturacion_tdp,
+                monto_facturado,
+                isReportado,
+                fechaReporte,
+                mesReportado,
+                vendedor: sellerFound._id,
+                cliente: customerFound._id,
+                auto: autoFound._id,
+                estadoVehiculoE: estadoVehicularFound._id,
+                tipoOperacionE: operacionFound._id,
+                sucursalE: sucursalFound._id,
+                estadoVentaE: situacionFound._id,
+                getGPS,
+                importeGPS,
+                colorE: colorNull,
+                anioFabricacionE: anioFNull,
+                anioModeloE: anioMNull,
+                ubicacionVehiculoE: ubicacionNull,
+                financiamientoE: financiamientoNull,
+                bancoE: bancoNull,
+                solicitudMAF: solicitudNull,
+                campaniasTDPE: campaniaTDPFound.map((a) => a.id),
+                campaniasMafE: campaniaMAFFound.map((a) => a._id),
+                accesoriosE: accesoriosFound.map((a) => a._id),
+                condicionAccesorioE: condicionAccNull,
+                tipoComprobanteE: comprobanteNull,
+                ofertaTDPE,
+                ofertaMafE,
+                estadoFacturacionE: facturacionNull,
+                isTestDrive,
+                fechaKintoShareS,
+                fechaTestDriveS,
+                isVentaMenor,
+            });
         } else {
             query = await Sale.findByIdAndUpdate(
                 itemId,
@@ -1564,27 +2240,29 @@ fileController.updateOneById = async (req, res) => {
                     ofertaTDPE,
                     ofertaMafE,
                     estadoFacturacionE: facturacionNull,
-                },
-                { new: true }
+                    isVentaInterna,
+                    isVentaMenor,
+                }
+                // { new: true }
             );
         }
 
         // console.log('Query Updated:',query);
+        if (!query) return res.status(404).json({ message: `Expediente ${itemId} no encontrado para actualizar` });
 
-        if (query) {
-            const newLog = await LogFile({
-                cod_interno: new Date().getTime(),
-                file_id: query._id,
-                modifiedBy: userFound._id,
-                action: `Usuario ${userFound.username} ha modificado el expediente`,
-                timeAt: query.updatedAt,
-            });
-            // console.log('Query:',newLog);
-            const logQuery = await newLog.save();
-            res.json({ message: "Expediente actualizado con éxito" });
-        } else {
-            return res.status(404).json({ message: "No existe expediente a actualizar" });
-        }
+        const newLog = await LogFile({
+            cod_interno: new Date().getTime(),
+            file_id: query._id,
+            modifiedBy: userFound._id,
+            action: `Usuario ${userFound.username} ha modificado el expediente`,
+            objBefore: JSON.stringify(query),
+            objAfter: JSON.stringify(req.body),
+            timeAt: query.updatedAt,
+        });
+        // console.log("Query:", newLog);
+        const logQuery = await newLog.save();
+
+        res.json({ message: "Expediente actualizado con éxito" });
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
@@ -2465,6 +3143,52 @@ fileController.getAllLogs = async (req, res) => {
             return res.status(404).json({ message: `No existen logs de expedientes` });
         }
     } catch (err) {
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+fileController.getOneLogByCodigo = async (req, res) => {
+    const { cod_interno } = req.body;
+
+    try {
+        const query = await LogFile.findOne({ cod_interno })
+            .populate({
+                path: "file_id",
+                select: "serie_tdp",
+            })
+            .populate({
+                path: "modifiedBy",
+                select: "name username avatar",
+            });
+
+        if (!query) return res.status(404).json({ message: `Registro de Expediente ${cod_interno} no encontrado` });
+
+        res.json({ query });
+    } catch (err) {
+        console.log(err);
+        return res.status(503).json({ message: err.message });
+    }
+};
+
+fileController.getOneLogById = async (req, res) => {
+    const { itemId } = req.params;
+
+    try {
+        const query = await LogFile.findById(itemId)
+            .populate({
+                path: "file_id",
+                select: "serie_tdp",
+            })
+            .populate({
+                path: "modifiedBy",
+                select: "name username avatar",
+            });
+
+        if (!query) return res.status(404).json({ message: `Registro de Expediente ${itemId} no encontrado` });
+
+        res.json({ one: query });
+    } catch (err) {
+        console.log(err);
         return res.status(503).json({ message: err.message });
     }
 };

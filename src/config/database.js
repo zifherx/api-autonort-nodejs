@@ -8,18 +8,16 @@ import config from "./config";
 //     .then(db => console.log(`DB ${db.connection.name} is connected`))
 //     .catch(err => console.error(err));W
 
-// export const connectSCIDB = async () => {
+// async function connectSCIDB() {
 //     try {
-//         const con = await mongoose.connect(config.mongoSCIdbURL, {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true,
-//         });
+//         const con = await mongoose.connect(config.mongoSCIdbURL);
 
 //         console.log("DB", con.connection.name, "is connected on port:", con.connection.port);
 //     } catch (err) {
 //         console.log(err);
+//         process.exit(0);
 //     }
-// };
+// }
 
 export const connectSCIDB = mongoose.createConnection(config.mongoSCIdbURL, { maxPoolSize: 10 });
 export const connectSGLDB = mongoose.createConnection(config.mongoSGLdbURL, { maxPoolSize: 10 });
@@ -33,3 +31,5 @@ export const connectSGLDB = mongoose.createConnection(config.mongoSGLdbURL, { ma
 //         console.log(err);
 //     }
 // };
+
+// export { connectSCIDB };

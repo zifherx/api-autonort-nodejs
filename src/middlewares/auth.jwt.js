@@ -186,7 +186,7 @@ export const isCoordinadorAdvorAdminorAsistantADVorChiefPlaneamiento = async (re
             return;
         }
     }
-    return res.status(403).json({ message: "Requiere permiso de Jefe-ADV" });
+    return res.status(403).json({ message: "Requiere permiso de Jefe-Planeamiento-Comercial" });
 };
 
 export const isChiefTunning = async (req, res, next) => {
@@ -313,6 +313,7 @@ export const isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin = async (req, r
             roles[i].name === "Jefe-ADV" ||
             roles[i].name === "Asistente-ADV" ||
             roles[i].name === "Vendedor" ||
+            roles[i].name === "Asersor-Ventas" ||
             roles[i].name === "Administrador" ||
             roles[i].name === "Jefe-EPDP" ||
             roles[i].name === "Tasador" ||
@@ -323,8 +324,7 @@ export const isConexosOrADVOrVendedorOrEPDPOrPlaneamientoOrAdmin = async (req, r
         }
     }
     return res.status(403).json({
-        message:
-            "Requiere permiso del Asistente-Conexos || Jefe-ADV || Vendedor || Administrador || Jefe-EPDP || Tasador || Jefe-Planeamiento-Comercial",
+        message: "Requiere permiso del Administrador",
     });
 };
 

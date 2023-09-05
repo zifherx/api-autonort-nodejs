@@ -13,10 +13,10 @@ app.set("port", Number(config.API_PORT) || Number(4000));
 
 //Middlewares
 app.use(morgan("dev"));
-app.use(helmet());
-app.use(cors());
+// app.use(helmet());
+app.use(cors({ origin: "*" }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 //Routes
 app.use("/api", routes);

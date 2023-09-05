@@ -26,6 +26,14 @@ const activityController = {
                     select: "name",
                 })
                 .populate({
+                    path: "atentedBy",
+                    select: "name username",
+                })
+                .populate({
+                    path: "qualifyBy",
+                    select: "name username",
+                })
+                .populate({
                     path: "aprobadoBy",
                     select: "name username",
                 })
@@ -77,6 +85,14 @@ const activityController = {
                 .populate({
                     path: "area",
                     select: "name",
+                })
+                .populate({
+                    path: "atentedBy",
+                    select: "name username",
+                })
+                .populate({
+                    path: "qualifyBy",
+                    select: "name username",
                 })
                 .populate({
                     path: "aprobadoBy",
@@ -319,6 +335,7 @@ const activityController = {
             estado,
             estadoE,
             observaciones_generales,
+            qualifyBy,
             aprobadoBy,
             fechaBorrador,
             isProceso,
@@ -469,7 +486,11 @@ const activityController = {
                     estadoE: estadoFound._id,
                 });
             } else if (estadoE == "POR MEJORAR") {
+                const userFound = await User.findOne({ username: qualifyBy });
+                if (!userFound) return res.status(404).json({ message: `Calificador ${qualifyBy} no encontrado` });
+
                 query = await ActividadKaizen.findByIdAndUpdate(itemId, {
+                    qualifyBy: userFound._id,
                     isObservado,
                     fechaObservado,
                     observaciones_generales,

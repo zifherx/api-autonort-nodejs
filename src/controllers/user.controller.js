@@ -176,7 +176,6 @@ userController.updateOneById = async (req, res) => {
     const { userId } = req.params;
     const { name, username, sucursalE, email, phone, sedeAcargo, roles, estado, fecha_nacimiento, genero, area, areaE, fecha_ingreso, documento } =
         req.body;
-    // console.log('BODY: ',req.body);
     const avatar = req.file;
     let areaNull = null;
 
@@ -189,7 +188,7 @@ userController.updateOneById = async (req, res) => {
         const cargoFound = await Sucursal.find({ name: { $in: sedeAcargo } });
         if (!cargoFound) return res.status(404).json({ message: `Sede ${sedeAcargo} no encontrada` });
 
-        if (areaE == null || areaE == undefined || areaE == '' || areaE == 'null') {
+        if (areaE == null || areaE == undefined || areaE == "" || areaE == "null") {
             areaNull = null;
         } else {
             const areaFound = await Area.findOne({ name: areaE });
