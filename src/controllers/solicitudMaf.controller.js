@@ -555,6 +555,8 @@ export const solicitudMafController = {
             carta_aprobacion,
             observacion,
             motivo,
+            isEnviadoAnalisis,
+            fechaEnviadoAnalisis,
             isObservado,
             fechaObservado,
             isRechazado,
@@ -593,7 +595,16 @@ export const solicitudMafController = {
             const estadoMafFound = await StatusMafRequest.findOne({ name: estadoSolicitudMAF });
             if (!estadoMafFound) return res.status(404).json({ message: `Estado MAF ${estadoSolicitudMAF} no encontado` });
 
-            if (estadoSolicitudMAF == "OBSERVADO") {
+            if (estadoSolicitudMAF == "ENVIADO A ANALISIS") {
+                query = Maf.findByIdAndUpdate(itemId, {
+                    primer_status_request,
+                    estadoSolicitud,
+                    estadoSolicitudMAF: estadoMafFound._id,
+                    isEnviadoAnalisis,
+                    fechaEnviadoAnalisis,
+                    observacion,
+                });
+            } else if (estadoSolicitudMAF == "OBSERVADO") {
                 query = await Maf.findByIdAndUpdate(itemId, {
                     primer_status_request,
                     estadoSolicitud,

@@ -73,6 +73,8 @@ const mafSchema = new Schema(
         fechaReingreso: { type: Date },
         isEvaluacion: { type: Boolean, default: false },
         fechaEvaluacion: { type: Date },
+        isEnviadoAnalisis: { type: Boolean, default: false },
+        fechaEnviadoAnalisis: { type: Date },
         isObservado: { type: Boolean, default: false },
         fechaObservado: { type: Date },
         isRechazado: { type: Boolean, default: false },
