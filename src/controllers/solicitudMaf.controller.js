@@ -596,7 +596,7 @@ export const solicitudMafController = {
             if (!estadoMafFound) return res.status(404).json({ message: `Estado MAF ${estadoSolicitudMAF} no encontado` });
 
             if (estadoSolicitudMAF == "ENVIADO A ANALISIS") {
-                query = Maf.findByIdAndUpdate(itemId, {
+                query = await Maf.findByIdAndUpdate(itemId, {
                     primer_status_request,
                     estadoSolicitud,
                     estadoSolicitudMAF: estadoMafFound._id,
