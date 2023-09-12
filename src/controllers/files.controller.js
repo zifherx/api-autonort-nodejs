@@ -491,125 +491,6 @@ fileController.createOne = async (req, res) => {
 
         const query = await newSale.save();
 
-        const queryDecomposed = query
-            .populate({
-                path: "vendedor",
-                select: "name sucursal sucursalE",
-                populate: {
-                    path: "sucursalE",
-                    select: "name",
-                },
-            })
-            .populate({
-                path: "auto",
-                select: "model version cod_tdp",
-                populate: {
-                    path: "model",
-                    select: "marca name avatar",
-                    populate: {
-                        path: "marca",
-                        select: "name avatar",
-                    },
-                },
-            })
-            .populate({
-                path: "sucursalE",
-                select: "name",
-            })
-            .populate({
-                path: "colorE",
-                select: "name",
-            })
-            .populate({
-                path: "anioFabricacionE",
-                select: "name",
-            })
-            .populate({
-                path: "anioModeloE",
-                select: "name",
-            })
-            .populate({
-                path: "ubicacionVehiculoE",
-                select: "name",
-            })
-            .populate({
-                path: "estadoVehiculoE",
-                select: "name",
-            })
-            .populate({
-                path: "financiamientoE",
-                select: "name",
-            })
-            .populate({
-                path: "bancoE",
-                select: "name",
-            })
-            .populate({
-                path: "solicitudMAF",
-                select: "nro_solicitud fecha_ingreso customer",
-                populate: {
-                    path: "customer",
-                    select: "name document",
-                },
-            })
-            .populate({
-                path: "cliente",
-                select: "name document",
-            })
-            .populate({
-                path: "campaniasTDPE",
-                select: "cod_interno descripcion tipo oferta",
-                populate: {
-                    path: "tipo",
-                    select: "name",
-                },
-            })
-            .populate({
-                path: "campaniasMafE",
-                select: "cod_interno descripcion tipo oferta",
-                populate: {
-                    path: "tipo",
-                    select: "name",
-                },
-            })
-            .populate({
-                path: "accesoriosE",
-                select: "cod_interno name model precio",
-                populate: {
-                    path: "model",
-                    select: "name",
-                },
-            })
-            .populate({
-                path: "condicionAccesorioE",
-                select: "name",
-            })
-            .populate({
-                path: "tipoOperacionE",
-                select: "name document",
-            })
-            .populate({
-                path: "tipoComprobanteE",
-                select: "name document",
-            })
-            .populate({ path: "estadoVentaE", select: "name document" })
-            .populate({
-                path: "estadoFacturacionE",
-                select: "name document",
-            })
-            .populate("campanias")
-            .populate("adicional")
-            .populate("accesorios")
-            .populate({
-                path: "empleado",
-                select: "name username",
-            })
-            .populate({
-                path: "createdBy",
-                select: "name username",
-                strictPopulate: false,
-            });
-
         if (query) {
             const newLog = await LogFile({
                 cod_interno: new Date().getTime(),
@@ -617,7 +498,7 @@ fileController.createOne = async (req, res) => {
                 modifiedBy: query.createdBy,
                 action: `Usuario ${createdBy} ha creado nuevo expediente`,
                 objBefore: "",
-                objAfter: JSON.stringify(queryDecomposed),
+                objAfter: JSON.stringify(req.body),
                 timeAt: query.fechaCreacionS,
             });
             // console.log('Query:',newLog);
