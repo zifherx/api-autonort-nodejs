@@ -2192,7 +2192,7 @@ fileController.getFilesBySucursalyFecha = async (req, res) => {
                 .sort({ fecha_cancelacion: -1 })
                 .populate({
                     path: "vendedor",
-                    select: "name sucursal",
+                    select: "name sucursal avatar",
                 })
                 .populate({
                     path: "auto",

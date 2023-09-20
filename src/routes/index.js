@@ -104,6 +104,7 @@ import estadoTDPKaizenRoutes from "./estadoTDPKaizen.routes";
 import applicationMafRoutes from "./applicationMafRoutes.routes";
 import catalogueRoutes from "./catalogueVehicular.routes";
 import planillaRoutes from "./planilla.routes";
+import estadoPlanillaRoutes from "./estadoPlanilla.routes";
 
 router.get("/", (req, res) => {
     res.send("Api Swagger");
@@ -220,6 +221,7 @@ router.use("/estado-kaizen", estadoKaizenRoutes);
 router.use("/estado-soat", estadoSoatRoutes);
 router.use("/estado-crm", estadoCRMRoutes);
 router.use("/estado-tdp-kaizen", estadoTDPKaizenRoutes);
+router.use("/estado-planilla", estadoPlanillaRoutes);
 
 //Modulos
 router.use("/menuG", menuGRoutes);
