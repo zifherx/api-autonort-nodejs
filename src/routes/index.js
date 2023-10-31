@@ -105,6 +105,12 @@ import applicationMafRoutes from "./applicationMafRoutes.routes";
 import catalogueRoutes from "./catalogueVehicular.routes";
 import planillaRoutes from "./planilla.routes";
 import estadoPlanillaRoutes from "./estadoPlanilla.routes";
+import documentoPlanillaRoutes from "./documentoPlanilla.routes";
+import estadoPapeletaRoutes from "./estadoPapeleta.routes";
+import tipoAusentismoRoutes from "./tipoAusentismo.routes";
+import papeletaRoutes from "./papeleta.routes";
+import viewAuthRoutes from "./viewAuth.routes";
+import tipoPermissionhRoutes from "./tipoPersmission.routes";
 
 router.get("/", (req, res) => {
     res.send("Api Swagger");
@@ -116,6 +122,7 @@ router.use("/roles", roleRoutes);
 router.use("/users", userRoutes);
 router.use("/helper", helperRoutes);
 router.use("/permisos", permisoRoutes);
+router.use("/view-permission", viewAuthRoutes);
 
 router.use("/seller", sellerRoutes);
 router.use("/campania", campaignRoutes);
@@ -142,6 +149,7 @@ router.use("/delivery", deliveryRoutes);
 router.use("/seguro", seguroRoutes);
 router.use("/aseguradora", aseguradoraRoutes);
 router.use("/tipo-operacion", operacionRoutes);
+router.use("/papeletas", papeletaRoutes);
 
 // MAF
 router.use("/maf", mafRoutes);
@@ -196,9 +204,12 @@ router.use("/goals-autonort", goalsRoutes);
 router.use("/tipo-kaizen", tipoMejoraKaizenRoutes);
 router.use("/ubicacion-kaizen", ubicacionMejoraKaizenRoutes);
 router.use("/impacto-kaizen", impactoMejoraKaizenRoutes);
+router.use("/tipo-ausentismo", tipoAusentismoRoutes);
+router.use("/type-permission", tipoPermissionhRoutes);
 
 // RR.HH
 router.use("/planilla", planillaRoutes);
+router.use("/documento-planilla", documentoPlanillaRoutes);
 
 // Estados
 router.use("/situacion", situacionRoutes);
@@ -222,6 +233,7 @@ router.use("/estado-soat", estadoSoatRoutes);
 router.use("/estado-crm", estadoCRMRoutes);
 router.use("/estado-tdp-kaizen", estadoTDPKaizenRoutes);
 router.use("/estado-planilla", estadoPlanillaRoutes);
+router.use("/estado-papeleta", estadoPapeletaRoutes);
 
 //Modulos
 router.use("/menuG", menuGRoutes);

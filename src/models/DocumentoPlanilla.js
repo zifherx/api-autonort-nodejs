@@ -3,17 +3,21 @@ import { connectSCIDB } from "../config/database";
 
 const itemSchema = new Schema(
     {
-        periodo: { type: String },
+        PERIODO: { type: String },
         mes: { type: String },
+        tipoDocumento: { type: String },
+        user: { type: String },
+        userBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
         estado: { type: String },
         estadoE: { type: Schema.Types.ObjectId, ref: "EstadoPlanilla" },
-        motivoRechazo: { type: String },
+        motivoObservado: { type: String },
         isVisto: { type: Boolean, default: false },
         isAprobado: { type: Boolean, default: false },
-        isRechazado: { type: Boolean, default: false },
+        isObservado: { type: Boolean, default: false },
+        fechaRegistro: { type: Date },
         fechaVisto: { type: Date },
         fechaAprobado: { type: Date },
-        fechaRechazado: { type: Date },
+        fechaObservado: { type: Date },
     },
     {
         timestamps: true,
@@ -21,4 +25,4 @@ const itemSchema = new Schema(
     }
 );
 
-export default connectSCIDB.model("BoletaPlanilla", itemSchema);
+export default connectSCIDB.model("DocumentoPlanilla", itemSchema);

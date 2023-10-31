@@ -43,12 +43,13 @@ const controller = {
     },
 
     createOne: async (req, res) => {
-        const { name, valor, estado } = req.body;
+        const { name, valor, hex, estado } = req.body;
 
         try {
             const newObj = new EstadoPlanilla({
                 name,
                 valor,
+                hex,
                 estado,
             });
 
@@ -65,10 +66,10 @@ const controller = {
 
     updateOneById: async (req, res) => {
         const { itemId } = req.params;
-        const { name, valor, estado } = req.body;
+        const { name, valor, hex, estado } = req.body;
 
         try {
-            const query = await EstadoPlanilla.findByIdAndUpdate(itemId, { name, valor, estado });
+            const query = await EstadoPlanilla.findByIdAndUpdate(itemId, { name, valor, hex, estado });
 
             if (!query) return res.status(404).json({ message: `No existe estado ${itemId}` });
 

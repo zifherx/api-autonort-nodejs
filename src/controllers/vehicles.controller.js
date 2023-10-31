@@ -128,6 +128,7 @@ controller.getVehiculeByMarca = async (req, res) => {
 
 controller.getVehiculeByModelo = async (req, res) => {
     const { modelo } = req.body;
+
     try {
         const query = await Vehicle.find({ estado: true })
             .select("cod_tdp model version")
@@ -146,7 +147,7 @@ controller.getVehiculeByModelo = async (req, res) => {
                 },
             });
 
-        let obj = query.filter((a) => a.model);
+            let obj = query.filter((a) => a.model);
         if (obj.length > 0) {
             res.json({ total: obj.length, all: obj });
         } else {

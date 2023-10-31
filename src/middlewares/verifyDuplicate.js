@@ -55,6 +55,8 @@ import EstadoUsados from "../models/EstadoUsados";
 import EstadoTunningAccesorio from "../models/EstadoTunningAccesorio";
 import EstadoKaizen from "../models/EstadoKaizen";
 import EstadoTDPKaizen from "../models/EstadoTDPKaizen";
+import EstadoPapeleta from "../models/EstadoPapeleta";
+import TipoAusentismo from "../models/TipoAusentismo";
 
 export const checkDuplicateRole = async (req, res, next) => {
     const { name } = req.body;
@@ -204,6 +206,24 @@ export const checkDuplicateAnio = async (req, res, next) => {
     const encontrado = await Anio.findOne({ name: name });
 
     if (encontrado) return res.status(201).json({ message: "El Año ya existe" });
+
+    next();
+};
+
+export const checkDuplicateEstadoPapeleta = async (req, res, next) => {
+    const { name } = req.body;
+    const encontrado = await EstadoPapeleta.findOne({ name: name });
+
+    if (encontrado) return res.status(201).json({ message: "El estado ya existe" });
+
+    next();
+};
+
+export const checkDuplicateTipoAusentismo = async (req, res, next) => {
+    const { name } = req.body;
+    const encontrado = await TipoAusentismo.findOne({ name: name });
+
+    if (encontrado) return res.status(201).json({ message: "El tipo ya existe" });
 
     next();
 };

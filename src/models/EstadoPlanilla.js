@@ -5,6 +5,7 @@ const estadoSchema = new Schema(
     {
         name: { type: String },
         valor: { type: Number },
+        hex: { type: String },
         estado: { type: Boolean, default: false },
     },
     {

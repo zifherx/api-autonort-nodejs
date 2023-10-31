@@ -429,10 +429,10 @@ controller.getItemsBySede = async (req, res) => {
                 select: "name username",
             });
 
-        if (query.length >= 0) {
-            res.json({ total: query.length, all: query });
+        if (query.length === 0) {
+            return res.status(404).json({ message: `La sede ${sucursal} no cuenta con soats` });
         }
-        // return res.status(404).json({ message: `La sede ${sucursal} no cuenta con soats` });
+        res.json({ total: query.length, all: query });
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
@@ -496,11 +496,10 @@ controller.getSOATByCreator = async (req, res) => {
                 select: "name username",
             });
 
-        if (query.length >= 0) {
-            res.json({ total: query.length, all: query });
-        } else {
+        if (query.length === 0) {
             return res.status(404).json({ message: `No existen soats ${estadoSoat} de ${createdBy}` });
         }
+        res.json({ total: query.length, all: query });
     } catch (err) {
         console.log(err.message);
         return res.status(503).json({ message: err.message });
