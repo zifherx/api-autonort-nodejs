@@ -54,11 +54,8 @@ modeloController.getModelosByMarca = async (req, res) => {
 
         const query = await ModeloTasaciones.find({ marca: marcaFound._id }).sort({ name: 1 }).populate({ path: "marca", select: "name avatar" });
 
-        if (query.length > 0) {
-            res.json({ total: query.length, all: query });
-        } else {
-            return res.status(404).json({ message: `La marca ${marca} no tiene modelos creados` });
-        }
+        if (query.length === 0) return res.status(404).json({ message: `La marca ${marca} no tiene modelos creados` });
+        res.json({ total: query.length, all: query });
     } catch (err) {
         console.log(err);
         return res.status(503).json({ message: err.message });
